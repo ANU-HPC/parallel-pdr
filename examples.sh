@@ -1,6 +1,6 @@
 # To perform PDR-P, follow the instructions in README.md
 #echo Example PDR-P
-#time ./run.sh -d 0 -r 1 -p 1 -n 6 ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p04.pddl set_no_decomposition
+#time ./run.sh -d 0 -r 1 -p 1 -n 6 ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p26.pddl set_no_decomposition
 
 echo Example PS-PDR
 time ./run.sh -d 0 -r 1 -p 1 -n 6 ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p26.pddl set_no_decomposition
