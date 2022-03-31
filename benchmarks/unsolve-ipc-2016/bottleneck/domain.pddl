@@ -1,0 +1,20 @@
+(define (domain Resources)
+	(:requirements :strips)
+
+	(:predicates (location ?loc)
+		     (person ?p)
+		     (person-at ?p ?loc)
+		     (connected ?loc1 ?loc2)
+		     (active ?loc))
+
+	(:action move
+	 :parameters (?p ?l1 ?l2)
+	 :precondition (and (person ?p)
+			    (person-at ?p ?l1)
+			    (location ?l1)
+			    (location ?l2)
+			    (connected ?l1 ?l2)
+			    (active ?l2))
+	 :effect (and (person-at ?p ?l2)
+	 	      (not (person-at ?p ?l1))
+		      (not (active ?l2)))))

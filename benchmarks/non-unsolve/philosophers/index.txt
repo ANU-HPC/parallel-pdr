@@ -1,0 +1,43 @@
+
+philosophers.pddl: Philosophers domain spec.
+
+component-atom-sets.pddl: Decomposition of the philosophers domain.
+
+mk-instance.sh: Script to generate philosophers problem instances.
+
+Usage: mk-instance.sh [-l] [-s] <number of philosophers>
+
+Default is to create an instance with reachable deadlock state;
+option -l causes it to create a live instance.
+
+Option -s causes component atoms sets to be added to the spec.
+
+Number of philosophers must be at least 2.
+
+
+telegraph.pddl: Optical telegraph domain. Note: this domain is based
+on the same promela spec as the IPC-4 domain, and has the same bug.
+This bug causes problems to have a deadlock even when they shouldn't
+have (when the stations are in a line, instead of a circle).
+
+telegraph-with-prio.pddl: Version of the optical telegraph domain
+with the bug fixed. With this version, problems where the stations
+are not in a circle are deadlock free.
+
+telegraph-with-prio-nnp.pddl: Corrected optical telegraph domain,
+formulation without negative preconditions.
+
+mk-telegraph-instance.sh: Script to generate optical telegraph
+instanes.
+
+Usage: mk-telegraph-instance.sh [-l] [-p] [-n] [-s] <num>
+
+where <num> is the number of telegraph stations, which must be
+at least 2.
+
+Options:
+
+-l: Generate a live instance (stations in a line).
+-p: Generate instance for the telegraph-with-prio domain.
+-n: Generate instance for the telegraph-with-prio-nnp domain.
+-s: Write component atom sets.

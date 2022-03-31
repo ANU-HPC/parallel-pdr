@@ -1,0 +1,112 @@
+Invariants:
+obj(package) OR:
+-obj(package) OR:
+truck(truck1) OR:
+-truck(truck1) OR:
+location(city1-3) OR:
+-location(city1-3) OR:
+at(truck1,city1-3) OR:
+-at(truck1,city1-3) OR: -at(truck1,city1-1) -at(truck1,city1-2)
+at(package,city1-3) OR:
+-at(package,city1-3) OR: -at(package,city1-2) -in(package,truck1) -at(package,city1-1)
+in(package,truck1) OR:
+-in(package,truck1) OR: -at(package,city1-1) -at(package,city1-3) -at(package,city1-2)
+location(city1-2) OR:
+-location(city1-2) OR:
+at(truck1,city1-2) OR:
+-at(truck1,city1-2) OR: -at(truck1,city1-1) -at(truck1,city1-3)
+at(package,city1-2) OR:
+-at(package,city1-2) OR: -in(package,truck1) -at(package,city1-3) -at(package,city1-1)
+location(city1-1) OR:
+-location(city1-1) OR:
+at(truck1,city1-1) OR:
+-at(truck1,city1-1) OR: -at(truck1,city1-2) -at(truck1,city1-3)
+at(package,city1-1) OR:
+-at(package,city1-1) OR: -in(package,truck1) -at(package,city1-3) -at(package,city1-2)
+location(city1) OR:
+-location(city1) OR:
+at(truck1,city1) OR:
+-at(truck1,city1) OR:
+at(package,city1) OR:
+-at(package,city1) OR:
+city(city1) OR:
+-city(city1) OR:
+in-city(city1-3,city1) OR:
+-in-city(city1-3,city1) OR:
+in-city(city1-2,city1) OR:
+-in-city(city1-2,city1) OR:
+in-city(city1-1,city1) OR:
+-in-city(city1-1,city1) OR:
+ACTION 0:drive-truck(truck1,city1-1,city1-2,city1)      (COST 0)
+ACTION 1:drive-truck(truck1,city1-1,city1-3,city1)      (COST 0)
+ACTION 2:drive-truck(truck1,city1-2,city1-1,city1)      (COST 0)
+ACTION 3:drive-truck(truck1,city1-2,city1-3,city1)      (COST 0)
+ACTION 4:drive-truck(truck1,city1-3,city1-1,city1)      (COST 0)
+ACTION 5:drive-truck(truck1,city1-3,city1-2,city1)      (COST 0)
+ACTION 6:load-truck(package,truck1,city1-1)      (COST 0)
+ACTION 7:load-truck(package,truck1,city1-2)      (COST 0)
+ACTION 8:load-truck(package,truck1,city1-3)      (COST 0)
+ACTION 9:unload-truck(package,truck1,city1-1)      (COST 0)
+ACTION 10:unload-truck(package,truck1,city1-2)      (COST 0)
+ACTION 11:unload-truck(package,truck1,city1-3)      (COST 0)
+Actions: STRIPS
+new SCC 1:load-truck(package,truck1,city1-1)
+new SCC 1:unload-truck(package,truck1,city1-1)
+new SCC 1:drive-truck(truck1,city1-1,city1-2,city1)
+new SCC 1:drive-truck(truck1,city1-1,city1-3,city1)
+new SCC 1:load-truck(package,truck1,city1-2)
+new SCC 1:unload-truck(package,truck1,city1-2)
+new SCC 1:drive-truck(truck1,city1-2,city1-1,city1)
+new SCC 1:drive-truck(truck1,city1-2,city1-3,city1)
+new SCC 1:load-truck(package,truck1,city1-3)
+new SCC 1:unload-truck(package,truck1,city1-3)
+new SCC 1:drive-truck(truck1,city1-3,city1-1,city1)
+new SCC 1:drive-truck(truck1,city1-3,city1-2,city1)
+Final All atoms:  0:at(truck1,city1-3) 1:at(package,city1-3) 2:in(package,truck1) 3:at(truck1,city1-2) 4:at(package,city1-2) 5:at(truck1,city1-1) 6:at(package,city1-1)
+Plan type: E-step
+I:-ATOM0
+I:-ATOM1
+I:-ATOM2
+I:-ATOM3
+I:-ATOM4
+I:ATOM5
+I:ATOM6
+G:ATOM4
+T:((ATOM4&ATOM3)|-OP7)
+T:((*ATOM2&-*ATOM4)|-OP7)
+T:((ATOM1&ATOM0)|-OP8)
+T:((*ATOM2&-*ATOM1)|-OP8)
+T:(ATOM3|-OP3)
+T:((*ATOM0&-*ATOM3)|-OP3)
+T:(ATOM5|-OP0)
+T:((*ATOM3&-*ATOM5)|-OP0)
+T:((ATOM6&ATOM5)|-OP6)
+T:((*ATOM2&-*ATOM6)|-OP6)
+T:(ATOM3|-OP2)
+T:((*ATOM5&-*ATOM3)|-OP2)
+T:(ATOM5|-OP1)
+T:((*ATOM0&-*ATOM5)|-OP1)
+T:(ATOM0|-OP4)
+T:((*ATOM5&-*ATOM0)|-OP4)
+T:((ATOM2&ATOM5)|-OP9)
+T:((*ATOM6&-*ATOM2)|-OP9)
+T:((ATOM2&ATOM0)|-OP11)
+T:((*ATOM1&-*ATOM2)|-OP11)
+T:(ATOM0|-OP5)
+T:((*ATOM3&-*ATOM0)|-OP5)
+T:((ATOM2&ATOM3)|-OP10)
+T:((*ATOM4&-*ATOM2)|-OP10)
+T:(-*ATOM0|OP1|OP3|ATOM0)
+T:(-ATOM0|OP5|OP4|*ATOM0)
+T:(-*ATOM1|OP11|ATOM1)
+T:(-ATOM1|OP8|*ATOM1)
+T:(-*ATOM2|OP6|OP8|OP7|ATOM2)
+T:(-ATOM2|OP10|OP11|OP9|*ATOM2)
+T:(-*ATOM3|OP5|OP0|ATOM3)
+T:(-ATOM3|OP2|OP3|*ATOM3)
+T:(-*ATOM4|OP10|ATOM4)
+T:(-ATOM4|OP7|*ATOM4)
+T:(-*ATOM5|OP4|OP2|ATOM5)
+T:(-ATOM5|OP1|OP0|*ATOM5)
+T:(-*ATOM6|OP9|ATOM6)
+T:(-ATOM6|OP6|*ATOM6)

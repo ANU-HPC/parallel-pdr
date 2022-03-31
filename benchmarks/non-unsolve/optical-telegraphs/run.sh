@@ -1,0 +1,165 @@
+./mk-telegraph-instance.sh -l -n 2 > unsat-prob1.pddl
+./mk-telegraph-instance.sh -l -n 3 > unsat-prob2.pddl
+./mk-telegraph-instance.sh -l -n 4 > unsat-prob3.pddl
+./mk-telegraph-instance.sh -l -n 5 > unsat-prob4.pddl
+./mk-telegraph-instance.sh -l -n 6 > unsat-prob5.pddl
+./mk-telegraph-instance.sh -l -n 7 > unsat-prob6.pddl
+./mk-telegraph-instance.sh -l -n 8 > unsat-prob7.pddl
+./mk-telegraph-instance.sh -l -n 9 > unsat-prob8.pddl
+./mk-telegraph-instance.sh -l -n 10 > unsat-prob9.pddl
+./mk-telegraph-instance.sh -l -n 11 > unsat-prob10.pddl
+./mk-telegraph-instance.sh -l -n 12 > unsat-prob11.pddl
+./mk-telegraph-instance.sh -l -n 13 > unsat-prob12.pddl
+./mk-telegraph-instance.sh -l -n 14 > unsat-prob13.pddl
+./mk-telegraph-instance.sh -l -n 15 > unsat-prob14.pddl
+./mk-telegraph-instance.sh -l -n 16 > unsat-prob15.pddl
+./mk-telegraph-instance.sh -n 2 > sat-prob1.pddl
+./mk-telegraph-instance.sh -n 3 > sat-prob2.pddl
+./mk-telegraph-instance.sh -n 4 > sat-prob3.pddl
+./mk-telegraph-instance.sh -n 5 > sat-prob4.pddl
+./mk-telegraph-instance.sh -n 6 > sat-prob5.pddl
+./mk-telegraph-instance.sh -n 7 > sat-prob6.pddl
+./mk-telegraph-instance.sh -n 8 > sat-prob7.pddl
+./mk-telegraph-instance.sh -n 9 > sat-prob8.pddl
+./mk-telegraph-instance.sh -n 10 > sat-prob9.pddl
+./mk-telegraph-instance.sh -n 11 > sat-prob10.pddl
+./mk-telegraph-instance.sh -n 12 > sat-prob11.pddl
+./mk-telegraph-instance.sh -n 13 > sat-prob12.pddl
+./mk-telegraph-instance.sh -n 14 > sat-prob13.pddl
+./mk-telegraph-instance.sh -n 15 > sat-prob14.pddl
+./mk-telegraph-instance.sh -n 16 > sat-prob15.pddl
+./mk-telegraph-instance.sh -n 17 > sat-prob16.pddl
+./mk-telegraph-instance.sh -n 18 > sat-prob17.pddl
+./mk-telegraph-instance.sh -n 19 > sat-prob18.pddl
+./mk-telegraph-instance.sh -n 20 > sat-prob19.pddl
+./mk-telegraph-instance.sh -n 21 > sat-prob20.pddl
+./mk-telegraph-instance.sh -n 22 > sat-prob21.pddl
+./mk-telegraph-instance.sh -n 23 > sat-prob22.pddl
+./mk-telegraph-instance.sh -n 24 > sat-prob23.pddl
+./mk-telegraph-instance.sh -n 25 > sat-prob24.pddl
+./mk-telegraph-instance.sh -n 26 > sat-prob25.pddl
+./mk-telegraph-instance.sh -n 27 > sat-prob26.pddl
+./mk-telegraph-instance.sh -n 28 > sat-prob27.pddl
+./mk-telegraph-instance.sh -n 29 > sat-prob28.pddl
+./mk-telegraph-instance.sh -n 30 > sat-prob29.pddl
+./mk-telegraph-instance.sh -n 31 > sat-prob30.pddl
+./mk-telegraph-instance.sh -n 32 > sat-prob31.pddl
+./mk-telegraph-instance.sh -n 33 > sat-prob32.pddl
+./mk-telegraph-instance.sh -n 34 > sat-prob33.pddl
+./mk-telegraph-instance.sh -n 35 > sat-prob34.pddl
+./mk-telegraph-instance.sh -n 36 > sat-prob35.pddl
+./mk-telegraph-instance.sh -n 37 > sat-prob36.pddl
+./mk-telegraph-instance.sh -n 38 > sat-prob37.pddl
+./mk-telegraph-instance.sh -n 39 > sat-prob38.pddl
+./mk-telegraph-instance.sh -n 40 > sat-prob39.pddl
+./mk-telegraph-instance.sh -n 41 > sat-prob40.pddl
+./mk-telegraph-instance.sh -n 42 > sat-prob41.pddl
+./mk-telegraph-instance.sh -n 43 > sat-prob42.pddl
+./mk-telegraph-instance.sh -n 44 > sat-prob43.pddl
+./mk-telegraph-instance.sh -n 45 > sat-prob44.pddl
+./mk-telegraph-instance.sh -n 46 > sat-prob45.pddl
+./mk-telegraph-instance.sh -n 47 > sat-prob46.pddl
+./mk-telegraph-instance.sh -n 48 > sat-prob47.pddl
+./mk-telegraph-instance.sh -n 49 > sat-prob48.pddl
+./mk-telegraph-instance.sh -n 50 > sat-prob49.pddl
+./mk-telegraph-instance.sh -n 51 > sat-prob50.pddl
+./mk-telegraph-instance.sh -n 52 > sat-prob51.pddl
+./mk-telegraph-instance.sh -n 53 > sat-prob52.pddl
+./mk-telegraph-instance.sh -n 54 > sat-prob53.pddl
+./mk-telegraph-instance.sh -n 55 > sat-prob54.pddl
+./mk-telegraph-instance.sh -n 56 > sat-prob55.pddl
+./mk-telegraph-instance.sh -n 57 > sat-prob56.pddl
+./mk-telegraph-instance.sh -n 58 > sat-prob57.pddl
+./mk-telegraph-instance.sh -n 59 > sat-prob58.pddl
+./mk-telegraph-instance.sh -n 60 > sat-prob59.pddl
+./mk-telegraph-instance.sh -n 61 > sat-prob60.pddl
+./mk-telegraph-instance.sh -n 62 > sat-prob61.pddl
+./mk-telegraph-instance.sh -n 63 > sat-prob62.pddl
+./mk-telegraph-instance.sh -n 64 > sat-prob63.pddl
+./mk-telegraph-instance.sh -n 65 > sat-prob64.pddl
+./mk-telegraph-instance.sh -n 66 > sat-prob65.pddl
+./mk-telegraph-instance.sh -n 67 > sat-prob66.pddl
+./mk-telegraph-instance.sh -n 68 > sat-prob67.pddl
+./mk-telegraph-instance.sh -n 69 > sat-prob68.pddl
+./mk-telegraph-instance.sh -n 70 > sat-prob69.pddl
+./mk-telegraph-instance.sh -n 71 > sat-prob70.pddl
+./mk-telegraph-instance.sh -n 72 > sat-prob71.pddl
+./mk-telegraph-instance.sh -n 73 > sat-prob72.pddl
+./mk-telegraph-instance.sh -n 74 > sat-prob73.pddl
+./mk-telegraph-instance.sh -n 75 > sat-prob74.pddl
+./mk-telegraph-instance.sh -n 76 > sat-prob75.pddl
+./mk-telegraph-instance.sh -n 77 > sat-prob76.pddl
+./mk-telegraph-instance.sh -n 78 > sat-prob77.pddl
+./mk-telegraph-instance.sh -n 79 > sat-prob78.pddl
+./mk-telegraph-instance.sh -n 80 > sat-prob79.pddl
+./mk-telegraph-instance.sh -n 81 > sat-prob80.pddl
+./mk-telegraph-instance.sh -n 82 > sat-prob81.pddl
+./mk-telegraph-instance.sh -n 83 > sat-prob82.pddl
+./mk-telegraph-instance.sh -n 84 > sat-prob83.pddl
+./mk-telegraph-instance.sh -n 85 > sat-prob84.pddl
+./mk-telegraph-instance.sh -n 86 > sat-prob85.pddl
+./mk-telegraph-instance.sh -n 87 > sat-prob86.pddl
+./mk-telegraph-instance.sh -n 88 > sat-prob87.pddl
+./mk-telegraph-instance.sh -n 89 > sat-prob88.pddl
+./mk-telegraph-instance.sh -n 90 > sat-prob89.pddl
+./mk-telegraph-instance.sh -n 91 > sat-prob90.pddl
+./mk-telegraph-instance.sh -n 92 > sat-prob91.pddl
+./mk-telegraph-instance.sh -n 93 > sat-prob92.pddl
+./mk-telegraph-instance.sh -n 94 > sat-prob93.pddl
+./mk-telegraph-instance.sh -n 95 > sat-prob94.pddl
+./mk-telegraph-instance.sh -n 96 > sat-prob95.pddl
+./mk-telegraph-instance.sh -n 97 > sat-prob96.pddl
+./mk-telegraph-instance.sh -n 98 > sat-prob97.pddl
+./mk-telegraph-instance.sh -n 99 > sat-prob98.pddl
+./mk-telegraph-instance.sh -n 100 > sat-prob99.pddl
+./mk-telegraph-instance.sh -n 101 > sat-prob100.pddl
+./mk-telegraph-instance.sh -n 102 > sat-prob101.pddl
+./mk-telegraph-instance.sh -n 103 > sat-prob102.pddl
+./mk-telegraph-instance.sh -n 104 > sat-prob103.pddl
+./mk-telegraph-instance.sh -n 105 > sat-prob104.pddl
+./mk-telegraph-instance.sh -n 106 > sat-prob105.pddl
+./mk-telegraph-instance.sh -n 107 > sat-prob106.pddl
+./mk-telegraph-instance.sh -n 108 > sat-prob107.pddl
+./mk-telegraph-instance.sh -n 109 > sat-prob108.pddl
+./mk-telegraph-instance.sh -n 110 > sat-prob109.pddl
+./mk-telegraph-instance.sh -n 111 > sat-prob110.pddl
+./mk-telegraph-instance.sh -n 112 > sat-prob111.pddl
+./mk-telegraph-instance.sh -n 113 > sat-prob112.pddl
+./mk-telegraph-instance.sh -n 114 > sat-prob113.pddl
+./mk-telegraph-instance.sh -n 115 > sat-prob114.pddl
+./mk-telegraph-instance.sh -n 116 > sat-prob115.pddl
+./mk-telegraph-instance.sh -n 117 > sat-prob116.pddl
+./mk-telegraph-instance.sh -n 118 > sat-prob117.pddl
+./mk-telegraph-instance.sh -n 119 > sat-prob118.pddl
+./mk-telegraph-instance.sh -n 120 > sat-prob119.pddl
+./mk-telegraph-instance.sh -n 121 > sat-prob120.pddl
+./mk-telegraph-instance.sh -n 122 > sat-prob121.pddl
+./mk-telegraph-instance.sh -n 123 > sat-prob122.pddl
+./mk-telegraph-instance.sh -n 124 > sat-prob123.pddl
+./mk-telegraph-instance.sh -n 125 > sat-prob124.pddl
+./mk-telegraph-instance.sh -n 126 > sat-prob125.pddl
+./mk-telegraph-instance.sh -n 127 > sat-prob126.pddl
+./mk-telegraph-instance.sh -n 128 > sat-prob127.pddl
+./mk-telegraph-instance.sh -n 129 > sat-prob128.pddl
+./mk-telegraph-instance.sh -n 130 > sat-prob129.pddl
+./mk-telegraph-instance.sh -n 131 > sat-prob130.pddl
+./mk-telegraph-instance.sh -n 132 > sat-prob131.pddl
+./mk-telegraph-instance.sh -n 133 > sat-prob132.pddl
+./mk-telegraph-instance.sh -n 134 > sat-prob133.pddl
+./mk-telegraph-instance.sh -n 135 > sat-prob134.pddl
+./mk-telegraph-instance.sh -n 136 > sat-prob135.pddl
+./mk-telegraph-instance.sh -n 137 > sat-prob136.pddl
+./mk-telegraph-instance.sh -n 138 > sat-prob137.pddl
+./mk-telegraph-instance.sh -n 139 > sat-prob138.pddl
+./mk-telegraph-instance.sh -n 140 > sat-prob139.pddl
+./mk-telegraph-instance.sh -n 141 > sat-prob140.pddl
+./mk-telegraph-instance.sh -n 142 > sat-prob141.pddl
+./mk-telegraph-instance.sh -n 143 > sat-prob142.pddl
+./mk-telegraph-instance.sh -n 144 > sat-prob143.pddl
+./mk-telegraph-instance.sh -n 145 > sat-prob144.pddl
+./mk-telegraph-instance.sh -n 146 > sat-prob145.pddl
+./mk-telegraph-instance.sh -n 147 > sat-prob146.pddl
+./mk-telegraph-instance.sh -n 148 > sat-prob147.pddl
+./mk-telegraph-instance.sh -n 149 > sat-prob148.pddl
+./mk-telegraph-instance.sh -n 150 > sat-prob149.pddl
+./mk-telegraph-instance.sh -n 151 > sat-prob150.pddl
