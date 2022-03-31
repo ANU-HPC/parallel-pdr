@@ -1,5 +1,4 @@
 tags
-tmp_*
 pdr/plan
 MpC
 *.om
@@ -8,7 +7,7 @@ MpC
 **.pyc
 *.o
 *.a
-tmp/
+tmp/tmp_*
 *~
 pdr/pdrDagster
 lingeling/lingeling
