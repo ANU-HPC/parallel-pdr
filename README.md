@@ -32,7 +32,7 @@ Then run:
 
 To run PDR-P with N>1 processes (1 orchestrator and N-1 workers, each corresponding to a simulated parallel PDR process), replace N in:
 
-    time ./run.sh -d 0 -r 1 -p 1 -n N ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p04.pddl set_no_decomposition
+    time ./run.sh -d 0 -r 1 -p 1 -n N ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p24.pddl set_no_decomposition
 
 To swap to a different solver, revert the changes to pdr/main.cpp, then re-run:
 
