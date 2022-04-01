@@ -1,4 +1,4 @@
-# Dagparser
+# Parallel PDR
 
 A tool to solve PDDL problems using variations of PDR. Can perform PS-PDR, PD-PDR, PDR-P and a serial PDR baseline.
 
