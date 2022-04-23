@@ -7,6 +7,7 @@ Resource on PDDL: http://users.cecs.anu.edu.au/~patrik/pddlman/writing.html
 Resource on PDR: https://icaps21.icaps-conference.org/workshops/KEPS/Papers/KEPS_2021_paper_9.pdf
 
 Uses the tool Madagascar for parsing available from: https://users.aalto.fi/~rintanj1/software.html
+
 Uses the tool dagster from https://github.com/ANU-HPC/dagster
 
 # Setup
