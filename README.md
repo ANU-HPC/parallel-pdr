@@ -1,11 +1,15 @@
 # Parallel PDR
 
-A tool to solve PDDL problems using variations of PDR. Can perform PS-PDR, PD-PDR, PDR-P and a serial PDR baseline.
+A tool to solve PDDL problems via variations of Property Directed Reachability (PDR).
+
+Resource on PDDL: http://users.cecs.anu.edu.au/~patrik/pddlman/writing.html
+Resource on PDR: https://icaps21.icaps-conference.org/workshops/KEPS/Papers/KEPS_2021_paper_9.pdf
 
 Uses the tool Madagascar for parsing available from: https://users.aalto.fi/~rintanj1/software.html
 Uses the tool dagster from https://github.com/ANU-HPC/dagster
 
 # Setup
+
 MPI, GLOG, and CUDD are required. These can all be installed by the script at summer1819/nodocker.sh
 
 Once cloned run:
@@ -13,44 +17,20 @@ Once cloned run:
 ./setup.sh && make
 
 # Running
-An example invocation script can be found at examples.sh
-PS-PSR can be benchmarked by running pspdr_benchmarks.sh, this script can be modified to benchmark other solvers, as explained below.
-The -r option determines if a plan is generated. This needs to be set to "1" when using PD-PDR for correctness.
 
-## PDR-P
-To run PDR-P, change pdr/main.cpp line 54 from:
+Many parameters of the solver can be set at runtime through an _extra_settings_ file. An example of such a file is the _set_ file provided. Some notable parameters are:
 
-    #define PORTFOLIO_QUEUE 0
+| Parameter     | Explanation                                                                          |
+| ------------- | ------------------------------------------------------------------------------------ |
+| dagster n     | n=0 will solve the problem serially, n=1 will solve the problem in parallel via MPI. |
+| mpi_nodes n   | If solving in parallel, the number of nodes to use.                                  |
+| report_plan n | n=0 or n=1, whether to record, create and validate a plan if one exists.             |
 
-to:
+To run:
 
-    #define PORTFOLIO_QUEUE 1
+    ./run domain_file problem_file settings_file
 
-Then run:
-
-    make pdr
-
-To run PDR-P with N>1 processes (1 orchestrator and N-1 workers, each corresponding to a simulated parallel PDR process), replace N in:
-
-    time ./run.sh -d 0 -r 1 -p 1 -n N ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p26.pddl set_no_decomposition
-
-To swap to a different solver, revert the changes to pdr/main.cpp, then re-run:
-
-    make pdr
-
-## PS-PDR
-
-To run PS-PDR with N>1 processes (1 orchestrator and N-1 workers), replace N in:
-
-    time ./run.sh -d 0 -r 1 -p 1 -n N ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p26.pddl set_no_decomposition
-
-## PD-PDR
-
-    time ./run.sh -d 1 -r 1 -p 0 -n 0 ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p26.pddl set_decomposition
-
-## Serial PDR
-
-    time ./run.sh -d 0 -r 1 -p 0 -n 0 ./benchmarks/non-unsolve/rovers/domain.pddl ./benchmarks/non-unsolve/rovers/p26.pddl set_no_decomposition
+An example invocation script can be found at example.sh
 
 # Author
 

@@ -1,3 +1,6 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <stdlib.h>
 #include <cassert>
 #include <vector>
@@ -35,3 +38,4 @@ class Parser {
     map<int, vector<int>> subproblem_to_clause_validating_lits;
     map<int, vector<vector<int>>> subproblem_to_only_one_cliques;
 };
+#endif

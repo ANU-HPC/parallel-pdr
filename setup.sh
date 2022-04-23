@@ -1,3 +1,5 @@
+mkdir tmp
+
 git submodule update --init --recursive
 
 cd VAL

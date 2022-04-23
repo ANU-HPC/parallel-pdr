@@ -1,3 +1,6 @@
+#ifndef SET_TRIE_H
+#define SET_TRIE_H
+
 #include <stdlib.h>
 #include <cassert>
 #include <vector>
@@ -51,3 +54,4 @@ class Set_Trie {
     int count=0; // number of elements
 };
 
+#endif

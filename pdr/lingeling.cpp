@@ -5,8 +5,9 @@
 using namespace std;
 
 void set_seed(LGL* solver) {
-  const int seed = getpid();
-  lglsetopt (solver, "seed", seed);	// set option value
+  // Uncomment to actually randomize the seed
+  //const int seed = getpid();
+  //lglsetopt (solver, "seed", seed);	// set option value
 }
 
 // constructors

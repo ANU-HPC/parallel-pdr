@@ -18,8 +18,8 @@ clean:
 	$(MAKE) -C lingeling clean
 	./VAL/scripts/linux/clean.sh all release
 mad: FORCE
-	$(MAKE) -C madagascar -j 16; true 
-	$(MAKE) -C madagascar -j 16 # repeat to handle asyntax.c compilation error
+	$(MAKE) -C madagascar -j 16; true
+	$(MAKE) -C madagascar -j 16
 	$(MAKE) -C extract -j 16
 pdr: FORCE
 	$(MAKE) -C summer1819/dagster -j 16

@@ -1,33 +1,4 @@
-#include <algorithm>
-#include <glog/logging.h>
-#include <iostream>
-#include <cassert>
-#include <mpi.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-
-using namespace std;
-
-#include "Cnf.h"
-#include "Dag.h"
-#include "arguments.h"
-#include "gnovelty/gnovelty_main.hh"
-#include "LingelingMaster.h"
-#include "LingelingWorker.h"
-#include "MPICommsInterface.h"
-#include "strengthener/StrengthenerInterface.h"
-#include "CnfHolder.h"
-#include <zlib.h>
-
-#include "SolutionsInterface.h"
-#include "TableSolutions.h"
-#include "BDDSolutions.h"
-
-#include "mpi_global.h"
-
+#include "interactive_functions.h"
 
 MPI_Comm mastercommunicator;
 MPI_Comm subcommunicator_sls;
@@ -93,7 +64,6 @@ void load_CNF_DAG(Cnf* new_cnf, Dag* new_dag) {
     workers_in_loop = true;
   }
 }
-
 
 void setup_dagster() {
   const int num_workers = master->comms->world_size-1;
@@ -286,7 +256,3 @@ void global_init(int argc, char **argv, string tmp_dir, const map<int, vector<in
   }
   master_init();
 }
-
-
-
-

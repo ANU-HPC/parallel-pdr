@@ -18,8 +18,8 @@ RangeSet = set
 LAYERS_TO_WRITE = 1
 
 def extraSettings(filename):
-    ignoreKeys = ["obligation_rescheduling", "project_last", "complete_nonfinal"]
-    expectedNum = 6
+    ignoreKeys = ["obligation_rescheduling", "project_last", "complete_nonfinal", "decomposed", "report_plan", "dagster", "mpi_nodes"]
+    expectedNum = 10
     with open(filename) as f:
         seenOptions = set()
         for line in [x.rstrip() for x in f.readlines() if len(x.rstrip())]:
@@ -142,6 +142,7 @@ class Problem:
 
     def tildeCnf(self, cnf, steps):
         return [self.tildeClause(clause, steps) for clause in cnf]
+    '''
 
     def tildeClause(self, clause, steps):
         return [self.tildeLit(lit, steps) for lit in clause]
@@ -149,7 +150,6 @@ class Problem:
     def tildeLit(self, lit, steps):
         if lit < 0: return lit - steps * self.totalPerTimestep
         else:       return lit + steps * self.totalPerTimestep
-    '''
 
     def cnfDimacsString(self, cnf):
         out = ""
@@ -2080,8 +2080,13 @@ class Problem:
                 variableToActionsWithItAsEff[var].append(action)
 
         # compute and enforce only_1_cliques
+        initial_state_as_cube = set()
+        for clause in I:
+            assert(len(clause)==1)
+            initial_state_as_cube.add(clause[0])
+
         onlyOneCliques = []
-        if useOOC:
+        if True:
             # then find cliques from mutex graph
             mutexGraph = nx.Graph()
             for clause in U:
@@ -2091,7 +2096,8 @@ class Problem:
     
             for maxWeightClique in nx.find_cliques(mutexGraph):
                 if len(maxWeightClique) < 2: continue
-                assert(len([node for node in maxWeightClique if node>0]) == 0) # assert everything is negative
+                if len([node for node in maxWeightClique if node>0]):
+                    continue # ensure everything is negative
                 cliqueVars = set([abs(node) for node in maxWeightClique])
                 cliqueNegativeVars = set([-var for var in cliqueVars])
     
@@ -2105,15 +2111,19 @@ class Problem:
                             valid = False
                     if not valid: break
     
+                if len(set([-lit for lit in maxWeightClique]).intersection(initial_state_as_cube)) != 1:
+                    valid = False
+
                 if valid:
-                    onlyOneCliques.append(cliqueVars)
+                    onlyOneCliques.append(sorted(cliqueVars))
             
             '''
             print("found cliques:")
             for clique in onlyOneCliques:
                 print([symbols[var] for var in clique])
             '''
-            U.extend(onlyOneCliques)
+            #U.extend(onlyOneCliques)
+            onlyOneCliques = sorted(onlyOneCliques)
 
 
 

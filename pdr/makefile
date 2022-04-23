@@ -45,9 +45,12 @@ OBJS 				= ../summer1819/dagster/message.o \
 						../summer1819/dagster/arguments.o \
 						../summer1819/dagster/CnfHolder.o \
 						../summer1819/dagster/pdr/LingelingMaster.o \
+						../summer1819/dagster/pdr/interactive_functions.o \
 						main_pdr.o \
 						lingeling.o \
 						set_trie.o \
+						queue.o \
+						property_directed_reachability.o \
 						timing.o \
 						parser.o \
 

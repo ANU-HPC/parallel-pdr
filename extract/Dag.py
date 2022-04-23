@@ -2,6 +2,7 @@ import networkx as nx
 from copy import deepcopy,copy
 import json
 import time
+import os
 #from ranges import RangeSet
 #from RangeSet import RangeSet
 RangeSet = set
@@ -11,6 +12,7 @@ DECOMPOSITION_COLLATING_NODE = "decomposition collating node"
 INJECT_STATE = "inject state"
 CONSOLIDATING_NODE_PREFIX = "consolidating node of: "
 NODE_NONEXISTENT = -2
+MAX_SOLVER_STEPS = 1
 
 def isSpecialNode(x):
     if x == DECOMPOSITION_COLLATING_NODE: return True
@@ -464,17 +466,17 @@ class Dag:
                     self.problem.cnfDimacsStringF(clausesToWrite, cnfFile2)
             '''
 
-        if True: #not self.problem.isolateSubproblems:
-            with open(self.problem.tmpDir + "/tmp_regular.cnf", 'w') as cnfFile2:
-                clausesToWrite = []
-                clausesToWrite.extend([self.problem.clauses[CR] for CR in self.problem.TCRss[0]])
-                clausesToWrite.extend([self.problem.clauses[CR] for CR in self.problem.UCRss[0]])
-    
+        clausesToWrite = []
+        for steps in range(1,MAX_SOLVER_STEPS+1):
+            clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.TCRss[0]])
+            clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.UCRss[0]])
+            with open(self.problem.tmpDir + "/tmp_regular_" + str(steps) + ".cnf", 'w') as cnfFile2:
                 numClauses = len(clausesToWrite)
-                numVariables = self.problem.totalPerTimestep * 2
+                numVariables = self.problem.totalPerTimestep * (steps+1)
     
                 cnfFile2.write("p cnf " + str(numVariables) + " " + str(numClauses) + "\n")
                 self.problem.cnfDimacsStringF(clausesToWrite, cnfFile2)
+        os.system("cp " + self.problem.tmpDir + "/tmp_regular_1.cnf " + self.problem.tmpDir + "/tmp_regular.cnf") # Make a copy for dagster, before dagster has been given option
 
         '''
         TRAD

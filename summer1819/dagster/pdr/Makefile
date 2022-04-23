@@ -25,7 +25,7 @@ endif
 
 
 #OBJS 				= ../Cnf.o ../CnfManager.o ../SatSolver.o ../Dag.o ../message.o ../TableSolutions.o ../DumbTableSolutions.o ../BDDSolutions.o main.o LingelingMaster.o ../Master.o LingelingWorker.o ../Worker.o ../MPICommsInterface.o ../utilities.o ../arguments.o ../CnfHolder.o ../MasterOrganiser.o ../../../pdr/minisat.o
-OBJS 				= ../Cnf.o ../Dag.o ../message.o LingelingMaster.o LingelingWorker.o ../MPICommsInterface.o ../utilities.o ../arguments.o ../CnfHolder.o ../../../pdr/lingeling.o
+OBJS 				= ../Cnf.o ../Dag.o ../message.o LingelingMaster.o LingelingWorker.o ../MPICommsInterface.o ../utilities.o ../arguments.o ../CnfHolder.o ../../../pdr/lingeling.o interactive_functions.o 
 
 .PHONY: gnovelty
 

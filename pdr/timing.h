@@ -1,3 +1,6 @@
+#ifndef TIMING_H
+#define TIMING_H
+
 #include <stdlib.h>
 #include <cassert>
 #include <vector>
@@ -33,3 +36,4 @@ class Timing {
     string string_float(float number);
     float float_time(clock_t time);
 };
+#endif
