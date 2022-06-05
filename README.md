@@ -30,7 +30,7 @@ Many parameters of the solver can be set at runtime through an _extra_settings_ 
 
 To run:
 
-    ./run domain_file problem_file settings_file
+    ./run.sh domain_file problem_file settings_file
 
 An example invocation script can be found at example.sh
 
