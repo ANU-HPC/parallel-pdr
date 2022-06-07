@@ -1507,6 +1507,8 @@ vector<vector<int>>
 Timing timing;
 Timer parallel_timer;
 clock_t total_parallel_time_spent = 0;
+clock_t time_starting_main = 0;
+int last_stats_print_obligations_so_far = 0;
 
 vector<int> initial_state;
 vector<int> goal_condition;

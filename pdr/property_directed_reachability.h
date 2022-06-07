@@ -266,6 +266,8 @@ extern vector<vector<int>>
 extern Timing timing;
 extern Timer parallel_timer;
 extern clock_t total_parallel_time_spent;
+extern clock_t time_starting_main;
+extern int last_stats_print_obligations_so_far;
 
 extern vector<int> initial_state;
 extern vector<int> goal_condition;

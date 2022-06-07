@@ -24,6 +24,7 @@ bool parallel_pdr();
 void add_all_layer_zero();
 
 int main(int argc, char **argv) {
+  PDR::time_starting_main = clock();
   // parse command line arguments
   const string report_string = string(argv[1]);
   const string parallel_string = string(argv[2]);
@@ -111,6 +112,11 @@ int main(int argc, char **argv) {
     system(("../kill_matching_pdr.sh " + PDR::tmp_dir).c_str());
   }
 
+  clock_t time_now = clock();
+  cout << "total time in main: " << string_float(float_time(time_now-PDR::time_starting_main)) << endl;
+  PDR::print_dagster_stats();
+  PDR::timing.print();
+
   cout << "exiting main" << endl;
   return 0;
 }
@@ -132,6 +138,14 @@ void add_all_layer_zero() {
       }
     }
   }
+}
+
+int sum_over_vector(const vector<int>& x) {
+  int sum = 0;
+  for (auto it=x.begin(); it!=x.end(); it++) {
+    sum += *it; 
+  }
+  return sum;
 }
 
 class Parallel_Buffer {
@@ -174,6 +188,16 @@ public:
   }
 
   void dagster_compute(bool use_sync_solve) {
+    const int obligations_so_far = (sum_over_vector(PDR::dagster_sat_counts) + sum_over_vector(PDR::dagster_unsat_counts));
+    if ((obligations_so_far>0) && ((obligations_so_far%20000)==0) && (PDR::last_stats_print_obligations_so_far != obligations_so_far)) {
+      PDR::last_stats_print_obligations_so_far = obligations_so_far;
+      clock_t time_now = clock();
+      cout << "20,000 obligations, printing out stats:" << endl;
+      cout << "time since starting main: " << string_float(float_time(time_now-PDR::time_starting_main)) << endl;
+      PDR::print_dagster_stats();
+      PDR::timing.print();
+    }
+
     // if sync solve, will solve every obligation to completion, then return,
     // else will send them off, and check previous ones
     if (A)
