@@ -1,5 +1,6 @@
 #!/bin/bash
 # This is the main script to run, it checks that the arguments exist, then convert them to absolute paths to run with the "REAL" runscript in the dagparser directory
+echo START_TIME run.sh:$(date +%s)
 DAGPARSER_ROOT=`dirname "$0"` 
 python3 $DAGPARSER_ROOT/check_arguments.py $@
 if [[ $? -ne 0 ]]; then
@@ -12,3 +13,4 @@ PROBLEM=`readlink -m $2`
 SET=`readlink -m $3`
 
 { time $DAGPARSER_ROOT/from_this_directory_run.sh $DOMAIN $PROBLEM $SET ; } 2>&1 
+echo END_TIME run.sh:$(date +%s)

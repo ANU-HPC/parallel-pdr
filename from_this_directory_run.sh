@@ -1,6 +1,7 @@
 #HPCRUN_EVENT_LIST=CPUTIME@0.1
 #!/bin/sh
 
+echo START_TIME from_this_directory_run.sh:$(date +%s)
 cd `dirname "$0"` # moves to the directory in which this script is held (root of dagparser)
 
 DOMAIN=$1
@@ -112,3 +113,4 @@ export GREP_COLORS='ms=01;31'
 cat $TMP_DIR/val_out | grep --color "Plan invalid" -A 100 -B 100
 
 #cat $TMP_DIR/val_out | grep -v valid
+echo END_TIME from_this_directory_run.sh:$(date +%s)
