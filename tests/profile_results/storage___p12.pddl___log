@@ -1,0 +1,515 @@
+/home/m/MEGA/ANU/PHD/dagparser/run.sh /home/m/MEGA/ANU/PHD/benchmarks/decomposable/storage/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/storage/p12.pddl /home/m/MEGA/ANU/PHD/dagparser/set
+HOSTNAME: m
+START_EXTRA_SETTINGS
+obligation_rescheduling 1
+project_last 0
+complete_nonfinal 0
+activation_literals 0
+use_ooc 0
+isolate_subproblems 0
+decomposed 0
+report_plan 1
+dagster 0
+mpi_nodes 5
+#define OPTIONS_H
+#define FD_HEURISTIC "hmax"
+#define USE_FD_HEURISTIC 0
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+#define DEBUG_WARNING_REPEATED_REASON 1
+#define QUEUE_TYPE PDR::PDR_Queue
+#define ALLOW_CALCULATE_H_ADD 0
+STOP_EXTRA_SETTINGS
+TMP_DIR: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_34__KBV910EN34XDT7U
+domain: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/storage/domain.pddl
+problem: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/storage/p12.pddl
+extra_settings: /home/m/MEGA/ANU/PHD/dagparser/set
+/home/m/MEGA/ANU/PHD/dagparser/extract
+PYTHON_TIME: 0.520204
+./pdrDagster 1 0 /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_34__KBV910EN34XDT7U
+PDR QUEUE constructor, size of propositions_set 0
+1
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+Read in problem
+starting getting cnf 1
+PDR QUEUE constructor, size of propositions_set 122
+start push check_unsat subproblems to check:{ 0 } , layer for that: 1
+start push check_unsat subproblems to check:{ 0 } , layer for that: 2
+start push check_unsat subproblems to check:{ 0 } , layer for that: 3
+FOUND A PLAN
+queue size:
+layer 0
+  subproblem 0: 0
+layer 1
+  subproblem 0: 1
+layer 2
+  subproblem 0: 33
+layer 3
+  subproblem 0: 28
+layer 4
+  subproblem 0: 119
+WRITING PLAN
+
+0 : (go-out hoist0 depot0-2-1 loadarea)
+1 : (move hoist1 depot0-1-2 depot0-1-1)
+2 : (move hoist2 depot0-1-3 depot0-1-4)
+3 : (move hoist1 depot0-1-1 depot0-2-1)
+4 : (go-out hoist1 depot0-2-1 loadarea)
+5 : (lift hoist0 crate1 container-0-1 loadarea container0)
+6 : (drop hoist0 crate1 container-0-1 loadarea container0)
+7 : (lift hoist1 crate3 container-0-3 loadarea container0)
+8 : (lift hoist0 crate2 container-0-2 loadarea container0)
+9 : (drop hoist1 crate3 container-0-3 loadarea container0)
+10 : (lift hoist1 crate1 container-0-1 loadarea container0)
+11 : (drop hoist1 crate1 container-0-2 loadarea container0)
+12 : (lift hoist1 crate3 container-0-3 loadarea container0)
+13 : (drop hoist0 crate2 depot0-2-1 loadarea depot0)
+14 : (drop hoist1 crate3 container-0-1 loadarea container0)
+15 : (move hoist2 depot0-1-4 depot0-1-3)
+16 : (lift hoist1 crate0 container-0-0 loadarea container0)
+17 : (move hoist2 depot0-1-3 depot0-1-2)
+18 : (move hoist2 depot0-1-2 depot0-1-1)
+19 : (drop hoist1 crate0 container-0-3 loadarea container0)
+20 : (lift hoist0 crate3 container-0-1 loadarea container0)
+21 : (drop hoist0 crate3 container-0-0 loadarea container0)
+22 : (lift hoist0 crate1 container-0-2 loadarea container0)
+23 : (lift hoist1 crate0 container-0-3 loadarea container0)
+24 : (drop hoist0 crate1 container-0-2 loadarea container0)
+25 : (lift hoist2 crate2 depot0-2-1 depot0-1-1 depot0)
+26 : (drop hoist1 crate0 depot0-2-1 loadarea depot0)
+27 : (lift hoist0 crate3 container-0-0 loadarea container0)
+28 : (lift hoist1 crate1 container-0-2 loadarea container0)
+29 : (move hoist2 depot0-1-1 depot0-1-2)
+30 : (drop hoist2 crate2 depot0-2-2 depot0-1-2 depot0)
+31 : (move hoist2 depot0-1-2 depot0-1-1)
+32 : (lift hoist2 crate0 depot0-2-1 depot0-1-1 depot0)
+33 : (drop hoist1 crate1 depot0-2-1 loadarea depot0)
+34 : (go-in hoist0 loadarea container-0-3)
+35 : (lift hoist1 crate1 depot0-2-1 loadarea depot0)
+36 : (move hoist2 depot0-1-1 depot0-1-2)
+37 : (drop hoist1 crate1 depot0-2-1 loadarea depot0)
+38 : (drop hoist2 crate0 depot0-1-3 depot0-1-2 depot0)
+39 : (lift hoist1 crate1 depot0-2-1 loadarea depot0)
+40 : (drop hoist1 crate1 depot0-2-1 loadarea depot0)
+41 : (move hoist2 depot0-1-2 depot0-1-1)
+42 : (lift hoist1 crate1 depot0-2-1 loadarea depot0)
+43 : (move hoist2 depot0-1-1 depot0-2-1)
+44 : (go-out hoist0 container-0-3 loadarea)
+45 : (lift hoist2 crate2 depot0-2-2 depot0-2-1 depot0)
+46 : (go-in hoist0 loadarea container-0-3)
+47 : (move hoist2 depot0-2-1 depot0-2-2)
+48 : (drop hoist1 crate1 depot0-2-1 loadarea depot0)
+49 : (move hoist2 depot0-2-2 depot0-1-2)
+50 : (lift hoist1 crate1 depot0-2-1 loadarea depot0)
+51 : (drop hoist2 crate2 depot0-1-1 depot0-1-2 depot0)
+52 : (lift hoist2 crate0 depot0-1-3 depot0-1-2 depot0)
+53 : (drop hoist1 crate1 depot0-2-1 loadarea depot0)
+54 : (move hoist2 depot0-1-2 depot0-1-3)
+55 : (drop hoist2 crate0 depot0-1-2 depot0-1-3 depot0)
+56 : (lift hoist1 crate1 depot0-2-1 loadarea depot0)
+57 : (lift hoist2 crate0 depot0-1-2 depot0-1-3 depot0)
+58 : (drop hoist1 crate1 depot0-2-1 loadarea depot0)
+59 : (drop hoist2 crate0 depot0-2-3 depot0-1-3 depot0)
+60 : (lift hoist1 crate1 depot0-2-1 loadarea depot0)
+61 : (drop hoist1 crate1 depot0-2-1 loadarea depot0)
+62 : (move hoist2 depot0-1-3 depot0-1-2)
+63 : (lift hoist2 crate2 depot0-1-1 depot0-1-2 depot0)
+64 : (drop hoist2 crate2 depot0-2-2 depot0-1-2 depot0)
+65 : (lift hoist1 crate1 depot0-2-1 loadarea depot0)
+66 : (move hoist2 depot0-1-2 depot0-1-1)
+67 : (drop hoist1 crate1 depot0-2-1 loadarea depot0)
+68 : (lift hoist2 crate1 depot0-2-1 depot0-1-1 depot0)
+69 : (go-out hoist0 container-0-3 loadarea)
+70 : (drop hoist0 crate3 depot0-2-1 loadarea depot0)
+71 : (drop hoist2 crate1 depot0-1-2 depot0-1-1 depot0)
+FINISHED WRITING PLAN
+Layer reasons:
+Layer: 0
+  Subproblem: 0 [4]
+     [38;5;9m--in(crate0,depot0)[0m
+     [38;5;9m--in(crate1,depot0)[0m
+     [38;5;9m--in(crate2,depot0)[0m
+     [38;5;9m--in(crate3,depot0)[0m
+Layer: 1
+  Subproblem: 0 [56]
+     [38;5;9m--at(hoist2,depot0-1-2)[0m [38;5;9m--at(hoist2,depot0-1-3)[0m [38;5;9m--at(hoist2,depot0-1-4)[0m [38;5;9m--at(hoist2,depot0-2-2)[0m [38;5;9m--at(hoist2,depot0-2-3)[0m [38;5;9m--clear(depot0-1-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist2,crate1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+     [38;5;9m--at(hoist2,depot0-1-1)[0m [38;5;9m--at(hoist2,depot0-1-2)[0m [38;5;9m--at(hoist2,depot0-1-3)[0m [38;5;9m--at(hoist2,depot0-1-4)[0m [38;5;9m--at(hoist2,depot0-2-2)[0m [38;5;9m--at(hoist2,depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate1)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate2,depot0-1-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-1-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m [38;5;9m--clear(depot0-2-1)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate1)[0m [38;5;9m--lifting(hoist2,crate3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate0,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-2-1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate0,depot0-1-3)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+     [38;5;9m--at(hoist0,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mavailable(hoist1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m [38;5;9m--lifting(hoist2,crate3)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-1-3)[0m
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mlifting(hoist2,crate1)[0m  [38;5;10mon(crate0,depot0-1-2)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-2-3)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-1-2)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-1-2)[0m
+      [38;5;10mat(hoist2,loadarea)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-2)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-1-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-1-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m [38;5;9m--clear(depot0-2-1)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-2-1)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mon(crate0,depot0-1-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10min(crate3,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m [38;5;9m--lifting(hoist2,crate1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-1-3)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m [38;5;9m--lifting(hoist2,crate1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mon(crate0,depot0-1-2)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-1-3)[0m
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-1-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10min(crate2,container0)[0m
+      [38;5;10min(crate1,container0)[0m
+      [38;5;10min(crate0,container0)[0m
+Layer: 2
+  Subproblem: 0 [153]
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-1-3)[0m
+     [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mlifting(hoist2,crate1)[0m  [38;5;10mon(crate0,depot0-1-2)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-2-3)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-1-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-1-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist0,loadarea)[0m [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate2,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate3,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10min(crate3,container0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10min(crate3,container0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist0,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate3,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate3,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate2,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate2,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate2,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10min(crate2,container0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10min(crate2,container0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10min(crate2,container0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate2,container0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate2,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate2,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate2,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate2,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate2,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate2,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate1,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate1,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate1,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate0,container-0-3)[0m  [38;5;10mon(crate1,container-0-2)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate1,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mon(crate0,container-0-3)[0m  [38;5;10mon(crate1,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-0)[0m
+     [38;5;9m--at(hoist2,loadarea)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate0,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-1)[0m  [38;5;10mavailable(hoist2)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m [38;5;9m--in(crate3,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist1,crate2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate3,container0)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate3,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate3,container0)[0m  [38;5;10mon(crate0,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate3,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate3,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate3,container0)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate3,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate3,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate3,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist1,crate2)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist1)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mlifting(hoist1,crate0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mlifting(hoist0,crate0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist2,crate1)[0m  [38;5;10mon(crate0,depot0-1-2)[0m  [38;5;10mon(crate2,depot0-2-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+     [38;5;9m--at(hoist0,loadarea)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mlifting(hoist1,crate1)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mon(crate0,depot0-1-2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+     [38;5;9m--at(hoist0,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mlifting(hoist1,crate1)[0m  [38;5;10mon(crate0,depot0-1-2)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate3)[0m  [38;5;10mon(crate0,depot0-1-3)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,depot0-2-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mlifting(hoist2,crate2)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m [38;5;9m--in(crate1,depot0)[0m  [38;5;10mon(crate0,depot0-2-3)[0m  [38;5;10mon(crate2,depot0-1-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate0,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist0)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m
+Layer: 3
+  Subproblem: 0 [114]
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist1)[0m [38;5;9m--clear(container-0-0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--clear(container-0-0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--clear(container-0-0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist1,crate3)[0m  [38;5;10mon(crate2,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m [38;5;9m--clear(container-0-0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist1,crate3)[0m  [38;5;10mon(crate1,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--clear(container-0-1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--clear(container-0-1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--clear(container-0-1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m [38;5;9m--clear(container-0-1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--clear(container-0-1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--clear(container-0-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--clear(container-0-1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--clear(container-0-2)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist1,crate1)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--clear(depot0-2-1)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(container-0-2)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(container-0-2)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(container-0-1)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate1,container0)[0m  [38;5;10mlifting(hoist1,crate0)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist1,crate1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist1,crate0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist1,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,depot0-2-1)[0m [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,container-0-3)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,container-0-3)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(container-0-3)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(container-0-3)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-1)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(container-0-3)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(container-0-3)[0m  [38;5;10mclear(depot0-2-1)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(container-0-1)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate0,container-0-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist1,depot0-1-2)[0m  [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,container-0-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist1,crate0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mon(crate0,container-0-3)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate3,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-2)[0m
+     [38;5;9m--at(hoist1,loadarea)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(container-0-2)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist1)[0m [38;5;9m--clear(container-0-0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--clear(container-0-0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist1,crate2)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist1,depot0-1-2)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mlifting(hoist1,crate0)[0m  [38;5;10mon(crate1,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m  [38;5;10mon(crate3,container-0-0)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist1,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist1,crate0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate2,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mlifting(hoist1,crate2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist1,depot0-1-2)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,depot0-2-1)[0m
+      [38;5;10mat(hoist1,depot0-1-2)[0m  [38;5;10mat(hoist2,depot0-1-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate2,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-2)[0m  [38;5;10mon(crate2,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist1,crate0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist1)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist1,depot0-1-2)[0m  [38;5;10mat(hoist2,depot0-1-3)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate0,container-0-0)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-2)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-0)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mclear(depot0-2-4)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-0)[0m  [38;5;10mon(crate2,container-0-1)[0m
+      [38;5;10mat(hoist2,depot0-1-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-0)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate1)[0m  [38;5;10mon(crate2,container-0-3)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mon(crate1,container-0-3)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m [38;5;9m--available(hoist0)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate2,container-0-2)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+      [38;5;10mat(hoist2,depot0-2-4)[0m  [38;5;10mclear(depot0-1-1)[0m  [38;5;10mclear(depot0-1-2)[0m  [38;5;10mclear(depot0-1-3)[0m  [38;5;10mclear(depot0-1-4)[0m  [38;5;10mclear(depot0-2-2)[0m  [38;5;10mclear(depot0-2-3)[0m  [38;5;10min(crate0,container0)[0m  [38;5;10mlifting(hoist0,crate2)[0m  [38;5;10mon(crate1,container-0-1)[0m  [38;5;10mon(crate3,depot0-2-1)[0m
+Layer: 4
+  Subproblem: 0 [0]
+Layer: 5
+  Subproblem: 0 [0]
+S \ L	0	1	2	3	4
+0	0	57	209	245	8
+
+============================================= Dagster Timing ==============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.00		0.00		0.00		0		0		0
+===========================================================================================================
+
+============================================= Lingeling Timing ============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+0		0.27		0.51		0.78		2514		1958		4472
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.27		0.51		0.78		2514		1958		4472
+===========================================================================================================
+
+dagster_sat_count 0 : 0
+dagster_unsat_count 0 : 0
+dagster_call_count: 0
+trying to stop workers
+exiting main
+CPP_TIME: 1.12708
+./VAL/build/linux64/release/bin/Validate /home/m/MEGA/ANU/PHD/benchmarks/decomposable/storage/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/storage/p12.pddl /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_34__KBV910EN34XDT7U/plan
+number_isolated_instances:
+Checking plan: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_34__KBV910EN34XDT7U/plan
+Plan executed successfully - checking goal
+Plan valid
+Final value: 72 
+
+Successful plans:
+Value: 72
+ /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_34__KBV910EN34XDT7U/plan 72 
+
+
+real	0m1.708s
+user	0m1.577s
+sys	0m0.101s

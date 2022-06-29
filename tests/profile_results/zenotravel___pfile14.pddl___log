@@ -1,0 +1,600 @@
+/home/m/MEGA/ANU/PHD/dagparser/run.sh /home/m/MEGA/ANU/PHD/benchmarks/decomposable/zenotravel/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/zenotravel/pfile14.pddl /home/m/MEGA/ANU/PHD/dagparser/set
+HOSTNAME: m
+START_EXTRA_SETTINGS
+obligation_rescheduling 1
+project_last 0
+complete_nonfinal 0
+activation_literals 0
+use_ooc 0
+isolate_subproblems 0
+decomposed 0
+report_plan 1
+dagster 0
+mpi_nodes 5
+#define OPTIONS_H
+#define FD_HEURISTIC "hmax"
+#define USE_FD_HEURISTIC 0
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+#define DEBUG_WARNING_REPEATED_REASON 1
+#define QUEUE_TYPE PDR::PDR_Queue
+#define ALLOW_CALCULATE_H_ADD 0
+STOP_EXTRA_SETTINGS
+TMP_DIR: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_47__S8ZZYCX8ZKUME3Y
+domain: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/zenotravel/domain.pddl
+problem: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/zenotravel/pfile14.pddl
+extra_settings: /home/m/MEGA/ANU/PHD/dagparser/set
+/home/m/MEGA/ANU/PHD/dagparser/extract
+PYTHON_TIME: 1.65635
+./pdrDagster 1 0 /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_47__S8ZZYCX8ZKUME3Y
+PDR QUEUE constructor, size of propositions_set 0
+1
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+Read in problem
+starting getting cnf 1
+PDR QUEUE constructor, size of propositions_set 235
+start push check_unsat subproblems to check:{ 0 } , layer for that: 1
+start push check_unsat subproblems to check:{ 0 } , layer for that: 2
+FOUND A PLAN
+queue size:
+layer 0
+  subproblem 0: 0
+layer 1
+  subproblem 0: 1
+layer 2
+  subproblem 0: 3
+layer 3
+  subproblem 0: 141
+WRITING PLAN
+
+0 : (fly plane5 city9 city3 fl4 fl3)
+1 : (fly plane2 city2 city7 fl6 fl5)
+2 : (fly plane5 city3 city7 fl3 fl2)
+3 : (fly plane3 city4 city7 fl6 fl5)
+4 : (board person10 plane3 city7)
+5 : (debark person10 plane3 city7)
+6 : (fly plane2 city7 city5 fl5 fl4)
+7 : (fly plane4 city8 city0 fl3 fl2)
+8 : (zoom plane4 city0 city4 fl2 fl1 fl0)
+9 : (board person10 plane3 city7)
+10 : (board person9 plane4 city4)
+11 : (refuel plane4 city4 fl0 fl1)
+12 : (debark person10 plane3 city7)
+13 : (debark person9 plane4 city4)
+14 : (fly plane4 city4 city4 fl1 fl0)
+15 : (zoom plane5 city7 city1 fl2 fl1 fl0)
+16 : (zoom plane1 city5 city6 fl2 fl1 fl0)
+17 : (board person10 plane3 city7)
+18 : (board person8 plane1 city6)
+19 : (board person9 plane4 city4)
+20 : (refuel plane1 city6 fl0 fl1)
+21 : (refuel plane4 city4 fl0 fl1)
+22 : (board person7 plane3 city7)
+23 : (debark person10 plane3 city7)
+24 : (debark person7 plane3 city7)
+25 : (debark person8 plane1 city6)
+26 : (debark person9 plane4 city4)
+27 : (fly plane4 city4 city4 fl1 fl0)
+28 : (zoom plane2 city5 city8 fl4 fl3 fl2)
+29 : (fly plane1 city6 city7 fl1 fl0)
+30 : (fly plane3 city7 city6 fl5 fl4)
+31 : (zoom plane2 city8 city0 fl2 fl1 fl0)
+32 : (board person10 plane1 city7)
+33 : (board person6 plane2 city0)
+34 : (board person7 plane1 city7)
+35 : (board person8 plane3 city6)
+36 : (board person9 plane4 city4)
+37 : (refuel plane1 city7 fl0 fl1)
+38 : (refuel plane2 city0 fl0 fl1)
+39 : (refuel plane3 city6 fl4 fl5)
+40 : (refuel plane4 city4 fl0 fl1)
+41 : (debark person6 plane2 city0)
+42 : (debark person9 plane4 city4)
+43 : (fly plane1 city7 city4 fl1 fl0)
+44 : (fly plane2 city0 city0 fl1 fl0)
+45 : (fly plane4 city4 city4 fl1 fl0)
+46 : (zoom plane3 city6 city0 fl5 fl4 fl3)
+47 : (board person6 plane3 city0)
+48 : (board person9 plane4 city4)
+49 : (refuel plane1 city4 fl0 fl1)
+50 : (refuel plane2 city0 fl0 fl1)
+51 : (refuel plane4 city4 fl0 fl1)
+52 : (zoom plane3 city0 city0 fl3 fl2 fl1)
+53 : (debark person6 plane3 city0)
+54 : (debark person9 plane4 city4)
+55 : (fly plane1 city4 city6 fl1 fl0)
+56 : (fly plane2 city0 city0 fl1 fl0)
+57 : (fly plane3 city0 city0 fl1 fl0)
+58 : (fly plane4 city4 city4 fl1 fl0)
+59 : (board person5 plane1 city6)
+60 : (board person6 plane3 city0)
+61 : (board person9 plane4 city4)
+62 : (refuel plane1 city6 fl0 fl1)
+63 : (refuel plane2 city0 fl0 fl1)
+64 : (refuel plane3 city0 fl0 fl1)
+65 : (refuel plane4 city4 fl0 fl1)
+66 : (debark person6 plane3 city0)
+67 : (debark person9 plane4 city4)
+68 : (fly plane1 city6 city9 fl1 fl0)
+69 : (fly plane2 city0 city0 fl1 fl0)
+70 : (fly plane3 city0 city0 fl1 fl0)
+71 : (fly plane4 city4 city4 fl1 fl0)
+72 : (board person4 plane1 city9)
+73 : (board person6 plane3 city0)
+74 : (board person9 plane4 city4)
+75 : (refuel plane1 city9 fl0 fl1)
+76 : (refuel plane2 city0 fl0 fl1)
+77 : (refuel plane3 city0 fl0 fl1)
+78 : (refuel plane4 city4 fl0 fl1)
+79 : (board person3 plane3 city0)
+80 : (debark person3 plane3 city0)
+81 : (debark person6 plane3 city0)
+82 : (debark person9 plane4 city4)
+83 : (fly plane1 city9 city4 fl1 fl0)
+84 : (fly plane2 city0 city0 fl1 fl0)
+85 : (fly plane3 city0 city0 fl1 fl0)
+86 : (fly plane4 city4 city4 fl1 fl0)
+87 : (board person2 plane5 city1)
+88 : (refuel plane5 city1 fl0 fl1)
+89 : (board person3 plane3 city0)
+90 : (board person6 plane3 city0)
+91 : (board person9 plane4 city4)
+92 : (fly plane5 city1 city8 fl1 fl0)
+93 : (refuel plane1 city4 fl0 fl1)
+94 : (refuel plane2 city0 fl0 fl1)
+95 : (refuel plane3 city0 fl0 fl1)
+96 : (refuel plane4 city4 fl0 fl1)
+97 : (fly plane4 city4 city5 fl1 fl0)
+98 : (debark person3 plane3 city0)
+99 : (debark person6 plane3 city0)
+100 : (debark person8 plane3 city0)
+101 : (debark person9 plane4 city5)
+102 : (fly plane2 city0 city0 fl1 fl0)
+103 : (fly plane3 city0 city0 fl1 fl0)
+104 : (refuel plane5 city8 fl0 fl1)
+105 : (fly plane1 city4 city8 fl1 fl0)
+106 : (fly plane5 city8 city4 fl1 fl0)
+107 : (board person6 plane3 city0)
+108 : (debark person7 plane1 city8)
+109 : (refuel plane3 city0 fl0 fl1)
+110 : (refuel plane1 city8 fl0 fl1)
+111 : (board person8 plane3 city0)
+112 : (fly plane3 city0 city8 fl1 fl0)
+113 : (board person7 plane3 city8)
+114 : (refuel plane3 city8 fl0 fl1)
+115 : (fly plane3 city8 city6 fl1 fl0)
+116 : (fly plane1 city8 city0 fl1 fl0)
+117 : (debark person8 plane3 city6)
+118 : (board person3 plane1 city0)
+119 : (refuel plane1 city0 fl0 fl1)
+120 : (debark person2 plane5 city4)
+121 : (board person2 plane5 city4)
+122 : (refuel plane5 city4 fl0 fl1)
+123 : (fly plane1 city0 city6 fl1 fl0)
+124 : (debark person6 plane3 city6)
+125 : (debark person7 plane3 city6)
+126 : (refuel plane3 city6 fl0 fl1)
+127 : (board person8 plane3 city6)
+128 : (debark person4 plane1 city6)
+129 : (fly plane5 city4 city9 fl1 fl0)
+130 : (board person7 plane3 city6)
+131 : (debark person8 plane3 city6)
+132 : (board person8 plane1 city6)
+133 : (board person4 plane3 city6)
+134 : (refuel plane1 city6 fl0 fl1)
+135 : (fly plane3 city6 city3 fl1 fl0)
+136 : (debark person2 plane5 city9)
+137 : (board person2 plane5 city9)
+138 : (refuel plane5 city9 fl0 fl1)
+139 : (debark person4 plane3 city3)
+140 : (refuel plane3 city3 fl0 fl1)
+141 : (board person4 plane3 city3)
+142 : (debark person7 plane3 city3)
+143 : (board person7 plane3 city3)
+144 : (debark person4 plane3 city3)
+145 : (fly plane1 city6 city4 fl1 fl0)
+146 : (fly plane5 city9 city3 fl1 fl0)
+147 : (refuel plane1 city4 fl0 fl1)
+148 : (board person4 plane3 city3)
+149 : (debark person7 plane3 city3)
+150 : (board person7 plane5 city3)
+151 : (debark person2 plane5 city3)
+152 : (fly plane1 city4 city9 fl1 fl0)
+153 : (fly plane3 city3 city7 fl1 fl0)
+154 : (refuel plane2 city0 fl0 fl1)
+155 : (debark person10 plane1 city9)
+156 : (debark person7 plane5 city3)
+157 : (fly plane2 city0 city3 fl1 fl0)
+158 : (refuel plane3 city7 fl0 fl1)
+159 : (board person7 plane2 city3)
+160 : (debark person4 plane3 city7)
+161 : (refuel plane2 city3 fl0 fl1)
+162 : (refuel plane3 city7 fl1 fl2)
+163 : (fly plane2 city3 city5 fl1 fl0)
+164 : (fly plane3 city7 city5 fl2 fl1)
+165 : (debark person7 plane2 city5)
+166 : (refuel plane2 city5 fl0 fl1)
+167 : (board person2 plane5 city3)
+168 : (board person7 plane2 city5)
+169 : (fly plane2 city5 city5 fl1 fl0)
+170 : (refuel plane5 city3 fl0 fl1)
+171 : (debark person7 plane2 city5)
+172 : (fly plane3 city5 city3 fl1 fl0)
+173 : (fly plane5 city3 city8 fl1 fl0)
+174 : (refuel plane2 city5 fl0 fl1)
+175 : (board person7 plane2 city5)
+176 : (fly plane2 city5 city5 fl1 fl0)
+177 : (refuel plane1 city9 fl0 fl1)
+178 : (refuel plane3 city3 fl0 fl1)
+179 : (refuel plane5 city8 fl0 fl1)
+180 : (debark person5 plane1 city9)
+181 : (fly plane1 city9 city2 fl1 fl0)
+182 : (fly plane3 city3 city9 fl1 fl0)
+183 : (fly plane5 city8 city0 fl1 fl0)
+184 : (refuel plane5 city0 fl0 fl1)
+185 : (board person5 plane3 city9)
+186 : (debark person3 plane1 city2)
+187 : (debark person7 plane2 city5)
+188 : (fly plane5 city0 city8 fl1 fl0)
+189 : (refuel plane3 city9 fl0 fl1)
+190 : (fly plane3 city9 city1 fl1 fl0)
+191 : (board person3 plane1 city2)
+192 : (board person7 plane2 city5)
+193 : (debark person5 plane3 city1)
+194 : (refuel plane1 city2 fl0 fl1)
+195 : (refuel plane5 city8 fl0 fl1)
+196 : (fly plane1 city2 city6 fl1 fl0)
+197 : (debark person8 plane1 city6)
+198 : (debark person3 plane1 city6)
+199 : (fly plane5 city8 city6 fl1 fl0)
+200 : (refuel plane1 city6 fl0 fl1)
+201 : (board person3 plane1 city6)
+202 : (board person8 plane5 city6)
+203 : (debark person2 plane5 city6)
+204 : (debark person7 plane2 city5)
+205 : (fly plane1 city6 city2 fl1 fl0)
+206 : (board person2 plane5 city6)
+207 : (board person7 plane2 city5)
+208 : (debark person3 plane1 city2)
+209 : (debark person8 plane5 city6)
+210 : (refuel plane1 city2 fl0 fl1)
+211 : (refuel plane5 city6 fl0 fl1)
+212 : (fly plane1 city2 city6 fl1 fl0)
+213 : (board person8 plane1 city6)
+214 : (debark person7 plane2 city5)
+215 : (fly plane5 city6 city8 fl1 fl0)
+216 : (refuel plane1 city6 fl0 fl1)
+217 : (fly plane1 city6 city1 fl1 fl0)
+218 : (refuel plane2 city5 fl0 fl1)
+219 : (debark person2 plane5 city8)
+220 : (debark person8 plane1 city1)
+221 : (fly plane2 city5 city3 fl1 fl0)
+222 : (refuel plane5 city8 fl0 fl1)
+FINISHED WRITING PLAN
+Layer reasons:
+Layer: 0
+  Subproblem: 0 [12]
+     [38;5;9m--at(person2,city8)[0m
+     [38;5;9m--at(person3,city2)[0m
+     [38;5;9m--at(person4,city7)[0m
+     [38;5;9m--at(person5,city1)[0m
+     [38;5;9m--at(person6,city6)[0m
+     [38;5;9m--at(person7,city5)[0m
+     [38;5;9m--at(person8,city1)[0m
+     [38;5;9m--at(person9,city5)[0m
+     [38;5;9m--at(plane2,city3)[0m
+     [38;5;9m--at(plane4,city5)[0m
+     [38;5;9m--at(plane5,city8)[0m
+     [38;5;9m--at(person10,city9)[0m
+Layer: 1
+  Subproblem: 0 [83]
+     [38;5;9m--at(plane1,city2)[0m  [38;5;10min(person3,plane1)[0m
+     [38;5;9m--at(plane1,city8)[0m  [38;5;10min(person2,plane1)[0m
+     [38;5;9m--at(plane3,city1)[0m  [38;5;10min(person5,plane3)[0m
+     [38;5;9m--at(plane3,city5)[0m  [38;5;10min(person7,plane3)[0m
+     [38;5;9m--at(plane3,city6)[0m  [38;5;10min(person6,plane3)[0m
+     [38;5;9m--at(plane3,city7)[0m  [38;5;10min(person4,plane3)[0m
+     [38;5;9m--at(plane4,city5)[0m  [38;5;10min(person9,plane4)[0m
+     [38;5;9m--at(plane5,city8)[0m  [38;5;10min(person2,plane5)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--in(person10,plane3)[0m  [38;5;10min(person7,plane1)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--at(plane3,city9)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane3,city9)[0m  [38;5;10min(person7,plane1)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane3,city9)[0m  [38;5;10min(person4,plane1)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane3,city9)[0m  [38;5;10min(person2,plane1)[0m
+      [38;5;10min(person10,plane5)[0m
+      [38;5;10mat(person10,city7)[0m
+      [38;5;10mat(person10,city6)[0m
+      [38;5;10mat(plane3,city9)[0m  [38;5;10min(person8,plane3)[0m
+      [38;5;10mat(plane3,city9)[0m  [38;5;10min(person5,plane3)[0m
+      [38;5;10mat(plane3,city6)[0m  [38;5;10min(person8,plane3)[0m
+      [38;5;10mat(plane3,city5)[0m  [38;5;10min(person8,plane3)[0m
+      [38;5;10min(person10,plane2)[0m
+      [38;5;10mat(plane2,city5)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m
+      [38;5;10mat(plane1,city9)[0m  [38;5;10min(person7,plane1)[0m
+      [38;5;10mat(plane1,city9)[0m  [38;5;10min(person3,plane1)[0m
+      [38;5;10mat(plane1,city8)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city7)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city6)[0m  [38;5;10min(person8,plane1)[0m
+      [38;5;10mat(plane1,city6)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city5)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city4)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city2)[0m  [38;5;10min(person8,plane1)[0m
+      [38;5;10mat(plane1,city2)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(person9,city4)[0m
+      [38;5;10mat(person8,city9)[0m
+      [38;5;10min(person8,plane5)[0m
+      [38;5;10mat(person8,city6)[0m
+      [38;5;10mat(person8,city5)[0m
+      [38;5;10mat(person8,city2)[0m
+      [38;5;10mat(person8,city0)[0m
+      [38;5;10min(person8,plane4)[0m
+      [38;5;10min(person8,plane2)[0m
+      [38;5;10mat(person7,city9)[0m
+      [38;5;10min(person7,plane5)[0m
+      [38;5;10mat(person7,city8)[0m
+      [38;5;10mat(person7,city7)[0m
+      [38;5;10mat(person7,city6)[0m
+      [38;5;10mat(person7,city3)[0m
+      [38;5;10mat(person7,city2)[0m
+      [38;5;10min(person7,plane2)[0m
+      [38;5;10mat(person6,city8)[0m
+      [38;5;10mat(person6,city2)[0m
+      [38;5;10mat(person6,city0)[0m
+      [38;5;10min(person6,plane2)[0m
+      [38;5;10mat(person5,city9)[0m
+      [38;5;10min(person5,plane5)[0m
+      [38;5;10mat(person5,city8)[0m
+      [38;5;10mat(person5,city7)[0m
+      [38;5;10mat(person5,city6)[0m
+      [38;5;10mat(person5,city5)[0m
+      [38;5;10mat(person5,city4)[0m
+      [38;5;10mat(person5,city2)[0m
+      [38;5;10mat(person5,city0)[0m
+      [38;5;10min(person5,plane4)[0m
+      [38;5;10min(person5,plane2)[0m
+      [38;5;10mat(person4,city9)[0m
+      [38;5;10min(person4,plane5)[0m
+      [38;5;10mat(person4,city6)[0m
+      [38;5;10mat(person4,city5)[0m
+      [38;5;10mat(person4,city3)[0m
+      [38;5;10min(person4,plane4)[0m
+      [38;5;10mat(person3,city9)[0m
+      [38;5;10min(person3,plane5)[0m
+      [38;5;10mat(person3,city6)[0m
+      [38;5;10mat(person3,city1)[0m
+      [38;5;10mat(person3,city0)[0m
+      [38;5;10min(person3,plane2)[0m
+      [38;5;10mat(person2,city9)[0m
+      [38;5;10mat(person2,city6)[0m
+      [38;5;10mat(person2,city4)[0m
+      [38;5;10mat(person2,city3)[0m
+      [38;5;10mat(person2,city1)[0m
+      [38;5;10mat(person2,city0)[0m
+Layer: 2
+  Subproblem: 0 [150]
+      [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane1,city6)[0m
+     [38;5;9m--at(plane2,city1)[0m [38;5;9m--at(plane2,city2)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city4)[0m [38;5;9m--at(plane2,city5)[0m [38;5;9m--at(plane2,city7)[0m [38;5;9m--at(plane2,city8)[0m  [38;5;10min(person8,plane2)[0m
+     [38;5;9m--at(plane2,city1)[0m [38;5;9m--at(plane2,city2)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city4)[0m [38;5;9m--at(plane2,city5)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane2,city7)[0m [38;5;9m--at(plane2,city8)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10min(person6,plane2)[0m
+     [38;5;9m--at(plane2,city1)[0m [38;5;9m--at(plane2,city2)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city4)[0m [38;5;9m--at(plane2,city5)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane2,city7)[0m [38;5;9m--at(plane2,city8)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10min(person3,plane2)[0m
+     [38;5;9m--at(plane3,city1)[0m [38;5;9m--at(plane3,city3)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m  [38;5;10min(person5,plane3)[0m
+      [38;5;10mat(person5,city8)[0m [38;5;9m--at(plane3,city8)[0m
+      [38;5;10mat(person5,city9)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--at(plane3,city9)[0m
+     [38;5;9m--at(plane3,city1)[0m [38;5;9m--at(plane3,city3)[0m [38;5;9m--at(plane3,city4)[0m [38;5;9m--at(plane3,city5)[0m [38;5;9m--at(plane3,city6)[0m [38;5;9m--at(plane3,city7)[0m [38;5;9m--at(plane3,city8)[0m [38;5;9m--at(plane3,city9)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m  [38;5;10min(person6,plane3)[0m
+      [38;5;10mat(person5,city9)[0m [38;5;9m--at(plane3,city9)[0m  [38;5;10min(person3,plane1)[0m
+      [38;5;10mat(person2,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane3,city6)[0m [38;5;9m--at(plane4,city6)[0m
+      [38;5;10mat(person3,city6)[0m [38;5;9m--at(plane3,city6)[0m [38;5;9m--at(plane4,city6)[0m
+      [38;5;10mat(person7,city8)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane4,city8)[0m
+      [38;5;10mat(person2,city9)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane3,city9)[0m [38;5;9m--at(plane4,city9)[0m
+      [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane1,city6)[0m [38;5;9m--at(plane5,city6)[0m
+      [38;5;10mat(person5,city6)[0m [38;5;9m--at(plane1,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane3,city6)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane5,city6)[0m
+      [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane1,city7)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane3,city6)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane5,city6)[0m
+      [38;5;10mat(person3,city6)[0m [38;5;9m--at(plane3,city6)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane5,city6)[0m
+      [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane1,city6)[0m [38;5;9m--at(plane2,city6)[0m  [38;5;10mat(plane3,city7)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane5,city6)[0m
+      [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane5,city6)[0m  [38;5;10min(person3,plane1)[0m
+      [38;5;10mat(person7,city8)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane2,city8)[0m [38;5;9m--at(plane3,city8)[0m [38;5;9m--at(plane4,city8)[0m [38;5;9m--at(plane5,city8)[0m
+      [38;5;10mat(person6,city8)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane4,city8)[0m [38;5;9m--at(plane5,city8)[0m
+     [38;5;9m--at(plane5,city2)[0m [38;5;9m--at(plane5,city5)[0m [38;5;9m--at(plane5,city6)[0m [38;5;9m--at(plane5,city7)[0m [38;5;9m--at(plane5,city8)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m  [38;5;10min(person2,plane5)[0m
+      [38;5;10mat(person8,city9)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m
+      [38;5;10mat(person7,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m
+      [38;5;10mat(person4,city9)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane3,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m
+      [38;5;10mat(person3,city9)[0m [38;5;9m--at(plane3,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--in(person10,plane5)[0m  [38;5;10min(person4,plane1)[0m  [38;5;10min(person7,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(plane1,city6)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--in(person10,plane3)[0m [38;5;9m--in(person10,plane5)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--in(person10,plane3)[0m [38;5;9m--in(person10,plane5)[0m  [38;5;10min(person7,plane1)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m  [38;5;10min(person4,plane1)[0m  [38;5;10min(person8,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(plane1,city4)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m  [38;5;10min(person7,plane1)[0m  [38;5;10min(person8,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person4,city3)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(plane1,city4)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m  [38;5;10min(person7,plane1)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(plane1,city8)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane3,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m  [38;5;10min(person6,plane3)[0m  [38;5;10min(person7,plane1)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(plane1,city8)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane3,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person6,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person4,city3)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city3)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city3)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--at(plane5,city3)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city6)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane3,city9)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city6)[0m [38;5;9m--at(plane5,city9)[0m  [38;5;10min(person6,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane1,city6)[0m [38;5;9m--at(plane1,city9)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city6)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city6)[0m [38;5;9m--at(plane5,city9)[0m  [38;5;10min(person8,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane3,city6)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city6)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane3,city6)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city6)[0m [38;5;9m--at(plane5,city9)[0m  [38;5;10min(person7,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city8)[0m [38;5;9m--at(plane2,city8)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city8)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city8)[0m [38;5;9m--at(plane5,city9)[0m  [38;5;10min(person6,plane3)[0m  [38;5;10min(person8,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city8)[0m [38;5;9m--at(plane2,city8)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane3,city8)[0m [38;5;9m--at(plane4,city8)[0m [38;5;9m--at(plane4,city9)[0m [38;5;9m--at(plane5,city8)[0m [38;5;9m--at(plane5,city9)[0m  [38;5;10min(person8,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city3)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane2,city9)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--at(plane5,city9)[0m [38;5;9m--in(person10,plane2)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person4,city3)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m  [38;5;10mat(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m [38;5;9m--in(person10,plane5)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m  [38;5;10mat(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m [38;5;9m--in(person10,plane5)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person4,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane4,city9)[0m  [38;5;10mat(plane5,city9)[0m [38;5;9m--in(person10,plane5)[0m  [38;5;10min(person7,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane4,city9)[0m  [38;5;10mat(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m [38;5;9m--in(person10,plane5)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city3)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city9)[0m [38;5;9m--in(person10,plane3)[0m [38;5;9m--in(person10,plane5)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person4,city3)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m [38;5;9m--at(plane4,city9)[0m  [38;5;10mat(plane5,city8)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person4,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane3,city9)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane4,city9)[0m  [38;5;10mat(plane5,city8)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city3)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city8)[0m [38;5;9m--in(person10,plane3)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person3,city0)[0m  [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m
+     [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person3,city0)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m  [38;5;10min(person8,plane3)[0m
+      [38;5;10mat(person4,city5)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane2,city5)[0m  [38;5;10mat(plane5,city9)[0m
+      [38;5;10mat(person10,city7)[0m [38;5;9m--at(plane1,city7)[0m [38;5;9m--at(plane2,city7)[0m [38;5;9m--at(plane3,city7)[0m  [38;5;10mat(plane4,city8)[0m  [38;5;10mat(plane5,city9)[0m
+      [38;5;10mat(plane5,city9)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m  [38;5;10min(person2,plane5)[0m
+      [38;5;10mat(plane5,city7)[0m  [38;5;10min(person10,plane5)[0m
+      [38;5;10mat(person8,city2)[0m [38;5;9m--at(plane3,city2)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person5,city5)[0m [38;5;9m--at(plane3,city5)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person3,city6)[0m [38;5;9m--at(plane3,city6)[0m [38;5;9m--at(plane4,city6)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person5,city7)[0m [38;5;9m--at(plane2,city7)[0m [38;5;9m--at(plane3,city7)[0m [38;5;9m--at(plane4,city7)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person7,city2)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane2,city2)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person5,city4)[0m  [38;5;10mat(plane2,city5)[0m [38;5;9m--at(plane3,city4)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person5,city2)[0m  [38;5;10mat(plane2,city5)[0m  [38;5;10mat(plane3,city3)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person3,city1)[0m  [38;5;10mat(plane3,city2)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person6,city2)[0m  [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city8)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city4)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person8,city5)[0m  [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane5,city8)[0m
+      [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane5,city8)[0m  [38;5;10min(person3,plane1)[0m
+      [38;5;10mat(plane5,city8)[0m  [38;5;10min(person5,plane5)[0m
+      [38;5;10mat(person10,city7)[0m [38;5;9m--at(plane1,city7)[0m [38;5;9m--at(plane3,city7)[0m [38;5;9m--at(plane4,city7)[0m
+      [38;5;10mat(person10,city7)[0m  [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane3,city6)[0m [38;5;9m--at(plane3,city7)[0m [38;5;9m--at(plane4,city6)[0m [38;5;9m--at(plane4,city7)[0m [38;5;9m--at(plane5,city6)[0m
+      [38;5;10mat(person10,city7)[0m [38;5;9m--at(plane1,city7)[0m [38;5;9m--at(plane3,city7)[0m  [38;5;10mat(plane4,city8)[0m [38;5;9m--at(plane5,city7)[0m
+      [38;5;10mat(person10,city7)[0m [38;5;9m--at(plane1,city7)[0m [38;5;9m--at(plane2,city7)[0m [38;5;9m--at(plane3,city7)[0m  [38;5;10mat(plane4,city8)[0m [38;5;9m--at(plane5,city7)[0m
+      [38;5;10mat(person10,city7)[0m  [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane2,city9)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person10,city7)[0m  [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane2,city3)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person10,city7)[0m  [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person10,city7)[0m [38;5;9m--at(plane1,city7)[0m [38;5;9m--at(plane3,city7)[0m  [38;5;10mat(plane4,city8)[0m
+      [38;5;10mat(person9,city4)[0m  [38;5;10mat(plane1,city5)[0m  [38;5;10mat(plane2,city5)[0m  [38;5;10mat(plane3,city7)[0m [38;5;9m--at(plane4,city4)[0m  [38;5;10mat(plane5,city7)[0m
+      [38;5;10mat(person8,city6)[0m [38;5;9m--at(plane1,city6)[0m [38;5;9m--at(plane2,city6)[0m  [38;5;10mat(plane3,city7)[0m [38;5;9m--at(plane4,city6)[0m  [38;5;10mat(plane5,city7)[0m
+      [38;5;10mat(person9,city4)[0m  [38;5;10mat(plane1,city5)[0m  [38;5;10mat(plane2,city7)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city8)[0m  [38;5;10mat(plane5,city7)[0m
+      [38;5;10mat(person9,city4)[0m  [38;5;10mat(plane1,city5)[0m  [38;5;10mat(plane2,city5)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city8)[0m  [38;5;10mat(plane5,city7)[0m
+      [38;5;10mat(plane5,city6)[0m  [38;5;10min(person8,plane5)[0m
+      [38;5;10mat(plane5,city6)[0m  [38;5;10min(person3,plane5)[0m
+      [38;5;10mat(person3,city0)[0m  [38;5;10mat(plane1,city8)[0m  [38;5;10mat(plane3,city8)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m
+      [38;5;10mat(person8,city0)[0m  [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m
+      [38;5;10mat(person3,city0)[0m  [38;5;10mat(plane1,city8)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m
+      [38;5;10mat(person3,city0)[0m  [38;5;10mat(plane1,city1)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m
+      [38;5;10mat(person8,city0)[0m  [38;5;10mat(plane1,city8)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m  [38;5;10min(person6,plane3)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city8)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m
+      [38;5;10mat(plane5,city4)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m  [38;5;10min(person2,plane5)[0m
+      [38;5;10mat(plane5,city3)[0m  [38;5;10min(person7,plane5)[0m
+      [38;5;10mat(plane5,city3)[0m  [38;5;10min(person4,plane5)[0m
+      [38;5;10mat(plane5,city3)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m  [38;5;10min(person2,plane5)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city6)[0m  [38;5;10mat(plane2,city9)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city6)[0m  [38;5;10mat(plane2,city8)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city6)[0m  [38;5;10mat(plane2,city5)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city6)[0m  [38;5;10mat(plane2,city3)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city7)[0m  [38;5;10mat(plane2,city9)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city7)[0m  [38;5;10mat(plane2,city3)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city7)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m
+      [38;5;10mat(plane5,city1)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m  [38;5;10min(person2,plane5)[0m
+      [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane2,city3)[0m  [38;5;10mat(plane4,city5)[0m
+      [38;5;10mat(person2,city0)[0m  [38;5;10mat(plane1,city2)[0m  [38;5;10mat(plane2,city5)[0m  [38;5;10mat(plane3,city9)[0m  [38;5;10mat(plane4,city5)[0m
+      [38;5;10mat(person2,city4)[0m [38;5;9m--at(plane1,city4)[0m [38;5;9m--at(plane2,city4)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city5)[0m
+      [38;5;10mat(person2,city4)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane2,city4)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city5)[0m
+      [38;5;10mat(person2,city3)[0m  [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane2,city5)[0m  [38;5;10mat(plane3,city5)[0m  [38;5;10mat(plane4,city5)[0m
+      [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane2,city9)[0m  [38;5;10mat(plane4,city5)[0m
+      [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane4,city5)[0m
+      [38;5;10mat(plane4,city5)[0m  [38;5;10min(person8,plane4)[0m
+      [38;5;10mat(plane4,city5)[0m  [38;5;10min(person5,plane4)[0m
+      [38;5;10mat(plane4,city5)[0m  [38;5;10min(person4,plane4)[0m
+      [38;5;10mat(person2,city1)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane2,city1)[0m [38;5;9m--at(plane3,city1)[0m  [38;5;10mat(plane4,city4)[0m
+      [38;5;10mat(person2,city1)[0m  [38;5;10mat(plane1,city4)[0m [38;5;9m--at(plane2,city1)[0m [38;5;9m--at(plane3,city1)[0m  [38;5;10mat(plane4,city4)[0m
+      [38;5;10mat(plane3,city9)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m  [38;5;10min(person8,plane3)[0m
+      [38;5;10mat(plane3,city8)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m  [38;5;10min(person6,plane3)[0m
+      [38;5;10mat(plane3,city6)[0m  [38;5;10min(person7,plane3)[0m  [38;5;10min(person8,plane3)[0m
+      [38;5;10mat(plane3,city6)[0m  [38;5;10min(person4,plane3)[0m  [38;5;10min(person7,plane3)[0m
+      [38;5;10mat(plane3,city5)[0m  [38;5;10min(person7,plane3)[0m  [38;5;10min(person8,plane3)[0m
+      [38;5;10mat(plane3,city5)[0m  [38;5;10min(person4,plane3)[0m  [38;5;10min(person7,plane3)[0m
+      [38;5;10mat(plane3,city3)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m  [38;5;10min(person7,plane3)[0m
+      [38;5;10mat(plane3,city3)[0m  [38;5;10min(person4,plane3)[0m  [38;5;10min(person7,plane3)[0m
+      [38;5;10mat(plane3,city2)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m  [38;5;10min(person7,plane3)[0m
+      [38;5;10mat(plane3,city2)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m  [38;5;10min(person6,plane3)[0m
+      [38;5;10mat(plane2,city7)[0m  [38;5;10min(person10,plane2)[0m
+      [38;5;10mat(plane2,city8)[0m  [38;5;10min(person7,plane2)[0m
+      [38;5;10mat(plane2,city5)[0m  [38;5;10min(person5,plane2)[0m
+      [38;5;10mat(plane2,city3)[0m  [38;5;10min(person7,plane2)[0m
+      [38;5;10mat(plane1,city9)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person7,plane1)[0m
+      [38;5;10mat(plane1,city9)[0m  [38;5;10min(person3,plane1)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city9)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person3,plane1)[0m
+      [38;5;10mat(plane1,city8)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city7)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city6)[0m  [38;5;10min(person3,plane1)[0m  [38;5;10min(person8,plane1)[0m
+      [38;5;10mat(plane1,city6)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city6)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person2,plane1)[0m
+      [38;5;10mat(plane1,city5)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city4)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city2)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person8,plane1)[0m
+      [38;5;10mat(plane1,city2)[0m  [38;5;10min(person3,plane1)[0m  [38;5;10min(person8,plane1)[0m
+      [38;5;10mat(person5,city0)[0m  [38;5;10mat(plane1,city2)[0m
+      [38;5;10mat(plane1,city2)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(plane1,city1)[0m  [38;5;10min(person3,plane1)[0m  [38;5;10min(person5,plane1)[0m
+      [38;5;10mat(person8,city6)[0m  [38;5;10min(person3,plane1)[0m
+Layer: 3
+  Subproblem: 0 [21]
+      [38;5;10mat(person7,city8)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane3,city8)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--at(plane5,city8)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m
+     [38;5;9m--at(person10,city3)[0m [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane1,city4)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane3,city3)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city3)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m [38;5;9m--in(person10,plane3)[0m  [38;5;10min(person4,plane3)[0m
+     [38;5;9m--at(person10,city3)[0m [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane1,city6)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane3,city3)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city2)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m [38;5;9m--in(person10,plane3)[0m  [38;5;10min(person4,plane3)[0m
+     [38;5;9m--at(person10,city3)[0m [38;5;9m--at(person10,city9)[0m  [38;5;10mat(person4,city3)[0m  [38;5;10mat(plane1,city6)[0m [38;5;9m--at(plane2,city3)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane3,city3)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city2)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m [38;5;9m--in(person10,plane3)[0m  [38;5;10min(person7,plane3)[0m
+     [38;5;9m--at(person10,city6)[0m [38;5;9m--at(person10,city9)[0m  [38;5;10mat(plane1,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city9)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m [38;5;9m--in(person10,plane3)[0m [38;5;9m--in(person10,plane5)[0m  [38;5;10min(person4,plane1)[0m  [38;5;10min(person7,plane3)[0m
+     [38;5;9m--at(person10,city0)[0m [38;5;9m--at(person10,city1)[0m [38;5;9m--at(person10,city2)[0m [38;5;9m--at(person10,city3)[0m [38;5;9m--at(person10,city4)[0m [38;5;9m--at(person10,city5)[0m [38;5;9m--at(person10,city6)[0m [38;5;9m--at(person10,city7)[0m [38;5;9m--at(person10,city8)[0m [38;5;9m--at(person10,city9)[0m  [38;5;10mat(plane1,city6)[0m [38;5;9m--at(plane2,city6)[0m [38;5;9m--at(plane2,city9)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city9)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m [38;5;9m--in(person10,plane3)[0m [38;5;9m--in(person10,plane5)[0m  [38;5;10min(person7,plane1)[0m
+      [38;5;10mat(person10,city7)[0m  [38;5;10mat(person6,city0)[0m  [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane2,city9)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m
+      [38;5;10mat(person10,city7)[0m  [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane1,city8)[0m  [38;5;10mat(plane2,city3)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m
+      [38;5;10mat(person10,city7)[0m  [38;5;10mat(person6,city0)[0m  [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane2,city3)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m
+      [38;5;10mat(person3,city6)[0m [38;5;9m--at(plane2,city6)[0m  [38;5;10mat(plane3,city1)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city5)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m  [38;5;10min(person8,plane1)[0m
+      [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane3,city1)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city5)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m  [38;5;10min(person3,plane1)[0m
+      [38;5;10mat(person3,city0)[0m  [38;5;10mat(plane1,city1)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city5)[0m  [38;5;10mat(plane5,city4)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane1,city7)[0m [38;5;9m--at(plane2,city6)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(plane1,city7)[0m  [38;5;10mat(plane2,city3)[0m  [38;5;10mat(plane3,city6)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane1,city7)[0m  [38;5;10mat(plane2,city9)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m
+      [38;5;10mat(person6,city0)[0m  [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane1,city7)[0m  [38;5;10mat(plane2,city3)[0m  [38;5;10mat(plane4,city4)[0m  [38;5;10mat(plane5,city1)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m [38;5;9m--fuel-level(plane5,fl1)[0m [38;5;9m--fuel-level(plane5,fl2)[0m [38;5;9m--fuel-level(plane5,fl3)[0m [38;5;9m--fuel-level(plane5,fl4)[0m [38;5;9m--fuel-level(plane5,fl5)[0m [38;5;9m--fuel-level(plane5,fl6)[0m
+      [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane1,city9)[0m [38;5;9m--at(plane2,city3)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m
+      [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane2,city9)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m
+      [38;5;10mat(person7,city3)[0m  [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane3,city7)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m
+      [38;5;10mat(person8,city6)[0m  [38;5;10mat(plane1,city6)[0m  [38;5;10mat(plane3,city1)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--fuel-level(plane3,fl1)[0m [38;5;9m--fuel-level(plane3,fl2)[0m [38;5;9m--fuel-level(plane3,fl3)[0m [38;5;9m--fuel-level(plane3,fl4)[0m [38;5;9m--fuel-level(plane3,fl5)[0m [38;5;9m--fuel-level(plane3,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m  [38;5;10min(person3,plane1)[0m
+      [38;5;10mat(plane1,city9)[0m  [38;5;10mat(plane2,city8)[0m  [38;5;10mat(plane4,city5)[0m [38;5;9m--fuel-level(plane1,fl1)[0m [38;5;9m--fuel-level(plane1,fl2)[0m [38;5;9m--fuel-level(plane1,fl3)[0m [38;5;9m--fuel-level(plane1,fl4)[0m [38;5;9m--fuel-level(plane1,fl5)[0m [38;5;9m--fuel-level(plane1,fl6)[0m [38;5;9m--fuel-level(plane2,fl1)[0m [38;5;9m--fuel-level(plane2,fl2)[0m [38;5;9m--fuel-level(plane2,fl3)[0m [38;5;9m--fuel-level(plane2,fl4)[0m [38;5;9m--fuel-level(plane2,fl5)[0m [38;5;9m--fuel-level(plane2,fl6)[0m [38;5;9m--fuel-level(plane4,fl1)[0m [38;5;9m--fuel-level(plane4,fl2)[0m [38;5;9m--fuel-level(plane4,fl3)[0m [38;5;9m--fuel-level(plane4,fl4)[0m [38;5;9m--fuel-level(plane4,fl5)[0m [38;5;9m--fuel-level(plane4,fl6)[0m  [38;5;10min(person7,plane2)[0m
+Layer: 4
+  Subproblem: 0 [0]
+S \ L	0	1	2	3
+0	0	84	233	112
+
+============================================= Dagster Timing ==============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.00		0.00		0.00		0		0		0
+===========================================================================================================
+
+============================================= Lingeling Timing ============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+0		1.22		0.21		1.43		1750		959		2709
+-----------------------------------------------------------------------------------------------------------
+TOTAL		1.22		0.21		1.43		1750		959		2709
+===========================================================================================================
+
+dagster_sat_count 0 : 0
+dagster_unsat_count 0 : 0
+dagster_call_count: 0
+trying to stop workers
+exiting main
+CPP_TIME: 2.02617
+./VAL/build/linux64/release/bin/Validate /home/m/MEGA/ANU/PHD/benchmarks/decomposable/zenotravel/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/zenotravel/pfile14.pddl /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_47__S8ZZYCX8ZKUME3Y/plan
+number_isolated_instances:
+Checking plan: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_47__S8ZZYCX8ZKUME3Y/plan
+Plan executed successfully - checking goal
+Plan valid
+Final value: 223 
+
+Successful plans:
+Value: 223
+ /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_47__S8ZZYCX8ZKUME3Y/plan 223 
+
+
+real	0m3.755s
+user	0m3.607s
+sys	0m0.125s

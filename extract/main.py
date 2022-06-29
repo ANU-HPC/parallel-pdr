@@ -3,7 +3,6 @@ import time
 from RunBash import runBash
 from Problem import Problem
 
-
 def parseError():
     print("planner usage:")
     print("python3 main.py <domain> <problem> OPTIONS")
@@ -21,7 +20,6 @@ def parseError():
     print("-m n   Allocating max. n MB of memory (default -m 8192)")
     print("-N     Don't compute invariants.")
     exit(1)
-
 
 domainFilename = None
 problemFilename = None
@@ -46,8 +44,7 @@ while i < len(sys.argv):
         # key val pair
         key = val[1:]
         del val
-        if i == len(sys.argv):
-            parseError()
+        if i == len(sys.argv): parseError()
         nextVal = sys.argv[i+1]
 
         # A key/val pair, find out what key it is
@@ -67,27 +64,21 @@ while i < len(sys.argv):
         elif key == "m":
             madagascarOptions += " -m " + nextVal
         elif key == "d":
-            if (nextVal == "0"):
-                useDecomposition = False
-            elif (nextVal == "1"):
-                useDecomposition = True
-            else:
-                assert 0
+            if (nextVal == "0"): useDecomposition = False
+            elif (nextVal == "1"): useDecomposition = True
+            else: assert 0
         elif key == "e":
             extraSettingsFilename = nextVal
-        else:
+        else: 
             print("Invalid key: ", key)
             parseError()
         i = i + 2
     else:
         # not a key val pair, so domain or problem
-        if domainFilename == None:
-            domainFilename = val
-        elif problemFilename == None:
-            problemFilename = val
-        elif tmpDir == None:
-            tmpDir = val
-        else:
+        if domainFilename == None: domainFilename = val
+        elif problemFilename == None: problemFilename = val
+        elif tmpDir == None: tmpDir = val
+        else: 
             print("Too many loose options, only want 3 (domain, filename, tmp_directory)")
             parseError()
         i = i + 1
@@ -109,33 +100,50 @@ if timeSteps == None:
 # Madagascar
 print("Starting external PDDL parser (Madagascar)...")
 instance_location = tmpDir + "/tmp_instance.txt"
-exitcode, out, err, madagascarTime = runBash(
-    "./extract " + domainFilename + " " + problemFilename + madagascarOptions + instance_location)
+exitcode, out, err, madagascarTime = runBash("./extract " + domainFilename + " " + problemFilename + madagascarOptions + instance_location)
 if exitcode:
     print(" == Madagascar error == (try make)")
     print(out.decode("utf-8"))
     print(err.decode("utf-8"))
     exit(1)
 
-[print("   ", line)
- for line in out.decode("utf-8").split("\n") if "replaced" in line]
+[print("   ",line) for line in out.decode("utf-8").split("\n") if "replaced" in line]
 
-print("Completed in " + str(round(madagascarTime, 2)) + " seconds")
+print("Completed in " + str(round(madagascarTime,2)) + " seconds")
 
 # Read in intermediate representation
 startTime = time.time()
 print("Starting reading in intermediate representation...")
 baseProblem = Problem.fromMadagascar(tmpDir, extraSettingsFilename)
-print("Completed in " + str(round(time.time() - startTime, 2)))
-if baseProblem == None:
-    exit(0)
+print("Completed in " + str(round(time.time() - startTime,2)))
+if baseProblem == None: exit(0)
+
+#baseProblem.printActions()
+
+#startTime = time.time()
+#print("solve at " + str(s) + " steps...")
+#baseProblem.solveAtHorizonStandard(domainFilename, problemFilename, s)
+#print("Completed in " + str(round(time.time() - startTime,2)))
 
 baseProblem.writeMapping(timeSteps)
 
 startTime = time.time()
 print("Starting decomposition...")
-if (useDecomposition):
-    decomposedProblem = baseProblem.knoblockDecomposition()
-else:
-    decomposedProblem = baseProblem.noDecomposition()
-print("Completed in " + str(round(time.time() - startTime, 2)))
+if (useDecomposition): decomposedProblem = baseProblem.knoblockDecomposition()
+else:                  decomposedProblem = baseProblem.noDecomposition()
+print("Completed in " + str(round(time.time() - startTime,2)))
+
+
+#decomposedProblem.writeDagCnfMultiple(s,2)
+#baseProblem.writePDRRegularCnf(timeSteps)
+
+#decomposedProblem.writePDRDagCnf(timeSteps)
+#decomposedProblem.writePDRDagCnfForEachPackage()
+
+#decomposedProblem.writeDagsterFiles(timeSteps)
+
+#decomposedProblem.visualizeComponentGraph()
+
+#for clause in problem.Is[0]: print(clause)
+#for clause in problem.Gs[0]: print(clause)
+#for clause in problem.Ts[0]: print(clause)

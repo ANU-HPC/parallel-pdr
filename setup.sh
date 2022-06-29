@@ -1,6 +1,6 @@
-mkdir tmp
-
 git submodule update --init --recursive
+
+mkdir tmp
 
 cd VAL
 git checkout master

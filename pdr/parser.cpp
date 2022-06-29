@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "options.h"
 //#include "prettyprint.hpp"
 
 #include "rapidjson/document.h"
@@ -59,6 +60,11 @@ int Parser::parse(string tmp_dir) {
   //assert(document.HasMember("decomposition_node_to_local_propositions"));
   assert(document.HasMember("subproblem_to_propositions"));
   assert(document.HasMember("subproblem_to_isolate_goal"));
+
+#if ALLOW_CALCULATE_H_ADD
+  assert(document.HasMember("action_to_preconditions"));
+  assert(document.HasMember("action_to_effects"));
+#endif
 
   assert(document["total_per_timestep"].IsNumber());
   assert(document["action_min"].IsNumber());
@@ -223,6 +229,34 @@ int Parser::parse(string tmp_dir) {
       }
     }
   }
+
+#if ALLOW_CALCULATE_H_ADD
+  const Value& action_to_preconditions_object = document["action_to_preconditions"]; 
+  assert(action_to_preconditions_object.IsObject());
+  for (Value::ConstMemberIterator ita = action_to_preconditions_object.MemberBegin(); ita != action_to_preconditions_object.MemberEnd(); ita++) {
+    int action = stoi(ita->name.GetString());
+    vector<int> preconditions;
+    assert(ita->value.IsArray());
+    const Value& preconditions_array = ita->value;
+    for (int i = 0; i < preconditions_array.Size(); i++) {
+      preconditions.push_back(preconditions_array[i].GetInt());
+    }
+    action_to_preconditions[action] = preconditions;
+  }
+
+  const Value& action_to_effects_object = document["action_to_effects"]; 
+  assert(action_to_effects_object.IsObject());
+  for (Value::ConstMemberIterator ita = action_to_effects_object.MemberBegin(); ita != action_to_effects_object.MemberEnd(); ita++) {
+    int action = stoi(ita->name.GetString());
+    vector<int> effects;
+    assert(ita->value.IsArray());
+    const Value& effects_array = ita->value;
+    for (int i = 0; i < effects_array.Size(); i++) {
+      effects.push_back(effects_array[i].GetInt());
+    }
+    action_to_effects[action] = effects;
+  }
+#endif
 
   const Value& collating_dag_node_to_subproblem_object = document["collating_dag_node_to_subproblem"]; 
   assert(collating_dag_node_to_subproblem_object.IsObject());

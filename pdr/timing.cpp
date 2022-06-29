@@ -48,6 +48,7 @@ void Timing::print() {
   int sum_unsat_count = 0;
   int sum_total_count = 0;
 
+  /*
   cout << endl;
   cout << "============================================= Dagster Timing ==============================================" << endl;
   cout << "Subproblem\tSAT Time\tUNSAT Time\tTotal Time\tSAT Count\tUNSAT Count\tTotal count" << endl;
@@ -93,6 +94,11 @@ void Timing::print() {
   sum_sat_count = 0;
   sum_unsat_count = 0;
   sum_total_count = 0;
+  */
+  string string_sum_sat_time;
+  string string_sum_unsat_time;
+  string string_sum_total_time;
+
 
   cout << "============================================= Lingeling Timing ============================================" << endl;
   cout << "Subproblem\tSAT Time\tUNSAT Time\tTotal Time\tSAT Count\tUNSAT Count\tTotal count" << endl;

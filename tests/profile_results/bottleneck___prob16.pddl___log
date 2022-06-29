@@ -1,0 +1,215 @@
+/home/m/MEGA/ANU/PHD/dagparser/run.sh /home/m/MEGA/ANU/PHD/benchmarks/unsolve-ipc-2016/bottleneck/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/unsolve-ipc-2016/bottleneck/prob16.pddl /home/m/MEGA/ANU/PHD/dagparser/set
+HOSTNAME: m
+START_EXTRA_SETTINGS
+obligation_rescheduling 1
+project_last 0
+complete_nonfinal 0
+activation_literals 0
+use_ooc 0
+isolate_subproblems 0
+decomposed 0
+report_plan 1
+dagster 0
+mpi_nodes 5
+#define OPTIONS_H
+#define FD_HEURISTIC "hmax"
+#define USE_FD_HEURISTIC 0
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+#define DEBUG_WARNING_REPEATED_REASON 1
+#define QUEUE_TYPE PDR::PDR_Queue
+#define ALLOW_CALCULATE_H_ADD 0
+STOP_EXTRA_SETTINGS
+TMP_DIR: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_56_58__37N4F28J74QOHBB
+domain: /home/m/MEGA/ANU/PHD/benchmarks/unsolve-ipc-2016/bottleneck/domain.pddl
+problem: /home/m/MEGA/ANU/PHD/benchmarks/unsolve-ipc-2016/bottleneck/prob16.pddl
+extra_settings: /home/m/MEGA/ANU/PHD/dagparser/set
+/home/m/MEGA/ANU/PHD/dagparser/extract
+PYTHON_TIME: 0.631928
+./pdrDagster 1 0 /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_56_58__37N4F28J74QOHBB
+PDR QUEUE constructor, size of propositions_set 0
+1
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+Read in problem
+starting getting cnf 1
+PDR QUEUE constructor, size of propositions_set 319
+start push check_unsat subproblems to check:{ 0 } , layer for that: 1
+start push check_unsat subproblems to check:{ 0 } , layer for that: 2
+WARNING!!!!! clause seen before 3   [38;5;10mactive(loc-1-6)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 3
+WARNING!!!!! clause seen before 4   [38;5;10mactive(loc-1-6)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 4
+WARNING!!!!! clause seen before 5   [38;5;10mactive(loc-1-6)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 5
+WARNING!!!!! clause seen before 6   [38;5;10mactive(loc-1-6)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 6
+WARNING!!!!! clause seen before 7   [38;5;10mactive(loc-1-6)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 7
+WARNING!!!!! clause seen before 8   [38;5;10mactive(loc-1-6)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 8
+start push check_unsat subproblems to check:{ 0 } , layer for that: 9
+WARNING!!!!! clause seen before 10   [38;5;10mactive(loc-1-6)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 10
+WARNING!!!!! clause seen before 11   [38;5;10mactive(loc-1-6)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 11
+start push check_unsat subproblems to check:{ 0 } , layer for that: 12
+start push check_unsat subproblems to check:{ 0 } , layer for that: 13
+NO PLAN EXISTS
+Layer reasons:
+Layer: 0
+  Subproblem: 0 [7]
+     [38;5;9m--person-at(p0,loc-6-0)[0m
+     [38;5;9m--person-at(p1,loc-6-1)[0m
+     [38;5;9m--person-at(p2,loc-6-2)[0m
+     [38;5;9m--person-at(p3,loc-6-3)[0m
+     [38;5;9m--person-at(p4,loc-6-4)[0m
+     [38;5;9m--person-at(p5,loc-6-5)[0m
+     [38;5;9m--person-at(p6,loc-6-6)[0m
+Layer: 1
+  Subproblem: 0 [19]
+      [38;5;10mperson-at(p6,loc-6-5)[0m
+      [38;5;10mperson-at(p6,loc-5-5)[0m
+      [38;5;10mperson-at(p6,loc-4-6)[0m
+      [38;5;10mactive(loc-1-2)[0m
+      [38;5;10mactive(loc-1-1)[0m
+      [38;5;10mactive(loc-1-0)[0m
+      [38;5;10mperson-at(p5,loc-5-4)[0m
+      [38;5;10mperson-at(p5,loc-5-3)[0m
+      [38;5;10mperson-at(p5,loc-5-2)[0m
+      [38;5;10mperson-at(p5,loc-5-1)[0m
+      [38;5;10mperson-at(p5,loc-5-0)[0m
+      [38;5;10mperson-at(p5,loc-4-2)[0m
+      [38;5;10mperson-at(p5,loc-4-1)[0m
+      [38;5;10mperson-at(p5,loc-3-0)[0m
+      [38;5;10mperson-at(p5,loc-2-0)[0m
+      [38;5;10mperson-at(p5,loc-1-5)[0m
+      [38;5;10mperson-at(p5,loc-1-2)[0m
+      [38;5;10mperson-at(p5,loc-1-1)[0m
+      [38;5;10mperson-at(p4,loc-0-4)[0m
+Layer: 2
+  Subproblem: 0 [8]
+     [38;5;9m--active(loc-1-0)[0m [38;5;9m--active(loc-2-1)[0m  [38;5;10mperson-at(p5,loc-1-1)[0m
+     [38;5;9m--active(loc-1-3)[0m [38;5;9m--active(loc-2-2)[0m  [38;5;10mperson-at(p5,loc-1-2)[0m
+      [38;5;10mperson-at(p6,loc-6-4)[0m
+      [38;5;10mperson-at(p6,loc-5-4)[0m
+      [38;5;10mperson-at(p6,loc-4-5)[0m
+      [38;5;10mperson-at(p5,loc-4-0)[0m
+      [38;5;10mperson-at(p5,loc-1-0)[0m
+      [38;5;10mperson-at(p5,loc-0-5)[0m
+Layer: 3
+  Subproblem: 0 [3]
+      [38;5;10mperson-at(p6,loc-6-3)[0m
+      [38;5;10mperson-at(p6,loc-5-3)[0m
+      [38;5;10mperson-at(p6,loc-4-4)[0m
+Layer: 4
+  Subproblem: 0 [3]
+      [38;5;10mperson-at(p6,loc-6-2)[0m
+      [38;5;10mperson-at(p6,loc-5-2)[0m
+      [38;5;10mperson-at(p6,loc-4-3)[0m
+Layer: 5
+  Subproblem: 0 [4]
+      [38;5;10mperson-at(p6,loc-6-1)[0m
+      [38;5;10mperson-at(p6,loc-5-1)[0m
+      [38;5;10mperson-at(p6,loc-4-2)[0m
+      [38;5;10mperson-at(p6,loc-3-3)[0m
+Layer: 6
+  Subproblem: 0 [5]
+      [38;5;10mperson-at(p6,loc-6-0)[0m
+      [38;5;10mperson-at(p6,loc-5-0)[0m
+      [38;5;10mperson-at(p6,loc-4-1)[0m
+      [38;5;10mperson-at(p6,loc-3-2)[0m
+      [38;5;10mperson-at(p6,loc-2-3)[0m
+Layer: 7
+  Subproblem: 0 [6]
+      [38;5;10mperson-at(p6,loc-4-0)[0m
+      [38;5;10mperson-at(p6,loc-3-1)[0m
+      [38;5;10mperson-at(p6,loc-2-2)[0m
+      [38;5;10mperson-at(p6,loc-2-4)[0m
+     [38;5;9m--active(loc-1-4)[0m  [38;5;10mperson-at(p6,loc-2-4)[0m
+      [38;5;10mperson-at(p6,loc-1-3)[0m
+Layer: 8
+  Subproblem: 0 [4]
+      [38;5;10mperson-at(p6,loc-3-0)[0m
+      [38;5;10mperson-at(p6,loc-2-1)[0m
+      [38;5;10mperson-at(p6,loc-2-5)[0m
+      [38;5;10mperson-at(p6,loc-1-2)[0m
+Layer: 9
+  Subproblem: 0 [4]
+      [38;5;10mperson-at(p6,loc-2-0)[0m
+     [38;5;9m--active(loc-1-0)[0m  [38;5;10mperson-at(p6,loc-2-0)[0m
+      [38;5;10mperson-at(p6,loc-2-6)[0m
+      [38;5;10mperson-at(p6,loc-1-1)[0m
+Layer: 10
+  Subproblem: 0 [3]
+     [38;5;9m--active(loc-1-1)[0m  [38;5;10mperson-at(p6,loc-1-0)[0m
+      [38;5;10mperson-at(p6,loc-1-6)[0m
+      [38;5;10mperson-at(p6,loc-1-0)[0m
+Layer: 11
+  Subproblem: 0 [2]
+      [38;5;10mactive(loc-1-6)[0m
+      [38;5;10mperson-at(p6,loc-0-6)[0m
+Layer: 12
+  Subproblem: 0 [0]
+Layer: 13
+  Subproblem: 0 [18]
+     [38;5;9m--active(loc-1-4)[0m  [38;5;10mperson-at(p4,loc-0-4)[0m
+     [38;5;9m--active(loc-1-5)[0m  [38;5;10mperson-at(p5,loc-0-5)[0m
+     [38;5;9m--active(loc-1-6)[0m  [38;5;10mperson-at(p6,loc-0-6)[0m
+     [38;5;9m--active(loc-2-5)[0m  [38;5;10mperson-at(p6,loc-1-6)[0m
+     [38;5;9m--active(loc-2-5)[0m  [38;5;10mperson-at(p6,loc-0-6)[0m
+     [38;5;9m--active(loc-2-5)[0m  [38;5;10mperson-at(p5,loc-1-5)[0m
+     [38;5;9m--active(loc-2-5)[0m  [38;5;10mperson-at(p5,loc-0-5)[0m
+     [38;5;9m--active(loc-1-1)[0m [38;5;9m--active(loc-1-3)[0m [38;5;9m--active(loc-2-2)[0m  [38;5;10mperson-at(p5,loc-1-2)[0m
+     [38;5;9m--active(loc-2-5)[0m  [38;5;10mperson-at(p6,loc-2-6)[0m
+      [38;5;10mperson-at(p5,loc-1-5)[0m  [38;5;10mperson-at(p6,loc-2-6)[0m
+      [38;5;10mperson-at(p5,loc-0-5)[0m  [38;5;10mperson-at(p6,loc-2-6)[0m
+      [38;5;10mactive(loc-1-5)[0m  [38;5;10mactive(loc-1-6)[0m
+      [38;5;10mactive(loc-1-6)[0m  [38;5;10mperson-at(p5,loc-1-5)[0m
+      [38;5;10mactive(loc-1-6)[0m  [38;5;10mperson-at(p5,loc-0-5)[0m
+      [38;5;10mperson-at(p5,loc-1-5)[0m  [38;5;10mperson-at(p6,loc-1-6)[0m
+      [38;5;10mperson-at(p5,loc-0-5)[0m  [38;5;10mperson-at(p6,loc-1-6)[0m
+      [38;5;10mperson-at(p6,loc-1-5)[0m
+      [38;5;10mperson-at(p6,loc-1-4)[0m
+Layer: 14
+  Subproblem: 0 [0]
+S \ L	0	1	2	3	4	5	6	7	8	9	10	11	12	13
+0	0	57	78	23	26	27	14	11	10	9	4	6	11	10
+
+============================================= Dagster Timing ==============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.00		0.00		0.00		0		0		0
+===========================================================================================================
+
+============================================= Lingeling Timing ============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+0		0.09		0.01		0.10		950		395		1345
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.09		0.01		0.10		950		395		1345
+===========================================================================================================
+
+dagster_sat_count 0 : 0
+dagster_unsat_count 0 : 0
+dagster_call_count: 0
+trying to stop workers
+exiting main
+CPP_TIME: 0.249698
+./VAL/build/linux64/release/bin/Validate /home/m/MEGA/ANU/PHD/benchmarks/unsolve-ipc-2016/bottleneck/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/unsolve-ipc-2016/bottleneck/prob16.pddl /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_56_58__37N4F28J74QOHBB/plan
+number_isolated_instances:
+
+real	0m0.939s
+user	0m0.853s
+sys	0m0.092s

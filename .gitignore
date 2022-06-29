@@ -1,4 +1,5 @@
 tags
+tmp_*
 pdr/plan
 MpC
 *.om
@@ -7,7 +8,7 @@ MpC
 **.pyc
 *.o
 *.a
-tmp/tmp_*
+tmp/
 *~
 pdr/pdrDagster
 lingeling/lingeling
@@ -18,3 +19,10 @@ extract/extract
 madagascar/zPRINTDATE
 madagascar/parser.tab.c
 madagascar/parser.tab.h
+instance.txt
+summer1819
+pdr/hpctoolkit-pdrDagster-database/
+pdr/hpctoolkit-pdrDagster-measurements/
+pdr/pdrDagster.hpcstruct
+sync.sh
+fd/cached_heuristics/*

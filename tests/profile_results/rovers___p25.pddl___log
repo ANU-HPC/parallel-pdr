@@ -1,0 +1,476 @@
+/home/m/MEGA/ANU/PHD/dagparser/run.sh /home/m/MEGA/ANU/PHD/benchmarks/decomposable/rovers/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/rovers/p25.pddl /home/m/MEGA/ANU/PHD/dagparser/set
+HOSTNAME: m
+START_EXTRA_SETTINGS
+obligation_rescheduling 1
+project_last 0
+complete_nonfinal 0
+activation_literals 0
+use_ooc 0
+isolate_subproblems 0
+decomposed 0
+report_plan 1
+dagster 0
+mpi_nodes 5
+#define OPTIONS_H
+#define FD_HEURISTIC "hmax"
+#define USE_FD_HEURISTIC 0
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+#define DEBUG_WARNING_REPEATED_REASON 1
+#define QUEUE_TYPE PDR::PDR_Queue
+#define ALLOW_CALCULATE_H_ADD 0
+STOP_EXTRA_SETTINGS
+TMP_DIR: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_15__NF33R9M3O4LL1A0
+domain: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/rovers/domain.pddl
+problem: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/rovers/p25.pddl
+extra_settings: /home/m/MEGA/ANU/PHD/dagparser/set
+/home/m/MEGA/ANU/PHD/dagparser/extract
+PYTHON_TIME: 1.41281
+./pdrDagster 1 0 /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_15__NF33R9M3O4LL1A0
+PDR QUEUE constructor, size of propositions_set 0
+1
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+Read in problem
+starting getting cnf 1
+PDR QUEUE constructor, size of propositions_set 645
+start push check_unsat subproblems to check:{ 0 } , layer for that: 1
+start push check_unsat subproblems to check:{ 0 } , layer for that: 2
+FOUND A PLAN
+queue size:
+layer 0
+  subproblem 0: 0
+layer 1
+  subproblem 0: 1
+layer 2
+  subproblem 0: 3
+layer 3
+  subproblem 0: 99
+WRITING PLAN
+
+0 : (navigate rover1 waypoint22 waypoint15)
+1 : (navigate rover2 waypoint14 waypoint23)
+2 : (navigate rover3 waypoint13 waypoint23)
+3 : (navigate rover4 waypoint17 waypoint23)
+4 : (navigate rover5 waypoint20 waypoint23)
+5 : (navigate rover7 waypoint8 waypoint9)
+6 : (navigate rover8 waypoint16 waypoint17)
+7 : (navigate rover9 waypoint16 waypoint17)
+8 : (sample_rock rover0 rover0store waypoint7)
+9 : (navigate rover3 waypoint23 waypoint13)
+10 : (navigate rover2 waypoint23 waypoint17)
+11 : (navigate rover2 waypoint17 waypoint23)
+12 : (navigate rover3 waypoint13 waypoint21)
+13 : (navigate rover9 waypoint17 waypoint16)
+14 : (navigate rover1 waypoint15 waypoint20)
+15 : (sample_soil rover2 rover2store waypoint23)
+16 : (sample_soil rover3 rover3store waypoint21)
+17 : (sample_soil rover8 rover8store waypoint17)
+18 : (sample_soil rover9 rover9store waypoint16)
+19 : (drop rover2 rover2store)
+20 : (drop rover3 rover3store)
+21 : (drop rover8 rover8store)
+22 : (drop rover9 rover9store)
+23 : (navigate rover1 waypoint20 waypoint15)
+24 : (navigate rover7 waypoint9 waypoint19)
+25 : (navigate rover7 waypoint19 waypoint9)
+26 : (navigate rover9 waypoint16 waypoint5)
+27 : (navigate rover8 waypoint17 waypoint16)
+28 : (navigate rover8 waypoint16 waypoint14)
+29 : (navigate rover0 waypoint7 waypoint1)
+30 : (navigate rover5 waypoint23 waypoint17)
+31 : (navigate rover0 waypoint1 waypoint7)
+32 : (navigate rover1 waypoint15 waypoint20)
+33 : (navigate rover0 waypoint7 waypoint12)
+34 : (navigate rover0 waypoint12 waypoint20)
+35 : (navigate rover0 waypoint20 waypoint12)
+36 : (navigate rover5 waypoint17 waypoint23)
+37 : (navigate rover5 waypoint23 waypoint20)
+38 : (navigate rover5 waypoint20 waypoint2)
+39 : (navigate rover3 waypoint21 waypoint20)
+40 : (navigate rover7 waypoint9 waypoint8)
+41 : (sample_rock rover5 rover5store waypoint2)
+42 : (sample_rock rover9 rover9store waypoint5)
+43 : (sample_soil rover8 rover8store waypoint14)
+44 : (drop rover5 rover5store)
+45 : (drop rover8 rover8store)
+46 : (drop rover9 rover9store)
+47 : (navigate rover3 waypoint20 waypoint21)
+48 : (navigate rover5 waypoint2 waypoint9)
+49 : (navigate rover7 waypoint8 waypoint9)
+50 : (navigate rover8 waypoint14 waypoint16)
+51 : (navigate rover8 waypoint16 waypoint15)
+52 : (navigate rover8 waypoint15 waypoint11)
+53 : (navigate rover0 waypoint12 waypoint9)
+54 : (navigate rover8 waypoint11 waypoint15)
+55 : (navigate rover8 waypoint15 waypoint16)
+56 : (navigate rover8 waypoint16 waypoint14)
+57 : (navigate rover1 waypoint20 waypoint15)
+58 : (navigate rover1 waypoint15 waypoint22)
+59 : (navigate rover1 waypoint22 waypoint1)
+60 : (navigate rover1 waypoint1 waypoint14)
+61 : (navigate rover8 waypoint14 waypoint16)
+62 : (navigate rover8 waypoint16 waypoint5)
+63 : (navigate rover1 waypoint14 waypoint1)
+64 : (navigate rover1 waypoint1 waypoint11)
+65 : (navigate rover8 waypoint5 waypoint16)
+66 : (navigate rover8 waypoint16 waypoint9)
+67 : (navigate rover8 waypoint9 waypoint8)
+68 : (navigate rover1 waypoint11 waypoint1)
+69 : (navigate rover1 waypoint1 waypoint22)
+70 : (navigate rover1 waypoint22 waypoint9)
+71 : (navigate rover1 waypoint9 waypoint21)
+72 : (navigate rover1 waypoint21 waypoint9)
+73 : (navigate rover2 waypoint23 waypoint14)
+74 : (navigate rover2 waypoint14 waypoint20)
+75 : (navigate rover2 waypoint20 waypoint3)
+76 : (navigate rover1 waypoint9 waypoint22)
+77 : (navigate rover2 waypoint3 waypoint20)
+78 : (navigate rover1 waypoint22 waypoint7)
+79 : (navigate rover1 waypoint7 waypoint12)
+80 : (navigate rover1 waypoint12 waypoint7)
+81 : (navigate rover2 waypoint20 waypoint12)
+82 : (navigate rover1 waypoint7 waypoint13)
+83 : (navigate rover2 waypoint12 waypoint20)
+84 : (navigate rover2 waypoint20 waypoint14)
+85 : (navigate rover2 waypoint14 waypoint0)
+86 : (navigate rover2 waypoint0 waypoint15)
+87 : (navigate rover2 waypoint15 waypoint11)
+88 : (navigate rover1 waypoint13 waypoint7)
+89 : (navigate rover2 waypoint11 waypoint15)
+90 : (navigate rover2 waypoint15 waypoint0)
+91 : (navigate rover2 waypoint0 waypoint14)
+92 : (navigate rover2 waypoint14 waypoint22)
+93 : (navigate rover1 waypoint7 waypoint4)
+94 : (navigate rover2 waypoint22 waypoint14)
+95 : (navigate rover2 waypoint14 waypoint13)
+96 : (navigate rover6 waypoint7 waypoint12)
+97 : (navigate rover8 waypoint8 waypoint9)
+98 : (navigate rover6 waypoint12 waypoint20)
+99 : (navigate rover2 waypoint13 waypoint10)
+100 : (navigate rover1 waypoint4 waypoint7)
+101 : (navigate rover3 waypoint21 waypoint20)
+102 : (navigate rover7 waypoint9 waypoint8)
+103 : (navigate rover9 waypoint5 waypoint16)
+104 : (sample_rock rover2 rover2store waypoint10)
+105 : (sample_rock rover8 rover8store waypoint9)
+106 : (navigate rover8 waypoint9 waypoint16)
+107 : (navigate rover3 waypoint20 waypoint21)
+108 : (navigate rover5 waypoint9 waypoint8)
+109 : (navigate rover1 waypoint7 waypoint22)
+110 : (navigate rover0 waypoint9 waypoint12)
+111 : (calibrate rover5 camera1 objective2 waypoint8)
+112 : (drop rover2 rover2store)
+113 : (drop rover8 rover8store)
+114 : (navigate rover0 waypoint12 waypoint9)
+115 : (navigate rover1 waypoint22 waypoint19)
+116 : (navigate rover7 waypoint8 waypoint9)
+117 : (navigate rover8 waypoint16 waypoint9)
+118 : (navigate rover9 waypoint16 waypoint5)
+119 : (calibrate rover0 camera6 objective1 waypoint9)
+120 : (calibrate rover5 camera1 objective2 waypoint8)
+121 : (calibrate rover0 camera6 objective1 waypoint9)
+122 : (calibrate rover2 camera8 objective1 waypoint10)
+123 : (calibrate rover5 camera1 objective2 waypoint8)
+124 : (calibrate rover0 camera6 objective1 waypoint9)
+125 : (calibrate rover2 camera8 objective1 waypoint10)
+126 : (calibrate rover5 camera1 objective2 waypoint8)
+127 : (navigate rover6 waypoint20 waypoint12)
+128 : (calibrate rover0 camera6 objective1 waypoint9)
+129 : (calibrate rover2 camera8 objective1 waypoint10)
+130 : (calibrate rover5 camera1 objective2 waypoint8)
+131 : (navigate rover6 waypoint12 waypoint18)
+132 : (calibrate rover0 camera6 objective1 waypoint9)
+133 : (calibrate rover2 camera8 objective1 waypoint10)
+134 : (calibrate rover5 camera1 objective2 waypoint8)
+135 : (navigate rover1 waypoint19 waypoint22)
+136 : (navigate rover6 waypoint18 waypoint12)
+137 : (calibrate rover0 camera6 objective1 waypoint9)
+138 : (calibrate rover2 camera8 objective1 waypoint10)
+139 : (calibrate rover5 camera1 objective2 waypoint8)
+140 : (navigate rover1 waypoint22 waypoint16)
+141 : (calibrate rover0 camera6 objective1 waypoint9)
+142 : (calibrate rover2 camera8 objective1 waypoint10)
+143 : (calibrate rover5 camera1 objective2 waypoint8)
+144 : (navigate rover1 waypoint16 waypoint17)
+145 : (calibrate rover0 camera6 objective1 waypoint9)
+146 : (calibrate rover2 camera8 objective1 waypoint10)
+147 : (calibrate rover5 camera1 objective2 waypoint8)
+148 : (calibrate rover9 camera9 objective2 waypoint5)
+149 : (navigate rover1 waypoint17 waypoint16)
+150 : (calibrate rover0 camera6 objective1 waypoint9)
+151 : (calibrate rover2 camera8 objective1 waypoint10)
+152 : (calibrate rover5 camera1 objective2 waypoint8)
+153 : (calibrate rover9 camera9 objective2 waypoint5)
+154 : (navigate rover1 waypoint16 waypoint22)
+155 : (calibrate rover0 camera6 objective1 waypoint9)
+156 : (calibrate rover2 camera8 objective1 waypoint10)
+157 : (calibrate rover5 camera1 objective2 waypoint8)
+158 : (calibrate rover9 camera9 objective2 waypoint5)
+159 : (navigate rover1 waypoint22 waypoint15)
+160 : (calibrate rover0 camera6 objective1 waypoint9)
+161 : (calibrate rover2 camera8 objective1 waypoint10)
+162 : (calibrate rover5 camera1 objective2 waypoint8)
+163 : (calibrate rover9 camera9 objective2 waypoint5)
+164 : (navigate rover1 waypoint15 waypoint20)
+165 : (calibrate rover0 camera6 objective1 waypoint9)
+166 : (calibrate rover2 camera8 objective1 waypoint10)
+167 : (calibrate rover9 camera9 objective2 waypoint5)
+168 : (navigate rover1 waypoint20 waypoint15)
+169 : (navigate rover5 waypoint8 waypoint9)
+170 : (calibrate rover0 camera6 objective1 waypoint9)
+171 : (calibrate rover2 camera8 objective1 waypoint10)
+172 : (calibrate rover9 camera9 objective2 waypoint5)
+173 : (navigate rover5 waypoint9 waypoint2)
+174 : (calibrate rover0 camera6 objective1 waypoint9)
+175 : (calibrate rover2 camera8 objective1 waypoint10)
+176 : (calibrate rover9 camera9 objective2 waypoint5)
+177 : (navigate rover5 waypoint2 waypoint0)
+178 : (calibrate rover0 camera6 objective1 waypoint9)
+179 : (calibrate rover2 camera8 objective1 waypoint10)
+180 : (calibrate rover9 camera9 objective2 waypoint5)
+181 : (navigate rover1 waypoint15 waypoint22)
+182 : (calibrate rover0 camera6 objective1 waypoint9)
+183 : (calibrate rover2 camera8 objective1 waypoint10)
+184 : (calibrate rover9 camera9 objective2 waypoint5)
+185 : (navigate rover1 waypoint22 waypoint1)
+186 : (calibrate rover0 camera6 objective1 waypoint9)
+187 : (calibrate rover2 camera8 objective1 waypoint10)
+188 : (calibrate rover9 camera9 objective2 waypoint5)
+189 : (navigate rover1 waypoint1 waypoint6)
+190 : (calibrate rover0 camera6 objective1 waypoint9)
+191 : (calibrate rover2 camera8 objective1 waypoint10)
+192 : (calibrate rover9 camera9 objective2 waypoint5)
+193 : (navigate rover1 waypoint6 waypoint5)
+194 : (calibrate rover0 camera6 objective1 waypoint9)
+195 : (calibrate rover2 camera8 objective1 waypoint10)
+196 : (calibrate rover7 camera4 objective0 waypoint9)
+197 : (calibrate rover9 camera9 objective2 waypoint5)
+198 : (navigate rover1 waypoint5 waypoint6)
+199 : (navigate rover0 waypoint9 waypoint12)
+200 : (navigate rover4 waypoint23 waypoint17)
+201 : (navigate rover6 waypoint12 waypoint18)
+202 : (navigate rover8 waypoint9 waypoint16)
+203 : (navigate rover9 waypoint5 waypoint16)
+204 : (sample_soil rover2 rover2store waypoint10)
+205 : (take_image rover2 waypoint10 objective2 camera8 colour)
+206 : (take_image rover5 waypoint0 objective1 camera1 colour)
+207 : (take_image rover7 waypoint9 objective1 camera4 high_res)
+208 : (navigate rover5 waypoint0 waypoint2)
+209 : (navigate rover7 waypoint9 waypoint19)
+210 : (calibrate rover5 camera1 objective2 waypoint2)
+211 : (communicate_image_data rover2 general objective2 colour waypoint10 waypoint9)
+212 : (communicate_image_data rover5 general objective1 colour waypoint2 waypoint9)
+213 : (communicate_image_data rover7 general objective1 high_res waypoint19 waypoint9)
+214 : (communicate_rock_data rover0 general waypoint7 waypoint12 waypoint9)
+215 : (communicate_rock_data rover2 general waypoint10 waypoint10 waypoint9)
+216 : (communicate_rock_data rover5 general waypoint2 waypoint2 waypoint9)
+217 : (communicate_rock_data rover8 general waypoint9 waypoint16 waypoint9)
+218 : (communicate_soil_data rover3 general waypoint21 waypoint21 waypoint9)
+219 : (communicate_soil_data rover8 general waypoint14 waypoint16 waypoint9)
+220 : (communicate_soil_data rover9 general waypoint16 waypoint16 waypoint9)
+221 : (navigate rover1 waypoint6 waypoint5)
+222 : (navigate rover4 waypoint17 waypoint23)
+223 : (navigate rover6 waypoint18 waypoint12)
+224 : (take_image rover0 waypoint12 objective2 camera6 colour)
+FINISHED WRITING PLAN
+Layer reasons:
+Layer: 0
+  Subproblem: 0 [10]
+     [38;5;9m--communicated_image_data(objective1,colour)[0m
+     [38;5;9m--communicated_image_data(objective1,high_res)[0m
+     [38;5;9m--communicated_image_data(objective2,colour)[0m
+     [38;5;9m--communicated_rock_data(waypoint2)[0m
+     [38;5;9m--communicated_rock_data(waypoint7)[0m
+     [38;5;9m--communicated_rock_data(waypoint9)[0m
+     [38;5;9m--communicated_rock_data(waypoint10)[0m
+     [38;5;9m--communicated_soil_data(waypoint14)[0m
+     [38;5;9m--communicated_soil_data(waypoint16)[0m
+     [38;5;9m--communicated_soil_data(waypoint21)[0m
+Layer: 1
+  Subproblem: 0 [27]
+     [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m
+     [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m
+     [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m
+     [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover5,waypoint12)[0m [38;5;9m--at(rover5,waypoint13)[0m [38;5;9m--at(rover5,waypoint16)[0m [38;5;9m--at(rover5,waypoint18)[0m [38;5;9m--at(rover5,waypoint19)[0m [38;5;9m--at(rover5,waypoint2)[0m [38;5;9m--at(rover5,waypoint21)[0m [38;5;9m--at(rover5,waypoint22)[0m [38;5;9m--at(rover5,waypoint24)[0m [38;5;9m--at(rover5,waypoint4)[0m [38;5;9m--at(rover5,waypoint8)[0m [38;5;9m--communicated_rock_data(waypoint2)[0m  [38;5;10mhave_rock_analysis(rover5,waypoint2)[0m
+      [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover8,waypoint9)[0m [38;5;9m--communicated_soil_data(waypoint14)[0m  [38;5;10mhave_soil_analysis(rover8,waypoint14)[0m
+      [38;5;10mat(rover8,waypoint17)[0m [38;5;9m--communicated_soil_data(waypoint14)[0m  [38;5;10mhave_soil_analysis(rover8,waypoint14)[0m
+     [38;5;9m--at(rover1,waypoint10)[0m [38;5;9m--at(rover1,waypoint12)[0m [38;5;9m--at(rover1,waypoint13)[0m [38;5;9m--at(rover1,waypoint16)[0m [38;5;9m--at(rover1,waypoint18)[0m [38;5;9m--at(rover1,waypoint19)[0m [38;5;9m--at(rover1,waypoint2)[0m [38;5;9m--at(rover1,waypoint21)[0m [38;5;9m--at(rover1,waypoint22)[0m [38;5;9m--at(rover1,waypoint24)[0m [38;5;9m--at(rover1,waypoint4)[0m [38;5;9m--at(rover1,waypoint8)[0m  [38;5;10mat(rover7,waypoint9)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m
+      [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover3,waypoint20)[0m  [38;5;10mat(rover5,waypoint23)[0m  [38;5;10mat(rover7,waypoint9)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m
+      [38;5;10mat(rover4,waypoint23)[0m  [38;5;10mat(rover7,waypoint9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m
+      [38;5;10mat(rover4,waypoint17)[0m  [38;5;10mat(rover7,waypoint9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m
+      [38;5;10mat(rover0,waypoint20)[0m  [38;5;10mat(rover1,waypoint23)[0m  [38;5;10mat(rover6,waypoint20)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint7)[0m  [38;5;10mat(rover6,waypoint20)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover6,waypoint20)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover5,waypoint9)[0m [38;5;9m--communicated_rock_data(waypoint2)[0m  [38;5;10mhave_rock_analysis(rover5,waypoint2)[0m
+      [38;5;10mat(rover4,waypoint23)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m
+      [38;5;10mat(rover4,waypoint17)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m
+      [38;5;10mat(rover4,waypoint3)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m
+      [38;5;10mat(rover3,waypoint20)[0m [38;5;9m--communicated_soil_data(waypoint21)[0m  [38;5;10mhave_soil_analysis(rover3,waypoint21)[0m
+      [38;5;10mat(rover0,waypoint20)[0m  [38;5;10mat(rover1,waypoint23)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint20)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat_soil_sample(waypoint16)[0m
+      [38;5;10mat_soil_sample(waypoint14)[0m
+      [38;5;10mat_rock_sample(waypoint10)[0m
+      [38;5;10mat_rock_sample(waypoint2)[0m
+Layer: 2
+  Subproblem: 0 [99]
+     [38;5;9m--calibrated(camera1,rover5)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m
+     [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera6,rover0)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera8,rover2)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m
+     [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera1,rover5)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera6,rover0)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera8,rover2)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m
+     [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera1,rover5)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera6,rover0)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera8,rover2)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint1)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint22)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint9)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint21)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint11)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint14)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint9)[0m  [38;5;10mat(rover2,waypoint14)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint7)[0m  [38;5;10mat(rover2,waypoint14)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint13)[0m  [38;5;10mat(rover2,waypoint14)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint22)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint7)[0m  [38;5;10mat(rover2,waypoint22)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint22)[0m  [38;5;10mat(rover2,waypoint20)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint9)[0m  [38;5;10mat(rover2,waypoint20)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint7)[0m  [38;5;10mat(rover2,waypoint20)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint13)[0m  [38;5;10mat(rover2,waypoint20)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint12)[0m  [38;5;10mat(rover2,waypoint20)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint7)[0m  [38;5;10mat(rover2,waypoint12)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint13)[0m  [38;5;10mat(rover2,waypoint12)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint9)[0m  [38;5;10mat(rover2,waypoint3)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint15)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint7)[0m  [38;5;10mat(rover2,waypoint15)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint13)[0m  [38;5;10mat(rover2,waypoint15)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint11)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint13)[0m  [38;5;10mat(rover2,waypoint11)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint0)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint7)[0m  [38;5;10mat(rover2,waypoint0)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint13)[0m  [38;5;10mat(rover2,waypoint0)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover8,waypoint10)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+      [38;5;10mat(rover0,waypoint7)[0m  [38;5;10mat(rover1,waypoint15)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint23)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint1)[0m  [38;5;10mat(rover1,waypoint15)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint23)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint12)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint23)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint12)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint20)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint7)[0m  [38;5;10mat(rover1,waypoint15)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint17)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint1)[0m  [38;5;10mat(rover1,waypoint15)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint17)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint7)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint17)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint20)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint17)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint12)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint17)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover9,waypoint2)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+     [38;5;9m--at(rover2,waypoint21)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m [38;5;9m--at(rover9,waypoint21)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+     [38;5;9m--at(rover2,waypoint21)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint23)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint23)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint17)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint23)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint14)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint23)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+     [38;5;9m--at(rover2,waypoint21)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint17)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint17)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint17)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint17)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover3,waypoint13)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint17)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint17)[0m  [38;5;10mat(rover3,waypoint13)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint17)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover3,waypoint23)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint17)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover3,waypoint21)[0m  [38;5;10mat(rover7,waypoint9)[0m [38;5;9m--at(rover8,waypoint16)[0m  [38;5;10mat(rover9,waypoint17)[0m  [38;5;10mat_soil_sample(waypoint16)[0m
+      [38;5;10mat(rover0,waypoint7)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint14)[0m  [38;5;10mat(rover5,waypoint23)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m  [38;5;10mat(rover9,waypoint16)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+      [38;5;10mat(rover0,waypoint7)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint14)[0m  [38;5;10mat(rover5,waypoint19)[0m  [38;5;10mat(rover6,waypoint7)[0m [38;5;9m--at(rover8,waypoint2)[0m  [38;5;10mat(rover9,waypoint16)[0m  [38;5;10mat_rock_sample(waypoint2)[0m
+     [38;5;9m--at(rover2,waypoint21)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover8,waypoint21)[0m  [38;5;10mat(rover9,waypoint16)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint14)[0m  [38;5;10mat(rover3,waypoint13)[0m [38;5;9m--at(rover7,waypoint21)[0m  [38;5;10mat(rover8,waypoint16)[0m  [38;5;10mat(rover9,waypoint16)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+      [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover3,waypoint21)[0m  [38;5;10mat(rover7,waypoint19)[0m  [38;5;10mat(rover8,waypoint17)[0m  [38;5;10mat(rover9,waypoint16)[0m  [38;5;10mat_soil_sample(waypoint14)[0m
+      [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover3,waypoint21)[0m  [38;5;10mat(rover7,waypoint9)[0m  [38;5;10mat(rover8,waypoint17)[0m  [38;5;10mat(rover9,waypoint16)[0m  [38;5;10mat_soil_sample(waypoint14)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint19)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint20)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint19)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint20)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera8,rover2)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint1)[0m  [38;5;10mat(rover2,waypoint10)[0m [38;5;9m--at(rover5,waypoint7)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint22)[0m  [38;5;10mat(rover2,waypoint10)[0m [38;5;9m--at(rover5,waypoint7)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint15)[0m  [38;5;10mat(rover2,waypoint10)[0m [38;5;9m--at(rover5,waypoint7)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint6)[0m  [38;5;10mat(rover2,waypoint10)[0m [38;5;9m--at(rover5,waypoint7)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint5)[0m  [38;5;10mat(rover2,waypoint10)[0m [38;5;9m--at(rover5,waypoint7)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint15)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint2)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint19)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint22)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint22)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint16)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint16)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint15)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--communicated_soil_data(waypoint16)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m  [38;5;10mhave_soil_analysis(rover9,waypoint16)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint17)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover0,waypoint9)[0m  [38;5;10mat(rover1,waypoint19)[0m  [38;5;10mat(rover2,waypoint10)[0m  [38;5;10mat(rover5,waypoint8)[0m  [38;5;10mat(rover6,waypoint18)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat(rover9,waypoint5)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera5,rover4)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_image_data(objective2,colour)[0m [38;5;9m--communicated_rock_data(waypoint7)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover0,objective2,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover1,objective2,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover2,objective2,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective2,colour)[0m [38;5;9m--have_image(rover4,objective1,colour)[0m [38;5;9m--have_image(rover4,objective2,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective2,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective2,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover8,objective2,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m [38;5;9m--have_image(rover9,objective2,colour)[0m [38;5;9m--have_rock_analysis(rover1,waypoint7)[0m [38;5;9m--have_rock_analysis(rover2,waypoint7)[0m [38;5;9m--have_rock_analysis(rover5,waypoint7)[0m [38;5;9m--have_rock_analysis(rover6,waypoint7)[0m [38;5;9m--have_rock_analysis(rover8,waypoint7)[0m [38;5;9m--have_rock_analysis(rover9,waypoint7)[0m
+      [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover3,waypoint21)[0m  [38;5;10mat(rover7,waypoint9)[0m  [38;5;10mat(rover8,waypoint16)[0m  [38;5;10mat(rover9,waypoint5)[0m  [38;5;10mat_soil_sample(waypoint14)[0m
+      [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover3,waypoint21)[0m  [38;5;10mat(rover7,waypoint9)[0m  [38;5;10mat(rover8,waypoint17)[0m  [38;5;10mat(rover9,waypoint5)[0m  [38;5;10mat_soil_sample(waypoint14)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint11)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint13)[0m [38;5;9m--at(rover5,waypoint10)[0m  [38;5;10mat(rover6,waypoint20)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint13)[0m [38;5;9m--at(rover5,waypoint10)[0m  [38;5;10mat(rover6,waypoint12)[0m  [38;5;10mat(rover8,waypoint9)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint16)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+      [38;5;10mat(rover0,waypoint12)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint16)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint14)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint16)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint11)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint16)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint15)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+      [38;5;10mat(rover0,waypoint12)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint15)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint1)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint14)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint22)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint14)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint15)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint14)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint14)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+      [38;5;10mat(rover0,waypoint12)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint14)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint14)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint14)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+      [38;5;10mat(rover0,waypoint12)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m  [38;5;10mat(rover5,waypoint2)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint14)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint1)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint5)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint14)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint5)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m  [38;5;10mat(rover1,waypoint11)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint5)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+      [38;5;10mat(rover0,waypoint12)[0m  [38;5;10mat(rover1,waypoint20)[0m  [38;5;10mat(rover2,waypoint23)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover6,waypoint10)[0m  [38;5;10mat(rover8,waypoint11)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+      [38;5;10mat(rover5,waypoint9)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--communicated_image_data(objective1,high_res)[0m [38;5;9m--communicated_rock_data(waypoint2)[0m [38;5;9m--have_image(rover1,objective1,high_res)[0m [38;5;9m--have_image(rover3,objective1,high_res)[0m [38;5;9m--have_image(rover5,objective1,high_res)[0m [38;5;9m--have_image(rover7,objective1,high_res)[0m  [38;5;10mhave_rock_analysis(rover5,waypoint2)[0m
+      [38;5;10mat(rover4,waypoint3)[0m [38;5;9m--calibrated(camera0,rover8)[0m [38;5;9m--calibrated(camera1,rover5)[0m [38;5;9m--calibrated(camera3,rover3)[0m [38;5;9m--calibrated(camera4,rover7)[0m [38;5;9m--calibrated(camera6,rover0)[0m [38;5;9m--calibrated(camera7,rover1)[0m [38;5;9m--calibrated(camera8,rover2)[0m [38;5;9m--calibrated(camera9,rover9)[0m [38;5;9m--communicated_image_data(objective1,colour)[0m [38;5;9m--have_image(rover0,objective1,colour)[0m [38;5;9m--have_image(rover1,objective1,colour)[0m [38;5;9m--have_image(rover2,objective1,colour)[0m [38;5;9m--have_image(rover3,objective1,colour)[0m [38;5;9m--have_image(rover5,objective1,colour)[0m [38;5;9m--have_image(rover7,objective1,colour)[0m [38;5;9m--have_image(rover8,objective1,colour)[0m [38;5;9m--have_image(rover9,objective1,colour)[0m
+Layer: 3
+  Subproblem: 0 [4]
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover0,waypoint13)[0m [38;5;9m--at(rover0,waypoint15)[0m [38;5;9m--at(rover0,waypoint7)[0m [38;5;9m--at(rover1,waypoint1)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint15)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover5,waypoint12)[0m [38;5;9m--at(rover6,waypoint1)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover6,waypoint15)[0m [38;5;9m--at(rover8,waypoint10)[0m [38;5;9m--at(rover8,waypoint9)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover0,waypoint13)[0m [38;5;9m--at(rover0,waypoint15)[0m [38;5;9m--at(rover0,waypoint7)[0m [38;5;9m--at(rover1,waypoint1)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint11)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover5,waypoint12)[0m [38;5;9m--at(rover6,waypoint1)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover6,waypoint15)[0m [38;5;9m--at(rover8,waypoint10)[0m [38;5;9m--at(rover8,waypoint9)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover0,waypoint10)[0m [38;5;9m--at(rover0,waypoint13)[0m [38;5;9m--at(rover0,waypoint15)[0m [38;5;9m--at(rover0,waypoint7)[0m [38;5;9m--at(rover1,waypoint1)[0m [38;5;9m--at(rover1,waypoint10)[0m  [38;5;10mat(rover2,waypoint0)[0m [38;5;9m--at(rover5,waypoint10)[0m [38;5;9m--at(rover5,waypoint12)[0m [38;5;9m--at(rover6,waypoint1)[0m [38;5;9m--at(rover6,waypoint10)[0m [38;5;9m--at(rover6,waypoint15)[0m [38;5;9m--at(rover8,waypoint10)[0m [38;5;9m--at(rover8,waypoint9)[0m  [38;5;10mat_rock_sample(waypoint10)[0m
+     [38;5;9m--at(rover2,waypoint2)[0m [38;5;9m--at(rover2,waypoint21)[0m [38;5;9m--at(rover3,waypoint13)[0m [38;5;9m--at(rover3,waypoint18)[0m [38;5;9m--at(rover3,waypoint20)[0m [38;5;9m--at(rover3,waypoint21)[0m [38;5;9m--at(rover7,waypoint21)[0m [38;5;9m--at(rover7,waypoint4)[0m [38;5;9m--at(rover8,waypoint12)[0m [38;5;9m--at(rover8,waypoint2)[0m [38;5;9m--at(rover8,waypoint21)[0m [38;5;9m--at(rover9,waypoint2)[0m [38;5;9m--at(rover9,waypoint21)[0m  [38;5;10mat_soil_sample(waypoint21)[0m
+Layer: 4
+  Subproblem: 0 [0]
+S \ L	0	1	2	3
+0	0	28	126	97
+
+============================================= Dagster Timing ==============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.00		0.00		0.00		0		0		0
+===========================================================================================================
+
+============================================= Lingeling Timing ============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+0		0.98		0.73		1.71		1776		3466		5242
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.98		0.73		1.71		1776		3466		5242
+===========================================================================================================
+
+dagster_sat_count 0 : 0
+dagster_unsat_count 0 : 0
+dagster_call_count: 0
+trying to stop workers
+exiting main
+CPP_TIME: 1.9141
+./VAL/build/linux64/release/bin/Validate /home/m/MEGA/ANU/PHD/benchmarks/decomposable/rovers/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/rovers/p25.pddl /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_15__NF33R9M3O4LL1A0/plan
+number_isolated_instances:
+Checking plan: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_15__NF33R9M3O4LL1A0/plan
+Plan executed successfully - checking goal
+Plan valid
+Final value: 225 
+
+Successful plans:
+Value: 225
+ /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_15__NF33R9M3O4LL1A0/plan 225 
+
+
+real	0m3.401s
+user	0m3.260s
+sys	0m0.125s

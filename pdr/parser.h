@@ -36,6 +36,8 @@ class Parser {
     map<int, vector<int>> subproblem_to_actions;
     map<int, vector<int>> subproblem_to_assumptions;
     map<int, vector<int>> subproblem_to_clause_validating_lits;
+    map<int, vector<int>> action_to_preconditions;
+    map<int, vector<int>> action_to_effects;
     map<int, vector<vector<int>>> subproblem_to_only_one_cliques;
 };
 #endif

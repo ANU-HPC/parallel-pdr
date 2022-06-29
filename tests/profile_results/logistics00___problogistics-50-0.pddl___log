@@ -1,0 +1,3085 @@
+/home/m/MEGA/ANU/PHD/dagparser/run.sh /home/m/MEGA/ANU/PHD/benchmarks/decomposable/logistics00/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/logistics00/problogistics-50-0.pddl /home/m/MEGA/ANU/PHD/dagparser/set
+HOSTNAME: m
+START_EXTRA_SETTINGS
+obligation_rescheduling 1
+project_last 0
+complete_nonfinal 0
+activation_literals 0
+use_ooc 0
+isolate_subproblems 0
+decomposed 0
+report_plan 1
+dagster 0
+mpi_nodes 5
+#define OPTIONS_H
+#define FD_HEURISTIC "hmax"
+#define USE_FD_HEURISTIC 0
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+#define DEBUG_WARNING_REPEATED_REASON 1
+#define QUEUE_TYPE PDR::PDR_Queue
+#define ALLOW_CALCULATE_H_ADD 0
+STOP_EXTRA_SETTINGS
+TMP_DIR: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_18__RWXVT65JM40RSUX
+domain: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/logistics00/domain.pddl
+problem: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/logistics00/problogistics-50-0.pddl
+extra_settings: /home/m/MEGA/ANU/PHD/dagparser/set
+/home/m/MEGA/ANU/PHD/dagparser/extract
+PYTHON_TIME: 4.69865
+./pdrDagster 1 0 /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_18__RWXVT65JM40RSUX
+PDR QUEUE constructor, size of propositions_set 0
+1
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+Read in problem
+starting getting cnf 1
+PDR QUEUE constructor, size of propositions_set 2958
+start push check_unsat subproblems to check:{ 0 } , layer for that: 1
+start push check_unsat subproblems to check:{ 0 } , layer for that: 2
+WARNING!!!!! clause seen before 3   [38;5;10mat(obj11,pos1)[0m
+start push check_unsat subproblems to check:{ 0 } , layer for that: 3
+FOUND A PLAN
+queue size:
+layer 0
+  subproblem 0: 0
+layer 1
+  subproblem 0: 1
+layer 2
+  subproblem 0: 44
+layer 3
+  subproblem 0: 237
+layer 4
+  subproblem 0: 1174
+WRITING PLAN
+
+0 : (load-truck obj11 tru1 pos1)
+1 : (drive-truck tru1 pos1 apt1 cit1)
+2 : (fly-airplane apn1 apt6 apt1)
+3 : (unload-truck obj11 tru1 apt1)
+4 : (load-airplane obj11 apn1 apt1)
+5 : (drive-truck tru1 apt1 pos1 cit1)
+6 : (load-truck obj13 tru1 pos1)
+7 : (drive-truck tru1 pos1 apt1 cit1)
+8 : (unload-truck obj13 tru1 apt1)
+9 : (load-airplane obj13 apn1 apt1)
+10 : (load-truck obj21 tru2 pos2)
+11 : (drive-truck tru2 pos2 apt2 cit2)
+12 : (unload-truck obj21 tru2 apt2)
+13 : (load-airplane obj21 apn5 apt2)
+14 : (drive-truck tru2 apt2 pos2 cit2)
+15 : (unload-airplane obj21 apn5 apt2)
+16 : (load-airplane obj21 apn5 apt2)
+17 : (load-truck obj23 tru2 pos2)
+18 : (drive-truck tru2 pos2 apt2 cit2)
+19 : (unload-truck obj23 tru2 apt2)
+20 : (load-airplane obj23 apn5 apt2)
+21 : (load-truck obj31 tru3 pos3)
+22 : (drive-truck tru3 pos3 apt3 cit3)
+23 : (fly-airplane apn1 apt1 apt10)
+24 : (unload-truck obj31 tru3 apt3)
+25 : (fly-airplane apn1 apt10 apt3)
+26 : (load-airplane obj31 apn1 apt3)
+27 : (drive-truck tru3 apt3 pos3 cit3)
+28 : (unload-airplane obj31 apn1 apt3)
+29 : (load-airplane obj31 apn1 apt3)
+30 : (load-truck obj32 tru3 pos3)
+31 : (drive-truck tru3 pos3 apt3 cit3)
+32 : (unload-truck obj32 tru3 apt3)
+33 : (load-airplane obj32 apn1 apt3)
+34 : (drive-truck tru3 apt3 pos3 cit3)
+35 : (unload-airplane obj32 apn1 apt3)
+36 : (load-airplane obj32 apn1 apt3)
+37 : (load-truck obj33 tru3 pos3)
+38 : (drive-truck tru3 pos3 apt3 cit3)
+39 : (unload-truck obj33 tru3 apt3)
+40 : (load-airplane obj33 apn1 apt3)
+41 : (load-truck obj41 tru4 pos4)
+42 : (drive-truck tru4 pos4 apt4 cit4)
+43 : (fly-airplane apn1 apt3 apt10)
+44 : (unload-truck obj41 tru4 apt4)
+45 : (fly-airplane apn1 apt10 apt4)
+46 : (load-airplane obj41 apn1 apt4)
+47 : (drive-truck tru4 apt4 pos4 cit4)
+48 : (unload-airplane obj41 apn1 apt4)
+49 : (load-airplane obj41 apn1 apt4)
+50 : (load-truck obj42 tru4 pos4)
+51 : (drive-truck tru4 pos4 apt4 cit4)
+52 : (unload-truck obj42 tru4 apt4)
+53 : (load-airplane obj42 apn1 apt4)
+54 : (drive-truck tru4 apt4 pos4 cit4)
+55 : (unload-airplane obj42 apn1 apt4)
+56 : (load-airplane obj42 apn1 apt4)
+57 : (load-truck obj43 tru4 pos4)
+58 : (drive-truck tru4 pos4 apt4 cit4)
+59 : (unload-truck obj43 tru4 apt4)
+60 : (load-airplane obj43 apn1 apt4)
+61 : (load-truck obj52 tru5 pos5)
+62 : (drive-truck tru5 pos5 apt5 cit5)
+63 : (fly-airplane apn1 apt4 apt10)
+64 : (unload-truck obj52 tru5 apt5)
+65 : (fly-airplane apn1 apt10 apt5)
+66 : (load-airplane obj52 apn1 apt5)
+67 : (drive-truck tru5 apt5 pos5 cit5)
+68 : (unload-airplane obj52 apn1 apt5)
+69 : (load-airplane obj52 apn1 apt5)
+70 : (load-truck obj53 tru5 pos5)
+71 : (load-truck obj61 tru6 pos6)
+72 : (drive-truck tru6 pos6 apt6 cit6)
+73 : (unload-airplane obj52 apn1 apt5)
+74 : (unload-truck obj53 tru5 pos5)
+75 : (fly-airplane apn1 apt5 apt10)
+76 : (fly-airplane apn2 apt10 apt5)
+77 : (unload-truck obj61 tru6 apt6)
+78 : (fly-airplane apn1 apt10 apt6)
+79 : (load-airplane obj52 apn2 apt5)
+80 : (load-airplane obj61 apn1 apt6)
+81 : (load-truck obj53 tru5 pos5)
+82 : (drive-truck tru6 apt6 pos6 cit6)
+83 : (unload-airplane obj52 apn2 apt5)
+84 : (unload-airplane obj61 apn1 apt6)
+85 : (unload-truck obj53 tru5 pos5)
+86 : (load-airplane obj52 apn2 apt5)
+87 : (load-airplane obj61 apn1 apt6)
+88 : (load-truck obj53 tru5 pos5)
+89 : (load-truck obj62 tru6 pos6)
+90 : (drive-truck tru6 pos6 apt6 cit6)
+91 : (unload-truck obj53 tru5 pos5)
+92 : (load-truck obj53 tru5 pos5)
+93 : (unload-truck obj62 tru6 apt6)
+94 : (load-airplane obj62 apn1 apt6)
+95 : (drive-truck tru6 apt6 pos6 cit6)
+96 : (unload-airplane obj62 apn1 apt6)
+97 : (unload-truck obj53 tru5 pos5)
+98 : (load-airplane obj62 apn1 apt6)
+99 : (load-truck obj53 tru5 pos5)
+100 : (load-truck obj63 tru6 pos6)
+101 : (drive-truck tru6 pos6 apt6 cit6)
+102 : (unload-truck obj53 tru5 pos5)
+103 : (load-truck obj53 tru5 pos5)
+104 : (unload-truck obj63 tru6 apt6)
+105 : (load-airplane obj63 apn1 apt6)
+106 : (load-truck obj71 tru7 pos7)
+107 : (drive-truck tru7 pos7 apt7 cit7)
+108 : (unload-truck obj53 tru5 pos5)
+109 : (fly-airplane apn2 apt5 apt14)
+110 : (unload-truck obj71 tru7 apt7)
+111 : (fly-airplane apn2 apt14 apt7)
+112 : (load-airplane obj71 apn2 apt7)
+113 : (load-truck obj53 tru5 pos5)
+114 : (drive-truck tru7 apt7 pos7 cit7)
+115 : (unload-airplane obj71 apn2 apt7)
+116 : (unload-truck obj53 tru5 pos5)
+117 : (load-airplane obj71 apn2 apt7)
+118 : (load-truck obj53 tru5 pos5)
+119 : (load-truck obj72 tru7 pos7)
+120 : (drive-truck tru7 pos7 apt7 cit7)
+121 : (unload-truck obj53 tru5 pos5)
+122 : (load-truck obj53 tru5 pos5)
+123 : (unload-truck obj72 tru7 apt7)
+124 : (load-airplane obj72 apn2 apt7)
+125 : (drive-truck tru7 apt7 pos7 cit7)
+126 : (unload-airplane obj72 apn2 apt7)
+127 : (unload-truck obj53 tru5 pos5)
+128 : (load-airplane obj72 apn2 apt7)
+129 : (load-truck obj53 tru5 pos5)
+130 : (load-truck obj73 tru7 pos7)
+131 : (drive-truck tru7 pos7 apt7 cit7)
+132 : (unload-truck obj53 tru5 pos5)
+133 : (load-truck obj53 tru5 pos5)
+134 : (unload-truck obj73 tru7 apt7)
+135 : (load-airplane obj73 apn2 apt7)
+136 : (load-truck obj81 tru8 pos8)
+137 : (drive-truck tru8 pos8 apt8 cit8)
+138 : (unload-truck obj53 tru5 pos5)
+139 : (fly-airplane apn2 apt7 apt14)
+140 : (unload-truck obj81 tru8 apt8)
+141 : (fly-airplane apn2 apt14 apt8)
+142 : (load-airplane obj81 apn2 apt8)
+143 : (load-truck obj53 tru5 pos5)
+144 : (drive-truck tru8 apt8 pos8 cit8)
+145 : (unload-airplane obj81 apn2 apt8)
+146 : (unload-truck obj53 tru5 pos5)
+147 : (load-airplane obj81 apn2 apt8)
+148 : (load-truck obj53 tru5 pos5)
+149 : (load-truck obj82 tru8 pos8)
+150 : (drive-truck tru8 pos8 apt8 cit8)
+151 : (unload-truck obj53 tru5 pos5)
+152 : (load-truck obj53 tru5 pos5)
+153 : (unload-truck obj82 tru8 apt8)
+154 : (load-airplane obj82 apn2 apt8)
+155 : (drive-truck tru8 apt8 pos8 cit8)
+156 : (unload-airplane obj82 apn2 apt8)
+157 : (unload-truck obj53 tru5 pos5)
+158 : (load-airplane obj82 apn2 apt8)
+159 : (load-truck obj53 tru5 pos5)
+160 : (load-truck obj83 tru8 pos8)
+161 : (drive-truck tru8 pos8 apt8 cit8)
+162 : (unload-truck obj53 tru5 pos5)
+163 : (load-truck obj53 tru5 pos5)
+164 : (unload-truck obj83 tru8 apt8)
+165 : (load-airplane obj83 apn2 apt8)
+166 : (load-truck obj91 tru9 pos9)
+167 : (drive-truck tru9 pos9 apt9 cit9)
+168 : (unload-truck obj53 tru5 pos5)
+169 : (fly-airplane apn2 apt8 apt14)
+170 : (unload-truck obj91 tru9 apt9)
+171 : (fly-airplane apn2 apt14 apt9)
+172 : (load-airplane obj91 apn2 apt9)
+173 : (load-truck obj53 tru5 pos5)
+174 : (drive-truck tru9 apt9 pos9 cit9)
+175 : (unload-airplane obj91 apn2 apt9)
+176 : (unload-truck obj53 tru5 pos5)
+177 : (load-airplane obj91 apn2 apt9)
+178 : (load-truck obj53 tru5 pos5)
+179 : (load-truck obj92 tru9 pos9)
+180 : (drive-truck tru9 pos9 apt9 cit9)
+181 : (unload-truck obj53 tru5 pos5)
+182 : (load-truck obj53 tru5 pos5)
+183 : (unload-truck obj92 tru9 apt9)
+184 : (load-airplane obj92 apn2 apt9)
+185 : (drive-truck tru9 apt9 pos9 cit9)
+186 : (unload-airplane obj92 apn2 apt9)
+187 : (unload-truck obj53 tru5 pos5)
+188 : (load-airplane obj92 apn2 apt9)
+189 : (load-truck obj53 tru5 pos5)
+190 : (load-truck obj93 tru9 pos9)
+191 : (drive-truck tru9 pos9 apt9 cit9)
+192 : (unload-truck obj53 tru5 pos5)
+193 : (load-truck obj53 tru5 pos5)
+194 : (unload-truck obj93 tru9 apt9)
+195 : (load-airplane obj93 apn2 apt9)
+196 : (load-truck obj101 tru10 pos10)
+197 : (drive-truck tru10 pos10 apt10 cit10)
+198 : (unload-truck obj53 tru5 pos5)
+199 : (fly-airplane apn2 apt9 apt14)
+200 : (unload-truck obj101 tru10 apt10)
+201 : (fly-airplane apn1 apt6 apt13)
+202 : (fly-airplane apn2 apt14 apt10)
+203 : (load-airplane obj101 apn2 apt10)
+204 : (load-truck obj53 tru5 pos5)
+205 : (drive-truck tru10 apt10 pos10 cit10)
+206 : (unload-truck obj53 tru5 pos5)
+207 : (load-truck obj102 tru10 pos10)
+208 : (load-truck obj53 tru5 pos5)
+209 : (drive-truck tru10 pos10 apt10 cit10)
+210 : (unload-truck obj102 tru10 apt10)
+211 : (load-airplane obj102 apn2 apt10)
+212 : (drive-truck tru10 apt10 pos10 cit10)
+213 : (unload-airplane obj102 apn2 apt10)
+214 : (load-airplane obj102 apn2 apt10)
+215 : (load-truck obj103 tru10 pos10)
+216 : (drive-truck tru10 pos10 apt10 cit10)
+217 : (unload-truck obj103 tru10 apt10)
+218 : (load-airplane obj103 apn2 apt10)
+219 : (load-truck obj111 tru11 pos11)
+220 : (drive-truck tru11 pos11 apt11 cit11)
+221 : (fly-airplane apn2 apt10 apt14)
+222 : (unload-truck obj111 tru11 apt11)
+223 : (fly-airplane apn5 apt2 apt11)
+224 : (load-airplane obj111 apn5 apt11)
+225 : (drive-truck tru11 apt11 pos11 cit11)
+226 : (unload-airplane obj111 apn5 apt11)
+227 : (load-airplane obj111 apn5 apt11)
+228 : (load-truck obj112 tru11 pos11)
+229 : (drive-truck tru11 pos11 apt11 cit11)
+230 : (unload-truck obj112 tru11 apt11)
+231 : (load-airplane obj112 apn5 apt11)
+232 : (drive-truck tru11 apt11 pos11 cit11)
+233 : (unload-airplane obj112 apn5 apt11)
+234 : (load-airplane obj112 apn5 apt11)
+235 : (load-truck obj113 tru11 pos11)
+236 : (drive-truck tru11 pos11 apt11 cit11)
+237 : (unload-truck obj113 tru11 apt11)
+238 : (load-airplane obj113 apn5 apt11)
+239 : (load-truck obj121 tru12 pos12)
+240 : (drive-truck tru12 pos12 apt12 cit12)
+241 : (fly-airplane apn5 apt11 apt12)
+242 : (unload-truck obj121 tru12 apt12)
+243 : (load-airplane obj121 apn5 apt12)
+244 : (drive-truck tru12 apt12 pos12 cit12)
+245 : (load-truck obj122 tru12 pos12)
+246 : (drive-truck tru12 pos12 apt12 cit12)
+247 : (unload-truck obj122 tru12 apt12)
+248 : (load-airplane obj122 apn5 apt12)
+249 : (drive-truck tru12 apt12 pos12 cit12)
+250 : (unload-airplane obj122 apn5 apt12)
+251 : (load-airplane obj122 apn5 apt12)
+252 : (load-truck obj123 tru12 pos12)
+253 : (drive-truck tru12 pos12 apt12 cit12)
+254 : (unload-truck obj123 tru12 apt12)
+255 : (load-airplane obj123 apn5 apt12)
+256 : (load-truck obj131 tru13 pos13)
+257 : (drive-truck tru13 pos13 apt13 cit13)
+258 : (unload-truck obj131 tru13 apt13)
+259 : (load-airplane obj131 apn1 apt13)
+260 : (drive-truck tru13 apt13 pos13 cit13)
+261 : (unload-airplane obj131 apn1 apt13)
+262 : (load-airplane obj131 apn1 apt13)
+263 : (load-truck obj132 tru13 pos13)
+264 : (drive-truck tru13 pos13 apt13 cit13)
+265 : (unload-truck obj132 tru13 apt13)
+266 : (load-airplane obj132 apn1 apt13)
+267 : (drive-truck tru13 apt13 pos13 cit13)
+268 : (unload-airplane obj132 apn1 apt13)
+269 : (load-airplane obj132 apn1 apt13)
+270 : (load-truck obj133 tru13 pos13)
+271 : (drive-truck tru13 pos13 apt13 cit13)
+272 : (unload-truck obj133 tru13 apt13)
+273 : (load-airplane obj133 apn1 apt13)
+274 : (load-truck obj141 tru14 pos14)
+275 : (drive-truck tru14 pos14 apt14 cit14)
+276 : (unload-truck obj141 tru14 apt14)
+277 : (load-airplane obj141 apn2 apt14)
+278 : (drive-truck tru14 apt14 pos14 cit14)
+279 : (unload-airplane obj141 apn2 apt14)
+280 : (load-airplane obj141 apn2 apt14)
+281 : (load-truck obj142 tru14 pos14)
+282 : (drive-truck tru14 pos14 apt14 cit14)
+283 : (unload-truck obj142 tru14 apt14)
+284 : (load-airplane obj142 apn2 apt14)
+285 : (drive-truck tru14 apt14 pos14 cit14)
+286 : (unload-airplane obj142 apn2 apt14)
+287 : (load-airplane obj142 apn2 apt14)
+288 : (load-truck obj143 tru14 pos14)
+289 : (drive-truck tru14 pos14 apt14 cit14)
+290 : (unload-truck obj143 tru14 apt14)
+291 : (load-airplane obj143 apn4 apt14)
+292 : (load-truck obj151 tru15 pos15)
+293 : (drive-truck tru15 pos15 apt15 cit15)
+294 : (unload-truck obj151 tru15 apt15)
+295 : (load-airplane obj151 apn3 apt15)
+296 : (drive-truck tru15 apt15 pos15 cit15)
+297 : (unload-airplane obj151 apn3 apt15)
+298 : (load-airplane obj151 apn3 apt15)
+299 : (load-truck obj152 tru15 pos15)
+300 : (drive-truck tru15 pos15 apt15 cit15)
+301 : (unload-truck obj152 tru15 apt15)
+302 : (load-airplane obj152 apn3 apt15)
+303 : (drive-truck tru15 apt15 pos15 cit15)
+304 : (unload-airplane obj152 apn3 apt15)
+305 : (load-airplane obj152 apn3 apt15)
+306 : (load-truck obj153 tru15 pos15)
+307 : (drive-truck tru15 pos15 apt15 cit15)
+308 : (unload-truck obj153 tru15 apt15)
+309 : (load-airplane obj153 apn3 apt15)
+310 : (load-truck obj161 tru16 pos16)
+311 : (drive-truck tru16 pos16 apt16 cit16)
+312 : (fly-airplane apn2 apt14 apt11)
+313 : (unload-truck obj161 tru16 apt16)
+314 : (fly-airplane apn2 apt11 apt13)
+315 : (fly-airplane apn5 apt12 apt16)
+316 : (fly-airplane apn3 apt15 apt16)
+317 : (load-airplane obj161 apn5 apt16)
+318 : (drive-truck tru16 apt16 pos16 cit16)
+319 : (load-truck obj162 tru16 pos16)
+320 : (drive-truck tru16 pos16 apt16 cit16)
+321 : (unload-truck obj162 tru16 apt16)
+322 : (load-airplane obj162 apn5 apt16)
+323 : (drive-truck tru16 apt16 pos16 cit16)
+324 : (unload-airplane obj162 apn5 apt16)
+325 : (load-airplane obj162 apn5 apt16)
+326 : (load-truck obj163 tru16 pos16)
+327 : (drive-truck tru16 pos16 apt16 cit16)
+328 : (unload-truck obj163 tru16 apt16)
+329 : (load-airplane obj163 apn3 apt16)
+330 : (load-truck obj171 tru17 pos17)
+331 : (drive-truck tru17 pos17 apt17 cit17)
+332 : (fly-airplane apn5 apt16 apt17)
+333 : (unload-truck obj171 tru17 apt17)
+334 : (load-airplane obj171 apn5 apt17)
+335 : (drive-truck tru17 apt17 pos17 cit17)
+336 : (load-truck obj172 tru17 pos17)
+337 : (drive-truck tru17 pos17 apt17 cit17)
+338 : (unload-truck obj172 tru17 apt17)
+339 : (load-airplane obj172 apn5 apt17)
+340 : (drive-truck tru17 apt17 pos17 cit17)
+341 : (unload-airplane obj172 apn5 apt17)
+342 : (load-airplane obj172 apn5 apt17)
+343 : (load-truck obj173 tru17 pos17)
+344 : (drive-truck tru17 pos17 apt17 cit17)
+345 : (unload-truck obj173 tru17 apt17)
+346 : (load-airplane obj173 apn5 apt17)
+347 : (fly-airplane apn5 apt17 apt13)
+348 : (unload-airplane obj11 apn1 apt13)
+349 : (fly-airplane apn3 apt16 apt13)
+350 : (fly-airplane apn4 apt14 apt13)
+351 : (load-airplane obj11 apn4 apt13)
+352 : (fly-airplane apn3 apt13 apt10)
+353 : (fly-airplane apn4 apt13 apt11)
+354 : (fly-airplane apn4 apt11 apt10)
+355 : (fly-airplane apn4 apt10 apt17)
+356 : (fly-airplane apn4 apt17 apt16)
+357 : (fly-airplane apn4 apt16 apt12)
+358 : (fly-airplane apn4 apt12 apt15)
+359 : (unload-airplane obj11 apn4 apt15)
+360 : (load-truck obj11 tru15 apt15)
+361 : (fly-airplane apn3 apt10 apt11)
+362 : (unload-airplane obj21 apn5 apt13)
+363 : (unload-truck obj11 tru15 apt15)
+364 : (fly-airplane apn3 apt11 apt7)
+365 : (fly-airplane apn3 apt7 apt6)
+366 : (fly-airplane apn3 apt6 apt8)
+367 : (fly-airplane apn3 apt8 apt9)
+368 : (fly-airplane apn3 apt9 apt5)
+369 : (fly-airplane apn3 apt5 apt17)
+370 : (fly-airplane apn3 apt17 apt13)
+371 : (fly-airplane apn4 apt15 apt13)
+372 : (fly-airplane apn5 apt13 apt1)
+373 : (load-airplane obj21 apn4 apt13)
+374 : (load-truck obj11 tru15 apt15)
+375 : (fly-airplane apn4 apt13 apt11)
+376 : (fly-airplane apn5 apt1 apt13)
+377 : (fly-airplane apn4 apt11 apt1)
+378 : (fly-airplane apn4 apt1 apt10)
+379 : (fly-airplane apn4 apt10 apt17)
+380 : (fly-airplane apn4 apt17 apt14)
+381 : (fly-airplane apn4 apt14 apt4)
+382 : (fly-airplane apn4 apt4 apt15)
+383 : (unload-airplane obj21 apn4 apt15)
+384 : (load-truck obj21 tru15 apt15)
+385 : (fly-airplane apn4 apt15 apt13)
+386 : (unload-airplane obj23 apn5 apt13)
+387 : (load-airplane obj23 apn4 apt13)
+388 : (fly-airplane apn4 apt13 apt11)
+389 : (fly-airplane apn4 apt11 apt1)
+390 : (fly-airplane apn4 apt1 apt10)
+391 : (fly-airplane apn4 apt10 apt17)
+392 : (fly-airplane apn4 apt17 apt12)
+393 : (fly-airplane apn4 apt12 apt8)
+394 : (fly-airplane apn4 apt8 apt16)
+395 : (fly-airplane apn4 apt16 apt6)
+396 : (unload-airplane obj23 apn4 apt6)
+397 : (load-truck obj23 tru6 apt6)
+398 : (fly-airplane apn1 apt13 apt3)
+399 : (unload-truck obj23 tru6 apt6)
+400 : (unload-airplane obj32 apn1 apt3)
+401 : (fly-airplane apn4 apt6 apt3)
+402 : (fly-airplane apn1 apt3 apt1)
+403 : (load-airplane obj32 apn4 apt3)
+404 : (load-truck obj23 tru6 apt6)
+405 : (fly-airplane apn1 apt1 apt3)
+406 : (fly-airplane apn2 apt13 apt17)
+407 : (fly-airplane apn3 apt13 apt7)
+408 : (fly-airplane apn4 apt3 apt11)
+409 : (fly-airplane apn5 apt13 apt3)
+410 : (unload-truck obj23 tru6 apt6)
+411 : (fly-airplane apn4 apt11 apt10)
+412 : (load-truck obj23 tru6 apt6)
+413 : (unload-airplane obj32 apn4 apt10)
+414 : (load-truck obj32 tru10 apt10)
+415 : (fly-airplane apn3 apt7 apt3)
+416 : (unload-airplane obj41 apn1 apt3)
+417 : (unload-truck obj23 tru6 apt6)
+418 : (unload-truck obj32 tru10 apt10)
+419 : (fly-airplane apn2 apt17 apt3)
+420 : (fly-airplane apn4 apt10 apt3)
+421 : (load-airplane obj41 apn4 apt3)
+422 : (load-truck obj23 tru6 apt6)
+423 : (load-truck obj32 tru10 apt10)
+424 : (fly-airplane apn4 apt3 apt11)
+425 : (fly-airplane apn4 apt11 apt1)
+426 : (fly-airplane apn4 apt1 apt10)
+427 : (fly-airplane apn4 apt10 apt17)
+428 : (fly-airplane apn4 apt17 apt5)
+429 : (fly-airplane apn4 apt5 apt14)
+430 : (fly-airplane apn4 apt14 apt7)
+431 : (fly-airplane apn4 apt7 apt8)
+432 : (fly-airplane apn4 apt8 apt2)
+433 : (fly-airplane apn4 apt2 apt9)
+434 : (fly-airplane apn4 apt9 apt15)
+435 : (fly-airplane apn4 apt15 apt6)
+436 : (unload-airplane obj41 apn4 apt6)
+437 : (load-truck obj41 tru6 apt6)
+438 : (fly-airplane apn4 apt6 apt3)
+439 : (unload-airplane obj52 apn2 apt3)
+440 : (unload-truck obj41 tru6 apt6)
+441 : (load-airplane obj52 apn4 apt3)
+442 : (load-truck obj41 tru6 apt6)
+443 : (fly-airplane apn4 apt3 apt11)
+444 : (fly-airplane apn4 apt11 apt1)
+445 : (fly-airplane apn4 apt1 apt10)
+446 : (fly-airplane apn4 apt10 apt17)
+447 : (fly-airplane apn4 apt17 apt7)
+448 : (fly-airplane apn4 apt7 apt14)
+449 : (fly-airplane apn4 apt14 apt4)
+450 : (fly-airplane apn4 apt4 apt2)
+451 : (fly-airplane apn4 apt2 apt9)
+452 : (fly-airplane apn4 apt9 apt15)
+453 : (fly-airplane apn4 apt15 apt6)
+454 : (fly-airplane apn4 apt6 apt12)
+455 : (fly-airplane apn4 apt12 apt8)
+456 : (unload-airplane obj52 apn4 apt8)
+457 : (load-truck obj52 tru8 apt8)
+458 : (fly-airplane apn1 apt3 apt11)
+459 : (fly-airplane apn1 apt11 apt1)
+460 : (fly-airplane apn1 apt1 apt10)
+461 : (fly-airplane apn1 apt10 apt5)
+462 : (fly-airplane apn1 apt5 apt7)
+463 : (unload-airplane obj62 apn1 apt7)
+464 : (load-truck obj62 tru7 apt7)
+465 : (fly-airplane apn1 apt7 apt6)
+466 : (unload-airplane obj63 apn1 apt6)
+467 : (fly-airplane apn4 apt8 apt6)
+468 : (fly-airplane apn3 apt3 apt14)
+469 : (fly-airplane apn3 apt14 apt6)
+470 : (fly-airplane apn5 apt3 apt6)
+471 : (fly-airplane apn2 apt3 apt6)
+472 : (load-airplane obj63 apn2 apt6)
+473 : (fly-airplane apn2 apt6 apt7)
+474 : (fly-airplane apn3 apt6 apt11)
+475 : (fly-airplane apn2 apt7 apt14)
+476 : (fly-airplane apn2 apt14 apt5)
+477 : (fly-airplane apn2 apt5 apt11)
+478 : (fly-airplane apn2 apt11 apt1)
+479 : (unload-airplane obj63 apn2 apt1)
+480 : (load-truck obj63 tru1 apt1)
+481 : (fly-airplane apn3 apt11 apt1)
+482 : (unload-airplane obj71 apn2 apt1)
+483 : (fly-airplane apn1 apt6 apt1)
+484 : (fly-airplane apn5 apt6 apt1)
+485 : (fly-airplane apn4 apt6 apt1)
+486 : (load-airplane obj71 apn4 apt1)
+487 : (fly-airplane apn1 apt1 apt2)
+488 : (fly-airplane apn4 apt1 apt11)
+489 : (fly-airplane apn4 apt11 apt10)
+490 : (fly-airplane apn4 apt10 apt17)
+491 : (fly-airplane apn4 apt17 apt16)
+492 : (fly-airplane apn4 apt16 apt4)
+493 : (fly-airplane apn4 apt4 apt15)
+494 : (fly-airplane apn4 apt15 apt2)
+495 : (fly-airplane apn4 apt2 apt14)
+496 : (fly-airplane apn4 apt14 apt8)
+497 : (fly-airplane apn4 apt8 apt12)
+498 : (fly-airplane apn4 apt12 apt5)
+499 : (drive-truck tru13 apt13 pos13 cit13)
+500 : (drive-truck tru3 apt3 pos3 cit3)
+501 : (drive-truck tru5 pos5 apt5 cit5)
+502 : (drive-truck tru6 apt6 pos6 cit6)
+503 : (drive-truck tru9 apt9 pos9 cit9)
+504 : (fly-airplane apn2 apt1 apt9)
+505 : (fly-airplane apn3 apt1 apt5)
+506 : (fly-airplane apn5 apt1 apt9)
+507 : (unload-airplane obj71 apn4 apt5)
+508 : (load-truck obj71 tru5 apt5)
+509 : (fly-airplane apn3 apt5 apt7)
+510 : (unload-airplane obj73 apn2 apt9)
+511 : (unload-truck obj71 tru5 apt5)
+512 : (fly-airplane apn3 apt7 apt4)
+513 : (fly-airplane apn3 apt4 apt11)
+514 : (fly-airplane apn3 apt11 apt9)
+515 : (fly-airplane apn1 apt2 apt4)
+516 : (fly-airplane apn1 apt4 apt10)
+517 : (fly-airplane apn1 apt10 apt9)
+518 : (fly-airplane apn4 apt5 apt9)
+519 : (load-airplane obj73 apn4 apt9)
+520 : (load-truck obj71 tru5 apt5)
+521 : (fly-airplane apn4 apt9 apt10)
+522 : (fly-airplane apn4 apt10 apt11)
+523 : (fly-airplane apn4 apt11 apt17)
+524 : (fly-airplane apn4 apt17 apt4)
+525 : (fly-airplane apn4 apt4 apt16)
+526 : (fly-airplane apn4 apt16 apt1)
+527 : (fly-airplane apn4 apt1 apt8)
+528 : (fly-airplane apn4 apt8 apt2)
+529 : (fly-airplane apn4 apt2 apt14)
+530 : (fly-airplane apn4 apt14 apt12)
+531 : (fly-airplane apn4 apt12 apt15)
+532 : (fly-airplane apn4 apt15 apt13)
+533 : (fly-airplane apn4 apt13 apt3)
+534 : (drive-truck tru3 pos3 apt3 cit3)
+535 : (drive-truck tru5 apt5 pos5 cit5)
+536 : (fly-airplane apn1 apt9 apt7)
+537 : (fly-airplane apn2 apt9 apt8)
+538 : (fly-airplane apn3 apt9 apt8)
+539 : (fly-airplane apn5 apt9 apt2)
+540 : (unload-airplane obj73 apn4 apt3)
+541 : (load-truck obj73 tru3 apt3)
+542 : (unload-airplane obj81 apn2 apt8)
+543 : (unload-truck obj73 tru3 apt3)
+544 : (fly-airplane apn1 apt7 apt8)
+545 : (fly-airplane apn5 apt2 apt8)
+546 : (fly-airplane apn4 apt3 apt8)
+547 : (load-airplane obj81 apn4 apt8)
+548 : (load-truck obj73 tru3 apt3)
+549 : (fly-airplane apn4 apt8 apt10)
+550 : (fly-airplane apn5 apt8 apt10)
+551 : (unload-truck obj73 tru3 apt3)
+552 : (fly-airplane apn4 apt10 apt11)
+553 : (fly-airplane apn4 apt11 apt17)
+554 : (fly-airplane apn4 apt17 apt16)
+555 : (fly-airplane apn4 apt16 apt4)
+556 : (fly-airplane apn4 apt4 apt1)
+557 : (fly-airplane apn4 apt1 apt15)
+558 : (fly-airplane apn4 apt15 apt2)
+559 : (load-truck obj73 tru3 apt3)
+560 : (unload-airplane obj81 apn4 apt2)
+561 : (load-truck obj81 tru2 apt2)
+562 : (unload-airplane obj82 apn2 apt8)
+563 : (unload-truck obj73 tru3 apt3)
+564 : (load-truck obj82 tru8 apt8)
+565 : (fly-airplane apn5 apt10 apt8)
+566 : (unload-truck obj82 tru8 apt8)
+567 : (fly-airplane apn4 apt2 apt8)
+568 : (load-airplane obj82 apn4 apt8)
+569 : (load-truck obj73 tru3 apt3)
+570 : (fly-airplane apn4 apt8 apt10)
+571 : (unload-truck obj73 tru3 apt3)
+572 : (fly-airplane apn4 apt10 apt11)
+573 : (fly-airplane apn4 apt11 apt17)
+574 : (fly-airplane apn4 apt17 apt4)
+575 : (fly-airplane apn4 apt4 apt16)
+576 : (fly-airplane apn4 apt16 apt1)
+577 : (fly-airplane apn4 apt1 apt13)
+578 : (fly-airplane apn4 apt13 apt12)
+579 : (fly-airplane apn4 apt12 apt14)
+580 : (fly-airplane apn4 apt14 apt15)
+581 : (fly-airplane apn4 apt15 apt2)
+582 : (fly-airplane apn4 apt2 apt5)
+583 : (fly-airplane apn4 apt5 apt9)
+584 : (fly-airplane apn4 apt9 apt3)
+585 : (load-truck obj73 tru3 apt3)
+586 : (unload-airplane obj82 apn4 apt3)
+587 : (load-truck obj82 tru3 apt3)
+588 : (unload-airplane obj83 apn2 apt8)
+589 : (unload-truck obj73 tru3 apt3)
+590 : (load-truck obj83 tru8 apt8)
+591 : (fly-airplane apn4 apt3 apt8)
+592 : (unload-truck obj83 tru8 apt8)
+593 : (load-airplane obj83 apn4 apt8)
+594 : (load-truck obj73 tru3 apt3)
+595 : (fly-airplane apn4 apt8 apt10)
+596 : (fly-airplane apn4 apt10 apt11)
+597 : (fly-airplane apn4 apt11 apt17)
+598 : (drive-truck tru11 apt11 pos11 cit11)
+599 : (unload-airplane obj83 apn4 apt17)
+600 : (load-truck obj83 tru17 apt17)
+601 : (drive-truck tru11 pos11 apt11 cit11)
+602 : (fly-airplane apn4 apt17 apt8)
+603 : (unload-airplane obj101 apn2 apt8)
+604 : (load-airplane obj101 apn4 apt8)
+605 : (fly-airplane apn4 apt8 apt10)
+606 : (fly-airplane apn4 apt10 apt11)
+607 : (fly-airplane apn4 apt11 apt17)
+608 : (fly-airplane apn4 apt17 apt16)
+609 : (fly-airplane apn4 apt16 apt4)
+610 : (fly-airplane apn4 apt4 apt1)
+611 : (fly-airplane apn4 apt1 apt12)
+612 : (fly-airplane apn4 apt12 apt13)
+613 : (fly-airplane apn4 apt13 apt2)
+614 : (fly-airplane apn4 apt2 apt14)
+615 : (fly-airplane apn4 apt14 apt15)
+616 : (fly-airplane apn4 apt15 apt5)
+617 : (fly-airplane apn4 apt5 apt9)
+618 : (drive-truck tru3 apt3 pos3 cit3)
+619 : (drive-truck tru7 apt7 pos7 cit7)
+620 : (drive-truck tru9 pos9 apt9 cit9)
+621 : (fly-airplane apn1 apt8 apt17)
+622 : (fly-airplane apn2 apt8 apt10)
+623 : (fly-airplane apn3 apt8 apt11)
+624 : (fly-airplane apn5 apt8 apt10)
+625 : (unload-airplane obj101 apn4 apt9)
+626 : (load-truck obj101 tru9 apt9)
+627 : (unload-airplane obj103 apn2 apt10)
+628 : (unload-truck obj101 tru9 apt9)
+629 : (fly-airplane apn3 apt11 apt10)
+630 : (fly-airplane apn1 apt17 apt10)
+631 : (fly-airplane apn4 apt9 apt10)
+632 : (load-airplane obj103 apn4 apt10)
+633 : (load-truck obj101 tru9 apt9)
+634 : (fly-airplane apn4 apt10 apt11)
+635 : (fly-airplane apn4 apt11 apt17)
+636 : (fly-airplane apn4 apt17 apt4)
+637 : (fly-airplane apn4 apt4 apt16)
+638 : (fly-airplane apn4 apt16 apt1)
+639 : (fly-airplane apn4 apt1 apt15)
+640 : (fly-airplane apn4 apt15 apt12)
+641 : (fly-airplane apn4 apt12 apt14)
+642 : (fly-airplane apn4 apt14 apt2)
+643 : (fly-airplane apn4 apt2 apt7)
+644 : (fly-airplane apn4 apt7 apt3)
+645 : (drive-truck tru3 pos3 apt3 cit3)
+646 : (drive-truck tru7 pos7 apt7 cit7)
+647 : (drive-truck tru8 apt8 pos8 cit8)
+648 : (drive-truck tru9 apt9 pos9 cit9)
+649 : (fly-airplane apn1 apt10 apt8)
+650 : (fly-airplane apn2 apt10 apt8)
+651 : (fly-airplane apn3 apt10 apt8)
+652 : (fly-airplane apn5 apt10 apt8)
+653 : (unload-airplane obj103 apn4 apt3)
+654 : (load-truck obj103 tru3 apt3)
+655 : (fly-airplane apn5 apt8 apt12)
+656 : (unload-truck obj103 tru3 apt3)
+657 : (fly-airplane apn5 apt12 apt17)
+658 : (fly-airplane apn5 apt17 apt16)
+659 : (fly-airplane apn5 apt16 apt15)
+660 : (fly-airplane apn5 apt15 apt4)
+661 : (fly-airplane apn5 apt4 apt7)
+662 : (load-truck obj103 tru3 apt3)
+663 : (unload-airplane obj112 apn5 apt7)
+664 : (load-truck obj112 tru7 apt7)
+665 : (fly-airplane apn5 apt7 apt17)
+666 : (unload-truck obj103 tru3 apt3)
+667 : (fly-airplane apn5 apt17 apt2)
+668 : (fly-airplane apn5 apt2 apt11)
+669 : (load-truck obj103 tru3 apt3)
+670 : (unload-airplane obj121 apn5 apt11)
+671 : (load-truck obj121 tru11 apt11)
+672 : (fly-airplane apn5 apt11 apt16)
+673 : (unload-truck obj103 tru3 apt3)
+674 : (unload-airplane obj123 apn5 apt16)
+675 : (fly-airplane apn3 apt8 apt11)
+676 : (fly-airplane apn3 apt11 apt7)
+677 : (fly-airplane apn3 apt7 apt4)
+678 : (fly-airplane apn3 apt4 apt5)
+679 : (fly-airplane apn3 apt5 apt17)
+680 : (fly-airplane apn3 apt17 apt16)
+681 : (fly-airplane apn1 apt8 apt17)
+682 : (fly-airplane apn1 apt17 apt16)
+683 : (fly-airplane apn2 apt8 apt11)
+684 : (fly-airplane apn2 apt11 apt14)
+685 : (fly-airplane apn2 apt14 apt5)
+686 : (fly-airplane apn2 apt5 apt17)
+687 : (fly-airplane apn2 apt17 apt16)
+688 : (fly-airplane apn4 apt3 apt16)
+689 : (load-airplane obj123 apn4 apt16)
+690 : (load-truck obj103 tru3 apt3)
+691 : (fly-airplane apn1 apt16 apt2)
+692 : (fly-airplane apn4 apt16 apt11)
+693 : (unload-truck obj103 tru3 apt3)
+694 : (fly-airplane apn4 apt11 apt17)
+695 : (fly-airplane apn4 apt17 apt4)
+696 : (fly-airplane apn4 apt4 apt1)
+697 : (fly-airplane apn4 apt1 apt2)
+698 : (fly-airplane apn4 apt2 apt15)
+699 : (fly-airplane apn4 apt15 apt14)
+700 : (fly-airplane apn4 apt14 apt8)
+701 : (fly-airplane apn4 apt8 apt9)
+702 : (fly-airplane apn4 apt9 apt10)
+703 : (load-truck obj103 tru3 apt3)
+704 : (unload-airplane obj123 apn4 apt10)
+705 : (load-truck obj123 tru10 apt10)
+706 : (fly-airplane apn1 apt2 apt4)
+707 : (unload-truck obj103 tru3 apt3)
+708 : (fly-airplane apn1 apt4 apt15)
+709 : (fly-airplane apn1 apt15 apt5)
+710 : (fly-airplane apn1 apt5 apt7)
+711 : (fly-airplane apn1 apt7 apt14)
+712 : (fly-airplane apn1 apt14 apt17)
+713 : (fly-airplane apn1 apt17 apt11)
+714 : (fly-airplane apn1 apt11 apt12)
+715 : (fly-airplane apn1 apt12 apt3)
+716 : (fly-airplane apn1 apt3 apt6)
+717 : (fly-airplane apn1 apt6 apt1)
+718 : (fly-airplane apn1 apt1 apt9)
+719 : (drive-truck tru10 apt10 pos10 cit10)
+720 : (drive-truck tru16 apt16 pos16 cit16)
+721 : (fly-airplane apn2 apt16 apt9)
+722 : (fly-airplane apn3 apt16 apt15)
+723 : (fly-airplane apn4 apt10 apt14)
+724 : (fly-airplane apn5 apt16 apt8)
+725 : (unload-airplane obj132 apn1 apt9)
+726 : (drive-truck tru9 pos9 apt9 cit9)
+727 : (load-truck obj103 tru3 apt3)
+728 : (load-truck obj132 tru9 apt9)
+729 : (unload-airplane obj152 apn3 apt15)
+730 : (unload-truck obj103 tru3 apt3)
+731 : (load-truck obj152 tru15 apt15)
+732 : (fly-airplane apn2 apt9 apt7)
+733 : (unload-truck obj152 tru15 apt15)
+734 : (fly-airplane apn2 apt7 apt14)
+735 : (fly-airplane apn2 apt14 apt5)
+736 : (fly-airplane apn2 apt5 apt11)
+737 : (fly-airplane apn2 apt11 apt4)
+738 : (fly-airplane apn2 apt4 apt17)
+739 : (fly-airplane apn2 apt17 apt15)
+740 : (fly-airplane apn4 apt14 apt11)
+741 : (fly-airplane apn4 apt11 apt17)
+742 : (fly-airplane apn4 apt17 apt15)
+743 : (fly-airplane apn5 apt8 apt15)
+744 : (fly-airplane apn1 apt9 apt15)
+745 : (load-airplane obj152 apn1 apt15)
+746 : (load-truck obj103 tru3 apt3)
+747 : (fly-airplane apn1 apt15 apt10)
+748 : (unload-truck obj103 tru3 apt3)
+749 : (fly-airplane apn1 apt10 apt17)
+750 : (fly-airplane apn1 apt17 apt16)
+751 : (fly-airplane apn1 apt16 apt5)
+752 : (fly-airplane apn1 apt5 apt4)
+753 : (fly-airplane apn1 apt4 apt7)
+754 : (fly-airplane apn1 apt7 apt11)
+755 : (fly-airplane apn1 apt11 apt2)
+756 : (fly-airplane apn1 apt2 apt13)
+757 : (fly-airplane apn1 apt13 apt14)
+758 : (fly-airplane apn1 apt14 apt9)
+759 : (fly-airplane apn1 apt9 apt1)
+760 : (fly-airplane apn1 apt1 apt6)
+761 : (drive-truck tru10 pos10 apt10 cit10)
+762 : (drive-truck tru12 apt12 pos12 cit12)
+763 : (drive-truck tru6 pos6 apt6 cit6)
+764 : (fly-airplane apn2 apt15 apt8)
+765 : (fly-airplane apn3 apt15 apt8)
+766 : (fly-airplane apn4 apt15 apt8)
+767 : (fly-airplane apn5 apt15 apt8)
+768 : (load-truck obj103 tru3 apt3)
+769 : (unload-airplane obj152 apn1 apt6)
+770 : (load-truck obj152 tru6 apt6)
+771 : (drive-truck tru1 apt1 pos1 cit1)
+772 : (drive-truck tru10 apt10 pos10 cit10)
+773 : (drive-truck tru11 apt11 pos11 cit11)
+774 : (drive-truck tru14 apt14 pos14 cit14)
+775 : (drive-truck tru15 apt15 pos15 cit15)
+776 : (drive-truck tru17 apt17 pos17 cit17)
+777 : (drive-truck tru2 apt2 pos2 cit2)
+778 : (drive-truck tru3 apt3 pos3 cit3)
+779 : (drive-truck tru4 apt4 pos4 cit4)
+780 : (drive-truck tru7 apt7 pos7 cit7)
+781 : (drive-truck tru8 pos8 apt8 cit8)
+782 : (drive-truck tru9 apt9 pos9 cit9)
+783 : (fly-airplane apn1 apt6 apt11)
+784 : (fly-airplane apn2 apt8 apt16)
+785 : (fly-airplane apn3 apt8 apt12)
+786 : (fly-airplane apn4 apt8 apt12)
+787 : (unload-airplane obj161 apn5 apt8)
+788 : (unload-truck obj152 tru6 apt6)
+789 : (load-truck obj152 tru6 apt6)
+790 : (load-truck obj161 tru8 apt8)
+791 : (fly-airplane apn2 apt16 apt12)
+792 : (unload-airplane obj163 apn3 apt12)
+793 : (unload-truck obj152 tru6 apt6)
+794 : (unload-truck obj161 tru8 apt8)
+795 : (fly-airplane apn1 apt11 apt17)
+796 : (fly-airplane apn1 apt17 apt12)
+797 : (fly-airplane apn5 apt8 apt12)
+798 : (load-airplane obj163 apn5 apt12)
+799 : (load-truck obj152 tru6 apt6)
+800 : (load-truck obj161 tru8 apt8)
+801 : (fly-airplane apn5 apt12 apt17)
+802 : (unload-truck obj152 tru6 apt6)
+803 : (unload-truck obj161 tru8 apt8)
+804 : (fly-airplane apn5 apt17 apt3)
+805 : (fly-airplane apn5 apt3 apt6)
+806 : (fly-airplane apn5 apt6 apt1)
+807 : (fly-airplane apn5 apt1 apt9)
+808 : (fly-airplane apn5 apt9 apt10)
+809 : (fly-airplane apn5 apt10 apt5)
+810 : (fly-airplane apn5 apt5 apt15)
+811 : (fly-airplane apn5 apt15 apt2)
+812 : (fly-airplane apn5 apt2 apt8)
+813 : (load-truck obj152 tru6 apt6)
+814 : (load-truck obj161 tru8 apt8)
+815 : (unload-airplane obj163 apn5 apt8)
+816 : (load-truck obj163 tru8 apt8)
+817 : (fly-airplane apn5 apt8 apt17)
+818 : (unload-truck obj152 tru6 apt6)
+819 : (unload-truck obj161 tru8 apt8)
+820 : (unload-airplane obj172 apn5 apt17)
+821 : (fly-airplane apn2 apt12 apt5)
+822 : (fly-airplane apn2 apt5 apt14)
+823 : (fly-airplane apn2 apt14 apt7)
+824 : (fly-airplane apn2 apt7 apt11)
+825 : (fly-airplane apn2 apt11 apt4)
+826 : (fly-airplane apn2 apt4 apt2)
+827 : (fly-airplane apn2 apt2 apt17)
+828 : (fly-airplane apn4 apt12 apt17)
+829 : (fly-airplane apn1 apt12 apt17)
+830 : (fly-airplane apn3 apt12 apt17)
+831 : (fly-airplane apn5 apt17 apt2)
+832 : (load-airplane obj172 apn3 apt17)
+833 : (load-truck obj152 tru6 apt6)
+834 : (load-truck obj161 tru8 apt8)
+835 : (drive-truck tru17 pos17 apt17 cit17)
+836 : (fly-airplane apn3 apt17 apt15)
+837 : (fly-airplane apn5 apt2 apt17)
+838 : (unload-truck obj152 tru6 apt6)
+839 : (unload-truck obj161 tru8 apt8)
+840 : (fly-airplane apn1 apt17 apt15)
+841 : (fly-airplane apn3 apt15 apt16)
+842 : (fly-airplane apn5 apt17 apt15)
+843 : (fly-airplane apn3 apt16 apt6)
+844 : (fly-airplane apn3 apt6 apt2)
+845 : (fly-airplane apn3 apt2 apt5)
+846 : (fly-airplane apn3 apt5 apt3)
+847 : (fly-airplane apn3 apt3 apt7)
+848 : (fly-airplane apn3 apt7 apt1)
+849 : (fly-airplane apn3 apt1 apt4)
+850 : (drive-truck tru4 pos4 apt4 cit4)
+851 : (fly-airplane apn1 apt15 apt10)
+852 : (fly-airplane apn5 apt15 apt10)
+853 : (unload-airplane obj172 apn3 apt4)
+854 : (load-truck obj152 tru6 apt6)
+855 : (load-truck obj161 tru8 apt8)
+856 : (load-truck obj172 tru4 apt4)
+857 : (drive-truck tru4 apt4 pos4 cit4)
+858 : (drive-truck tru5 pos5 apt5 cit5)
+859 : (drive-truck tru4 pos4 apt4 cit4)
+860 : (unload-truck obj152 tru6 apt6)
+861 : (unload-truck obj161 tru8 apt8)
+862 : (unload-truck obj53 tru5 apt5)
+863 : (drive-truck tru4 apt4 pos4 cit4)
+864 : (drive-truck tru5 apt5 pos5 cit5)
+865 : (load-truck obj152 tru6 apt6)
+866 : (load-truck obj161 tru8 apt8)
+867 : (drive-truck tru6 apt6 pos6 cit6)
+868 : (drive-truck tru8 apt8 pos8 cit8)
+869 : (drive-truck tru17 apt17 pos17 cit17)
+870 : (unload-airplane obj133 apn1 apt10)
+871 : (unload-truck obj71 tru5 pos5)
+872 : (load-airplane obj133 apn5 apt10)
+873 : (unload-airplane obj131 apn1 apt10)
+874 : (unload-airplane obj33 apn1 apt10)
+875 : (unload-truck obj23 tru6 pos6)
+876 : (load-airplane obj33 apn5 apt10)
+877 : (load-airplane obj131 apn5 apt10)
+878 : (unload-airplane obj43 apn1 apt10)
+879 : (load-airplane obj43 apn5 apt10)
+880 : (unload-airplane obj42 apn1 apt10)
+881 : (load-airplane obj42 apn5 apt10)
+882 : (unload-airplane obj13 apn1 apt10)
+883 : (load-airplane obj13 apn5 apt10)
+884 : (unload-airplane obj31 apn1 apt10)
+885 : (load-airplane obj31 apn5 apt10)
+886 : (unload-airplane obj61 apn1 apt10)
+887 : (load-airplane obj61 apn5 apt10)
+888 : (unload-airplane obj93 apn2 apt17)
+889 : (load-airplane obj93 apn4 apt17)
+890 : (unload-airplane obj141 apn2 apt17)
+891 : (load-airplane obj141 apn4 apt17)
+892 : (unload-airplane obj91 apn2 apt17)
+893 : (load-airplane obj91 apn4 apt17)
+894 : (fly-airplane apn1 apt10 apt13)
+895 : (unload-airplane obj142 apn2 apt17)
+896 : (unload-airplane obj92 apn2 apt17)
+897 : (unload-truck obj163 tru8 pos8)
+898 : (load-airplane obj92 apn4 apt17)
+899 : (load-airplane obj142 apn4 apt17)
+900 : (unload-airplane obj72 apn2 apt17)
+901 : (load-airplane obj72 apn4 apt17)
+902 : (unload-airplane obj102 apn2 apt17)
+903 : (load-airplane obj102 apn4 apt17)
+904 : (drive-truck tru17 pos17 apt17 cit17)
+905 : (drive-truck tru4 pos4 apt4 cit4)
+906 : (drive-truck tru5 pos5 apt5 cit5)
+907 : (drive-truck tru6 pos6 apt6 cit6)
+908 : (drive-truck tru8 pos8 apt8 cit8)
+909 : (fly-airplane apn1 apt13 apt10)
+910 : (unload-airplane obj153 apn3 apt4)
+911 : (load-truck obj153 tru4 apt4)
+912 : (fly-airplane apn5 apt10 apt4)
+913 : (unload-truck obj153 tru4 apt4)
+914 : (unload-truck obj172 tru4 apt4)
+915 : (load-truck obj172 tru4 apt4)
+916 : (drive-truck tru17 apt17 pos17 cit17)
+917 : (drive-truck tru4 apt4 pos4 cit4)
+918 : (drive-truck tru5 apt5 pos5 cit5)
+919 : (fly-airplane apn1 apt10 apt13)
+920 : (fly-airplane apn2 apt17 apt4)
+921 : (load-airplane obj153 apn5 apt4)
+922 : (drive-truck tru6 apt6 pos6 cit6)
+923 : (drive-truck tru8 apt8 pos8 cit8)
+924 : (fly-airplane apn3 apt4 apt10)
+925 : (fly-airplane apn3 apt10 apt11)
+926 : (fly-airplane apn3 apt11 apt7)
+927 : (fly-airplane apn3 apt7 apt6)
+928 : (fly-airplane apn3 apt6 apt8)
+929 : (fly-airplane apn3 apt8 apt13)
+930 : (fly-airplane apn3 apt13 apt5)
+931 : (fly-airplane apn3 apt5 apt17)
+932 : (drive-truck tru17 pos17 apt17 cit17)
+933 : (drive-truck tru4 pos4 apt4 cit4)
+934 : (drive-truck tru5 pos5 apt5 cit5)
+935 : (drive-truck tru6 pos6 apt6 cit6)
+936 : (drive-truck tru8 pos8 apt8 cit8)
+937 : (fly-airplane apn1 apt13 apt10)
+938 : (fly-airplane apn2 apt4 apt17)
+939 : (fly-airplane apn3 apt17 apt4)
+940 : (unload-airplane obj92 apn4 apt17)
+941 : (load-truck obj92 tru17 apt17)
+942 : (unload-airplane obj93 apn4 apt17)
+943 : (unload-truck obj92 tru17 apt17)
+944 : (load-truck obj93 tru17 apt17)
+945 : (fly-airplane apn5 apt4 apt17)
+946 : (unload-truck obj93 tru17 apt17)
+947 : (unload-airplane obj102 apn4 apt17)
+948 : (unload-airplane obj141 apn4 apt17)
+949 : (unload-airplane obj91 apn4 apt17)
+950 : (drive-truck tru17 apt17 pos17 cit17)
+951 : (drive-truck tru4 apt4 pos4 cit4)
+952 : (drive-truck tru6 apt6 pos6 cit6)
+953 : (drive-truck tru8 apt8 pos8 cit8)
+954 : (fly-airplane apn1 apt10 apt2)
+955 : (fly-airplane apn2 apt17 apt12)
+956 : (fly-airplane apn3 apt4 apt17)
+957 : (load-airplane obj102 apn5 apt17)
+958 : (load-airplane obj141 apn5 apt17)
+959 : (load-airplane obj91 apn5 apt17)
+960 : (load-airplane obj92 apn5 apt17)
+961 : (load-airplane obj93 apn5 apt17)
+962 : (unload-airplane obj13 apn5 apt17)
+963 : (unload-airplane obj143 apn4 apt17)
+964 : (unload-truck obj81 tru2 pos2)
+965 : (load-airplane obj13 apn5 apt17)
+966 : (load-airplane obj143 apn5 apt17)
+967 : (unload-airplane obj151 apn3 apt17)
+968 : (fly-airplane apn5 apt17 apt5)
+969 : (unload-airplane obj133 apn5 apt5)
+970 : (unload-airplane obj141 apn5 apt5)
+971 : (unload-airplane obj13 apn5 apt5)
+972 : (drive-truck tru5 apt5 pos5 cit5)
+973 : (load-airplane obj13 apn5 apt5)
+974 : (unload-airplane obj91 apn5 apt5)
+975 : (unload-airplane obj143 apn5 apt5)
+976 : (fly-airplane apn5 apt5 apt6)
+977 : (unload-airplane obj13 apn5 apt6)
+978 : (load-airplane obj13 apn5 apt6)
+979 : (unload-airplane obj33 apn5 apt6)
+980 : (unload-airplane obj43 apn5 apt6)
+981 : (fly-airplane apn5 apt6 apt8)
+982 : (unload-airplane obj92 apn5 apt8)
+983 : (unload-airplane obj13 apn5 apt8)
+984 : (load-airplane obj13 apn5 apt8)
+985 : (unload-airplane obj42 apn5 apt8)
+986 : (unload-airplane obj171 apn5 apt8)
+987 : (drive-truck tru17 pos17 apt17 cit17)
+988 : (drive-truck tru4 pos4 apt4 cit4)
+989 : (drive-truck tru5 pos5 apt5 cit5)
+990 : (drive-truck tru6 pos6 apt6 cit6)
+991 : (drive-truck tru8 pos8 apt8 cit8)
+992 : (fly-airplane apn1 apt2 apt10)
+993 : (fly-airplane apn2 apt12 apt17)
+994 : (fly-airplane apn3 apt17 apt4)
+995 : (fly-airplane apn5 apt8 apt17)
+996 : (load-truck obj81 tru2 pos2)
+997 : (unload-airplane obj142 apn4 apt17)
+998 : (drive-truck tru17 apt17 pos17 cit17)
+999 : (drive-truck tru4 apt4 pos4 cit4)
+1000 : (drive-truck tru5 apt5 pos5 cit5)
+1001 : (drive-truck tru6 apt6 pos6 cit6)
+1002 : (drive-truck tru8 apt8 pos8 cit8)
+1003 : (fly-airplane apn1 apt10 apt2)
+1004 : (fly-airplane apn2 apt17 apt14)
+1005 : (fly-airplane apn3 apt4 apt10)
+1006 : (fly-airplane apn4 apt17 apt8)
+1007 : (load-airplane obj142 apn5 apt17)
+1008 : (unload-truck obj81 tru2 pos2)
+1009 : (fly-airplane apn4 apt8 apt4)
+1010 : (fly-airplane apn4 apt4 apt13)
+1011 : (fly-airplane apn5 apt17 apt11)
+1012 : (fly-airplane apn4 apt13 apt11)
+1013 : (fly-airplane apn4 apt11 apt7)
+1014 : (unload-airplane obj13 apn5 apt11)
+1015 : (load-airplane obj13 apn5 apt11)
+1016 : (unload-airplane obj173 apn5 apt11)
+1017 : (fly-airplane apn4 apt7 apt6)
+1018 : (fly-airplane apn4 apt6 apt16)
+1019 : (unload-airplane obj131 apn5 apt11)
+1020 : (fly-airplane apn5 apt11 apt13)
+1021 : (unload-airplane obj13 apn5 apt13)
+1022 : (fly-airplane apn4 apt16 apt13)
+1023 : (load-airplane obj13 apn5 apt13)
+1024 : (fly-airplane apn4 apt13 apt3)
+1025 : (unload-airplane obj122 apn5 apt13)
+1026 : (fly-airplane apn4 apt3 apt16)
+1027 : (fly-airplane apn4 apt16 apt14)
+1028 : (fly-airplane apn5 apt13 apt16)
+1029 : (drive-truck tru16 pos16 apt16 cit16)
+1030 : (fly-airplane apn5 apt16 apt17)
+1031 : (unload-airplane obj162 apn5 apt17)
+1032 : (fly-airplane apn5 apt17 apt16)
+1033 : (unload-airplane obj102 apn5 apt16)
+1034 : (fly-airplane apn5 apt16 apt17)
+1035 : (unload-airplane obj61 apn5 apt17)
+1036 : (unload-truck obj11 tru15 pos15)
+1037 : (drive-truck tru15 pos15 apt15 cit15)
+1038 : (drive-truck tru15 apt15 pos15 cit15)
+1039 : (fly-airplane apn5 apt17 apt15)
+1040 : (unload-airplane obj13 apn5 apt15)
+1041 : (fly-airplane apn5 apt15 apt17)
+1042 : (unload-airplane obj113 apn5 apt17)
+1043 : (fly-airplane apn5 apt17 apt15)
+1044 : (unload-truck obj21 tru15 pos15)
+1045 : (unload-airplane obj93 apn5 apt15)
+1046 : (drive-truck tru15 pos15 apt15 cit15)
+1047 : (load-airplane obj93 apn5 apt15)
+1048 : (unload-airplane obj31 apn5 apt15)
+1049 : (fly-airplane apn5 apt15 apt2)
+1050 : (unload-airplane obj142 apn5 apt2)
+1051 : (load-airplane obj142 apn1 apt2)
+1052 : (fly-airplane apn1 apt2 apt13)
+1053 : (fly-airplane apn1 apt13 apt10)
+1054 : (fly-airplane apn2 apt14 apt10)
+1055 : (fly-airplane apn3 apt10 apt13)
+1056 : (unload-airplane obj153 apn5 apt2)
+1057 : (unload-airplane obj93 apn5 apt2)
+1058 : (drive-truck tru2 pos2 apt2 cit2)
+1059 : (fly-airplane apn2 apt10 apt15)
+1060 : (fly-airplane apn3 apt13 apt2)
+1061 : (fly-airplane apn5 apt2 apt6)
+1062 : (unload-airplane obj142 apn1 apt10)
+1063 : (fly-airplane apn5 apt6 apt11)
+1064 : (fly-airplane apn5 apt11 apt16)
+1065 : (fly-airplane apn5 apt16 apt14)
+1066 : (drive-truck tru12 pos12 apt12 cit12)
+1067 : (fly-airplane apn1 apt10 apt2)
+1068 : (unload-airplane obj111 apn5 apt14)
+1069 : (unload-airplane obj72 apn4 apt14)
+1070 : (unload-truck obj101 tru9 pos9)
+1071 : (unload-truck obj103 tru3 pos3)
+1072 : (unload-truck obj112 tru7 pos7)
+1073 : (unload-truck obj121 tru11 pos11)
+1074 : (unload-truck obj123 tru10 pos10)
+1075 : (unload-truck obj132 tru9 pos9)
+1076 : (unload-truck obj152 tru6 pos6)
+1077 : (unload-truck obj161 tru8 pos8)
+1078 : (unload-truck obj172 tru4 pos4)
+1079 : (unload-truck obj32 tru10 pos10)
+1080 : (unload-truck obj41 tru6 pos6)
+1081 : (unload-truck obj52 tru8 pos8)
+1082 : (unload-truck obj62 tru7 pos7)
+1083 : (unload-truck obj63 tru1 pos1)
+1084 : (unload-truck obj73 tru3 pos3)
+1085 : (unload-truck obj82 tru3 pos3)
+1086 : (unload-truck obj83 tru17 pos17)
+FINISHED WRITING PLAN
+Layer reasons:
+Layer: 0
+  Subproblem: 0 [50]
+     [38;5;9m--at(obj173,apt11)[0m
+     [38;5;9m--at(obj172,pos4)[0m
+     [38;5;9m--at(obj171,apt8)[0m
+     [38;5;9m--at(obj163,pos8)[0m
+     [38;5;9m--at(obj162,apt17)[0m
+     [38;5;9m--at(obj161,pos8)[0m
+     [38;5;9m--at(obj153,apt2)[0m
+     [38;5;9m--at(obj152,pos6)[0m
+     [38;5;9m--at(obj151,apt17)[0m
+     [38;5;9m--at(obj143,apt5)[0m
+     [38;5;9m--at(obj142,apt10)[0m
+     [38;5;9m--at(obj141,apt5)[0m
+     [38;5;9m--at(obj133,apt5)[0m
+     [38;5;9m--at(obj132,pos9)[0m
+     [38;5;9m--at(obj131,apt11)[0m
+     [38;5;9m--at(obj123,pos10)[0m
+     [38;5;9m--at(obj122,apt13)[0m
+     [38;5;9m--at(obj121,pos11)[0m
+     [38;5;9m--at(obj113,apt17)[0m
+     [38;5;9m--at(obj112,pos7)[0m
+     [38;5;9m--at(obj111,apt14)[0m
+     [38;5;9m--at(obj103,pos3)[0m
+     [38;5;9m--at(obj102,apt16)[0m
+     [38;5;9m--at(obj101,pos9)[0m
+     [38;5;9m--at(obj93,apt2)[0m
+     [38;5;9m--at(obj92,apt8)[0m
+     [38;5;9m--at(obj91,apt5)[0m
+     [38;5;9m--at(obj83,pos17)[0m
+     [38;5;9m--at(obj82,pos3)[0m
+     [38;5;9m--at(obj81,pos2)[0m
+     [38;5;9m--at(obj73,pos3)[0m
+     [38;5;9m--at(obj72,apt14)[0m
+     [38;5;9m--at(obj71,pos5)[0m
+     [38;5;9m--at(obj63,pos1)[0m
+     [38;5;9m--at(obj62,pos7)[0m
+     [38;5;9m--at(obj61,apt17)[0m
+     [38;5;9m--at(obj53,apt5)[0m
+     [38;5;9m--at(obj52,pos8)[0m
+     [38;5;9m--at(obj43,apt6)[0m
+     [38;5;9m--at(obj42,apt8)[0m
+     [38;5;9m--at(obj41,pos6)[0m
+     [38;5;9m--at(obj33,apt6)[0m
+     [38;5;9m--at(obj32,pos10)[0m
+     [38;5;9m--at(obj31,apt15)[0m
+     [38;5;9m--at(obj23,pos6)[0m
+     [38;5;9m--at(obj22,pos2)[0m
+     [38;5;9m--at(obj21,pos15)[0m
+     [38;5;9m--at(obj13,apt15)[0m
+     [38;5;9m--at(obj12,pos1)[0m
+     [38;5;9m--at(obj11,pos15)[0m
+Layer: 1
+  Subproblem: 0 [537]
+     [38;5;9m--at(apn5,apt14)[0m  [38;5;10min(obj111,apn5)[0m
+     [38;5;9m--at(apn5,apt2)[0m  [38;5;10min(obj93,apn5)[0m
+     [38;5;9m--at(apn4,apt14)[0m  [38;5;10min(obj72,apn4)[0m
+     [38;5;9m--at(apn4,apt10)[0m  [38;5;10min(obj142,apn4)[0m
+     [38;5;9m--at(apn4,apt5)[0m  [38;5;10min(obj91,apn4)[0m
+     [38;5;9m--at(apn4,apt5)[0m  [38;5;10min(obj141,apn4)[0m
+     [38;5;9m--at(apn4,apt5)[0m  [38;5;10min(obj143,apn4)[0m
+     [38;5;9m--at(apn4,apt2)[0m  [38;5;10min(obj93,apn4)[0m
+     [38;5;9m--at(apn3,apt15)[0m  [38;5;10min(obj13,apn3)[0m
+     [38;5;9m--at(apn3,apt2)[0m  [38;5;10min(obj153,apn3)[0m
+     [38;5;9m--at(apn2,apt16)[0m  [38;5;10min(obj102,apn2)[0m
+     [38;5;9m--at(apn2,apt14)[0m  [38;5;10min(obj72,apn2)[0m
+     [38;5;9m--at(apn2,apt10)[0m  [38;5;10min(obj142,apn2)[0m
+     [38;5;9m--at(apn2,apt8)[0m  [38;5;10min(obj92,apn2)[0m
+     [38;5;9m--at(apn2,apt5)[0m  [38;5;10min(obj91,apn2)[0m
+     [38;5;9m--at(apn2,apt5)[0m  [38;5;10min(obj141,apn2)[0m
+     [38;5;9m--at(apn2,apt2)[0m  [38;5;10min(obj93,apn2)[0m
+     [38;5;9m--at(apn1,apt10)[0m  [38;5;10min(obj142,apn1)[0m
+     [38;5;9m--at(apn1,apt8)[0m  [38;5;10min(obj42,apn1)[0m
+     [38;5;9m--at(apn1,apt6)[0m  [38;5;10min(obj33,apn1)[0m
+     [38;5;9m--at(apn1,apt6)[0m  [38;5;10min(obj43,apn1)[0m
+     [38;5;9m--at(apn1,apt5)[0m  [38;5;10min(obj133,apn1)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(obj141,apt5)[0m  [38;5;10min(obj13,apn5)[0m [38;5;9m--in(obj141,tru5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn5,apt5)[0m [38;5;9m--at(obj133,apt5)[0m [38;5;9m--in(obj133,tru5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(obj133,apt5)[0m  [38;5;10min(obj13,apn5)[0m [38;5;9m--in(obj133,tru5)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt16)[0m [38;5;9m--at(obj102,apt16)[0m [38;5;9m--in(obj102,tru16)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(obj91,apt5)[0m  [38;5;10min(obj13,apn5)[0m [38;5;9m--in(obj91,tru5)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(obj31,apt15)[0m [38;5;9m--in(obj31,tru15)[0m  [38;5;10min(obj93,apn5)[0m
+     [38;5;9m--at(obj83,pos17)[0m [38;5;9m--at(tru17,pos17)[0m
+     [38;5;9m--at(obj21,pos15)[0m [38;5;9m--at(tru15,pos15)[0m
+     [38;5;9m--at(obj163,pos8)[0m [38;5;9m--at(tru8,pos8)[0m
+     [38;5;9m--at(obj52,pos8)[0m [38;5;9m--at(tru8,pos8)[0m
+     [38;5;9m--at(obj41,pos6)[0m [38;5;9m--at(tru6,pos6)[0m
+     [38;5;9m--at(obj23,pos6)[0m [38;5;9m--at(tru6,pos6)[0m
+     [38;5;9m--at(obj71,pos5)[0m [38;5;9m--at(tru5,pos5)[0m
+     [38;5;9m--at(obj172,pos4)[0m [38;5;9m--at(tru4,pos4)[0m
+     [38;5;9m--at(obj81,pos2)[0m [38;5;9m--at(tru2,pos2)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(obj102,apt16)[0m [38;5;9m--at(obj11,pos15)[0m [38;5;9m--at(obj13,apt15)[0m [38;5;9m--in(obj102,tru16)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(obj11,pos15)[0m [38;5;9m--at(obj13,apt15)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(obj102,apt16)[0m [38;5;9m--at(obj11,pos15)[0m [38;5;9m--at(obj13,apt15)[0m  [38;5;10mat(tru16,pos16)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(obj11,pos15)[0m [38;5;9m--at(obj13,apt15)[0m [38;5;9m--at(obj162,apt17)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(obj11,pos15)[0m [38;5;9m--at(obj13,apt15)[0m [38;5;9m--at(obj61,apt17)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10mat(obj11,apt1)[0m
+      [38;5;10mat(obj11,apt15)[0m
+     [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(obj153,apt2)[0m  [38;5;10mat(tru2,pos2)[0m
+     [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(obj153,apt2)[0m  [38;5;10mat(tru2,pos2)[0m  [38;5;10min(obj13,apn5)[0m
+     [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(obj93,apt2)[0m  [38;5;10mat(tru2,pos2)[0m  [38;5;10min(obj13,apn5)[0m
+     [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(obj93,apt2)[0m  [38;5;10mat(tru2,pos2)[0m  [38;5;10min(obj111,apn5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(obj143,apt5)[0m  [38;5;10mat(tru5,pos5)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10mat(tru5,pos5)[0m  [38;5;10min(obj53,tru5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(obj43,apt6)[0m  [38;5;10mat(tru6,pos6)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(obj33,apt6)[0m  [38;5;10mat(tru6,pos6)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(obj33,apt6)[0m  [38;5;10mat(tru6,pos6)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(obj171,apt8)[0m  [38;5;10mat(tru8,pos8)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn5,apt8)[0m [38;5;9m--at(obj92,apt8)[0m  [38;5;10mat(tru8,pos8)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(obj92,apt8)[0m  [38;5;10mat(tru8,pos8)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(obj42,apt8)[0m  [38;5;10mat(tru8,pos8)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10min(obj11,tru10)[0m
+      [38;5;10min(obj11,tru11)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt11)[0m  [38;5;10mat(apn3,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn5,apt11)[0m [38;5;9m--at(obj173,apt11)[0m  [38;5;10mat(tru11,pos11)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt11)[0m  [38;5;10mat(apn3,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(obj173,apt11)[0m  [38;5;10mat(tru11,pos11)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt11)[0m  [38;5;10mat(apn3,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(obj131,apt11)[0m  [38;5;10mat(tru11,pos11)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10min(obj11,tru12)[0m
+      [38;5;10min(obj11,tru13)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt13)[0m  [38;5;10mat(apn3,apt10)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(obj122,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn2,apt13)[0m  [38;5;10mat(apn3,apt10)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(obj122,apt13)[0m  [38;5;10mat(tru13,pos13)[0m  [38;5;10min(obj13,apn5)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(obj31,apt15)[0m  [38;5;10mat(tru15,pos15)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(obj31,apt15)[0m  [38;5;10mat(tru15,pos15)[0m  [38;5;10min(obj93,apn5)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(obj13,apt15)[0m  [38;5;10mat(tru15,pos15)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(obj113,apt17)[0m [38;5;9m--at(obj31,apt15)[0m  [38;5;10mat(tru15,pos15)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(obj113,apt17)[0m [38;5;9m--at(obj13,apt15)[0m  [38;5;10mat(tru15,pos15)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10min(obj11,tru16)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt16)[0m [38;5;9m--at(obj102,apt16)[0m  [38;5;10mat(tru16,pos16)[0m
+      [38;5;10min(obj11,tru17)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt17)[0m [38;5;9m--at(obj162,apt17)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt17)[0m [38;5;9m--at(obj113,apt17)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt10)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt17)[0m [38;5;9m--at(obj61,apt17)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10min(obj13,tru1)[0m
+      [38;5;10mat(obj13,apt1)[0m
+      [38;5;10mat(obj13,apt2)[0m
+      [38;5;10mat(obj13,apt5)[0m
+      [38;5;10mat(obj13,apt6)[0m
+      [38;5;10mat(obj13,apt8)[0m
+      [38;5;10mat(obj13,apt10)[0m
+      [38;5;10mat(obj13,apt11)[0m
+      [38;5;10mat(obj13,apt13)[0m
+      [38;5;10mat(obj13,apt17)[0m
+      [38;5;10min(obj13,tru5)[0m
+      [38;5;10min(obj21,tru1)[0m
+      [38;5;10mat(obj21,apt2)[0m
+      [38;5;10mat(obj21,apt15)[0m
+      [38;5;10min(obj21,tru2)[0m
+      [38;5;10min(obj21,tru4)[0m
+      [38;5;10min(obj21,tru10)[0m
+      [38;5;10min(obj21,tru11)[0m
+      [38;5;10min(obj21,tru13)[0m
+      [38;5;10min(obj21,tru14)[0m
+      [38;5;10min(obj21,tru17)[0m
+      [38;5;10min(obj23,tru1)[0m
+      [38;5;10mat(obj23,apt2)[0m
+      [38;5;10mat(obj23,apt6)[0m
+      [38;5;10min(obj23,tru2)[0m
+      [38;5;10min(obj23,tru8)[0m
+      [38;5;10min(obj23,tru10)[0m
+      [38;5;10min(obj23,tru11)[0m
+      [38;5;10min(obj23,tru12)[0m
+      [38;5;10min(obj23,tru13)[0m
+      [38;5;10min(obj23,tru16)[0m
+      [38;5;10min(obj23,tru17)[0m
+      [38;5;10mat(obj31,apt3)[0m
+      [38;5;10mat(obj31,apt10)[0m
+      [38;5;10mat(obj32,apt10)[0m
+      [38;5;10mat(obj32,apt13)[0m
+      [38;5;10min(obj32,tru11)[0m
+      [38;5;10min(obj32,tru13)[0m
+      [38;5;10mat(obj33,apt3)[0m
+      [38;5;10mat(obj33,apt10)[0m
+      [38;5;10min(obj33,tru3)[0m
+      [38;5;10min(obj41,tru1)[0m
+      [38;5;10mat(obj41,apt4)[0m
+      [38;5;10mat(obj41,apt5)[0m
+      [38;5;10mat(obj41,apt6)[0m
+      [38;5;10min(obj41,tru2)[0m
+      [38;5;10min(obj41,tru3)[0m
+      [38;5;10min(obj41,tru7)[0m
+      [38;5;10min(obj41,tru8)[0m
+      [38;5;10min(obj41,tru9)[0m
+      [38;5;10min(obj41,tru10)[0m
+      [38;5;10min(obj41,tru11)[0m
+      [38;5;10min(obj41,tru14)[0m
+      [38;5;10min(obj41,tru15)[0m
+      [38;5;10min(obj41,tru17)[0m
+      [38;5;10mat(obj42,apt4)[0m
+      [38;5;10mat(obj42,apt10)[0m
+      [38;5;10min(obj42,tru4)[0m
+      [38;5;10mat(obj43,apt4)[0m
+      [38;5;10mat(obj43,apt10)[0m
+      [38;5;10min(obj43,tru4)[0m
+      [38;5;10min(obj52,tru1)[0m
+      [38;5;10mat(obj52,apt5)[0m
+      [38;5;10mat(obj52,apt8)[0m
+      [38;5;10min(obj52,tru2)[0m
+      [38;5;10min(obj52,tru3)[0m
+      [38;5;10min(obj52,tru4)[0m
+      [38;5;10min(obj52,tru6)[0m
+      [38;5;10min(obj52,tru7)[0m
+      [38;5;10min(obj52,tru9)[0m
+      [38;5;10min(obj52,tru10)[0m
+      [38;5;10min(obj52,tru11)[0m
+      [38;5;10min(obj52,tru12)[0m
+      [38;5;10min(obj52,tru14)[0m
+      [38;5;10min(obj52,tru15)[0m
+      [38;5;10min(obj52,tru17)[0m
+      [38;5;10mat(obj53,pos5)[0m
+      [38;5;10mat(obj61,apt6)[0m
+      [38;5;10mat(obj61,apt10)[0m
+      [38;5;10min(obj62,tru1)[0m
+      [38;5;10mat(obj62,apt1)[0m
+      [38;5;10mat(obj62,apt3)[0m
+      [38;5;10mat(obj62,apt5)[0m
+      [38;5;10mat(obj62,apt6)[0m
+      [38;5;10mat(obj62,apt7)[0m
+      [38;5;10mat(obj62,apt10)[0m
+      [38;5;10mat(obj62,apt11)[0m
+      [38;5;10min(obj62,tru3)[0m
+      [38;5;10min(obj62,tru6)[0m
+      [38;5;10min(obj62,tru10)[0m
+      [38;5;10min(obj62,tru11)[0m
+      [38;5;10mat(obj63,apt1)[0m
+      [38;5;10mat(obj63,apt5)[0m
+      [38;5;10mat(obj63,apt7)[0m
+      [38;5;10min(obj63,tru7)[0m
+      [38;5;10min(obj63,tru11)[0m
+      [38;5;10min(obj63,tru14)[0m
+      [38;5;10min(obj71,tru1)[0m
+      [38;5;10mat(obj71,apt5)[0m
+      [38;5;10mat(obj71,apt7)[0m
+      [38;5;10min(obj71,tru2)[0m
+      [38;5;10min(obj71,tru4)[0m
+      [38;5;10min(obj71,tru8)[0m
+      [38;5;10min(obj71,tru10)[0m
+      [38;5;10min(obj71,tru11)[0m
+      [38;5;10min(obj71,tru12)[0m
+      [38;5;10min(obj71,tru14)[0m
+      [38;5;10min(obj71,tru15)[0m
+      [38;5;10min(obj71,tru16)[0m
+      [38;5;10min(obj71,tru17)[0m
+      [38;5;10mat(obj72,apt5)[0m
+      [38;5;10mat(obj72,apt7)[0m
+      [38;5;10mat(obj72,apt10)[0m
+      [38;5;10mat(obj72,apt17)[0m
+      [38;5;10min(obj72,tru7)[0m
+      [38;5;10min(obj73,tru1)[0m
+      [38;5;10mat(obj73,apt3)[0m
+      [38;5;10mat(obj73,apt7)[0m
+      [38;5;10mat(obj73,apt13)[0m
+      [38;5;10min(obj73,tru2)[0m
+      [38;5;10min(obj73,tru4)[0m
+      [38;5;10min(obj73,tru7)[0m
+      [38;5;10min(obj73,tru8)[0m
+      [38;5;10min(obj73,tru10)[0m
+      [38;5;10min(obj73,tru11)[0m
+      [38;5;10min(obj73,tru12)[0m
+      [38;5;10min(obj73,tru14)[0m
+      [38;5;10min(obj73,tru15)[0m
+      [38;5;10min(obj73,tru16)[0m
+      [38;5;10min(obj73,tru17)[0m
+      [38;5;10min(obj81,tru1)[0m
+      [38;5;10mat(obj81,apt2)[0m
+      [38;5;10min(obj81,tru4)[0m
+      [38;5;10min(obj81,tru10)[0m
+      [38;5;10min(obj81,tru11)[0m
+      [38;5;10min(obj81,tru15)[0m
+      [38;5;10min(obj81,tru16)[0m
+      [38;5;10min(obj81,tru17)[0m
+      [38;5;10min(obj82,tru1)[0m
+      [38;5;10mat(obj82,apt3)[0m
+      [38;5;10mat(obj82,apt5)[0m
+      [38;5;10mat(obj82,apt9)[0m
+      [38;5;10mat(obj82,apt13)[0m
+      [38;5;10min(obj82,tru2)[0m
+      [38;5;10min(obj82,tru4)[0m
+      [38;5;10min(obj82,tru10)[0m
+      [38;5;10min(obj82,tru11)[0m
+      [38;5;10min(obj82,tru12)[0m
+      [38;5;10min(obj82,tru14)[0m
+      [38;5;10min(obj82,tru15)[0m
+      [38;5;10min(obj82,tru16)[0m
+      [38;5;10min(obj82,tru17)[0m
+      [38;5;10mat(obj83,apt17)[0m
+      [38;5;10min(obj83,tru10)[0m
+      [38;5;10min(obj83,tru11)[0m
+      [38;5;10mat(obj91,apt9)[0m
+      [38;5;10mat(obj91,apt14)[0m
+      [38;5;10mat(obj91,apt17)[0m
+      [38;5;10mat(obj92,apt2)[0m
+      [38;5;10mat(obj92,apt5)[0m
+      [38;5;10mat(obj92,apt9)[0m
+      [38;5;10mat(obj92,apt17)[0m
+      [38;5;10min(obj92,tru9)[0m
+      [38;5;10mat(obj93,apt9)[0m
+      [38;5;10mat(obj93,apt15)[0m
+      [38;5;10mat(obj93,apt17)[0m
+      [38;5;10min(obj93,tru9)[0m
+      [38;5;10min(obj101,tru1)[0m
+      [38;5;10mat(obj101,apt5)[0m
+      [38;5;10mat(obj101,apt9)[0m
+      [38;5;10mat(obj101,apt10)[0m
+      [38;5;10mat(obj101,apt13)[0m
+      [38;5;10min(obj101,tru2)[0m
+      [38;5;10min(obj101,tru4)[0m
+      [38;5;10min(obj101,tru8)[0m
+      [38;5;10min(obj101,tru11)[0m
+      [38;5;10min(obj101,tru12)[0m
+      [38;5;10min(obj101,tru14)[0m
+      [38;5;10min(obj101,tru15)[0m
+      [38;5;10min(obj101,tru16)[0m
+      [38;5;10min(obj101,tru17)[0m
+      [38;5;10mat(obj102,apt5)[0m
+      [38;5;10mat(obj102,apt10)[0m
+      [38;5;10mat(obj102,apt17)[0m
+      [38;5;10min(obj102,tru5)[0m
+      [38;5;10min(obj102,tru10)[0m
+      [38;5;10min(obj103,tru1)[0m
+      [38;5;10mat(obj103,apt3)[0m
+      [38;5;10mat(obj103,apt7)[0m
+      [38;5;10min(obj103,tru2)[0m
+      [38;5;10min(obj103,tru4)[0m
+      [38;5;10min(obj103,tru11)[0m
+      [38;5;10min(obj103,tru12)[0m
+      [38;5;10min(obj103,tru14)[0m
+      [38;5;10min(obj103,tru15)[0m
+      [38;5;10min(obj103,tru16)[0m
+      [38;5;10min(obj103,tru17)[0m
+      [38;5;10mat(obj111,apt2)[0m
+      [38;5;10mat(obj111,apt11)[0m
+      [38;5;10mat(obj112,apt4)[0m
+      [38;5;10mat(obj112,apt7)[0m
+      [38;5;10mat(obj112,apt8)[0m
+      [38;5;10mat(obj112,apt11)[0m
+      [38;5;10mat(obj112,apt12)[0m
+      [38;5;10mat(obj112,apt15)[0m
+      [38;5;10mat(obj112,apt16)[0m
+      [38;5;10mat(obj112,apt17)[0m
+      [38;5;10min(obj112,tru4)[0m
+      [38;5;10min(obj112,tru11)[0m
+      [38;5;10min(obj112,tru12)[0m
+      [38;5;10min(obj112,tru15)[0m
+      [38;5;10min(obj112,tru16)[0m
+      [38;5;10min(obj112,tru17)[0m
+      [38;5;10mat(obj113,apt11)[0m
+      [38;5;10min(obj113,tru11)[0m
+      [38;5;10mat(obj121,apt2)[0m
+      [38;5;10mat(obj121,apt7)[0m
+      [38;5;10mat(obj121,apt11)[0m
+      [38;5;10mat(obj121,apt12)[0m
+      [38;5;10mat(obj121,apt17)[0m
+      [38;5;10min(obj121,tru2)[0m
+      [38;5;10min(obj121,tru7)[0m
+      [38;5;10min(obj121,tru17)[0m
+      [38;5;10mat(obj122,apt12)[0m
+      [38;5;10min(obj122,tru12)[0m
+      [38;5;10min(obj123,tru1)[0m
+      [38;5;10mat(obj123,apt8)[0m
+      [38;5;10mat(obj123,apt9)[0m
+      [38;5;10mat(obj123,apt10)[0m
+      [38;5;10mat(obj123,apt11)[0m
+      [38;5;10mat(obj123,apt12)[0m
+      [38;5;10min(obj123,tru2)[0m
+      [38;5;10min(obj123,tru4)[0m
+      [38;5;10min(obj123,tru11)[0m
+      [38;5;10min(obj123,tru12)[0m
+      [38;5;10min(obj123,tru14)[0m
+      [38;5;10min(obj123,tru15)[0m
+      [38;5;10min(obj123,tru16)[0m
+      [38;5;10min(obj123,tru17)[0m
+      [38;5;10mat(obj131,apt5)[0m
+      [38;5;10mat(obj131,apt6)[0m
+      [38;5;10mat(obj131,apt10)[0m
+      [38;5;10mat(obj131,apt13)[0m
+      [38;5;10min(obj131,tru13)[0m
+      [38;5;10min(obj132,tru1)[0m
+      [38;5;10mat(obj132,apt1)[0m
+      [38;5;10mat(obj132,apt2)[0m
+      [38;5;10mat(obj132,apt3)[0m
+      [38;5;10mat(obj132,apt6)[0m
+      [38;5;10mat(obj132,apt9)[0m
+      [38;5;10mat(obj132,apt12)[0m
+      [38;5;10mat(obj132,apt13)[0m
+      [38;5;10mat(obj132,apt14)[0m
+      [38;5;10min(obj132,tru2)[0m
+      [38;5;10min(obj132,tru3)[0m
+      [38;5;10min(obj132,tru4)[0m
+      [38;5;10min(obj132,tru7)[0m
+      [38;5;10min(obj132,tru11)[0m
+      [38;5;10min(obj132,tru12)[0m
+      [38;5;10min(obj132,tru13)[0m
+      [38;5;10min(obj132,tru14)[0m
+      [38;5;10min(obj132,tru15)[0m
+      [38;5;10min(obj132,tru17)[0m
+      [38;5;10mat(obj133,apt10)[0m
+      [38;5;10mat(obj133,apt13)[0m
+      [38;5;10min(obj133,tru13)[0m
+      [38;5;10mat(obj141,apt14)[0m
+      [38;5;10mat(obj141,apt17)[0m
+      [38;5;10min(obj141,tru14)[0m
+      [38;5;10mat(obj142,apt2)[0m
+      [38;5;10mat(obj142,apt5)[0m
+      [38;5;10mat(obj142,apt8)[0m
+      [38;5;10mat(obj142,apt13)[0m
+      [38;5;10mat(obj142,apt14)[0m
+      [38;5;10mat(obj142,apt17)[0m
+      [38;5;10min(obj142,tru14)[0m
+      [38;5;10mat(obj143,apt12)[0m
+      [38;5;10mat(obj143,apt14)[0m
+      [38;5;10mat(obj143,apt17)[0m
+      [38;5;10min(obj143,tru14)[0m
+      [38;5;10mat(obj151,apt2)[0m
+      [38;5;10mat(obj151,apt4)[0m
+      [38;5;10mat(obj151,apt15)[0m
+      [38;5;10min(obj151,tru15)[0m
+      [38;5;10min(obj152,tru1)[0m
+      [38;5;10mat(obj152,apt5)[0m
+      [38;5;10mat(obj152,apt6)[0m
+      [38;5;10mat(obj152,apt10)[0m
+      [38;5;10mat(obj152,apt13)[0m
+      [38;5;10mat(obj152,apt16)[0m
+      [38;5;10min(obj152,tru2)[0m
+      [38;5;10min(obj152,tru4)[0m
+      [38;5;10min(obj152,tru7)[0m
+      [38;5;10min(obj152,tru9)[0m
+      [38;5;10min(obj152,tru11)[0m
+      [38;5;10min(obj152,tru14)[0m
+      [38;5;10min(obj152,tru17)[0m
+      [38;5;10mat(obj153,apt4)[0m
+      [38;5;10mat(obj153,apt15)[0m
+      [38;5;10min(obj153,tru15)[0m
+      [38;5;10mat(obj161,apt8)[0m
+      [38;5;10mat(obj161,apt16)[0m
+      [38;5;10mat(obj162,apt16)[0m
+      [38;5;10min(obj162,tru16)[0m
+      [38;5;10mat(obj163,apt1)[0m
+      [38;5;10mat(obj163,apt2)[0m
+      [38;5;10mat(obj163,apt3)[0m
+      [38;5;10mat(obj163,apt5)[0m
+      [38;5;10mat(obj163,apt8)[0m
+      [38;5;10mat(obj163,apt9)[0m
+      [38;5;10mat(obj163,apt10)[0m
+      [38;5;10mat(obj163,apt15)[0m
+      [38;5;10mat(obj163,apt16)[0m
+      [38;5;10mat(obj163,apt17)[0m
+      [38;5;10min(obj163,tru6)[0m
+      [38;5;10min(obj163,tru16)[0m
+      [38;5;10mat(obj171,apt17)[0m
+      [38;5;10mat(obj172,apt1)[0m
+      [38;5;10mat(obj172,apt2)[0m
+      [38;5;10mat(obj172,apt3)[0m
+      [38;5;10mat(obj172,apt5)[0m
+      [38;5;10mat(obj172,apt7)[0m
+      [38;5;10mat(obj172,apt8)[0m
+      [38;5;10mat(obj172,apt16)[0m
+      [38;5;10min(obj172,tru6)[0m
+      [38;5;10min(obj172,tru8)[0m
+      [38;5;10min(obj172,tru17)[0m
+      [38;5;10mat(obj173,apt17)[0m
+      [38;5;10min(obj173,tru17)[0m
+      [38;5;10min(obj11,apn1)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10min(obj142,apn1)[0m
+      [38;5;10mat(apn1,apt5)[0m  [38;5;10min(obj131,apn1)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10min(obj131,apn1)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10min(obj13,apn1)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10min(obj31,apn1)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10min(obj61,apn1)[0m
+      [38;5;10min(obj11,apn2)[0m
+      [38;5;10mat(apn2,apt5)[0m  [38;5;10min(obj142,apn2)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10min(obj142,apn2)[0m
+      [38;5;10min(obj11,apn3)[0m
+      [38;5;10mat(apn3,apt2)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt4)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt5)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt6)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt7)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt8)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt10)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt11)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt13)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt14)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt15)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10min(obj11,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj92,apn4)[0m
+      [38;5;10mat(apn4,apt3)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj92,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj102,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj142,apn4)[0m
+      [38;5;10mat(apn4,apt6)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt7)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt13)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10min(obj11,apn5)[0m
+      [38;5;10mat(apn5,apt2)[0m  [38;5;10min(obj111,apn5)[0m
+      [38;5;10mat(apn5,apt2)[0m  [38;5;10min(obj142,apn5)[0m
+      [38;5;10mat(apn5,apt6)[0m  [38;5;10min(obj111,apn5)[0m
+      [38;5;10mat(apn5,apt11)[0m  [38;5;10min(obj111,apn5)[0m
+      [38;5;10min(obj21,apn1)[0m
+      [38;5;10min(obj21,apn2)[0m
+      [38;5;10min(obj21,apn3)[0m
+      [38;5;10min(obj21,apn4)[0m
+      [38;5;10min(obj21,apn5)[0m
+      [38;5;10min(obj23,apn1)[0m
+      [38;5;10min(obj23,apn2)[0m
+      [38;5;10min(obj23,apn3)[0m
+      [38;5;10min(obj23,apn4)[0m
+      [38;5;10min(obj23,apn5)[0m
+      [38;5;10min(obj32,apn1)[0m
+      [38;5;10min(obj32,apn2)[0m
+      [38;5;10min(obj32,apn3)[0m
+      [38;5;10min(obj32,apn4)[0m
+      [38;5;10min(obj32,apn5)[0m
+      [38;5;10min(obj41,apn1)[0m
+      [38;5;10min(obj41,apn2)[0m
+      [38;5;10min(obj41,apn3)[0m
+      [38;5;10min(obj41,apn4)[0m
+      [38;5;10min(obj41,apn5)[0m
+      [38;5;10min(obj52,apn1)[0m
+      [38;5;10min(obj52,apn2)[0m
+      [38;5;10min(obj52,apn3)[0m
+      [38;5;10min(obj52,apn4)[0m
+      [38;5;10min(obj52,apn5)[0m
+      [38;5;10min(obj62,apn1)[0m
+      [38;5;10min(obj62,apn2)[0m
+      [38;5;10min(obj62,apn3)[0m
+      [38;5;10min(obj62,apn5)[0m
+      [38;5;10min(obj63,apn1)[0m
+      [38;5;10min(obj63,apn2)[0m
+      [38;5;10min(obj63,apn3)[0m
+      [38;5;10min(obj63,apn4)[0m
+      [38;5;10min(obj63,apn5)[0m
+      [38;5;10min(obj71,apn1)[0m
+      [38;5;10min(obj71,apn2)[0m
+      [38;5;10min(obj71,apn3)[0m
+      [38;5;10min(obj71,apn5)[0m
+      [38;5;10min(obj73,apn1)[0m
+      [38;5;10min(obj73,apn2)[0m
+      [38;5;10min(obj73,apn3)[0m
+      [38;5;10min(obj73,apn5)[0m
+      [38;5;10min(obj81,apn1)[0m
+      [38;5;10min(obj81,apn2)[0m
+      [38;5;10min(obj81,apn3)[0m
+      [38;5;10min(obj81,apn4)[0m
+      [38;5;10min(obj81,apn5)[0m
+      [38;5;10min(obj82,apn1)[0m
+      [38;5;10min(obj82,apn2)[0m
+      [38;5;10min(obj82,apn3)[0m
+      [38;5;10min(obj82,apn4)[0m
+      [38;5;10min(obj82,apn5)[0m
+      [38;5;10min(obj83,apn1)[0m
+      [38;5;10min(obj83,apn2)[0m
+      [38;5;10min(obj83,apn3)[0m
+      [38;5;10min(obj83,apn4)[0m
+      [38;5;10min(obj83,apn5)[0m
+      [38;5;10min(obj101,apn1)[0m
+      [38;5;10min(obj101,apn2)[0m
+      [38;5;10min(obj101,apn3)[0m
+      [38;5;10min(obj101,apn5)[0m
+      [38;5;10min(obj103,apn1)[0m
+      [38;5;10min(obj103,apn2)[0m
+      [38;5;10min(obj103,apn3)[0m
+      [38;5;10min(obj103,apn5)[0m
+      [38;5;10min(obj112,apn1)[0m
+      [38;5;10min(obj112,apn2)[0m
+      [38;5;10min(obj112,apn3)[0m
+      [38;5;10min(obj112,apn5)[0m
+      [38;5;10min(obj121,apn5)[0m
+      [38;5;10min(obj123,apn1)[0m
+      [38;5;10min(obj123,apn2)[0m
+      [38;5;10min(obj123,apn3)[0m
+      [38;5;10min(obj123,apn4)[0m
+      [38;5;10min(obj123,apn5)[0m
+      [38;5;10min(obj152,apn2)[0m
+      [38;5;10min(obj152,apn3)[0m
+      [38;5;10min(obj152,apn4)[0m
+      [38;5;10min(obj152,apn5)[0m
+      [38;5;10min(obj161,apn3)[0m
+      [38;5;10min(obj161,apn4)[0m
+      [38;5;10min(obj163,apn1)[0m
+      [38;5;10min(obj163,apn2)[0m
+      [38;5;10min(obj163,apn3)[0m
+      [38;5;10min(obj163,apn4)[0m
+      [38;5;10min(obj163,apn5)[0m
+      [38;5;10min(obj172,apn1)[0m
+      [38;5;10min(obj172,apn2)[0m
+      [38;5;10min(obj172,apn4)[0m
+      [38;5;10min(obj172,apn5)[0m
+Layer: 2
+  Subproblem: 0 [1028]
+     [38;5;9m--at(apn5,apt11)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt4)[0m [38;5;9m--at(apn5,apt7)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10min(obj163,apn5)[0m
+     [38;5;9m--at(apn5,apt1)[0m [38;5;9m--at(apn5,apt10)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt3)[0m [38;5;9m--at(apn5,apt4)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(apn5,apt7)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10min(obj161,apn5)[0m
+     [38;5;9m--at(apn5,apt1)[0m [38;5;9m--at(apn5,apt10)[0m [38;5;9m--at(apn5,apt11)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(apn5,apt16)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt3)[0m [38;5;9m--at(apn5,apt4)[0m [38;5;9m--at(apn5,apt5)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(apn5,apt8)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10min(obj121,apn5)[0m
+     [38;5;9m--at(apn5,apt1)[0m [38;5;9m--at(apn5,apt10)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(apn5,apt16)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt3)[0m [38;5;9m--at(apn5,apt4)[0m [38;5;9m--at(apn5,apt5)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(apn5,apt7)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10min(obj112,apn5)[0m
+     [38;5;9m--at(apn5,apt1)[0m [38;5;9m--at(apn5,apt10)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt3)[0m [38;5;9m--at(apn5,apt4)[0m [38;5;9m--at(apn5,apt5)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(apn5,apt7)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10min(obj112,apn5)[0m
+     [38;5;9m--at(apn5,apt1)[0m [38;5;9m--at(apn5,apt10)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt3)[0m [38;5;9m--at(apn5,apt4)[0m [38;5;9m--at(apn5,apt5)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(apn5,apt7)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10min(obj112,apn5)[0m
+     [38;5;9m--at(apn5,apt1)[0m [38;5;9m--at(apn5,apt10)[0m [38;5;9m--at(apn5,apt11)[0m [38;5;9m--at(apn5,apt12)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(apn5,apt16)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt3)[0m [38;5;9m--at(apn5,apt4)[0m [38;5;9m--at(apn5,apt5)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(apn5,apt7)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10min(obj172,apn5)[0m
+     [38;5;9m--at(apn5,apt1)[0m [38;5;9m--at(apn5,apt10)[0m [38;5;9m--at(apn5,apt11)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt15)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt3)[0m [38;5;9m--at(apn5,apt4)[0m [38;5;9m--at(apn5,apt5)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(apn5,apt7)[0m [38;5;9m--at(apn5,apt8)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10min(obj163,apn5)[0m
+     [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m  [38;5;10min(obj103,apn4)[0m
+     [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m  [38;5;10min(obj82,apn4)[0m
+     [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m  [38;5;10min(obj101,apn4)[0m
+     [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt6)[0m  [38;5;10min(obj71,apn4)[0m
+     [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt6)[0m  [38;5;10min(obj101,apn4)[0m
+     [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m  [38;5;10min(obj73,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj71,apn4)[0m
+     [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj101,apn4)[0m
+     [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj123,apn4)[0m
+     [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj123,apn4)[0m
+     [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m  [38;5;10min(obj73,apn4)[0m
+     [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj23,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj21,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj23,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj41,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj52,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj71,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj81,apn4)[0m
+     [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj82,apn4)[0m
+     [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj103,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj103,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj71,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj71,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj141,apn4)[0m  [38;5;10min(obj92,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m  [38;5;10min(obj92,apn4)[0m  [38;5;10min(obj93,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt8)[0m  [38;5;10min(obj73,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj82,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj103,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj142,apn4)[0m  [38;5;10min(obj72,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m  [38;5;10min(obj72,apn4)[0m  [38;5;10min(obj91,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj141,apn4)[0m  [38;5;10min(obj72,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj102,apn4)[0m  [38;5;10min(obj141,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt8)[0m  [38;5;10min(obj73,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj81,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj82,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj101,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj81,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj101,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj172,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj103,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj123,apn4)[0m
+     [38;5;9m--at(apn3,apt16)[0m  [38;5;10min(obj132,apn3)[0m
+     [38;5;9m--at(apn3,apt12)[0m [38;5;9m--at(apn3,apt9)[0m  [38;5;10min(obj172,apn3)[0m
+     [38;5;9m--at(apn3,apt11)[0m [38;5;9m--at(apn3,apt12)[0m [38;5;9m--at(apn3,apt13)[0m [38;5;9m--at(apn3,apt14)[0m [38;5;9m--at(apn3,apt16)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn3,apt9)[0m  [38;5;10min(obj13,apn3)[0m  [38;5;10min(obj151,apn3)[0m
+     [38;5;9m--at(apn3,apt1)[0m [38;5;9m--at(apn3,apt10)[0m [38;5;9m--at(apn3,apt11)[0m [38;5;9m--at(apn3,apt12)[0m [38;5;9m--at(apn3,apt13)[0m [38;5;9m--at(apn3,apt14)[0m [38;5;9m--at(apn3,apt15)[0m [38;5;9m--at(apn3,apt16)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn3,apt4)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn3,apt9)[0m  [38;5;10min(obj172,apn3)[0m
+     [38;5;9m--at(apn3,apt1)[0m [38;5;9m--at(apn3,apt10)[0m [38;5;9m--at(apn3,apt11)[0m [38;5;9m--at(apn3,apt12)[0m [38;5;9m--at(apn3,apt13)[0m [38;5;9m--at(apn3,apt14)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn3,apt4)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn3,apt9)[0m  [38;5;10min(obj172,apn3)[0m
+     [38;5;9m--at(apn2,apt1)[0m [38;5;9m--at(apn2,apt10)[0m [38;5;9m--at(apn2,apt11)[0m [38;5;9m--at(apn2,apt12)[0m [38;5;9m--at(apn2,apt13)[0m [38;5;9m--at(apn2,apt14)[0m [38;5;9m--at(apn2,apt15)[0m [38;5;9m--at(apn2,apt16)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn2,apt4)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn2,apt7)[0m [38;5;9m--at(apn2,apt9)[0m  [38;5;10min(obj172,apn2)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn1,apt8)[0m [38;5;9m--at(apn1,apt9)[0m  [38;5;10min(obj152,apn1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn1,apt10)[0m [38;5;9m--at(apn1,apt11)[0m [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn1,apt16)[0m [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn1,apt8)[0m [38;5;9m--at(apn1,apt9)[0m  [38;5;10min(obj132,apn1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn1,apt10)[0m [38;5;9m--at(apn1,apt11)[0m [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn1,apt13)[0m [38;5;9m--at(apn1,apt14)[0m [38;5;9m--at(apn1,apt15)[0m [38;5;9m--at(apn1,apt16)[0m [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn1,apt4)[0m [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn1,apt7)[0m [38;5;9m--at(apn1,apt9)[0m  [38;5;10min(obj172,apn1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn1,apt11)[0m [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn1,apt13)[0m [38;5;9m--at(apn1,apt14)[0m [38;5;9m--at(apn1,apt16)[0m [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn1,apt4)[0m [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn1,apt7)[0m [38;5;9m--at(apn1,apt8)[0m [38;5;9m--at(apn1,apt9)[0m  [38;5;10min(obj152,apn1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn1,apt11)[0m [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn1,apt13)[0m [38;5;9m--at(apn1,apt14)[0m [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn1,apt4)[0m [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn1,apt7)[0m [38;5;9m--at(apn1,apt8)[0m [38;5;9m--at(apn1,apt9)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10mat(apn3,apt4)[0m  [38;5;10mat(apn5,apt4)[0m [38;5;9m--at(obj83,pos17)[0m  [38;5;10mat(obj92,apt17)[0m  [38;5;10min(obj93,apn4)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10mat(apn3,apt4)[0m [38;5;9m--at(apn5,apt17)[0m [38;5;9m--at(obj83,pos17)[0m  [38;5;10mat(obj93,apt17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj21,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj23,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj41,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj52,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj71,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj73,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj81,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj82,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj101,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj103,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj112,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj121,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj123,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj132,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj152,tru17)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj161,tru17)[0m
+      [38;5;10mat(obj172,pos17)[0m [38;5;9m--at(tru17,pos17)[0m
+      [38;5;10mat(obj173,pos17)[0m [38;5;9m--at(tru17,pos17)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj23,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj71,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj73,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj81,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj82,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj101,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj103,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj112,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj123,tru16)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj132,tru16)[0m
+      [38;5;10mat(obj162,pos16)[0m [38;5;9m--at(tru16,pos16)[0m
+      [38;5;10mat(obj163,pos16)[0m [38;5;9m--at(tru16,pos16)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj41,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj52,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj71,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj73,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj81,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj82,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj101,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj103,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj112,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj123,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj132,tru15)[0m
+      [38;5;10mat(obj152,pos15)[0m [38;5;9m--at(tru15,pos15)[0m
+      [38;5;10mat(obj153,pos15)[0m [38;5;9m--at(tru15,pos15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj161,tru15)[0m
+     [38;5;9m--at(tru15,pos15)[0m  [38;5;10min(obj172,tru15)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj21,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj41,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj52,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj63,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj71,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj73,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj82,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj101,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj103,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj123,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj132,tru14)[0m
+      [38;5;10mat(obj142,pos14)[0m [38;5;9m--at(tru14,pos14)[0m
+      [38;5;10mat(obj143,pos14)[0m [38;5;9m--at(tru14,pos14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj152,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj161,tru14)[0m
+     [38;5;9m--at(tru14,pos14)[0m  [38;5;10min(obj172,tru14)[0m
+     [38;5;9m--at(tru13,pos13)[0m  [38;5;10min(obj21,tru13)[0m
+     [38;5;9m--at(tru13,pos13)[0m  [38;5;10min(obj23,tru13)[0m
+     [38;5;9m--at(tru13,pos13)[0m  [38;5;10min(obj32,tru13)[0m
+     [38;5;9m--at(tru13,pos13)[0m  [38;5;10min(obj71,tru13)[0m
+     [38;5;9m--at(tru13,pos13)[0m  [38;5;10min(obj103,tru13)[0m
+      [38;5;10mat(obj132,pos13)[0m [38;5;9m--at(tru13,pos13)[0m
+      [38;5;10mat(obj133,pos13)[0m [38;5;9m--at(tru13,pos13)[0m
+     [38;5;9m--at(tru13,pos13)[0m  [38;5;10min(obj161,tru13)[0m
+     [38;5;9m--at(tru13,pos13)[0m  [38;5;10min(obj172,tru13)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj23,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj52,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj71,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj73,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj82,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj101,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj103,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj112,tru12)[0m
+      [38;5;10mat(obj122,pos12)[0m [38;5;9m--at(tru12,pos12)[0m
+      [38;5;10mat(obj123,pos12)[0m [38;5;9m--at(tru12,pos12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj132,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj152,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj161,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj163,tru12)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj172,tru12)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj21,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj23,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj32,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj41,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj52,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj62,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj63,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj71,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj73,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj81,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj82,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj83,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj101,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj103,tru11)[0m
+      [38;5;10mat(obj112,pos11)[0m [38;5;9m--at(tru11,pos11)[0m
+      [38;5;10mat(obj113,pos11)[0m [38;5;9m--at(tru11,pos11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj123,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj132,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj152,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj161,tru11)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj172,tru11)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj21,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj23,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj41,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj52,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj62,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj71,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj73,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj81,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj82,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj83,tru10)[0m
+      [38;5;10mat(obj102,pos10)[0m [38;5;9m--at(tru10,pos10)[0m
+      [38;5;10mat(obj103,pos10)[0m [38;5;9m--at(tru10,pos10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj132,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj161,tru10)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj172,tru10)[0m
+     [38;5;9m--at(tru9,pos9)[0m  [38;5;10min(obj41,tru9)[0m
+     [38;5;9m--at(tru9,pos9)[0m  [38;5;10min(obj52,tru9)[0m
+     [38;5;9m--at(tru9,pos9)[0m  [38;5;10min(obj71,tru9)[0m
+     [38;5;9m--at(tru9,pos9)[0m  [38;5;10min(obj73,tru9)[0m
+      [38;5;10mat(obj92,pos9)[0m [38;5;9m--at(tru9,pos9)[0m
+      [38;5;10mat(obj93,pos9)[0m [38;5;9m--at(tru9,pos9)[0m
+     [38;5;9m--at(tru9,pos9)[0m  [38;5;10min(obj103,tru9)[0m
+     [38;5;9m--at(tru9,pos9)[0m  [38;5;10min(obj152,tru9)[0m
+     [38;5;9m--at(tru9,pos9)[0m  [38;5;10min(obj161,tru9)[0m
+     [38;5;9m--at(tru9,pos9)[0m  [38;5;10min(obj172,tru9)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj23,tru8)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj41,tru8)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj71,tru8)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj73,tru8)[0m
+      [38;5;10mat(obj82,pos8)[0m [38;5;9m--at(tru8,pos8)[0m
+      [38;5;10mat(obj83,pos8)[0m [38;5;9m--at(tru8,pos8)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj101,tru8)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj103,tru8)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj132,tru8)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj152,tru8)[0m
+     [38;5;9m--at(tru8,pos8)[0m  [38;5;10min(obj172,tru8)[0m
+     [38;5;9m--at(tru7,pos7)[0m  [38;5;10min(obj41,tru7)[0m
+     [38;5;9m--at(tru7,pos7)[0m  [38;5;10min(obj52,tru7)[0m
+     [38;5;9m--at(tru7,pos7)[0m  [38;5;10min(obj63,tru7)[0m
+      [38;5;10mat(obj72,pos7)[0m [38;5;9m--at(tru7,pos7)[0m
+      [38;5;10mat(obj73,pos7)[0m [38;5;9m--at(tru7,pos7)[0m
+     [38;5;9m--at(tru7,pos7)[0m  [38;5;10min(obj101,tru7)[0m
+     [38;5;9m--at(tru7,pos7)[0m  [38;5;10min(obj121,tru7)[0m
+     [38;5;9m--at(tru7,pos7)[0m  [38;5;10min(obj132,tru7)[0m
+     [38;5;9m--at(tru7,pos7)[0m  [38;5;10min(obj152,tru7)[0m
+     [38;5;9m--at(tru7,pos7)[0m  [38;5;10min(obj161,tru7)[0m
+     [38;5;9m--at(tru6,pos6)[0m  [38;5;10min(obj52,tru6)[0m
+      [38;5;10mat(obj62,pos6)[0m [38;5;9m--at(tru6,pos6)[0m
+      [38;5;10mat(obj63,pos6)[0m [38;5;9m--at(tru6,pos6)[0m
+     [38;5;9m--at(tru6,pos6)[0m  [38;5;10min(obj71,tru6)[0m
+     [38;5;9m--at(tru6,pos6)[0m  [38;5;10min(obj73,tru6)[0m
+     [38;5;9m--at(tru6,pos6)[0m  [38;5;10min(obj101,tru6)[0m
+     [38;5;9m--at(tru6,pos6)[0m  [38;5;10min(obj103,tru6)[0m
+     [38;5;9m--at(tru6,pos6)[0m  [38;5;10min(obj161,tru6)[0m
+     [38;5;9m--at(tru6,pos6)[0m  [38;5;10min(obj163,tru6)[0m
+     [38;5;9m--at(tru6,pos6)[0m  [38;5;10min(obj172,tru6)[0m
+     [38;5;9m--at(tru5,pos5)[0m  [38;5;10min(obj13,tru5)[0m
+      [38;5;10mat(obj53,pos5)[0m [38;5;9m--at(tru5,pos5)[0m
+     [38;5;9m--at(tru5,pos5)[0m  [38;5;10min(obj73,tru5)[0m
+     [38;5;9m--at(tru5,pos5)[0m  [38;5;10min(obj102,tru5)[0m
+     [38;5;9m--at(tru5,pos5)[0m  [38;5;10min(obj103,tru5)[0m
+     [38;5;9m--at(tru5,pos5)[0m  [38;5;10min(obj132,tru5)[0m
+     [38;5;9m--at(tru5,pos5)[0m  [38;5;10min(obj161,tru5)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj21,tru4)[0m
+      [38;5;10mat(obj42,pos4)[0m [38;5;9m--at(tru4,pos4)[0m
+      [38;5;10mat(obj43,pos4)[0m [38;5;9m--at(tru4,pos4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj52,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj71,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj73,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj81,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj82,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj101,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj103,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj112,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj123,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj132,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj152,tru4)[0m
+     [38;5;9m--at(tru4,pos4)[0m  [38;5;10min(obj161,tru4)[0m
+      [38;5;10mat(obj32,pos3)[0m [38;5;9m--at(tru3,pos3)[0m
+      [38;5;10mat(obj33,pos3)[0m [38;5;9m--at(tru3,pos3)[0m
+     [38;5;9m--at(tru3,pos3)[0m  [38;5;10min(obj41,tru3)[0m
+     [38;5;9m--at(tru3,pos3)[0m  [38;5;10min(obj52,tru3)[0m
+     [38;5;9m--at(tru3,pos3)[0m  [38;5;10min(obj62,tru3)[0m
+     [38;5;9m--at(tru3,pos3)[0m  [38;5;10min(obj71,tru3)[0m
+     [38;5;9m--at(tru3,pos3)[0m  [38;5;10min(obj101,tru3)[0m
+     [38;5;9m--at(tru3,pos3)[0m  [38;5;10min(obj132,tru3)[0m
+     [38;5;9m--at(tru3,pos3)[0m  [38;5;10min(obj152,tru3)[0m
+     [38;5;9m--at(tru3,pos3)[0m  [38;5;10min(obj161,tru3)[0m
+      [38;5;10mat(obj23,pos2)[0m [38;5;9m--at(tru2,pos2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj41,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj52,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj71,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj73,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj82,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj101,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj103,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj121,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj123,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj132,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj152,tru2)[0m
+     [38;5;9m--at(tru2,pos2)[0m  [38;5;10min(obj161,tru2)[0m
+      [38;5;10mat(obj13,pos1)[0m [38;5;9m--at(tru1,pos1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj21,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj23,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj41,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj52,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj62,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj71,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj73,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj81,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj82,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj101,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj103,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj123,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj132,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj152,tru1)[0m
+     [38;5;9m--at(tru1,pos1)[0m  [38;5;10min(obj161,tru1)[0m
+      [38;5;10mat(tru1,pos1)[0m  [38;5;10min(obj11,tru1)[0m
+      [38;5;10mat(tru1,pos1)[0m  [38;5;10min(obj13,tru1)[0m
+      [38;5;10mat(obj163,apt1)[0m  [38;5;10mat(tru1,pos1)[0m
+      [38;5;10mat(obj172,apt1)[0m  [38;5;10mat(tru1,pos1)[0m
+      [38;5;10min(obj11,tru1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn2,apt1)[0m [38;5;9m--at(apn3,apt1)[0m [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn5,apt1)[0m  [38;5;10mat(obj11,apt1)[0m
+      [38;5;10mat(obj11,apt10)[0m
+      [38;5;10mat(obj11,apt11)[0m
+      [38;5;10mat(obj11,apt12)[0m
+     [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj11,apt13)[0m
+     [38;5;9m--at(apn3,apt13)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj11,apt13)[0m
+     [38;5;9m--at(apn3,apt13)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn5,apt13)[0m  [38;5;10mat(obj11,apt13)[0m
+      [38;5;10mat(obj11,apt16)[0m
+      [38;5;10mat(obj11,apt17)[0m
+      [38;5;10mat(tru2,pos2)[0m  [38;5;10min(obj21,tru2)[0m
+      [38;5;10mat(tru2,pos2)[0m  [38;5;10min(obj23,tru2)[0m
+     [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn5,apt2)[0m  [38;5;10mat(obj92,apt2)[0m  [38;5;10mat(tru2,pos2)[0m
+     [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn4,apt2)[0m  [38;5;10mat(obj111,apt2)[0m  [38;5;10mat(tru2,pos2)[0m
+     [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn5,apt2)[0m  [38;5;10mat(obj151,apt2)[0m  [38;5;10mat(tru2,pos2)[0m
+      [38;5;10mat(obj163,apt2)[0m  [38;5;10mat(tru2,pos2)[0m
+      [38;5;10mat(obj172,apt2)[0m  [38;5;10mat(tru2,pos2)[0m
+      [38;5;10mat(tru3,pos3)[0m  [38;5;10min(obj31,tru3)[0m
+      [38;5;10mat(tru3,pos3)[0m  [38;5;10min(obj32,tru3)[0m
+      [38;5;10mat(tru3,pos3)[0m  [38;5;10min(obj33,tru3)[0m
+      [38;5;10mat(obj73,apt3)[0m  [38;5;10mat(tru3,pos3)[0m
+      [38;5;10mat(obj103,apt3)[0m  [38;5;10mat(tru3,pos3)[0m
+      [38;5;10mat(obj163,apt3)[0m  [38;5;10mat(tru3,pos3)[0m
+      [38;5;10mat(obj172,apt3)[0m  [38;5;10mat(tru3,pos3)[0m
+      [38;5;10mat(tru4,pos4)[0m  [38;5;10min(obj41,tru4)[0m
+      [38;5;10mat(tru4,pos4)[0m  [38;5;10min(obj42,tru4)[0m
+      [38;5;10mat(tru4,pos4)[0m  [38;5;10min(obj43,tru4)[0m
+     [38;5;9m--at(apn1,apt4)[0m [38;5;9m--at(apn2,apt4)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn5,apt4)[0m  [38;5;10mat(obj153,apt4)[0m  [38;5;10mat(tru4,pos4)[0m
+      [38;5;10mat(obj172,apt4)[0m  [38;5;10mat(tru4,pos4)[0m
+      [38;5;10mat(obj41,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(tru5,pos5)[0m  [38;5;10min(obj52,tru5)[0m
+     [38;5;9m--at(apn4,apt5)[0m  [38;5;10mat(obj62,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj63,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj71,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj72,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj82,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+     [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj92,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj101,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj103,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+     [38;5;9m--at(apn2,apt5)[0m  [38;5;10mat(apn3,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj131,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj132,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+     [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj132,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj152,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+     [38;5;9m--at(apn1,apt5)[0m  [38;5;10mat(obj161,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj163,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(obj172,apt5)[0m  [38;5;10mat(tru5,pos5)[0m
+      [38;5;10mat(tru6,pos6)[0m  [38;5;10min(obj61,tru6)[0m
+      [38;5;10mat(tru6,pos6)[0m  [38;5;10min(obj62,tru6)[0m
+      [38;5;10mat(tru6,pos6)[0m  [38;5;10min(obj63,tru6)[0m
+      [38;5;10mat(obj73,apt6)[0m  [38;5;10mat(tru6,pos6)[0m
+      [38;5;10mat(obj101,apt6)[0m  [38;5;10mat(tru6,pos6)[0m
+      [38;5;10mat(obj103,apt6)[0m  [38;5;10mat(tru6,pos6)[0m
+     [38;5;9m--at(apn2,apt6)[0m  [38;5;10mat(apn3,apt4)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj131,apt6)[0m  [38;5;10mat(tru6,pos6)[0m
+     [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj132,apt6)[0m  [38;5;10mat(tru6,pos6)[0m
+      [38;5;10mat(obj152,apt6)[0m  [38;5;10mat(tru6,pos6)[0m
+      [38;5;10mat(tru7,pos7)[0m  [38;5;10min(obj71,tru7)[0m
+      [38;5;10mat(tru7,pos7)[0m  [38;5;10min(obj72,tru7)[0m
+      [38;5;10mat(tru7,pos7)[0m  [38;5;10min(obj73,tru7)[0m
+      [38;5;10mat(obj103,apt7)[0m  [38;5;10mat(tru7,pos7)[0m
+      [38;5;10mat(obj172,apt7)[0m  [38;5;10mat(tru7,pos7)[0m
+      [38;5;10mat(tru8,pos8)[0m  [38;5;10min(obj81,tru8)[0m
+      [38;5;10mat(tru8,pos8)[0m  [38;5;10min(obj82,tru8)[0m
+      [38;5;10mat(tru8,pos8)[0m  [38;5;10min(obj83,tru8)[0m
+     [38;5;9m--at(apn4,apt8)[0m  [38;5;10mat(obj112,apt8)[0m  [38;5;10mat(tru8,pos8)[0m
+      [38;5;10mat(obj123,apt8)[0m  [38;5;10mat(tru8,pos8)[0m
+      [38;5;10mat(obj132,apt8)[0m  [38;5;10mat(tru8,pos8)[0m
+     [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj132,apt8)[0m  [38;5;10mat(tru8,pos8)[0m
+     [38;5;9m--at(apn1,apt8)[0m  [38;5;10mat(apn3,apt4)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj142,apt8)[0m  [38;5;10mat(tru8,pos8)[0m
+      [38;5;10mat(obj152,apt8)[0m  [38;5;10mat(tru8,pos8)[0m
+     [38;5;9m--at(apn1,apt8)[0m  [38;5;10mat(obj161,apt8)[0m  [38;5;10mat(tru8,pos8)[0m
+      [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+     [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+     [38;5;9m--at(apn1,apt9)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn3,apt9)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn3,apt4)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn3,apt5)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn3,apt7)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(apn1,apt4)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj73,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(obj82,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(tru9,pos9)[0m  [38;5;10min(obj91,tru9)[0m
+      [38;5;10mat(tru9,pos9)[0m  [38;5;10min(obj92,tru9)[0m
+      [38;5;10mat(tru9,pos9)[0m  [38;5;10min(obj93,tru9)[0m
+      [38;5;10mat(obj101,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(obj123,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(obj132,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+     [38;5;9m--at(apn2,apt9)[0m [38;5;9m--at(apn3,apt9)[0m [38;5;9m--at(apn4,apt9)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10mat(obj132,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(obj163,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+      [38;5;10mat(obj172,apt9)[0m  [38;5;10mat(tru9,pos9)[0m
+     [38;5;9m--at(tru10,pos10)[0m  [38;5;10min(obj11,tru10)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn3,apt10)[0m [38;5;9m--at(apn5,apt10)[0m  [38;5;10mat(obj72,apt10)[0m  [38;5;10mat(tru10,pos10)[0m
+      [38;5;10mat(tru10,pos10)[0m  [38;5;10min(obj101,tru10)[0m
+      [38;5;10mat(tru10,pos10)[0m  [38;5;10min(obj102,tru10)[0m
+      [38;5;10mat(tru10,pos10)[0m  [38;5;10min(obj103,tru10)[0m
+      [38;5;10mat(obj152,apt10)[0m  [38;5;10mat(tru10,pos10)[0m
+      [38;5;10mat(obj163,apt10)[0m  [38;5;10mat(tru10,pos10)[0m
+      [38;5;10mat(obj172,apt10)[0m  [38;5;10mat(tru10,pos10)[0m
+     [38;5;9m--at(tru11,pos11)[0m  [38;5;10min(obj11,tru11)[0m
+      [38;5;10mat(tru11,pos11)[0m  [38;5;10min(obj111,tru11)[0m
+      [38;5;10mat(tru11,pos11)[0m  [38;5;10min(obj112,tru11)[0m
+      [38;5;10mat(tru11,pos11)[0m  [38;5;10min(obj113,tru11)[0m
+      [38;5;10mat(obj172,apt11)[0m  [38;5;10mat(tru11,pos11)[0m
+     [38;5;9m--at(tru12,pos12)[0m  [38;5;10min(obj11,tru12)[0m
+      [38;5;10mat(tru12,pos12)[0m  [38;5;10min(obj121,tru12)[0m
+      [38;5;10mat(tru12,pos12)[0m  [38;5;10min(obj122,tru12)[0m
+      [38;5;10mat(tru12,pos12)[0m  [38;5;10min(obj123,tru12)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt5)[0m [38;5;9m--at(apn3,apt12)[0m [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj143,apt12)[0m  [38;5;10mat(tru12,pos12)[0m
+     [38;5;9m--at(apn1,apt12)[0m  [38;5;10mat(obj161,apt12)[0m  [38;5;10mat(tru12,pos12)[0m
+      [38;5;10mat(obj163,apt12)[0m  [38;5;10mat(tru12,pos12)[0m
+     [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj163,apt12)[0m  [38;5;10mat(tru12,pos12)[0m
+     [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj163,apt12)[0m  [38;5;10mat(tru12,pos12)[0m
+      [38;5;10mat(apn1,apt11)[0m [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj163,apt12)[0m  [38;5;10mat(tru12,pos12)[0m
+      [38;5;10mat(apn1,apt11)[0m [38;5;9m--at(apn2,apt12)[0m [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj163,apt12)[0m  [38;5;10mat(tru12,pos12)[0m
+      [38;5;10mat(obj172,apt12)[0m  [38;5;10mat(tru12,pos12)[0m
+     [38;5;9m--at(tru13,pos13)[0m  [38;5;10min(obj11,tru13)[0m
+      [38;5;10mat(obj73,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+      [38;5;10mat(obj82,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+      [38;5;10mat(obj101,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+      [38;5;10mat(obj103,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+      [38;5;10mat(tru13,pos13)[0m  [38;5;10min(obj131,tru13)[0m
+      [38;5;10mat(tru13,pos13)[0m  [38;5;10min(obj132,tru13)[0m
+      [38;5;10mat(tru13,pos13)[0m  [38;5;10min(obj133,tru13)[0m
+      [38;5;10mat(apn3,apt10)[0m [38;5;9m--at(apn5,apt13)[0m  [38;5;10mat(obj142,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+      [38;5;10mat(obj152,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+     [38;5;9m--at(apn1,apt13)[0m  [38;5;10mat(obj161,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+      [38;5;10mat(obj172,apt13)[0m  [38;5;10mat(tru13,pos13)[0m
+      [38;5;10mat(apn1,apt2)[0m [38;5;9m--at(apn3,apt14)[0m [38;5;9m--at(apn5,apt14)[0m  [38;5;10mat(obj91,apt14)[0m  [38;5;10mat(tru14,pos14)[0m
+      [38;5;10mat(tru14,pos14)[0m  [38;5;10min(obj141,tru14)[0m
+      [38;5;10mat(tru14,pos14)[0m  [38;5;10min(obj142,tru14)[0m
+      [38;5;10mat(tru14,pos14)[0m  [38;5;10min(obj143,tru14)[0m
+      [38;5;10mat(obj172,apt14)[0m  [38;5;10mat(tru14,pos14)[0m
+      [38;5;10mat(tru15,pos15)[0m  [38;5;10min(obj151,tru15)[0m
+      [38;5;10mat(tru15,pos15)[0m  [38;5;10min(obj152,tru15)[0m
+      [38;5;10mat(tru15,pos15)[0m  [38;5;10min(obj153,tru15)[0m
+      [38;5;10mat(obj163,apt15)[0m  [38;5;10mat(tru15,pos15)[0m
+      [38;5;10mat(obj172,apt15)[0m  [38;5;10mat(tru15,pos15)[0m
+     [38;5;9m--at(tru16,pos16)[0m  [38;5;10min(obj11,tru16)[0m
+      [38;5;10mat(obj152,apt16)[0m  [38;5;10mat(tru16,pos16)[0m
+      [38;5;10mat(tru16,pos16)[0m  [38;5;10min(obj161,tru16)[0m
+      [38;5;10mat(tru16,pos16)[0m  [38;5;10min(obj162,tru16)[0m
+      [38;5;10mat(tru16,pos16)[0m  [38;5;10min(obj163,tru16)[0m
+      [38;5;10mat(obj172,apt16)[0m  [38;5;10mat(tru16,pos16)[0m
+     [38;5;9m--at(tru17,pos17)[0m  [38;5;10min(obj11,tru17)[0m
+      [38;5;10mat(obj163,apt17)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10mat(tru17,pos17)[0m  [38;5;10min(obj171,tru17)[0m
+      [38;5;10mat(tru17,pos17)[0m  [38;5;10min(obj172,tru17)[0m
+      [38;5;10mat(tru17,pos17)[0m  [38;5;10min(obj173,tru17)[0m
+      [38;5;10mat(obj21,apt1)[0m
+      [38;5;10mat(obj21,apt4)[0m
+      [38;5;10mat(obj21,apt10)[0m
+      [38;5;10mat(obj21,apt11)[0m
+     [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+     [38;5;9m--at(apn3,apt13)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(apn3,apt5)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(apn3,apt6)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(apn3,apt7)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(apn3,apt9)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(apn3,apt10)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(apn3,apt11)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(obj21,apt14)[0m
+      [38;5;10mat(obj21,apt17)[0m
+      [38;5;10mat(obj23,apt1)[0m
+      [38;5;10mat(obj23,apt8)[0m
+      [38;5;10mat(obj23,apt10)[0m
+      [38;5;10mat(obj23,apt11)[0m
+      [38;5;10mat(obj23,apt12)[0m
+     [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj23,apt13)[0m
+      [38;5;10mat(obj23,apt16)[0m
+      [38;5;10mat(obj23,apt17)[0m
+     [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn5,apt3)[0m  [38;5;10mat(obj31,apt3)[0m
+      [38;5;10mat(apn1,apt1)[0m [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn5,apt3)[0m  [38;5;10mat(obj31,apt3)[0m
+      [38;5;10min(obj31,tru3)[0m
+      [38;5;10mat(obj32,apt3)[0m
+     [38;5;9m--at(apn4,apt3)[0m  [38;5;10mat(obj32,apt3)[0m
+      [38;5;10mat(obj32,apt11)[0m
+     [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj32,apt13)[0m
+      [38;5;10mat(obj41,apt1)[0m
+      [38;5;10mat(obj41,apt2)[0m
+     [38;5;9m--at(apn4,apt3)[0m  [38;5;10mat(obj41,apt3)[0m
+     [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn4,apt3)[0m  [38;5;10mat(obj41,apt3)[0m
+     [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn4,apt3)[0m  [38;5;10mat(obj41,apt3)[0m
+     [38;5;9m--at(apn1,apt4)[0m [38;5;9m--at(apn2,apt4)[0m [38;5;9m--at(apn3,apt4)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn5,apt4)[0m  [38;5;10mat(obj41,apt4)[0m
+      [38;5;10mat(apn1,apt3)[0m [38;5;9m--at(apn2,apt4)[0m [38;5;9m--at(apn3,apt4)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn5,apt4)[0m  [38;5;10mat(obj41,apt4)[0m
+      [38;5;10mat(obj41,apt7)[0m
+      [38;5;10mat(obj41,apt8)[0m
+      [38;5;10mat(obj41,apt9)[0m
+      [38;5;10mat(obj41,apt10)[0m
+      [38;5;10mat(obj41,apt11)[0m
+      [38;5;10mat(obj41,apt14)[0m
+      [38;5;10mat(obj41,apt15)[0m
+      [38;5;10mat(obj41,apt17)[0m
+      [38;5;10min(obj41,tru4)[0m
+      [38;5;10mat(obj52,apt1)[0m
+      [38;5;10mat(obj52,apt2)[0m
+     [38;5;9m--at(apn4,apt3)[0m  [38;5;10mat(obj52,apt3)[0m
+      [38;5;10mat(obj52,apt4)[0m
+     [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj52,apt5)[0m
+      [38;5;10mat(apn1,apt4)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj52,apt5)[0m
+      [38;5;10mat(obj52,apt6)[0m
+      [38;5;10mat(obj52,apt7)[0m
+      [38;5;10mat(obj52,apt9)[0m
+      [38;5;10mat(obj52,apt10)[0m
+      [38;5;10mat(obj52,apt11)[0m
+      [38;5;10mat(obj52,apt12)[0m
+      [38;5;10mat(obj52,apt14)[0m
+      [38;5;10mat(obj52,apt15)[0m
+      [38;5;10mat(obj52,apt17)[0m
+      [38;5;10min(obj52,tru5)[0m
+     [38;5;9m--at(obj71,pos5)[0m  [38;5;10min(obj53,tru5)[0m
+     [38;5;9m--at(apn1,apt6)[0m  [38;5;10mat(apn2,apt5)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj61,apt6)[0m
+      [38;5;10mat(apn1,apt5)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj61,apt6)[0m
+      [38;5;10min(obj61,tru6)[0m
+     [38;5;9m--at(apn4,apt1)[0m  [38;5;10mat(obj62,apt1)[0m
+     [38;5;9m--at(apn4,apt3)[0m  [38;5;10mat(obj62,apt3)[0m
+     [38;5;9m--at(apn4,apt10)[0m  [38;5;10mat(obj62,apt10)[0m
+     [38;5;9m--at(apn4,apt11)[0m  [38;5;10mat(obj62,apt11)[0m
+     [38;5;9m--at(apn2,apt6)[0m  [38;5;10mat(obj63,apt6)[0m
+      [38;5;10mat(apn2,apt3)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj63,apt6)[0m
+      [38;5;10mat(apn2,apt3)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj63,apt6)[0m
+      [38;5;10mat(apn2,apt3)[0m  [38;5;10mat(apn3,apt3)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj63,apt6)[0m
+      [38;5;10mat(apn2,apt3)[0m  [38;5;10mat(apn3,apt3)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj63,apt6)[0m
+      [38;5;10mat(apn2,apt3)[0m  [38;5;10mat(apn3,apt3)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn5,apt7)[0m  [38;5;10mat(obj63,apt7)[0m
+      [38;5;10mat(obj63,apt11)[0m
+      [38;5;10mat(obj63,apt14)[0m
+     [38;5;9m--at(apn4,apt1)[0m  [38;5;10mat(obj71,apt1)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn5,apt1)[0m  [38;5;10mat(obj71,apt1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn5,apt1)[0m  [38;5;10mat(obj71,apt1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn3,apt1)[0m [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn5,apt1)[0m  [38;5;10mat(obj71,apt1)[0m
+      [38;5;10mat(obj71,apt2)[0m
+      [38;5;10mat(obj71,apt3)[0m
+      [38;5;10mat(obj71,apt4)[0m
+      [38;5;10mat(obj71,apt6)[0m
+      [38;5;10mat(apn1,apt6)[0m [38;5;9m--at(apn2,apt7)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn5,apt7)[0m  [38;5;10mat(obj71,apt7)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10mat(apn2,apt5)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn5,apt7)[0m  [38;5;10mat(obj71,apt7)[0m
+      [38;5;10mat(obj71,apt8)[0m
+      [38;5;10mat(obj71,apt9)[0m
+      [38;5;10mat(obj71,apt10)[0m
+      [38;5;10mat(obj71,apt11)[0m
+      [38;5;10mat(obj71,apt12)[0m
+      [38;5;10mat(obj71,apt13)[0m
+      [38;5;10mat(obj71,apt14)[0m
+      [38;5;10mat(obj71,apt15)[0m
+      [38;5;10mat(obj71,apt16)[0m
+      [38;5;10mat(obj71,apt17)[0m
+      [38;5;10min(obj71,tru7)[0m
+      [38;5;10mat(obj73,apt1)[0m
+      [38;5;10mat(obj73,apt2)[0m
+      [38;5;10mat(obj73,apt4)[0m
+      [38;5;10mat(obj73,apt5)[0m
+      [38;5;10mat(obj73,apt6)[0m
+      [38;5;10mat(obj73,apt8)[0m
+      [38;5;10mat(obj73,apt10)[0m
+      [38;5;10mat(obj73,apt11)[0m
+      [38;5;10mat(obj73,apt12)[0m
+      [38;5;10mat(obj73,apt14)[0m
+      [38;5;10mat(obj73,apt15)[0m
+      [38;5;10mat(obj73,apt16)[0m
+      [38;5;10mat(obj73,apt17)[0m
+      [38;5;10mat(obj81,apt1)[0m
+      [38;5;10mat(obj81,apt4)[0m
+     [38;5;9m--at(apn4,apt8)[0m  [38;5;10mat(obj81,apt8)[0m
+      [38;5;10mat(apn1,apt6)[0m [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj81,apt8)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10mat(apn2,apt7)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj81,apt8)[0m
+      [38;5;10mat(apn1,apt7)[0m  [38;5;10mat(apn4,apt3)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj81,apt8)[0m
+      [38;5;10mat(apn4,apt3)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj81,apt8)[0m
+      [38;5;10mat(obj81,apt10)[0m
+      [38;5;10mat(obj81,apt11)[0m
+      [38;5;10mat(obj81,apt15)[0m
+      [38;5;10mat(obj81,apt16)[0m
+      [38;5;10mat(obj81,apt17)[0m
+      [38;5;10min(obj81,tru8)[0m
+      [38;5;10mat(obj82,apt1)[0m
+      [38;5;10mat(obj82,apt2)[0m
+      [38;5;10mat(obj82,apt4)[0m
+     [38;5;9m--at(apn4,apt8)[0m  [38;5;10mat(obj82,apt8)[0m
+      [38;5;10mat(apn4,apt2)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj82,apt8)[0m
+      [38;5;10mat(obj82,apt10)[0m
+      [38;5;10mat(obj82,apt11)[0m
+      [38;5;10mat(obj82,apt12)[0m
+      [38;5;10mat(obj82,apt14)[0m
+      [38;5;10mat(obj82,apt15)[0m
+      [38;5;10mat(obj82,apt16)[0m
+      [38;5;10mat(obj82,apt17)[0m
+      [38;5;10min(obj82,tru8)[0m
+     [38;5;9m--at(apn4,apt8)[0m  [38;5;10mat(obj83,apt8)[0m
+      [38;5;10mat(obj83,apt10)[0m
+      [38;5;10mat(obj83,apt11)[0m
+      [38;5;10min(obj83,tru8)[0m
+      [38;5;10mat(apn1,apt6)[0m [38;5;9m--at(apn2,apt9)[0m [38;5;9m--at(apn3,apt9)[0m [38;5;9m--at(apn4,apt9)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10mat(obj91,apt9)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10mat(apn2,apt8)[0m [38;5;9m--at(apn3,apt9)[0m [38;5;9m--at(apn4,apt9)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10mat(obj91,apt9)[0m
+      [38;5;10min(obj91,tru9)[0m
+      [38;5;10mat(obj92,pos17)[0m
+      [38;5;10min(obj92,tru17)[0m
+      [38;5;10mat(obj93,pos17)[0m
+      [38;5;10min(obj93,tru17)[0m
+      [38;5;10mat(obj101,apt1)[0m
+      [38;5;10mat(obj101,apt2)[0m
+      [38;5;10mat(obj101,apt3)[0m
+      [38;5;10mat(obj101,apt4)[0m
+      [38;5;10mat(obj101,apt6)[0m
+      [38;5;10mat(obj101,apt7)[0m
+     [38;5;9m--at(apn4,apt8)[0m  [38;5;10mat(obj101,apt8)[0m
+     [38;5;9m--at(apn1,apt10)[0m [38;5;9m--at(apn2,apt10)[0m [38;5;9m--at(apn3,apt10)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn5,apt10)[0m  [38;5;10mat(obj101,apt10)[0m
+      [38;5;10mat(apn1,apt6)[0m [38;5;9m--at(apn2,apt10)[0m [38;5;9m--at(apn3,apt10)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn5,apt10)[0m  [38;5;10mat(obj101,apt10)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10mat(apn2,apt9)[0m [38;5;9m--at(apn3,apt10)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn5,apt10)[0m  [38;5;10mat(obj101,apt10)[0m
+      [38;5;10mat(obj101,apt11)[0m
+      [38;5;10mat(obj101,apt12)[0m
+      [38;5;10mat(obj101,apt14)[0m
+      [38;5;10mat(obj101,apt15)[0m
+      [38;5;10mat(obj101,apt16)[0m
+      [38;5;10mat(obj101,apt17)[0m
+      [38;5;10min(obj101,tru10)[0m
+     [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj102,apt5)[0m
+      [38;5;10mat(obj103,apt1)[0m
+      [38;5;10mat(obj103,apt2)[0m
+      [38;5;10mat(obj103,apt4)[0m
+      [38;5;10mat(obj103,apt5)[0m
+      [38;5;10mat(obj103,apt6)[0m
+      [38;5;10mat(obj103,apt8)[0m
+      [38;5;10mat(obj103,apt9)[0m
+     [38;5;9m--at(apn4,apt10)[0m  [38;5;10mat(obj103,apt10)[0m
+     [38;5;9m--at(apn1,apt10)[0m [38;5;9m--at(apn4,apt10)[0m  [38;5;10mat(obj103,apt10)[0m
+     [38;5;9m--at(apn1,apt10)[0m [38;5;9m--at(apn3,apt10)[0m [38;5;9m--at(apn4,apt10)[0m  [38;5;10mat(obj103,apt10)[0m
+      [38;5;10mat(obj103,apt11)[0m
+      [38;5;10mat(obj103,apt12)[0m
+      [38;5;10mat(obj103,apt13)[0m
+      [38;5;10mat(obj103,apt14)[0m
+      [38;5;10mat(obj103,apt15)[0m
+      [38;5;10mat(obj103,apt16)[0m
+      [38;5;10mat(obj103,apt17)[0m
+     [38;5;9m--at(apn1,apt11)[0m [38;5;9m--at(apn2,apt11)[0m [38;5;9m--at(apn3,apt11)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn5,apt11)[0m  [38;5;10mat(obj111,apt11)[0m
+     [38;5;9m--at(apn1,apt11)[0m  [38;5;10mat(apn2,apt10)[0m [38;5;9m--at(apn3,apt11)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn5,apt11)[0m  [38;5;10mat(obj111,apt11)[0m
+      [38;5;10min(obj111,tru11)[0m
+     [38;5;9m--at(apn4,apt4)[0m  [38;5;10mat(obj112,apt4)[0m
+     [38;5;9m--at(apn4,apt12)[0m  [38;5;10mat(obj112,apt12)[0m
+     [38;5;9m--at(apn4,apt15)[0m  [38;5;10mat(obj112,apt15)[0m
+     [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj112,apt16)[0m
+     [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj112,apt17)[0m
+     [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn4,apt2)[0m  [38;5;10mat(obj121,apt2)[0m
+     [38;5;9m--at(apn1,apt7)[0m [38;5;9m--at(apn2,apt7)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn4,apt7)[0m  [38;5;10mat(obj121,apt7)[0m
+     [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn2,apt12)[0m [38;5;9m--at(apn3,apt12)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj121,apt12)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10mat(apn2,apt10)[0m  [38;5;10mat(apn3,apt13)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj121,apt17)[0m
+      [38;5;10min(obj121,tru12)[0m
+      [38;5;10mat(obj123,apt1)[0m
+      [38;5;10mat(obj123,apt2)[0m
+      [38;5;10mat(obj123,apt4)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt11)[0m  [38;5;10mat(obj123,apt11)[0m
+      [38;5;10mat(obj123,apt14)[0m
+      [38;5;10mat(obj123,apt15)[0m
+     [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+     [38;5;9m--at(apn2,apt16)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+     [38;5;9m--at(apn1,apt16)[0m  [38;5;10mat(apn2,apt8)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10mat(apn2,apt8)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10mat(apn2,apt8)[0m [38;5;9m--at(apn3,apt16)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt4)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt5)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt7)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt11)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn1,apt11)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn2,apt5)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn2,apt8)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn2,apt11)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(apn2,apt14)[0m [38;5;9m--at(apn4,apt16)[0m  [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(obj123,apt17)[0m
+     [38;5;9m--at(apn2,apt1)[0m [38;5;9m--at(apn3,apt1)[0m [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn5,apt1)[0m  [38;5;10mat(obj132,apt1)[0m
+     [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn5,apt2)[0m  [38;5;10mat(obj132,apt2)[0m
+     [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn5,apt3)[0m  [38;5;10mat(obj132,apt3)[0m
+      [38;5;10mat(obj132,apt4)[0m
+     [38;5;9m--at(apn2,apt4)[0m [38;5;9m--at(apn3,apt4)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn5,apt4)[0m  [38;5;10mat(obj132,apt4)[0m
+      [38;5;10mat(obj132,apt5)[0m
+      [38;5;10mat(obj132,apt7)[0m
+     [38;5;9m--at(apn2,apt7)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn5,apt7)[0m  [38;5;10mat(obj132,apt7)[0m
+     [38;5;9m--at(apn3,apt10)[0m  [38;5;10mat(obj132,apt10)[0m
+     [38;5;9m--at(apn2,apt10)[0m [38;5;9m--at(apn3,apt10)[0m  [38;5;10mat(obj132,apt10)[0m
+     [38;5;9m--at(apn2,apt10)[0m [38;5;9m--at(apn3,apt10)[0m [38;5;9m--at(apn5,apt10)[0m  [38;5;10mat(obj132,apt10)[0m
+      [38;5;10mat(obj132,apt11)[0m
+     [38;5;9m--at(apn2,apt11)[0m [38;5;9m--at(apn3,apt11)[0m  [38;5;10mat(apn4,apt10)[0m [38;5;9m--at(apn5,apt11)[0m  [38;5;10mat(obj132,apt11)[0m
+     [38;5;9m--at(apn2,apt12)[0m [38;5;9m--at(apn3,apt12)[0m  [38;5;10mat(apn4,apt10)[0m [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj132,apt12)[0m
+     [38;5;9m--at(apn2,apt14)[0m [38;5;9m--at(apn3,apt14)[0m  [38;5;10mat(apn4,apt10)[0m [38;5;9m--at(apn5,apt14)[0m  [38;5;10mat(obj132,apt14)[0m
+      [38;5;10mat(obj132,apt15)[0m
+     [38;5;9m--at(apn2,apt15)[0m [38;5;9m--at(apn3,apt15)[0m  [38;5;10mat(apn4,apt10)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj132,apt15)[0m
+      [38;5;10mat(obj132,apt16)[0m
+      [38;5;10mat(obj132,apt17)[0m
+      [38;5;10mat(apn2,apt16)[0m  [38;5;10mat(apn3,apt16)[0m  [38;5;10mat(apn4,apt10)[0m [38;5;9m--at(apn5,apt17)[0m  [38;5;10mat(obj132,apt17)[0m
+      [38;5;10mat(obj152,apt1)[0m
+      [38;5;10mat(obj152,apt2)[0m
+      [38;5;10mat(obj152,apt3)[0m
+      [38;5;10mat(obj152,apt4)[0m
+      [38;5;10mat(obj152,apt7)[0m
+      [38;5;10mat(obj152,apt8)[0m
+      [38;5;10mat(obj152,apt9)[0m
+      [38;5;10mat(obj152,apt11)[0m
+      [38;5;10mat(obj152,apt12)[0m
+      [38;5;10mat(obj152,apt14)[0m
+     [38;5;9m--at(apn1,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m [38;5;9m--at(apn2,apt15)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10mat(apn2,apt4)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10mat(apn2,apt5)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10mat(apn2,apt7)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10mat(apn2,apt9)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10mat(apn2,apt11)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10mat(apn4,apt11)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj152,apt15)[0m
+      [38;5;10mat(obj152,apt17)[0m
+      [38;5;10min(obj152,tru15)[0m
+      [38;5;10mat(obj153,pos4)[0m
+     [38;5;9m--at(apn1,apt4)[0m [38;5;9m--at(apn2,apt4)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn5,apt4)[0m  [38;5;10mat(obj153,apt4)[0m [38;5;9m--at(obj172,pos4)[0m
+      [38;5;10min(obj153,tru4)[0m
+      [38;5;10mat(obj161,apt1)[0m
+      [38;5;10mat(obj161,apt2)[0m
+     [38;5;9m--at(apn1,apt2)[0m  [38;5;10mat(obj161,apt2)[0m
+      [38;5;10mat(obj161,apt3)[0m
+     [38;5;9m--at(apn1,apt3)[0m  [38;5;10mat(obj161,apt3)[0m
+      [38;5;10mat(obj161,apt4)[0m
+     [38;5;9m--at(apn1,apt4)[0m  [38;5;10mat(obj161,apt4)[0m
+      [38;5;10mat(obj161,apt5)[0m
+      [38;5;10mat(obj161,apt6)[0m
+      [38;5;10mat(obj161,apt7)[0m
+     [38;5;9m--at(apn1,apt7)[0m  [38;5;10mat(obj161,apt7)[0m
+      [38;5;10mat(obj161,apt9)[0m
+      [38;5;10mat(obj161,apt10)[0m
+      [38;5;10mat(obj161,apt11)[0m
+     [38;5;9m--at(apn1,apt11)[0m  [38;5;10mat(obj161,apt11)[0m
+      [38;5;10mat(obj161,apt12)[0m
+      [38;5;10mat(obj161,apt13)[0m
+      [38;5;10mat(obj161,apt14)[0m
+     [38;5;9m--at(apn1,apt14)[0m  [38;5;10mat(obj161,apt14)[0m
+      [38;5;10mat(obj161,apt15)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10mat(apn2,apt11)[0m  [38;5;10mat(apn3,apt15)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt16)[0m  [38;5;10mat(obj161,apt16)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10mat(apn2,apt13)[0m  [38;5;10mat(apn3,apt15)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt16)[0m  [38;5;10mat(obj161,apt16)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt15)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt16)[0m  [38;5;10mat(obj161,apt16)[0m
+      [38;5;10mat(obj161,apt17)[0m
+     [38;5;9m--at(apn1,apt17)[0m  [38;5;10mat(obj161,apt17)[0m
+      [38;5;10min(obj161,tru16)[0m
+      [38;5;10mat(obj163,apt6)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10mat(apn2,apt13)[0m  [38;5;10mat(apn3,apt16)[0m  [38;5;10mat(apn4,apt14)[0m [38;5;9m--at(apn5,apt17)[0m  [38;5;10mat(obj171,apt17)[0m
+      [38;5;10min(obj171,tru17)[0m
+      [38;5;10mat(obj172,apt4)[0m
+      [38;5;10mat(obj172,apt6)[0m
+     [38;5;9m--at(apn1,apt8)[0m [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m  [38;5;10mat(obj172,apt8)[0m
+      [38;5;10mat(obj172,apt9)[0m
+      [38;5;10mat(obj172,apt10)[0m
+      [38;5;10mat(obj172,apt11)[0m
+      [38;5;10mat(obj172,apt12)[0m
+      [38;5;10mat(obj172,apt13)[0m
+      [38;5;10mat(obj172,apt14)[0m
+      [38;5;10mat(obj172,apt15)[0m
+      [38;5;10mat(obj172,apt17)[0m
+     [38;5;9m--at(apn3,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m [38;5;9m--at(apn3,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10mat(apn2,apt2)[0m  [38;5;10mat(apn3,apt12)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10mat(apn2,apt4)[0m  [38;5;10mat(apn3,apt12)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10mat(apn2,apt5)[0m  [38;5;10mat(apn3,apt12)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10mat(apn2,apt7)[0m  [38;5;10mat(apn3,apt12)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10mat(apn2,apt11)[0m  [38;5;10mat(apn3,apt12)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10mat(apn2,apt12)[0m  [38;5;10mat(apn3,apt12)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10mat(apn2,apt14)[0m  [38;5;10mat(apn3,apt12)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10mat(apn3,apt12)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj172,apt17)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10min(obj11,apn1)[0m
+      [38;5;10mat(apn1,apt1)[0m  [38;5;10min(obj62,apn1)[0m
+      [38;5;10mat(apn1,apt1)[0m  [38;5;10min(obj71,apn1)[0m
+      [38;5;10mat(apn1,apt1)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt1)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt3)[0m  [38;5;10min(obj32,apn1)[0m
+      [38;5;10mat(apn1,apt3)[0m  [38;5;10min(obj41,apn1)[0m
+      [38;5;10mat(apn1,apt3)[0m  [38;5;10min(obj52,apn1)[0m
+      [38;5;10mat(apn1,apt3)[0m  [38;5;10min(obj62,apn1)[0m
+      [38;5;10mat(apn1,apt3)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt4)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt4)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt5)[0m  [38;5;10min(obj62,apn1)[0m
+      [38;5;10mat(apn1,apt5)[0m  [38;5;10min(obj131,apn1)[0m  [38;5;10min(obj133,apn1)[0m
+      [38;5;10mat(apn1,apt5)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt5)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10min(obj131,apn1)[0m  [38;5;10min(obj33,apn1)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10min(obj63,apn1)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10min(obj161,apn1)[0m
+      [38;5;10mat(apn1,apt7)[0m  [38;5;10min(obj63,apn1)[0m
+      [38;5;10mat(apn1,apt7)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt7)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10min(obj81,apn1)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10min(obj82,apn1)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10min(obj83,apn1)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10min(obj101,apn1)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10min(obj112,apn1)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10min(obj73,apn1)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt9)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10min(obj62,apn1)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10min(obj103,apn1)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt11)[0m  [38;5;10min(obj62,apn1)[0m
+      [38;5;10mat(apn1,apt11)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt11)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10min(obj163,apn1)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10min(obj21,apn1)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10min(obj23,apn1)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10min(obj32,apn1)[0m
+      [38;5;10mat(apn1,apt13)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt14)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt15)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt15)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt16)[0m  [38;5;10min(obj123,apn1)[0m
+      [38;5;10mat(apn2,apt13)[0m  [38;5;10min(obj11,apn2)[0m
+      [38;5;10mat(apn2,apt1)[0m  [38;5;10min(obj71,apn2)[0m
+      [38;5;10mat(apn2,apt3)[0m  [38;5;10min(obj41,apn2)[0m
+      [38;5;10mat(apn2,apt3)[0m  [38;5;10min(obj52,apn2)[0m
+      [38;5;10mat(apn2,apt3)[0m  [38;5;10min(obj62,apn2)[0m
+      [38;5;10mat(apn2,apt5)[0m  [38;5;10min(obj63,apn2)[0m
+      [38;5;10mat(apn2,apt6)[0m  [38;5;10min(obj63,apn2)[0m
+      [38;5;10mat(apn2,apt7)[0m  [38;5;10min(obj63,apn2)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10min(obj81,apn2)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10min(obj82,apn2)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10min(obj83,apn2)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10min(obj142,apn2)[0m  [38;5;10min(obj92,apn2)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10min(obj101,apn2)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10min(obj112,apn2)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10min(obj161,apn2)[0m
+      [38;5;10mat(apn2,apt9)[0m  [38;5;10min(obj73,apn2)[0m
+      [38;5;10mat(apn2,apt10)[0m  [38;5;10min(obj103,apn2)[0m
+      [38;5;10mat(apn2,apt10)[0m  [38;5;10min(obj132,apn2)[0m
+      [38;5;10mat(apn2,apt11)[0m  [38;5;10min(obj63,apn2)[0m
+      [38;5;10mat(apn2,apt12)[0m  [38;5;10min(obj163,apn2)[0m
+      [38;5;10mat(apn2,apt13)[0m  [38;5;10min(obj21,apn2)[0m
+      [38;5;10mat(apn2,apt13)[0m  [38;5;10min(obj23,apn2)[0m
+      [38;5;10mat(apn2,apt13)[0m  [38;5;10min(obj32,apn2)[0m
+      [38;5;10mat(apn2,apt14)[0m  [38;5;10min(obj63,apn2)[0m
+      [38;5;10mat(apn2,apt15)[0m  [38;5;10min(obj152,apn2)[0m
+      [38;5;10mat(apn2,apt16)[0m  [38;5;10min(obj123,apn2)[0m
+      [38;5;10mat(apn3,apt13)[0m  [38;5;10min(obj11,apn3)[0m
+      [38;5;10mat(apn3,apt1)[0m  [38;5;10min(obj71,apn3)[0m
+      [38;5;10mat(apn3,apt1)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt2)[0m  [38;5;10min(obj151,apn3)[0m  [38;5;10min(obj153,apn3)[0m
+      [38;5;10mat(apn3,apt2)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt3)[0m  [38;5;10min(obj41,apn3)[0m
+      [38;5;10mat(apn3,apt3)[0m  [38;5;10min(obj52,apn3)[0m
+      [38;5;10mat(apn3,apt3)[0m  [38;5;10min(obj62,apn3)[0m
+      [38;5;10mat(apn3,apt3)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt4)[0m  [38;5;10min(obj151,apn3)[0m  [38;5;10min(obj153,apn3)[0m
+      [38;5;10mat(apn3,apt4)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt5)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt6)[0m  [38;5;10min(obj63,apn3)[0m
+      [38;5;10mat(apn3,apt6)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt7)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt8)[0m  [38;5;10min(obj81,apn3)[0m
+      [38;5;10mat(apn3,apt8)[0m  [38;5;10min(obj82,apn3)[0m
+      [38;5;10mat(apn3,apt8)[0m  [38;5;10min(obj83,apn3)[0m
+      [38;5;10mat(apn3,apt8)[0m  [38;5;10min(obj101,apn3)[0m
+      [38;5;10mat(apn3,apt8)[0m  [38;5;10min(obj112,apn3)[0m
+      [38;5;10mat(apn3,apt8)[0m  [38;5;10min(obj161,apn3)[0m
+      [38;5;10mat(apn3,apt9)[0m  [38;5;10min(obj73,apn3)[0m
+      [38;5;10mat(apn3,apt10)[0m  [38;5;10min(obj103,apn3)[0m
+      [38;5;10mat(apn3,apt10)[0m  [38;5;10min(obj132,apn3)[0m
+      [38;5;10mat(apn3,apt12)[0m  [38;5;10min(obj163,apn3)[0m
+      [38;5;10mat(apn3,apt13)[0m  [38;5;10min(obj21,apn3)[0m
+      [38;5;10mat(apn3,apt13)[0m  [38;5;10min(obj23,apn3)[0m
+      [38;5;10mat(apn3,apt13)[0m  [38;5;10min(obj32,apn3)[0m
+      [38;5;10mat(apn3,apt15)[0m  [38;5;10min(obj13,apn3)[0m  [38;5;10min(obj151,apn3)[0m
+      [38;5;10mat(apn3,apt15)[0m  [38;5;10min(obj152,apn3)[0m
+      [38;5;10mat(apn3,apt15)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt16)[0m  [38;5;10min(obj123,apn3)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj11,apn4)[0m
+     [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn4,apt16)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt7)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj11,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj11,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj11,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj11,apn4)[0m
+      [38;5;10mat(apn4,apt13)[0m  [38;5;10min(obj11,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj21,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj23,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj81,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt1)[0m  [38;5;10min(obj123,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj92,apn4)[0m  [38;5;10min(obj93,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt2)[0m  [38;5;10min(obj123,apn4)[0m
+      [38;5;10mat(apn4,apt3)[0m  [38;5;10min(obj32,apn4)[0m
+      [38;5;10mat(apn4,apt3)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt3)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt3)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt3)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj21,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj81,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt4)[0m  [38;5;10min(obj123,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj141,apn4)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj141,apn4)[0m  [38;5;10min(obj92,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj102,apn4)[0m  [38;5;10min(obj141,apn4)[0m
+      [38;5;10mat(apn4,apt6)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt6)[0m  [38;5;10min(obj63,apn4)[0m
+      [38;5;10mat(apn4,apt7)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt7)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt7)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj23,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj81,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj83,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj123,apn4)[0m
+      [38;5;10mat(apn4,apt8)[0m  [38;5;10min(obj161,apn4)[0m
+      [38;5;10mat(apn4,apt9)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt9)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt9)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt9)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt9)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt9)[0m  [38;5;10min(obj123,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj21,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj23,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj142,apn4)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj81,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj83,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt10)[0m  [38;5;10min(obj132,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj21,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj23,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj32,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj81,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj83,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt11)[0m  [38;5;10min(obj123,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj23,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj143,apn4)[0m  [38;5;10min(obj72,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt12)[0m  [38;5;10min(obj163,apn4)[0m
+      [38;5;10mat(apn4,apt13)[0m  [38;5;10min(obj21,apn4)[0m
+      [38;5;10mat(apn4,apt13)[0m  [38;5;10min(obj23,apn4)[0m
+      [38;5;10mat(apn4,apt13)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt13)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt14)[0m  [38;5;10min(obj21,apn4)[0m
+      [38;5;10mat(apn4,apt14)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt14)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt14)[0m  [38;5;10min(obj72,apn4)[0m  [38;5;10min(obj91,apn4)[0m
+      [38;5;10mat(apn4,apt14)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt14)[0m  [38;5;10min(obj82,apn4)[0m
+      [38;5;10mat(apn4,apt14)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt15)[0m  [38;5;10min(obj41,apn4)[0m
+      [38;5;10mat(apn4,apt15)[0m  [38;5;10min(obj52,apn4)[0m
+      [38;5;10mat(apn4,apt15)[0m  [38;5;10min(obj152,apn4)[0m
+      [38;5;10mat(apn4,apt16)[0m  [38;5;10min(obj123,apn4)[0m
+      [38;5;10mat(apn5,apt13)[0m  [38;5;10min(obj11,apn5)[0m
+      [38;5;10mat(apn5,apt1)[0m  [38;5;10min(obj71,apn5)[0m
+      [38;5;10mat(apn5,apt1)[0m  [38;5;10min(obj163,apn5)[0m
+      [38;5;10mat(apn5,apt2)[0m  [38;5;10min(obj121,apn5)[0m
+      [38;5;10mat(apn5,apt2)[0m  [38;5;10min(obj163,apn5)[0m
+      [38;5;10mat(apn5,apt3)[0m  [38;5;10min(obj41,apn5)[0m
+      [38;5;10mat(apn5,apt3)[0m  [38;5;10min(obj52,apn5)[0m
+      [38;5;10mat(apn5,apt3)[0m  [38;5;10min(obj62,apn5)[0m
+      [38;5;10mat(apn5,apt3)[0m  [38;5;10min(obj163,apn5)[0m
+      [38;5;10mat(apn5,apt4)[0m  [38;5;10min(obj112,apn5)[0m
+      [38;5;10mat(apn5,apt5)[0m  [38;5;10min(obj163,apn5)[0m
+      [38;5;10mat(apn5,apt6)[0m  [38;5;10min(obj63,apn5)[0m
+      [38;5;10mat(apn5,apt6)[0m  [38;5;10min(obj163,apn5)[0m
+      [38;5;10mat(apn5,apt7)[0m  [38;5;10min(obj121,apn5)[0m
+      [38;5;10mat(apn5,apt8)[0m  [38;5;10min(obj81,apn5)[0m
+      [38;5;10mat(apn5,apt8)[0m  [38;5;10min(obj82,apn5)[0m
+      [38;5;10mat(apn5,apt8)[0m  [38;5;10min(obj83,apn5)[0m
+      [38;5;10mat(apn5,apt8)[0m  [38;5;10min(obj101,apn5)[0m
+      [38;5;10mat(apn5,apt8)[0m  [38;5;10min(obj112,apn5)[0m
+      [38;5;10mat(apn5,apt8)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt8)[0m  [38;5;10min(obj172,apn5)[0m
+      [38;5;10mat(apn5,apt9)[0m  [38;5;10min(obj73,apn5)[0m
+      [38;5;10mat(apn5,apt9)[0m  [38;5;10min(obj163,apn5)[0m
+      [38;5;10mat(apn5,apt10)[0m  [38;5;10min(obj103,apn5)[0m
+      [38;5;10mat(apn5,apt10)[0m  [38;5;10min(obj132,apn5)[0m
+      [38;5;10mat(apn5,apt10)[0m  [38;5;10min(obj163,apn5)[0m
+      [38;5;10mat(apn5,apt11)[0m  [38;5;10min(obj123,apn5)[0m
+      [38;5;10mat(apn5,apt12)[0m  [38;5;10min(obj112,apn5)[0m
+      [38;5;10mat(apn5,apt12)[0m  [38;5;10min(obj163,apn5)[0m
+      [38;5;10mat(apn5,apt13)[0m  [38;5;10min(obj21,apn5)[0m
+      [38;5;10mat(apn5,apt13)[0m  [38;5;10min(obj23,apn5)[0m
+      [38;5;10mat(apn5,apt13)[0m  [38;5;10min(obj32,apn5)[0m
+      [38;5;10mat(apn5,apt15)[0m  [38;5;10min(obj152,apn5)[0m
+      [38;5;10mat(apn5,apt16)[0m  [38;5;10min(obj123,apn5)[0m
+      [38;5;10min(obj71,apn4)[0m
+      [38;5;10min(obj73,apn4)[0m
+      [38;5;10min(obj101,apn4)[0m
+      [38;5;10min(obj103,apn4)[0m
+      [38;5;10min(obj132,apn1)[0m
+      [38;5;10min(obj132,apn2)[0m
+      [38;5;10min(obj132,apn3)[0m
+      [38;5;10min(obj132,apn4)[0m
+      [38;5;10min(obj132,apn5)[0m
+      [38;5;10min(obj152,apn1)[0m
+      [38;5;10min(obj161,apn1)[0m
+      [38;5;10min(obj161,apn2)[0m
+      [38;5;10min(obj161,apn5)[0m
+      [38;5;10min(obj172,apn3)[0m
+Layer: 3
+  Subproblem: 0 [266]
+     [38;5;9m--at(apn5,apt11)[0m [38;5;9m--at(apn5,apt12)[0m [38;5;9m--at(apn5,apt16)[0m [38;5;9m--at(apn5,apt5)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10min(obj161,apn5)[0m
+     [38;5;9m--at(apn5,apt1)[0m [38;5;9m--at(apn5,apt12)[0m [38;5;9m--at(apn5,apt13)[0m [38;5;9m--at(apn5,apt14)[0m [38;5;9m--at(apn5,apt2)[0m [38;5;9m--at(apn5,apt3)[0m [38;5;9m--at(apn5,apt6)[0m [38;5;9m--at(apn5,apt8)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10min(obj132,apn5)[0m
+     [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn4,apt7)[0m  [38;5;10min(obj71,apn4)[0m
+     [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt7)[0m  [38;5;10min(obj103,apn4)[0m
+     [38;5;9m--at(apn4,apt1)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn4,apt2)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn4,apt6)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10min(obj132,apn4)[0m
+     [38;5;9m--at(apn3,apt1)[0m [38;5;9m--at(apn3,apt11)[0m [38;5;9m--at(apn3,apt12)[0m [38;5;9m--at(apn3,apt13)[0m [38;5;9m--at(apn3,apt14)[0m [38;5;9m--at(apn3,apt15)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn3,apt4)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn3,apt9)[0m  [38;5;10min(obj132,apn3)[0m
+     [38;5;9m--at(apn2,apt1)[0m [38;5;9m--at(apn2,apt12)[0m [38;5;9m--at(apn2,apt13)[0m [38;5;9m--at(apn2,apt14)[0m [38;5;9m--at(apn2,apt15)[0m [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn2,apt9)[0m  [38;5;10min(obj132,apn2)[0m
+     [38;5;9m--at(apn1,apt11)[0m [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn1,apt13)[0m [38;5;9m--at(apn1,apt14)[0m [38;5;9m--at(apn1,apt16)[0m [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn1,apt4)[0m [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn1,apt7)[0m [38;5;9m--at(apn1,apt8)[0m  [38;5;10min(obj161,apn1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn1,apt13)[0m [38;5;9m--at(apn1,apt14)[0m [38;5;9m--at(apn1,apt2)[0m [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn1,apt8)[0m [38;5;9m--at(apn1,apt9)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(obj11,pos1)[0m
+      [38;5;10mat(obj11,apt13)[0m
+      [38;5;10mat(tru4,pos4)[0m  [38;5;10min(obj153,tru4)[0m
+      [38;5;10mat(tru17,pos17)[0m  [38;5;10min(obj92,tru17)[0m
+      [38;5;10mat(tru17,pos17)[0m  [38;5;10min(obj93,tru17)[0m
+      [38;5;10mat(obj172,apt17)[0m  [38;5;10mat(tru17,pos17)[0m
+      [38;5;10mat(obj13,pos1)[0m
+      [38;5;10mat(obj21,pos2)[0m
+      [38;5;10mat(obj21,apt13)[0m
+      [38;5;10mat(obj23,pos2)[0m
+      [38;5;10mat(obj23,apt13)[0m
+      [38;5;10mat(obj31,pos3)[0m
+      [38;5;10mat(obj32,pos3)[0m
+     [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn5,apt3)[0m  [38;5;10mat(obj32,apt3)[0m
+      [38;5;10min(obj32,tru3)[0m
+      [38;5;10mat(obj33,pos3)[0m
+      [38;5;10mat(obj41,apt3)[0m
+      [38;5;10mat(obj41,pos4)[0m
+      [38;5;10mat(obj42,pos4)[0m
+      [38;5;10mat(obj43,pos4)[0m
+      [38;5;10mat(obj52,apt3)[0m
+      [38;5;10mat(obj52,pos5)[0m
+      [38;5;10mat(obj61,pos6)[0m
+      [38;5;10mat(obj62,pos6)[0m
+      [38;5;10mat(obj63,pos6)[0m
+      [38;5;10mat(obj63,apt6)[0m
+      [38;5;10min(obj63,tru6)[0m
+      [38;5;10mat(obj71,apt1)[0m
+      [38;5;10mat(obj71,pos3)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt1)[0m  [38;5;10mat(apn3,apt1)[0m [38;5;9m--at(apn5,apt3)[0m  [38;5;10mat(obj71,apt3)[0m
+      [38;5;10mat(obj71,pos6)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt1)[0m  [38;5;10mat(apn3,apt1)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj71,apt6)[0m
+      [38;5;10mat(obj71,pos7)[0m
+      [38;5;10mat(obj71,pos9)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt1)[0m  [38;5;10mat(apn3,apt1)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10mat(obj71,apt9)[0m
+      [38;5;10mat(obj71,pos13)[0m
+      [38;5;10mat(apn1,apt2)[0m  [38;5;10mat(apn2,apt1)[0m  [38;5;10mat(apn3,apt1)[0m [38;5;9m--at(apn5,apt13)[0m  [38;5;10mat(obj71,apt13)[0m
+      [38;5;10min(obj71,tru3)[0m
+      [38;5;10min(obj71,tru6)[0m
+      [38;5;10min(obj71,tru9)[0m
+      [38;5;10min(obj71,tru13)[0m
+      [38;5;10mat(obj72,pos7)[0m
+      [38;5;10mat(obj73,pos5)[0m
+     [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj73,apt5)[0m
+      [38;5;10mat(obj73,pos6)[0m
+     [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj73,apt6)[0m
+      [38;5;10mat(obj73,pos7)[0m
+      [38;5;10mat(obj73,pos9)[0m
+      [38;5;10mat(obj73,apt9)[0m
+      [38;5;10min(obj73,tru5)[0m
+      [38;5;10min(obj73,tru6)[0m
+      [38;5;10min(obj73,tru9)[0m
+      [38;5;10mat(obj81,pos8)[0m
+      [38;5;10mat(obj81,apt8)[0m
+      [38;5;10mat(obj82,pos8)[0m
+      [38;5;10mat(obj82,apt8)[0m
+      [38;5;10mat(obj83,pos8)[0m
+      [38;5;10mat(obj83,apt8)[0m
+      [38;5;10mat(obj91,pos9)[0m
+      [38;5;10mat(obj92,pos9)[0m
+      [38;5;10mat(obj93,pos9)[0m
+      [38;5;10mat(obj101,pos3)[0m
+     [38;5;9m--at(apn1,apt3)[0m [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn5,apt3)[0m  [38;5;10mat(obj101,apt3)[0m
+      [38;5;10mat(obj101,pos6)[0m
+     [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj101,apt6)[0m
+      [38;5;10mat(obj101,pos7)[0m
+     [38;5;9m--at(apn1,apt7)[0m [38;5;9m--at(apn2,apt7)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn5,apt7)[0m  [38;5;10mat(obj101,apt7)[0m
+      [38;5;10mat(obj101,apt8)[0m
+      [38;5;10mat(obj101,pos10)[0m
+      [38;5;10min(obj101,tru3)[0m
+      [38;5;10min(obj101,tru6)[0m
+      [38;5;10min(obj101,tru7)[0m
+      [38;5;10mat(obj102,pos10)[0m
+      [38;5;10mat(obj103,pos5)[0m
+     [38;5;9m--at(apn1,apt5)[0m [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj103,apt5)[0m
+      [38;5;10mat(obj103,pos6)[0m
+     [38;5;9m--at(apn1,apt6)[0m [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn5,apt6)[0m  [38;5;10mat(obj103,apt6)[0m
+      [38;5;10mat(obj103,pos8)[0m
+     [38;5;9m--at(apn1,apt8)[0m [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj103,apt8)[0m
+      [38;5;10mat(obj103,pos9)[0m
+     [38;5;9m--at(apn1,apt9)[0m [38;5;9m--at(apn2,apt9)[0m [38;5;9m--at(apn3,apt9)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10mat(obj103,apt9)[0m
+      [38;5;10mat(obj103,pos10)[0m
+      [38;5;10mat(obj103,apt10)[0m
+      [38;5;10mat(obj103,pos13)[0m
+      [38;5;10mat(apn1,apt5)[0m [38;5;9m--at(apn2,apt13)[0m  [38;5;10mat(apn3,apt11)[0m [38;5;9m--at(apn5,apt13)[0m  [38;5;10mat(obj103,apt13)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10mat(apn2,apt10)[0m  [38;5;10mat(apn3,apt10)[0m [38;5;9m--at(apn5,apt13)[0m  [38;5;10mat(obj103,apt13)[0m
+      [38;5;10min(obj103,tru5)[0m
+      [38;5;10min(obj103,tru6)[0m
+      [38;5;10min(obj103,tru8)[0m
+      [38;5;10min(obj103,tru9)[0m
+      [38;5;10min(obj103,tru10)[0m
+      [38;5;10min(obj103,tru13)[0m
+      [38;5;10mat(obj111,pos11)[0m
+      [38;5;10mat(obj112,pos11)[0m
+      [38;5;10mat(obj113,pos11)[0m
+      [38;5;10mat(obj121,pos12)[0m
+      [38;5;10mat(obj122,pos12)[0m
+      [38;5;10mat(obj123,pos12)[0m
+      [38;5;10mat(obj123,apt16)[0m
+      [38;5;10mat(obj131,pos13)[0m
+     [38;5;9m--at(apn2,apt4)[0m [38;5;9m--at(apn4,apt4)[0m [38;5;9m--at(apn5,apt4)[0m  [38;5;10mat(obj132,apt4)[0m
+      [38;5;10mat(obj132,pos5)[0m
+     [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn4,apt5)[0m [38;5;9m--at(apn5,apt5)[0m  [38;5;10mat(obj132,apt5)[0m
+     [38;5;9m--at(apn2,apt7)[0m  [38;5;10mat(apn4,apt4)[0m [38;5;9m--at(apn5,apt7)[0m  [38;5;10mat(obj132,apt7)[0m
+      [38;5;10mat(obj132,pos8)[0m
+      [38;5;10mat(obj132,apt8)[0m
+      [38;5;10mat(obj132,pos10)[0m
+      [38;5;10mat(obj132,apt10)[0m
+     [38;5;9m--at(apn2,apt11)[0m  [38;5;10mat(apn4,apt7)[0m [38;5;9m--at(apn5,apt11)[0m  [38;5;10mat(obj132,apt11)[0m
+      [38;5;10mat(obj132,pos13)[0m
+     [38;5;9m--at(apn4,apt15)[0m  [38;5;10mat(obj132,apt15)[0m
+      [38;5;10mat(obj132,pos16)[0m
+      [38;5;10mat(apn1,apt10)[0m  [38;5;10mat(apn2,apt10)[0m  [38;5;10mat(apn4,apt10)[0m [38;5;9m--at(apn5,apt16)[0m  [38;5;10mat(obj132,apt16)[0m
+      [38;5;10mat(apn2,apt16)[0m  [38;5;10mat(apn4,apt16)[0m [38;5;9m--at(apn5,apt17)[0m  [38;5;10mat(obj132,apt17)[0m
+      [38;5;10min(obj132,tru5)[0m
+      [38;5;10min(obj132,tru8)[0m
+      [38;5;10min(obj132,tru10)[0m
+      [38;5;10min(obj132,tru16)[0m
+      [38;5;10mat(obj133,pos13)[0m
+      [38;5;10mat(obj141,pos14)[0m
+      [38;5;10mat(obj142,pos14)[0m
+      [38;5;10mat(obj143,pos14)[0m
+      [38;5;10mat(obj151,pos15)[0m
+      [38;5;10mat(obj152,pos3)[0m
+     [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn4,apt3)[0m [38;5;9m--at(apn5,apt3)[0m  [38;5;10mat(obj152,apt3)[0m
+      [38;5;10mat(obj152,pos8)[0m
+     [38;5;9m--at(apn2,apt8)[0m [38;5;9m--at(apn3,apt8)[0m [38;5;9m--at(apn4,apt8)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj152,apt8)[0m
+      [38;5;10mat(apn2,apt3)[0m  [38;5;10mat(apn3,apt3)[0m  [38;5;10mat(apn4,apt3)[0m [38;5;9m--at(apn5,apt8)[0m  [38;5;10mat(obj152,apt8)[0m
+      [38;5;10mat(obj152,pos12)[0m
+     [38;5;9m--at(apn2,apt12)[0m [38;5;9m--at(apn3,apt12)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj152,apt12)[0m
+      [38;5;10mat(obj152,pos15)[0m
+      [38;5;10mat(obj152,apt15)[0m
+      [38;5;10min(obj152,tru3)[0m
+      [38;5;10min(obj152,tru8)[0m
+      [38;5;10min(obj152,tru12)[0m
+      [38;5;10mat(obj153,pos15)[0m
+      [38;5;10mat(obj161,pos1)[0m
+      [38;5;10min(obj161,tru1)[0m
+     [38;5;9m--at(apn1,apt1)[0m [38;5;9m--at(apn2,apt1)[0m [38;5;9m--at(apn3,apt1)[0m [38;5;9m--at(apn4,apt1)[0m  [38;5;10mat(obj161,apt1)[0m
+      [38;5;10mat(obj161,pos2)[0m
+     [38;5;9m--at(apn2,apt2)[0m [38;5;9m--at(apn3,apt2)[0m [38;5;9m--at(apn4,apt2)[0m  [38;5;10mat(obj161,apt2)[0m
+      [38;5;10mat(obj161,pos3)[0m
+     [38;5;9m--at(apn2,apt3)[0m [38;5;9m--at(apn3,apt3)[0m [38;5;9m--at(apn4,apt3)[0m  [38;5;10mat(obj161,apt3)[0m
+      [38;5;10mat(obj161,pos4)[0m
+     [38;5;9m--at(apn2,apt4)[0m [38;5;9m--at(apn3,apt4)[0m [38;5;9m--at(apn4,apt4)[0m  [38;5;10mat(obj161,apt4)[0m
+      [38;5;10mat(obj161,pos5)[0m
+     [38;5;9m--at(apn2,apt5)[0m [38;5;9m--at(apn3,apt5)[0m [38;5;9m--at(apn4,apt5)[0m  [38;5;10mat(obj161,apt5)[0m
+      [38;5;10mat(obj161,pos6)[0m
+     [38;5;9m--at(apn2,apt6)[0m [38;5;9m--at(apn3,apt6)[0m [38;5;9m--at(apn4,apt6)[0m  [38;5;10mat(obj161,apt6)[0m
+      [38;5;10mat(obj161,pos7)[0m
+     [38;5;9m--at(apn2,apt7)[0m [38;5;9m--at(apn3,apt7)[0m [38;5;9m--at(apn4,apt7)[0m  [38;5;10mat(obj161,apt7)[0m
+      [38;5;10mat(obj161,pos9)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt9)[0m  [38;5;10mat(obj161,apt9)[0m
+      [38;5;10mat(obj161,pos10)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt10)[0m  [38;5;10mat(obj161,apt10)[0m
+      [38;5;10mat(obj161,pos11)[0m
+      [38;5;10mat(apn3,apt5)[0m [38;5;9m--at(apn4,apt11)[0m  [38;5;10mat(obj161,apt11)[0m
+      [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt11)[0m  [38;5;10mat(obj161,apt11)[0m
+      [38;5;10mat(obj161,pos12)[0m
+      [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt12)[0m  [38;5;10mat(obj161,apt12)[0m
+      [38;5;10mat(apn3,apt11)[0m [38;5;9m--at(apn4,apt12)[0m  [38;5;10mat(obj161,apt12)[0m
+      [38;5;10mat(obj161,pos13)[0m
+      [38;5;10mat(apn2,apt3)[0m  [38;5;10mat(apn3,apt3)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj161,apt13)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt13)[0m  [38;5;10mat(obj161,apt13)[0m
+      [38;5;10mat(obj161,pos14)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt14)[0m  [38;5;10mat(obj161,apt14)[0m
+      [38;5;10mat(apn2,apt13)[0m  [38;5;10mat(apn3,apt13)[0m [38;5;9m--at(apn4,apt14)[0m  [38;5;10mat(obj161,apt14)[0m
+      [38;5;10mat(obj161,pos15)[0m
+      [38;5;10mat(apn1,apt6)[0m  [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt15)[0m  [38;5;10mat(obj161,apt15)[0m
+      [38;5;10mat(obj161,pos16)[0m
+      [38;5;10mat(obj161,pos17)[0m
+      [38;5;10mat(apn2,apt6)[0m  [38;5;10mat(apn3,apt6)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj161,apt17)[0m
+      [38;5;10mat(apn2,apt8)[0m  [38;5;10mat(apn3,apt8)[0m [38;5;9m--at(apn4,apt17)[0m  [38;5;10mat(obj161,apt17)[0m
+      [38;5;10min(obj161,tru2)[0m
+      [38;5;10min(obj161,tru3)[0m
+      [38;5;10min(obj161,tru4)[0m
+      [38;5;10min(obj161,tru5)[0m
+      [38;5;10min(obj161,tru6)[0m
+      [38;5;10min(obj161,tru7)[0m
+      [38;5;10min(obj161,tru9)[0m
+      [38;5;10min(obj161,tru10)[0m
+      [38;5;10min(obj161,tru11)[0m
+      [38;5;10min(obj161,tru12)[0m
+      [38;5;10min(obj161,tru13)[0m
+      [38;5;10min(obj161,tru14)[0m
+      [38;5;10min(obj161,tru15)[0m
+      [38;5;10min(obj161,tru17)[0m
+      [38;5;10mat(obj162,pos16)[0m
+      [38;5;10mat(obj163,pos12)[0m
+      [38;5;10mat(obj163,apt12)[0m
+      [38;5;10mat(obj163,pos16)[0m
+      [38;5;10min(obj163,tru12)[0m
+      [38;5;10mat(obj171,pos17)[0m
+      [38;5;10mat(obj172,pos9)[0m
+     [38;5;9m--at(apn1,apt9)[0m [38;5;9m--at(apn2,apt9)[0m [38;5;9m--at(apn4,apt9)[0m [38;5;9m--at(apn5,apt9)[0m  [38;5;10mat(obj172,apt9)[0m
+      [38;5;10mat(obj172,pos10)[0m
+     [38;5;9m--at(apn1,apt10)[0m [38;5;9m--at(apn2,apt10)[0m [38;5;9m--at(apn4,apt10)[0m [38;5;9m--at(apn5,apt10)[0m  [38;5;10mat(obj172,apt10)[0m
+      [38;5;10mat(obj172,pos11)[0m
+     [38;5;9m--at(apn1,apt11)[0m [38;5;9m--at(apn2,apt11)[0m [38;5;9m--at(apn4,apt11)[0m [38;5;9m--at(apn5,apt11)[0m  [38;5;10mat(obj172,apt11)[0m
+      [38;5;10mat(obj172,pos12)[0m
+     [38;5;9m--at(apn1,apt12)[0m [38;5;9m--at(apn2,apt12)[0m [38;5;9m--at(apn4,apt12)[0m [38;5;9m--at(apn5,apt12)[0m  [38;5;10mat(obj172,apt12)[0m
+      [38;5;10mat(obj172,pos13)[0m
+     [38;5;9m--at(apn1,apt13)[0m [38;5;9m--at(apn2,apt13)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn5,apt13)[0m  [38;5;10mat(obj172,apt13)[0m
+      [38;5;10mat(apn1,apt11)[0m [38;5;9m--at(apn2,apt13)[0m [38;5;9m--at(apn4,apt13)[0m [38;5;9m--at(apn5,apt13)[0m  [38;5;10mat(obj172,apt13)[0m
+      [38;5;10mat(obj172,pos14)[0m
+     [38;5;9m--at(apn1,apt14)[0m [38;5;9m--at(apn2,apt14)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn5,apt14)[0m  [38;5;10mat(obj172,apt14)[0m
+      [38;5;10mat(apn1,apt9)[0m [38;5;9m--at(apn2,apt14)[0m [38;5;9m--at(apn4,apt14)[0m [38;5;9m--at(apn5,apt14)[0m  [38;5;10mat(obj172,apt14)[0m
+      [38;5;10mat(obj172,pos15)[0m
+     [38;5;9m--at(apn1,apt15)[0m [38;5;9m--at(apn2,apt15)[0m [38;5;9m--at(apn4,apt15)[0m [38;5;9m--at(apn5,apt15)[0m  [38;5;10mat(obj172,apt15)[0m
+      [38;5;10mat(obj172,pos17)[0m
+      [38;5;10min(obj172,tru9)[0m
+      [38;5;10min(obj172,tru10)[0m
+      [38;5;10min(obj172,tru11)[0m
+      [38;5;10min(obj172,tru12)[0m
+      [38;5;10min(obj172,tru13)[0m
+      [38;5;10min(obj172,tru14)[0m
+      [38;5;10min(obj172,tru15)[0m
+      [38;5;10mat(obj173,pos17)[0m
+      [38;5;10mat(apn1,apt3)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10min(obj132,apn1)[0m
+      [38;5;10mat(apn1,apt8)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn1,apt12)[0m  [38;5;10min(obj152,apn1)[0m
+      [38;5;10mat(apn2,apt11)[0m  [38;5;10min(obj161,apn2)[0m
+      [38;5;10mat(apn3,apt4)[0m  [38;5;10min(obj132,apn3)[0m
+      [38;5;10mat(apn3,apt5)[0m  [38;5;10min(obj132,apn3)[0m
+      [38;5;10mat(apn3,apt7)[0m  [38;5;10min(obj132,apn3)[0m
+      [38;5;10mat(apn3,apt9)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt10)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt11)[0m  [38;5;10min(obj132,apn3)[0m
+      [38;5;10mat(apn3,apt11)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt12)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt13)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt14)[0m  [38;5;10min(obj172,apn3)[0m
+      [38;5;10mat(apn3,apt16)[0m  [38;5;10min(obj132,apn3)[0m
+      [38;5;10mat(apn4,apt3)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt3)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt5)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt6)[0m  [38;5;10min(obj71,apn4)[0m
+      [38;5;10mat(apn4,apt6)[0m  [38;5;10min(obj73,apn4)[0m
+      [38;5;10mat(apn4,apt6)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn4,apt6)[0m  [38;5;10min(obj103,apn4)[0m
+      [38;5;10mat(apn4,apt7)[0m  [38;5;10min(obj101,apn4)[0m
+      [38;5;10mat(apn5,apt1)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt2)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt3)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt4)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt5)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt6)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt7)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt9)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt10)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt11)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt12)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt13)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt14)[0m  [38;5;10min(obj161,apn5)[0m
+      [38;5;10mat(apn5,apt15)[0m  [38;5;10min(obj161,apn5)[0m
+Layer: 4
+  Subproblem: 0 [0]
+Layer: 5
+  Subproblem: 0 [0]
+S \ L	0	1	2	3	4
+0	0	898	2111	824	1
+
+============================================= Dagster Timing ==============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.00		0.00		0.00		0		0		0
+===========================================================================================================
+
+============================================= Lingeling Timing ============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+0		9.66		1.70		11.36		6411		4068		10479
+-----------------------------------------------------------------------------------------------------------
+TOTAL		9.66		1.70		11.36		6411		4068		10479
+===========================================================================================================
+
+dagster_sat_count 0 : 0
+dagster_unsat_count 0 : 0
+dagster_call_count: 0
+trying to stop workers
+exiting main
+CPP_TIME: 14.0969
+./VAL/build/linux64/release/bin/Validate /home/m/MEGA/ANU/PHD/benchmarks/decomposable/logistics00/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/logistics00/problogistics-50-0.pddl /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_18__RWXVT65JM40RSUX/plan
+number_isolated_instances:
+Checking plan: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_18__RWXVT65JM40RSUX/plan
+Plan executed successfully - checking goal
+Plan valid
+Final value: 1087 
+
+Successful plans:
+Value: 1087
+ /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_18__RWXVT65JM40RSUX/plan 1087 
+
+
+real	0m18.865s
+user	0m18.442s
+sys	0m0.430s

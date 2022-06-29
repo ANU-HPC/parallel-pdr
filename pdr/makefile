@@ -1,7 +1,6 @@
 # This makefile was taken from dagster mark.burgess@anu.edu.au 
-#
-#
 # for ipasir, swap lingeling.o for minisat.o and ipasir for lgl
+
 default:
 	$(MAKE) -j 16 pdr
 
@@ -27,62 +26,44 @@ else ifeq (${CRAY_PLATFORM_NAME}, $(findstring ${CRAY_PLATFORM_NAME}, ${UNAME}))
 	CXX			= CC ERROR $(INCLUDES) 
 else
         #Default variables
-        MPICXX                  = mpic++ -Wall -Wno-sign-compare -Wno-unused-variable
+        MPICXX                  = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
         CXXFLAGS                += -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
         #CXXFLAGS                += -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
         LDFLAGS                 = -lglog -lstdc++fs -lcudd -lz
 #       LDFLAGS                 += -L/usr/local/lib/openmpi -lmpiP -lm -lbfd -liberty -lunwind -L.. -ldummy_mpi1
 endif
 
-
-#OBJS 				= Cnf.o CnfManager.o SatSolver.o Dag.o message.o TableSolutions.o BDDSolutions.o alter_main.o Master.o Worker.o MPICommsInterface.o utilities.o arguments.o CnfHolder.o MasterOrganiser.o
-OBJS 				= ../summer1819/dagster/message.o \
-						../summer1819/dagster/Dag.o \
-						../summer1819/dagster/Cnf.o \
-						../summer1819/dagster/pdr/LingelingWorker.o \
-						../summer1819/dagster/MPICommsInterface.o \
-						../summer1819/dagster/utilities.o \
-						../summer1819/dagster/arguments.o \
-						../summer1819/dagster/CnfHolder.o \
-						../summer1819/dagster/pdr/LingelingMaster.o \
-						../summer1819/dagster/pdr/interactive_functions.o \
-						main_pdr.o \
-						lingeling.o \
-						set_trie.o \
-						queue.o \
-						property_directed_reachability.o \
-						timing.o \
-						parser.o \
-
-#OBJS 				= ../summer1819/dagster/Cnf.o \
-						../summer1819/dagster/CnfManager.o \
-						../summer1819/dagster/SatSolver.o \
-						../summer1819/dagster/Dag.o \
-						../summer1819/dagster/message.o \
-						../summer1819/dagster/TableSolutions.o \
-						../summer1819/dagster/BDDSolutions.o \
-						../summer1819/dagster/Worker.o \
-						../summer1819/dagster/pdr/LingelingWorker.o \
-						../summer1819/dagster/MPICommsInterface.o \
-						../summer1819/dagster/utilities.o \
-						../summer1819/dagster/arguments.o \
-						../summer1819/dagster/CnfHolder.o \
-						../summer1819/dagster/MasterOrganiser.o \
-						../summer1819/dagster/Master.o \
-						../summer1819/dagster/pdr/LingelingMaster.o \
-						main_pdr.o \
-						minisat.o \
-						set_trie.o \
-						timing.o \
-						parser.o \
-
-
-
-.PHONY: gnovelty
+OBJS = ./parallel/message.o \
+	   ./parallel/Cnf.o \
+	   ./parallel/LingelingWorker.o \
+	   ./parallel/MPICommsInterface.o \
+	   ./parallel/utilities.o \
+	   ./parallel/arguments.o \
+	   ./parallel/LingelingMaster.o \
+	   ./parallel/interactive_functions.o \
+	   main_pdr.o \
+	   lingeling.o \
+	   set_trie.o \
+	   queue.o \
+	   property_directed_reachability.o \
+	   timing.o \
+	   parser.o \
+	   state_actions.o \
+	   layers.o \
+					
+HEADERS	= main_pdr.h \
+		  lingeling.h \
+		  set_trie.h \
+		  queue.h \
+		  property_directed_reachability.h \
+		  timing.h \
+		  parser.h \
+		  options.h \
+		  state_actions.h \
+		  layers.h \
 
 INCLUDES += -I../lingeling \
-            -I../summer1819/dagster \
-            -I../summer1819/dagster/pdr \
+            -I./parallel \
 			-I../rapidjson/include \
 			-I.
 
@@ -91,15 +72,11 @@ LDFLAGS += -L../lingeling \
 
 CXXFLAGS += `cat ../SET_NDEBUG`
 
-pdr: $(OBJS) ../summer1819/dagster/gnovelty/*.cc ../summer1819/dagster/gnovelty/*.hh ../summer1819/dagster/strengthener/*.cc ../summer1819/dagster/strengthener/*.h
-	$(MAKE) -j 16 -C ../summer1819/dagster
-	$(MAKE) -j 16 -C ../summer1819/dagster/pdr
-	#$(MPICXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) ../summer1819/dagster/gnovelty/*.o ../summer1819/dagster/strengthener/*.o* ../summer1819/dagster/minisat/*/*.o* -L. -lipasir $(LDFLAGS) -o pdrDagster
+pdr: $(OBJS) 
 	$(MPICXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) -L. -llgl $(LDFLAGS) -o pdrDagster
 
-%.o: %.cpp %.h
+%.o: %.cpp %.h $(HEADERS)
 	$(MPICXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
 
 clean:
-	-rm pdrDagster *.o
-	-rm ./dag_out.txt -f
+	-rm pdrDagster *.o ./parallel/*.o

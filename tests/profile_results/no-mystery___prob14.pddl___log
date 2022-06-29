@@ -1,0 +1,196 @@
+/home/m/MEGA/ANU/PHD/dagparser/run.sh /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/prob14.pddl /home/m/MEGA/ANU/PHD/dagparser/set
+HOSTNAME: m
+START_EXTRA_SETTINGS
+obligation_rescheduling 1
+project_last 0
+complete_nonfinal 0
+activation_literals 0
+use_ooc 0
+isolate_subproblems 0
+decomposed 0
+report_plan 1
+dagster 0
+mpi_nodes 5
+#define OPTIONS_H
+#define FD_HEURISTIC "hmax"
+#define USE_FD_HEURISTIC 0
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+#define DEBUG_WARNING_REPEATED_REASON 1
+#define QUEUE_TYPE PDR::PDR_Queue
+#define ALLOW_CALCULATE_H_ADD 0
+STOP_EXTRA_SETTINGS
+TMP_DIR: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_37__3GUA55XSTEB6DU8
+domain: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/domain.pddl
+problem: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/prob14.pddl
+extra_settings: /home/m/MEGA/ANU/PHD/dagparser/set
+/home/m/MEGA/ANU/PHD/dagparser/extract
+PYTHON_TIME: 20.9741
+./pdrDagster 1 0 /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_37__3GUA55XSTEB6DU8
+PDR QUEUE constructor, size of propositions_set 0
+1
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+Read in problem
+starting getting cnf 1
+PDR QUEUE constructor, size of propositions_set 1597
+start push check_unsat subproblems to check:{ 0 } , layer for that: 1
+start push check_unsat subproblems to check:{ 0 } , layer for that: 2
+FOUND A PLAN
+queue size:
+layer 0
+  subproblem 0: 0
+layer 1
+  subproblem 0: 1
+layer 2
+  subproblem 0: 12
+layer 3
+  subproblem 0: 26
+WRITING PLAN
+
+0 : (drive auto inzlingen bad-bellingen fuel-1 fuel-2)
+1 : (drive fahrrad emmendingen waldkirch fuel-4 fuel-5)
+2 : (drive ice koendringen weil fuel-2 fuel-3)
+3 : (drive krankenwagen lauchringen wollbach fuel-1 fuel-2)
+4 : (drive kutsche schopfheim merdingen fuel-4 fuel-5)
+5 : (drive moped wittlingen inzlingen fuel-3 fuel-4)
+6 : (drive motorroller muellheim bad-bellingen fuel-1 fuel-2)
+7 : (drive pferdetransport denzlingen schallstadt fuel-4 fuel-5)
+8 : (load broiler sulki wollbach capacity-1 capacity-2)
+9 : (drive pferdetransport schallstadt brombach fuel-1 fuel-2)
+10 : (load donnerkiesel auto bad-bellingen capacity-1 capacity-2)
+11 : (load fussball pferdetransport brombach capacity-1 capacity-2)
+12 : (load kaesefondue fahrrad waldkirch capacity-2 capacity-3)
+13 : (load osterei moped inzlingen capacity-0 capacity-1)
+14 : (load taschenrechner ice weil capacity-2 capacity-3)
+15 : (load terrorist pferdetransport brombach capacity-0 capacity-1)
+16 : (drive fahrrad waldkirch wittlingen fuel-4 fuel-5)
+17 : (drive kutsche merdingen wollbach fuel-1 fuel-2)
+18 : (drive moped inzlingen bad-bellingen fuel-0 fuel-1)
+19 : (drive pferdetransport brombach schallstadt fuel-0 fuel-1)
+20 : (drive pferdetransport schallstadt denzlingen fuel-0 fuel-1)
+21 : (drive pferdetransport denzlingen auggen fuel-3 fuel-4)
+22 : (drive pferdetransport auggen boetzingen fuel-2 fuel-3)
+23 : (drive pferdetransport boetzingen waldhaus fuel-2 fuel-3)
+24 : (drive pferdetransport waldhaus kleinkems fuel-0 fuel-1)
+25 : (drive ice weil koendringen fuel-0 fuel-1)
+26 : (drive pferdetransport kleinkems inzlingen fuel-2 fuel-3)
+27 : (drive motorroller bad-bellingen muellheim fuel-0 fuel-1)
+28 : (drive fahrrad wittlingen inzlingen fuel-2 fuel-3)
+29 : (unload fussball pferdetransport inzlingen capacity-0 capacity-1)
+30 : (drive motorroller muellheim bad-bellingen fuel-0 fuel-1)
+31 : (unload broiler sulki wollbach capacity-1 capacity-2)
+32 : (unload terrorist pferdetransport inzlingen capacity-1 capacity-2)
+FINISHED WRITING PLAN
+Layer reasons:
+Layer: 0
+  Subproblem: 0 [2]
+     [38;5;9m--at(terrorist,inzlingen)[0m
+     [38;5;9m--at(fussball,inzlingen)[0m
+Layer: 1
+  Subproblem: 0 [26]
+     [38;5;9m--at(ice,inzlingen)[0m  [38;5;10min(terrorist,ice)[0m
+      [38;5;10mat(auto,bad-bellingen)[0m [38;5;9m--at(fahrrad,inzlingen)[0m [38;5;9m--at(fussball,inzlingen)[0m  [38;5;10mat(ice,koendringen)[0m  [38;5;10mat(moped,bad-bellingen)[0m [38;5;9m--at(motorroller,inzlingen)[0m [38;5;9m--at(terrorist,inzlingen)[0m  [38;5;10mcapacity(krankenwagen,capacity-3)[0m  [38;5;10mcapacity(kutsche,capacity-3)[0m
+      [38;5;10mat(auto,bad-bellingen)[0m [38;5;9m--at(fahrrad,inzlingen)[0m [38;5;9m--at(fussball,inzlingen)[0m  [38;5;10mat(ice,koendringen)[0m  [38;5;10mat(moped,bad-bellingen)[0m  [38;5;10mat(motorroller,bad-bellingen)[0m [38;5;9m--at(terrorist,inzlingen)[0m  [38;5;10mcapacity(krankenwagen,capacity-3)[0m  [38;5;10mcapacity(kutsche,capacity-3)[0m
+      [38;5;10mat(pferdetransport,brombach)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,schallstadt)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,denzlingen)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,waldhaus)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,boetzingen)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,kleinkems)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,auggen)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,weil)[0m  [38;5;10min(fussball,pferdetransport)[0m
+      [38;5;10mat(ice,schallstadt)[0m  [38;5;10min(terrorist,ice)[0m
+      [38;5;10mat(fussball,brombach)[0m
+      [38;5;10mat(fussball,weil)[0m
+      [38;5;10min(fussball,pferdetransport)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(terrorist,wollbach)[0m
+      [38;5;10mat(terrorist,brombach)[0m
+      [38;5;10mat(terrorist,schallstadt)[0m
+      [38;5;10mat(terrorist,denzlingen)[0m
+      [38;5;10mat(terrorist,gottenheim)[0m
+      [38;5;10mat(terrorist,kleinkems)[0m
+      [38;5;10mat(terrorist,koendringen)[0m
+      [38;5;10mat(terrorist,auggen)[0m
+      [38;5;10mat(terrorist,weil)[0m
+      [38;5;10mat(terrorist,tumringen)[0m
+      [38;5;10mat(terrorist,emmendingen)[0m
+Layer: 2
+  Subproblem: 0 [24]
+     [38;5;9m--at(auto,wollbach)[0m [38;5;9m--at(fahrrad,wollbach)[0m [38;5;9m--at(ice,wollbach)[0m [38;5;9m--at(kutsche,wollbach)[0m [38;5;9m--at(motorroller,wollbach)[0m  [38;5;10mat(terrorist,wollbach)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+     [38;5;9m--at(auto,brombach)[0m [38;5;9m--at(fahrrad,brombach)[0m  [38;5;10mat(fussball,brombach)[0m [38;5;9m--at(ice,brombach)[0m  [38;5;10mat(krankenwagen,lauchringen)[0m [38;5;9m--at(kutsche,brombach)[0m [38;5;9m--at(moped,brombach)[0m [38;5;9m--at(motorroller,brombach)[0m [38;5;9m--at(pferdetransport,brombach)[0m
+     [38;5;9m--at(auto,brombach)[0m [38;5;9m--at(fahrrad,brombach)[0m  [38;5;10mat(fussball,brombach)[0m [38;5;9m--at(ice,brombach)[0m  [38;5;10mat(krankenwagen,wollbach)[0m [38;5;9m--at(kutsche,brombach)[0m [38;5;9m--at(moped,brombach)[0m [38;5;9m--at(motorroller,brombach)[0m [38;5;9m--at(pferdetransport,brombach)[0m
+     [38;5;9m--at(auto,weil)[0m [38;5;9m--at(fahrrad,weil)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m [38;5;9m--at(motorroller,weil)[0m  [38;5;10mat(terrorist,weil)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+     [38;5;9m--at(auto,auggen)[0m [38;5;9m--at(fahrrad,auggen)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m [38;5;9m--at(motorroller,auggen)[0m  [38;5;10mat(terrorist,auggen)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+     [38;5;9m--at(auto,kleinkems)[0m [38;5;9m--at(fahrrad,kleinkems)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m [38;5;9m--at(motorroller,kleinkems)[0m  [38;5;10mat(terrorist,kleinkems)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+     [38;5;9m--at(auto,denzlingen)[0m [38;5;9m--at(fahrrad,denzlingen)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m [38;5;9m--at(motorroller,denzlingen)[0m  [38;5;10mat(terrorist,denzlingen)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+     [38;5;9m--at(auto,schallstadt)[0m [38;5;9m--at(fahrrad,schallstadt)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m [38;5;9m--at(motorroller,schallstadt)[0m  [38;5;10mat(terrorist,schallstadt)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+     [38;5;9m--at(auto,koendringen)[0m [38;5;9m--at(fahrrad,koendringen)[0m [38;5;9m--at(ice,koendringen)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m [38;5;9m--at(motorroller,koendringen)[0m  [38;5;10mat(terrorist,koendringen)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+     [38;5;9m--at(auto,gottenheim)[0m [38;5;9m--at(fahrrad,gottenheim)[0m [38;5;9m--at(ice,gottenheim)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m [38;5;9m--at(motorroller,gottenheim)[0m  [38;5;10mat(terrorist,gottenheim)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+      [38;5;10mat(auto,bad-bellingen)[0m [38;5;9m--at(fahrrad,emmendingen)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m  [38;5;10mat(motorroller,bad-bellingen)[0m  [38;5;10mat(pferdetransport,weil)[0m  [38;5;10mat(terrorist,emmendingen)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+      [38;5;10mat(auto,bad-bellingen)[0m [38;5;9m--at(fahrrad,tumringen)[0m  [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10mat(kutsche,wollbach)[0m [38;5;9m--at(motorroller,tumringen)[0m  [38;5;10mat(pferdetransport,weil)[0m  [38;5;10mat(terrorist,tumringen)[0m [38;5;9m--capacity(moped,capacity-1)[0m [38;5;9m--capacity(moped,capacity-2)[0m [38;5;9m--capacity(moped,capacity-3)[0m
+      [38;5;10mat(krankenwagen,wollbach)[0m  [38;5;10min(terrorist,krankenwagen)[0m
+      [38;5;10mat(pferdetransport,wollbach)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,gottenheim)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,koendringen)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(pferdetransport,weil)[0m  [38;5;10min(terrorist,pferdetransport)[0m
+      [38;5;10mat(ice,schallstadt)[0m [38;5;9m--fuel(schallstadt,fuel-1)[0m  [38;5;10min(terrorist,ice)[0m
+      [38;5;10mat(ice,denzlingen)[0m  [38;5;10min(terrorist,ice)[0m
+      [38;5;10mat(ice,auggen)[0m  [38;5;10min(terrorist,ice)[0m
+      [38;5;10mat(ice,weil)[0m  [38;5;10min(terrorist,ice)[0m
+      [38;5;10mat(ice,tumringen)[0m  [38;5;10min(terrorist,ice)[0m
+      [38;5;10mat(ice,emmendingen)[0m  [38;5;10min(terrorist,ice)[0m
+      [38;5;10min(terrorist,sulki)[0m
+Layer: 3
+  Subproblem: 0 [0]
+Layer: 4
+  Subproblem: 0 [0]
+S \ L	0	1	2	3
+0	0	37	60	2
+
+============================================= Dagster Timing ==============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.00		0.00		0.00		0		0		0
+===========================================================================================================
+
+============================================= Lingeling Timing ============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+0		1.09		0.46		1.54		254		361		615
+-----------------------------------------------------------------------------------------------------------
+TOTAL		1.09		0.46		1.54		254		361		615
+===========================================================================================================
+
+dagster_sat_count 0 : 0
+dagster_unsat_count 0 : 0
+dagster_call_count: 0
+trying to stop workers
+exiting main
+CPP_TIME: 5.05957
+./VAL/build/linux64/release/bin/Validate /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/prob14.pddl /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_37__3GUA55XSTEB6DU8/plan
+number_isolated_instances:
+Checking plan: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_37__3GUA55XSTEB6DU8/plan
+Plan executed successfully - checking goal
+Plan valid
+Final value: 33 
+
+Successful plans:
+Value: 33
+ /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_37__3GUA55XSTEB6DU8/plan 33 
+
+
+real	0m26.095s
+user	0m25.142s
+sys	0m0.919s

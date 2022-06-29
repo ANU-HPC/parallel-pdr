@@ -12,7 +12,7 @@ Uses the tool dagster from https://github.com/ANU-HPC/dagster
 
 # Setup
 
-MPI, GLOG, and CUDD are required. These can all be installed by the script at summer1819/nodocker.sh
+MPI and GLOG are required. These can all be installed by the script at ./nodocker.sh
 
 Once cloned run:
 
@@ -27,6 +27,8 @@ Many parameters of the solver can be set at runtime through an _extra_settings_ 
 | dagster n     | n=0 will solve the problem serially, n=1 will solve the problem in parallel via MPI. |
 | mpi_nodes n   | If solving in parallel, the number of nodes to use.                                  |
 | report_plan n | n=0 or n=1, whether to record, create and validate a plan if one exists.             |
+
+Additionally, many extra setting can be changed via the _./pdr/options.h_ file.
 
 To run:
 

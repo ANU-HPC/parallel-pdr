@@ -1,0 +1,162 @@
+/home/m/MEGA/ANU/PHD/dagparser/run.sh /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/prob10.pddl /home/m/MEGA/ANU/PHD/dagparser/set
+HOSTNAME: m
+START_EXTRA_SETTINGS
+obligation_rescheduling 1
+project_last 0
+complete_nonfinal 0
+activation_literals 0
+use_ooc 0
+isolate_subproblems 0
+decomposed 0
+report_plan 1
+dagster 0
+mpi_nodes 5
+#define OPTIONS_H
+#define FD_HEURISTIC "hmax"
+#define USE_FD_HEURISTIC 0
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+#define DEBUG_WARNING_REPEATED_REASON 1
+#define QUEUE_TYPE PDR::PDR_Queue
+#define ALLOW_CALCULATE_H_ADD 0
+STOP_EXTRA_SETTINGS
+TMP_DIR: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_28__USWNXXHOYE2XBGL
+domain: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/domain.pddl
+problem: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/prob10.pddl
+extra_settings: /home/m/MEGA/ANU/PHD/dagparser/set
+/home/m/MEGA/ANU/PHD/dagparser/extract
+PYTHON_TIME: 19.8255
+./pdrDagster 1 0 /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_28__USWNXXHOYE2XBGL
+PDR QUEUE constructor, size of propositions_set 0
+1
+#define USE_HEURISTIC 0
+#define MAX_SOLVER_STEPS 1
+#define MS_DEFAULT_STEPS_USED 1
+#define MS_ONLY_MAX_SOLVER_STEP 1
+#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
+#define MULTI_STEP_REASON_ACTUALLY_USE 0
+#define MULTI_STEP_INTERLEAVED 0
+#define PORTFOLIO_QUEUE 0
+Read in problem
+starting getting cnf 1
+PDR QUEUE constructor, size of propositions_set 1342
+start push check_unsat subproblems to check:{ 0 } , layer for that: 1
+start push check_unsat subproblems to check:{ 0 } , layer for that: 2
+FOUND A PLAN
+queue size:
+layer 0
+  subproblem 0: 0
+layer 1
+  subproblem 0: 1
+layer 2
+  subproblem 0: 8
+layer 3
+  subproblem 0: 21
+WRITING PLAN
+
+0 : (drive kutsche schopfheim boetzingen fuel-0 fuel-1)
+1 : (load nichts kutsche boetzingen capacity-1 capacity-2)
+2 : (drive kutsche boetzingen muellheim fuel-1 fuel-2)
+3 : (drive bollerwagen endingen wollbach fuel-2 fuel-3)
+4 : (drive kutsche muellheim wittlingen fuel-0 fuel-1)
+5 : (drive kutsche wittlingen breisach fuel-0 fuel-1)
+6 : (drive kutsche breisach emmendingen fuel-3 fuel-4)
+7 : (drive kutsche emmendingen bad-bellingen fuel-1 fuel-2)
+8 : (drive kutsche bad-bellingen waldkirch fuel-3 fuel-4)
+9 : (drive kutsche waldkirch loerrach fuel-2 fuel-3)
+10 : (unload nichts kutsche loerrach capacity-1 capacity-2)
+FINISHED WRITING PLAN
+Layer reasons:
+Layer: 0
+  Subproblem: 0 [1]
+     [38;5;9m--at(nichts,loerrach)[0m
+Layer: 1
+  Subproblem: 0 [18]
+      [38;5;10mat(kutsche,muellheim)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,schopfheim)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,boetzingen)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,wittlingen)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,bad-bellingen)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,emmendingen)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,waldkirch)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,breisach)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(fahrrad,muellheim)[0m  [38;5;10min(nichts,fahrrad)[0m
+      [38;5;10mat(fahrrad,schopfheim)[0m  [38;5;10min(nichts,fahrrad)[0m
+      [38;5;10mat(nichts,muellheim)[0m
+      [38;5;10mat(nichts,brombach)[0m
+      [38;5;10mat(nichts,endingen)[0m
+      [38;5;10mat(nichts,schopfheim)[0m
+      [38;5;10mat(nichts,kleinkems)[0m
+      [38;5;10mat(nichts,bahlingen)[0m
+      [38;5;10mat(nichts,wollbach)[0m
+      [38;5;10mat(nichts,boetzingen)[0m
+Layer: 2
+  Subproblem: 0 [21]
+      [38;5;10mat(fahrrad,schopfheim)[0m [38;5;9m--at(kutsche,schopfheim)[0m  [38;5;10min(nichts,fahrrad)[0m
+     [38;5;9m--at(betonmischer,brombach)[0m [38;5;9m--at(bollerwagen,brombach)[0m [38;5;9m--at(droschke,brombach)[0m [38;5;9m--at(moped,brombach)[0m [38;5;9m--at(motorroller,brombach)[0m  [38;5;10mat(nichts,brombach)[0m [38;5;9m--at(pferdetransport,brombach)[0m
+     [38;5;9m--at(betonmischer,muellheim)[0m [38;5;9m--at(bollerwagen,muellheim)[0m [38;5;9m--at(droschke,muellheim)[0m [38;5;9m--at(moped,muellheim)[0m [38;5;9m--at(motorroller,muellheim)[0m  [38;5;10mat(nichts,muellheim)[0m [38;5;9m--at(pferdetransport,muellheim)[0m
+     [38;5;9m--at(betonmischer,endingen)[0m  [38;5;10mat(bollerwagen,brombach)[0m [38;5;9m--at(droschke,endingen)[0m [38;5;9m--at(moped,endingen)[0m [38;5;9m--at(motorroller,endingen)[0m  [38;5;10mat(nichts,endingen)[0m [38;5;9m--at(pferdetransport,endingen)[0m
+     [38;5;9m--at(betonmischer,wollbach)[0m  [38;5;10mat(bollerwagen,endingen)[0m [38;5;9m--at(droschke,wollbach)[0m [38;5;9m--at(moped,wollbach)[0m [38;5;9m--at(motorroller,wollbach)[0m  [38;5;10mat(nichts,wollbach)[0m [38;5;9m--at(pferdetransport,wollbach)[0m
+     [38;5;9m--at(betonmischer,bahlingen)[0m  [38;5;10mat(bollerwagen,endingen)[0m [38;5;9m--at(droschke,bahlingen)[0m [38;5;9m--at(moped,bahlingen)[0m [38;5;9m--at(motorroller,bahlingen)[0m  [38;5;10mat(nichts,bahlingen)[0m [38;5;9m--at(pferdetransport,bahlingen)[0m
+     [38;5;9m--at(betonmischer,kleinkems)[0m  [38;5;10mat(bollerwagen,endingen)[0m [38;5;9m--at(droschke,kleinkems)[0m [38;5;9m--at(moped,kleinkems)[0m [38;5;9m--at(motorroller,kleinkems)[0m  [38;5;10mat(nichts,kleinkems)[0m [38;5;9m--at(pferdetransport,kleinkems)[0m
+     [38;5;9m--at(betonmischer,schopfheim)[0m  [38;5;10mat(bollerwagen,endingen)[0m [38;5;9m--at(droschke,schopfheim)[0m [38;5;9m--at(fahrrad,schopfheim)[0m [38;5;9m--at(moped,schopfheim)[0m [38;5;9m--at(motorroller,schopfheim)[0m  [38;5;10mat(nichts,schopfheim)[0m [38;5;9m--at(pferdetransport,schopfheim)[0m
+     [38;5;9m--at(betonmischer,boetzingen)[0m  [38;5;10mat(bollerwagen,endingen)[0m [38;5;9m--at(droschke,boetzingen)[0m  [38;5;10mat(fahrrad,wollbach)[0m  [38;5;10mat(kutsche,schopfheim)[0m [38;5;9m--at(moped,boetzingen)[0m [38;5;9m--at(motorroller,boetzingen)[0m  [38;5;10mat(nichts,boetzingen)[0m [38;5;9m--at(pferdetransport,boetzingen)[0m
+      [38;5;10mat(kutsche,brombach)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,endingen)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,schopfheim)[0m [38;5;9m--fuel(schopfheim,fuel-1)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,kleinkems)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,bahlingen)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(kutsche,wollbach)[0m  [38;5;10min(nichts,kutsche)[0m
+      [38;5;10mat(fahrrad,muellheim)[0m [38;5;9m--fuel(muellheim,fuel-1)[0m  [38;5;10min(nichts,fahrrad)[0m
+      [38;5;10mat(fahrrad,brombach)[0m  [38;5;10min(nichts,fahrrad)[0m
+      [38;5;10mat(fahrrad,endingen)[0m  [38;5;10min(nichts,fahrrad)[0m
+      [38;5;10mat(fahrrad,kleinkems)[0m  [38;5;10min(nichts,fahrrad)[0m
+      [38;5;10mat(fahrrad,bahlingen)[0m  [38;5;10min(nichts,fahrrad)[0m
+      [38;5;10mat(fahrrad,wollbach)[0m  [38;5;10min(nichts,fahrrad)[0m
+Layer: 3
+  Subproblem: 0 [0]
+Layer: 4
+  Subproblem: 0 [0]
+S \ L	0	1	2	3
+0	0	29	49	1
+
+============================================= Dagster Timing ==============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.00		0.00		0.00		0		0		0
+===========================================================================================================
+
+============================================= Lingeling Timing ============================================
+Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
+0		0.59		0.22		0.80		171		200		371
+-----------------------------------------------------------------------------------------------------------
+TOTAL		0.59		0.22		0.80		171		200		371
+===========================================================================================================
+
+dagster_sat_count 0 : 0
+dagster_unsat_count 0 : 0
+dagster_call_count: 0
+trying to stop workers
+exiting main
+CPP_TIME: 3.48165
+./VAL/build/linux64/release/bin/Validate /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/no-mystery/prob10.pddl /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_28__USWNXXHOYE2XBGL/plan
+number_isolated_instances:
+Checking plan: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_28__USWNXXHOYE2XBGL/plan
+Plan executed successfully - checking goal
+Plan valid
+Final value: 11 
+
+Successful plans:
+Value: 11
+ /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_58_28__USWNXXHOYE2XBGL/plan 11 
+
+
+real	0m23.368s
+user	0m22.692s
+sys	0m0.646s
