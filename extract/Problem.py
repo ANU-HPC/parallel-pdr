@@ -10,7 +10,7 @@ from Dag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_N
 
 
 import networkx as nx
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import time
 #from ranges import RangeSet, Range
 #from RangeSet import RangeSet
