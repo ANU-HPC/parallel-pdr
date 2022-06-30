@@ -75,7 +75,9 @@ namespace property_directed_reachability {
 
   PDR_Queue::PDR_Queue(int* in_obligation_rescheduling_upper_layer) {
     obligation_rescheduling_upper_layer = in_obligation_rescheduling_upper_layer;
+#if ALLOW_CALCULATE_NOVELTY 
     set_up_novelty_heuristic();
+#endif
   }
 
   PDR_Queue::~PDR_Queue() {
