@@ -26,3 +26,4 @@ pdr/hpctoolkit-pdrDagster-measurements/
 pdr/pdrDagster.hpcstruct
 sync.sh
 fd/cached_heuristics/*
+tests/profile_results/*

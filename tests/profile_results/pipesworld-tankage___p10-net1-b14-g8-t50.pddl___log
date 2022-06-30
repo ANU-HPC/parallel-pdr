@@ -1,389 +1,0 @@
-/home/m/MEGA/ANU/PHD/dagparser/run.sh /home/m/MEGA/ANU/PHD/benchmarks/decomposable/pipesworld-tankage/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/pipesworld-tankage/p10-net1-b14-g8-t50.pddl /home/m/MEGA/ANU/PHD/dagparser/set
-HOSTNAME: m
-START_EXTRA_SETTINGS
-obligation_rescheduling 1
-project_last 0
-complete_nonfinal 0
-activation_literals 0
-use_ooc 0
-isolate_subproblems 0
-decomposed 0
-report_plan 1
-dagster 0
-mpi_nodes 5
-#define OPTIONS_H
-#define FD_HEURISTIC "hmax"
-#define USE_FD_HEURISTIC 0
-#define USE_HEURISTIC 0
-#define MAX_SOLVER_STEPS 1
-#define MS_DEFAULT_STEPS_USED 1
-#define MS_ONLY_MAX_SOLVER_STEP 1
-#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
-#define MULTI_STEP_REASON_ACTUALLY_USE 0
-#define MULTI_STEP_INTERLEAVED 0
-#define PORTFOLIO_QUEUE 0
-#define DEBUG_WARNING_REPEATED_REASON 1
-#define QUEUE_TYPE PDR::PDR_Queue
-#define ALLOW_CALCULATE_H_ADD 0
-STOP_EXTRA_SETTINGS
-TMP_DIR: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_10__TPA4FBT87PBUG1X
-domain: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/pipesworld-tankage/domain.pddl
-problem: /home/m/MEGA/ANU/PHD/benchmarks/decomposable/pipesworld-tankage/p10-net1-b14-g8-t50.pddl
-extra_settings: /home/m/MEGA/ANU/PHD/dagparser/set
-/home/m/MEGA/ANU/PHD/dagparser/extract
-PYTHON_TIME: 2.75926
-./pdrDagster 1 0 /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_10__TPA4FBT87PBUG1X
-PDR QUEUE constructor, size of propositions_set 0
-1
-#define USE_HEURISTIC 0
-#define MAX_SOLVER_STEPS 1
-#define MS_DEFAULT_STEPS_USED 1
-#define MS_ONLY_MAX_SOLVER_STEP 1
-#define MULTI_STEP_REASON_CALCULATE_AT_ALL 0
-#define MULTI_STEP_REASON_ACTUALLY_USE 0
-#define MULTI_STEP_INTERLEAVED 0
-#define PORTFOLIO_QUEUE 0
-Read in problem
-starting getting cnf 1
-PDR QUEUE constructor, size of propositions_set 94
-start push check_unsat subproblems to check:{ 0 } , layer for that: 1
-start push check_unsat subproblems to check:{ 0 } , layer for that: 2
-start push check_unsat subproblems to check:{ 0 } , layer for that: 3
-FOUND A PLAN
-queue size:
-layer 0
-  subproblem 0: 0
-layer 1
-  subproblem 0: 1
-layer 2
-  subproblem 0: 2
-layer 3
-  subproblem 0: 48
-layer 4
-  subproblem 0: 44
-WRITING PLAN
-
-0 : (pop-unitarypipe s13 b3 a1 a3 b7 lco oca1 ta1-2-oca1 ta3-1-lco)
-1 : (push-unitarypipe s13 b0 a1 a3 b3 lco lco ta1-1-lco ta3-2-lco)
-2 : (pop-unitarypipe s13 b8 a1 a3 b0 rat-a lco ta1-3-lco ta3-2-rat-a)
-3 : (pop-unitarypipe s13 b12 a1 a3 b8 rat-a rat-a ta1-1-rat-a ta3-1-rat-a)
-4 : (pop-unitarypipe s12 b9 a1 a2 b2 rat-a gasoleo ta1-1-gasoleo ta2-2-rat-a)
-5 : (pop-unitarypipe s13 b3 a1 a3 b12 lco rat-a ta1-2-rat-a ta3-2-lco)
-6 : (push-unitarypipe s13 b8 a1 a3 b3 rat-a lco ta1-2-rat-a ta3-2-lco)
-7 : (push-unitarypipe s13 b12 a1 a3 b8 rat-a rat-a ta1-1-rat-a ta3-2-rat-a)
-8 : (push-unitarypipe s13 b2 a1 a3 b12 gasoleo rat-a ta1-1-gasoleo ta3-1-rat-a)
-9 : (push-unitarypipe s13 b0 a1 a3 b2 lco gasoleo ta1-3-lco ta3-1-gasoleo)
-10 : (pop-unitarypipe s13 b8 a1 a3 b0 rat-a lco ta1-3-lco ta3-2-rat-a)
-11 : (pop-unitarypipe s13 b12 a1 a3 b8 rat-a rat-a ta1-2-rat-a ta3-1-rat-a)
-12 : (pop-unitarypipe s13 b3 a1 a3 b12 lco rat-a ta1-1-rat-a ta3-2-lco)
-13 : (push-unitarypipe s13 b7 a1 a3 b3 oca1 lco ta1-2-oca1 ta3-2-lco)
-14 : (pop-unitarypipe s13 b3 a1 a3 b7 lco oca1 ta1-1-oca1 ta3-2-lco)
-15 : (push-unitarypipe s12 b0 a1 a2 b9 lco rat-a ta1-3-lco ta2-2-rat-a)
-16 : (pop-unitarypipe s13 b2 a1 a3 b3 gasoleo lco ta1-3-lco ta3-1-gasoleo)
-17 : (pop-unitarypipe s12 b6 a1 a2 b0 lco lco ta1-1-lco ta2-1-lco)
-18 : (push-unitarypipe s13 b3 a1 a3 b2 lco gasoleo ta1-3-lco ta3-1-gasoleo)
-19 : (pop-unitarypipe s12 b4 a1 a2 b6 lco lco ta1-3-lco ta2-2-lco)
-20 : (push-unitarypipe s13 b8 a1 a3 b3 rat-a lco ta1-1-rat-a ta3-1-lco)
-21 : (pop-unitarypipe s13 b2 a1 a3 b8 gasoleo rat-a ta1-1-rat-a ta3-1-gasoleo)
-22 : (push-unitarypipe s13 b12 a1 a3 b2 rat-a gasoleo ta1-2-rat-a ta3-1-gasoleo)
-23 : (push-unitarypipe s13 b0 a1 a3 b12 lco rat-a ta1-1-lco ta3-2-rat-a)
-24 : (push-unitarypipe s13 b7 a1 a3 b0 oca1 lco ta1-1-oca1 ta3-2-lco)
-25 : (pop-unitarypipe s13 b3 a1 a3 b7 lco oca1 ta1-1-oca1 ta3-1-lco)
-26 : (pop-unitarypipe s12 b9 a1 a2 b4 rat-a lco ta1-1-lco ta2-1-rat-a)
-27 : (push-unitarypipe s13 b7 a1 a3 b3 oca1 lco ta1-1-oca1 ta3-3-lco)
-28 : (pop-unitarypipe s13 b3 a1 a3 b7 lco oca1 ta1-1-oca1 ta3-3-lco)
-29 : (pop-unitarypipe s13 b12 a1 a3 b3 rat-a lco ta1-2-lco ta3-2-rat-a)
-30 : (push-unitarypipe s13 b6 a1 a3 b12 lco rat-a ta1-3-lco ta3-1-rat-a)
-31 : (push-unitarypipe s13 b4 a1 a3 b6 lco lco ta1-2-lco ta3-1-lco)
-32 : (pop-unitarypipe s12 b11 a1 a2 b9 gasoleo rat-a ta1-2-rat-a ta2-1-gasoleo)
-33 : (push-unitarypipe s13 b7 a1 a3 b4 oca1 lco ta1-1-oca1 ta3-3-lco)
-34 : (push-unitarypipe s12 b8 a1 a2 b11 rat-a gasoleo ta1-2-rat-a ta2-1-gasoleo)
-35 : (pop-unitarypipe s12 b11 a1 a2 b8 gasoleo rat-a ta1-2-rat-a ta2-1-gasoleo)
-36 : (push-unitarypipe s13 b3 a1 a3 b7 lco oca1 ta1-1-lco ta3-1-oca1)
-37 : (push-unitarypipe s12 b8 a1 a2 b11 rat-a gasoleo ta1-1-rat-a ta2-1-gasoleo)
-38 : (pop-unitarypipe s13 b6 a1 a3 b3 lco lco ta1-2-lco ta3-1-lco)
-39 : (pop-unitarypipe s13 b2 a1 a3 b6 gasoleo lco ta1-1-lco ta3-1-gasoleo)
-40 : (push-unitarypipe s13 b3 a1 a3 b2 lco gasoleo ta1-1-lco ta3-1-gasoleo)
-41 : (pop-unitarypipe s13 b0 a1 a3 b3 lco lco ta1-3-lco ta3-2-lco)
-42 : (pop-unitarypipe s13 b4 a1 a3 b0 lco lco ta1-1-lco ta3-3-lco)
-43 : (push-unitarypipe s12 b3 a1 a2 b8 lco rat-a ta1-3-lco ta2-1-rat-a)
-44 : (pop-unitarypipe s12 b10 a1 a2 b3 oca1 lco ta1-3-lco ta2-1-oca1)
-45 : (push-unitarypipe s13 b9 a1 a3 b4 rat-a lco ta1-2-rat-a ta3-1-lco)
-46 : (pop-unitarypipe s12 b5 a1 a2 b10 oca1 oca1 ta1-2-oca1 ta2-2-oca1)
-47 : (push-unitarypipe s13 b3 a1 a3 b9 lco rat-a ta1-3-lco ta3-2-rat-a)
-48 : (push-unitarypipe s12 b6 a1 a2 b5 lco oca1 ta1-2-lco ta2-2-oca1)
-49 : (push-unitarypipe s13 b10 a1 a3 b3 oca1 lco ta1-2-oca1 ta3-3-lco)
-50 : (pop-unitarypipe s12 b5 a1 a2 b6 oca1 lco ta1-2-lco ta2-2-oca1)
-51 : (push-unitarypipe s13 b0 a1 a3 b10 lco oca1 ta1-1-lco ta3-2-oca1)
-52 : (pop-unitarypipe s13 b12 a1 a3 b0 rat-a lco ta1-1-lco ta3-2-rat-a)
-53 : (pop-unitarypipe s12 b1 a1 a2 b5 lco oca1 ta1-2-oca1 ta2-3-lco)
-54 : (pop-unitarypipe s13 b4 a1 a3 b12 lco rat-a ta1-1-rat-a ta3-1-lco)
-55 : (pop-unitarypipe s13 b2 a1 a3 b4 gasoleo lco ta1-3-lco ta3-1-gasoleo)
-56 : (push-unitarypipe s12 b12 a1 a2 b1 rat-a lco ta1-1-rat-a ta2-3-lco)
-57 : (pop-unitarypipe s12 b13 a1 a2 b12 rat-a rat-a ta1-1-rat-a ta2-2-rat-a)
-58 : (push-unitarypipe s13 b4 a1 a3 b2 lco gasoleo ta1-2-lco ta3-1-gasoleo)
-59 : (pop-unitarypipe s12 b8 a1 a2 b13 rat-a rat-a ta1-2-rat-a ta2-1-rat-a)
-60 : (push-unitarypipe s12 b6 a1 a2 b8 lco rat-a ta1-3-lco ta2-1-rat-a)
-61 : (push-unitarypipe s13 b0 a1 a3 b4 lco lco ta1-1-lco ta3-2-lco)
-62 : (pop-unitarypipe s13 b3 a1 a3 b0 lco lco ta1-2-lco ta3-3-lco)
-63 : (push-unitarypipe s12 b0 a1 a2 b6 lco lco ta1-2-lco ta2-1-lco)
-64 : (pop-unitarypipe s13 b2 a1 a3 b3 gasoleo lco ta1-3-lco ta3-1-gasoleo)
-65 : (pop-unitarypipe s13 b7 a1 a3 b2 oca1 gasoleo ta1-1-gasoleo ta3-2-oca1)
-66 : (push-unitarypipe s12 b2 a1 a2 b0 gasoleo lco ta1-1-gasoleo ta2-2-lco)
-67 : (pop-unitarypipe s12 b1 a1 a2 b2 lco gasoleo ta1-1-gasoleo ta2-3-lco)
-68 : (push-unitarypipe s12 b3 a1 a2 b1 lco lco ta1-3-lco ta2-3-lco)
-69 : (pop-unitarypipe s12 b11 a1 a2 b3 gasoleo lco ta1-3-lco ta2-1-gasoleo)
-70 : (push-unitarypipe s13 b3 a1 a3 b7 lco oca1 ta1-3-lco ta3-2-oca1)
-71 : (pop-unitarypipe s13 b9 a1 a3 b3 rat-a lco ta1-1-lco ta3-1-rat-a)
-72 : (push-unitarypipe s12 b3 a1 a2 b11 lco gasoleo ta1-1-lco ta2-1-gasoleo)
-73 : (pop-unitarypipe s12 b1 a1 a2 b3 lco lco ta1-1-lco ta2-2-lco)
-74 : (push-unitarypipe s13 b3 a1 a3 b9 lco rat-a ta1-1-lco ta3-1-rat-a)
-75 : (pop-unitarypipe s12 b6 a1 a2 b1 lco lco ta1-2-lco ta2-1-lco)
-76 : (push-unitarypipe s12 b5 a1 a2 b6 oca1 lco ta1-2-oca1 ta2-1-lco)
-77 : (pop-unitarypipe s12 b6 a1 a2 b5 lco oca1 ta1-2-oca1 ta2-3-lco)
-78 : (push-unitarypipe s13 b1 a1 a3 b3 lco lco ta1-2-lco ta3-1-lco)
-79 : (push-unitarypipe s13 b5 a1 a3 b1 oca1 lco ta1-2-oca1 ta3-3-lco)
-80 : (pop-unitarypipe s13 b7 a1 a3 b5 oca1 oca1 ta1-2-oca1 ta3-1-oca1)
-81 : (pop-unitarypipe s13 b1 a1 a3 b7 lco oca1 ta1-1-oca1 ta3-2-lco)
-82 : (push-unitarypipe s12 b5 a1 a2 b6 oca1 lco ta1-2-oca1 ta2-3-lco)
-83 : (pop-unitarypipe s12 b0 a1 a2 b5 lco oca1 ta1-2-oca1 ta2-1-lco)
-84 : (push-unitarypipe s12 b7 a1 a2 b0 oca1 lco ta1-2-oca1 ta2-1-lco)
-85 : (pop-unitarypipe s12 b11 a1 a2 b7 gasoleo oca1 ta1-2-oca1 ta2-1-gasoleo)
-86 : (push-unitarypipe s12 b12 a1 a2 b11 rat-a gasoleo ta1-1-rat-a ta2-1-gasoleo)
-87 : (pop-unitarypipe s13 b4 a1 a3 b1 lco lco ta1-1-lco ta3-3-lco)
-88 : (push-unitarypipe s12 b13 a1 a2 b12 rat-a rat-a ta1-2-rat-a ta2-2-rat-a)
-89 : (pop-unitarypipe s12 b6 a1 a2 b13 lco rat-a ta1-1-rat-a ta2-1-lco)
-90 : (pop-unitarypipe s12 b11 a1 a2 b6 gasoleo lco ta1-2-lco ta2-1-gasoleo)
-91 : (pop-unitarypipe s13 b3 a1 a3 b4 lco lco ta1-3-lco ta3-1-lco)
-FINISHED WRITING PLAN
-Layer reasons:
-Layer: 0
-  Subproblem: 0 [8]
-     [38;5;9m--on(b12,a2)[0m
-     [38;5;9m--on(b8,a2)[0m
-     [38;5;9m--on(b0,a2)[0m
-     [38;5;9m--on(b4,a1)[0m
-     [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--on(b9,a3)[0m
-     [38;5;9m--on(b10,a3)[0m
-     [38;5;9m--on(b5,a1)[0m
-Layer: 1
-  Subproblem: 0 [27]
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--on(b0,a2)[0m
-     [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-rat-a)[0m [38;5;9m--occupied(ta1-2-rat-a)[0m [38;5;9m--on(b0,a1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m
-     [38;5;9m--first(b10,s13)[0m [38;5;9m--on(b10,a3)[0m
-     [38;5;9m--first(b4,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-     [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--on(b4,a1)[0m
-     [38;5;9m--first(b6,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b6,s13)[0m [38;5;9m--on(b0,a2)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b6,s13)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b5,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--on(b5,a1)[0m
-      [38;5;10mfirst(b2,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b2,s13)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b3,s13)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b7,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b7,s13)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b6,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10moccupied(ta1-1-lco)[0m  [38;5;10moccupied(ta1-2-lco)[0m  [38;5;10moccupied(ta1-3-lco)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b11,s12)[0m [38;5;9m--on(b12,a2)[0m
-      [38;5;10mfirst(b11,s12)[0m [38;5;9m--on(b8,a2)[0m
-      [38;5;10mfirst(b11,s12)[0m [38;5;9m--on(b0,a2)[0m
-      [38;5;10mfirst(b1,s12)[0m [38;5;9m--on(b12,a2)[0m
-      [38;5;10mfirst(b1,s12)[0m [38;5;9m--on(b8,a2)[0m
-      [38;5;10mfirst(b1,s12)[0m [38;5;9m--on(b0,a2)[0m
-      [38;5;10mfirst(b0,s12)[0m [38;5;9m--on(b12,a2)[0m
-      [38;5;10mfirst(b8,s12)[0m [38;5;9m--on(b12,a2)[0m
-      [38;5;10mfirst(b13,s12)[0m [38;5;9m--on(b12,a2)[0m
-Layer: 2
-  Subproblem: 0 [58]
-      [38;5;10mfirst(b8,s12)[0m [38;5;9m--on(b0,a2)[0m [38;5;9m--on(b12,a2)[0m
-      [38;5;10mfirst(b13,s12)[0m [38;5;9m--on(b0,a2)[0m [38;5;9m--on(b12,a2)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--not-occupied(ta2-1-rat-a)[0m [38;5;9m--not-occupied(ta2-2-rat-a)[0m [38;5;9m--on(b0,a2)[0m [38;5;9m--on(b12,a2)[0m
-      [38;5;10mfirst(b6,s12)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b0,a2)[0m
-     [38;5;9m--first(b4,s12)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b5,s12)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b11,s12)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-     [38;5;9m--first(b4,s12)[0m  [38;5;10mnot-occupied(ta2-1-lco)[0m  [38;5;10mnot-occupied(ta2-2-lco)[0m  [38;5;10mnot-occupied(ta2-3-lco)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b9,s13)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b8,s12)[0m  [38;5;10mnot-occupied(ta2-1-rat-a)[0m  [38;5;10mnot-occupied(ta2-2-rat-a)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a1)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b9,a1)[0m
-      [38;5;10mfirst(b13,s12)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-rat-a)[0m [38;5;9m--occupied(ta1-2-rat-a)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b4,s13)[0m  [38;5;10mfirst(b6,s12)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b1,s13)[0m  [38;5;10mfirst(b5,s12)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b1,s13)[0m  [38;5;10mfirst(b6,s12)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b1,s13)[0m  [38;5;10mfirst(b11,s12)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b1,s13)[0m  [38;5;10mfirst(b7,s12)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b0,s12)[0m  [38;5;10mfirst(b1,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mnot-occupied(ta2-1-gasoleo)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b12,a1)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b7,a1)[0m [38;5;9m--on(b9,a1)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mnot-occupied(ta2-1-gasoleo)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-1-rat-a)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mnot-occupied(ta2-2-rat-a)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b12,a1)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b7,a1)[0m [38;5;9m--on(b8,a2)[0m [38;5;9m--on(b9,a1)[0m
-      [38;5;10mfirst(b1,s12)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-1-rat-a)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mnot-occupied(ta2-2-rat-a)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--on(b10,a1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a1)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b7,a1)[0m [38;5;9m--on(b8,a2)[0m [38;5;9m--on(b9,a1)[0m
-      [38;5;10mfirst(b1,s12)[0m  [38;5;10mnot-occupied(ta2-1-lco)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-lco)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mnot-occupied(ta2-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-rat-a)[0m [38;5;9m--occupied(ta1-2-rat-a)[0m [38;5;9m--on(b10,a1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b7,a1)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b0,s12)[0m  [38;5;10mnot-occupied(ta2-1-lco)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-lco)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mnot-occupied(ta2-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-rat-a)[0m [38;5;9m--occupied(ta1-2-rat-a)[0m [38;5;9m--on(b10,a1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b7,a1)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b7,s13)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b6,s13)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b4,s13)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b5,s12)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-rat-a)[0m [38;5;9m--occupied(ta1-2-rat-a)[0m [38;5;9m--on(b0,a1)[0m [38;5;9m--on(b1,a1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a2)[0m
-     [38;5;9m--first(b0,s13)[0m [38;5;9m--first(b1,s13)[0m [38;5;9m--first(b10,s13)[0m [38;5;9m--first(b3,s13)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--first(b6,s13)[0m [38;5;9m--first(b7,s13)[0m [38;5;9m--not-occupied(ta3-1-gasoleo)[0m [38;5;9m--on(b10,a3)[0m
-     [38;5;9m--first(b0,s13)[0m [38;5;9m--first(b1,s13)[0m [38;5;9m--first(b10,s13)[0m [38;5;9m--first(b11,s13)[0m [38;5;9m--first(b2,s13)[0m [38;5;9m--first(b3,s13)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--first(b6,s13)[0m [38;5;9m--first(b7,s13)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b1,s12)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--first(b6,s13)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--on(b10,a1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a1)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b7,a1)[0m [38;5;9m--on(b9,a1)[0m [38;5;9m--on(b9,a2)[0m
-     [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b5,a3)[0m
-     [38;5;9m--first(b5,s13)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a2)[0m
-     [38;5;9m--first(b5,s13)[0m  [38;5;10mfirst(b8,s12)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b5,a3)[0m
-      [38;5;10mfirst(b5,s13)[0m  [38;5;10mfirst(b6,s12)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b0,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b2,s13)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b2,s13)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b3,s13)[0m  [38;5;10mfirst(b5,s12)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b3,s13)[0m  [38;5;10mfirst(b6,s12)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b3,s13)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b1,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b0,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mfirst(b7,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b2,s12)[0m  [38;5;10mfirst(b7,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b1,s12)[0m  [38;5;10mfirst(b7,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b0,s12)[0m  [38;5;10mfirst(b7,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b7,s13)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b6,s12)[0m  [38;5;10mfirst(b7,s13)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b6,a3)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b3,s12)[0m  [38;5;10mfirst(b7,s13)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b6,s13)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b6,s13)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m  [38;5;10mnot-occupied(ta2-2-oca1)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a2)[0m [38;5;9m--on(b9,a2)[0m
-      [38;5;10mfirst(b4,s13)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m
-      [38;5;10mfirst(b0,s13)[0m  [38;5;10mfirst(b11,s12)[0m  [38;5;10mnot-occupied(ta2-1-lco)[0m  [38;5;10mnot-occupied(ta2-2-lco)[0m  [38;5;10mnot-occupied(ta2-3-lco)[0m  [38;5;10moccupied(ta1-2-lco)[0m  [38;5;10moccupied(ta1-3-lco)[0m [38;5;9m--on(b0,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m
-     [38;5;9m--first(b4,s12)[0m  [38;5;10mfirst(b9,s13)[0m  [38;5;10moccupied(ta1-1-rat-a)[0m  [38;5;10moccupied(ta1-2-rat-a)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mfirst(b9,s13)[0m  [38;5;10moccupied(ta1-1-rat-a)[0m  [38;5;10moccupied(ta1-2-rat-a)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b3,s12)[0m  [38;5;10mfirst(b9,s13)[0m  [38;5;10moccupied(ta1-1-rat-a)[0m  [38;5;10moccupied(ta1-2-rat-a)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m
-      [38;5;10mfirst(b6,s12)[0m [38;5;9m--on(b0,a2)[0m [38;5;9m--on(b12,a2)[0m
-Layer: 3
-  Subproblem: 0 [68]
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b8,s13)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b8,s13)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b4,s13)[0m  [38;5;10moccupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m  [38;5;10moccupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m  [38;5;10moccupied(ta1-3-lco)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m [38;5;9m--not-occupied(ta3-1-lco)[0m [38;5;9m--not-occupied(ta3-2-lco)[0m [38;5;9m--not-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--not-occupied(ta3-1-lco)[0m [38;5;9m--not-occupied(ta3-2-lco)[0m [38;5;9m--not-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b3,s12)[0m  [38;5;10mfirst(b4,s13)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mfirst(b6,s13)[0m [38;5;9m--first(b7,s12)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b4,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mfirst(b4,s13)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b5,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mfirst(b7,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mfirst(b7,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mfirst(b7,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a3)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mfirst(b7,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mfirst(b7,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b2,s12)[0m  [38;5;10mfirst(b7,s13)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b10,s13)[0m  [38;5;10mfirst(b6,s12)[0m  [38;5;10mnot-occupied(ta2-1-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-1-rat-a)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--occupied(ta1-2-rat-a)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a3)[0m  [38;5;10mon(b11,a2)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b3,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a2)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mfirst(b6,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b4,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m  [38;5;10mfirst(b2,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-      [38;5;10mfirst(b2,s12)[0m  [38;5;10mfirst(b3,s13)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mfirst(b6,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mfirst(b6,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b4,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mfirst(b4,s13)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b5,s12)[0m  [38;5;10mfirst(b6,s13)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s13)[0m [38;5;9m--first(b1,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b10,s13)[0m [38;5;9m--first(b11,s13)[0m [38;5;9m--first(b2,s13)[0m [38;5;9m--first(b3,s13)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--first(b6,s13)[0m [38;5;9m--first(b7,s13)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m
-     [38;5;9m--first(b0,s13)[0m [38;5;9m--first(b1,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b10,s13)[0m [38;5;9m--first(b11,s13)[0m [38;5;9m--first(b2,s13)[0m [38;5;9m--first(b3,s13)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--first(b6,s13)[0m [38;5;9m--first(b7,s13)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m
-     [38;5;9m--first(b0,s13)[0m [38;5;9m--first(b1,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b10,s13)[0m [38;5;9m--first(b11,s13)[0m [38;5;9m--first(b2,s13)[0m [38;5;9m--first(b3,s13)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--first(b6,s13)[0m [38;5;9m--first(b7,s13)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s13)[0m [38;5;9m--first(b1,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b10,s13)[0m [38;5;9m--first(b11,s13)[0m [38;5;9m--first(b2,s13)[0m [38;5;9m--first(b3,s13)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--first(b6,s13)[0m [38;5;9m--first(b7,s13)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s13)[0m [38;5;9m--first(b1,s13)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b10,s13)[0m [38;5;9m--first(b11,s13)[0m [38;5;9m--first(b2,s13)[0m [38;5;9m--first(b3,s13)[0m [38;5;9m--first(b4,s13)[0m [38;5;9m--first(b5,s13)[0m [38;5;9m--first(b6,s13)[0m [38;5;9m--first(b7,s13)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--not-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m [38;5;9m--not-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--not-occupied(ta3-3-lco)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m
-      [38;5;10mfirst(b2,s12)[0m  [38;5;10mfirst(b8,s13)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b8,s13)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b10,s12)[0m  [38;5;10mfirst(b8,s13)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b6,a1)[0m
-      [38;5;10mfirst(b13,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m
-      [38;5;10mfirst(b3,s13)[0m  [38;5;10mfirst(b5,s12)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m
-      [38;5;10mfirst(b11,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b12,a2)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a2)[0m
-Layer: 4
-  Subproblem: 0 [20]
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m  [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m  [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m  [38;5;10mfirst(b4,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a3)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a3)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m  [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m  [38;5;10mfirst(b6,s13)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m  [38;5;10mfirst(b4,s13)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m  [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m  [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--occupied(ta1-3-lco)[0m [38;5;9m--on(b0,a3)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a3)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m  [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10moccupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b0,a1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b11,s12)[0m [38;5;9m--first(b2,s12)[0m  [38;5;10mfirst(b2,s13)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m [38;5;9m--occupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b0,a3)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b3,s12)[0m  [38;5;10mfirst(b3,s13)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m  [38;5;10moccupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-1-lco)[0m [38;5;9m--occupied(ta1-2-lco)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b3,a1)[0m [38;5;9m--on(b4,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m [38;5;9m--on(b6,a1)[0m [38;5;9m--on(b6,a3)[0m
-     [38;5;9m--first(b0,s12)[0m  [38;5;10mfirst(b0,s13)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-lco)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m  [38;5;10moccupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b0,a1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-     [38;5;9m--first(b0,s12)[0m [38;5;9m--first(b1,s12)[0m [38;5;9m--first(b10,s12)[0m [38;5;9m--first(b3,s12)[0m [38;5;9m--first(b4,s12)[0m [38;5;9m--first(b5,s12)[0m [38;5;9m--first(b6,s12)[0m  [38;5;10mfirst(b6,s13)[0m [38;5;9m--first(b7,s12)[0m  [38;5;10mnot-occupied(ta3-1-gasoleo)[0m  [38;5;10mnot-occupied(ta3-1-lco)[0m  [38;5;10mnot-occupied(ta3-1-oca1)[0m  [38;5;10mnot-occupied(ta3-2-oca1)[0m  [38;5;10mnot-occupied(ta3-3-lco)[0m  [38;5;10moccupied(ta1-1-gasoleo)[0m [38;5;9m--occupied(ta1-2-oca1)[0m [38;5;9m--on(b0,a1)[0m [38;5;9m--on(b1,a1)[0m [38;5;9m--on(b1,a3)[0m [38;5;9m--on(b10,a1)[0m [38;5;9m--on(b10,a3)[0m [38;5;9m--on(b11,a1)[0m [38;5;9m--on(b4,a3)[0m [38;5;9m--on(b5,a1)[0m
-Layer: 5
-  Subproblem: 0 [0]
-S \ L	0	1	2	3	4
-0	0	28	85	104	80
-
-============================================= Dagster Timing ==============================================
-Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
------------------------------------------------------------------------------------------------------------
-TOTAL		0.00		0.00		0.00		0		0		0
-===========================================================================================================
-
-============================================= Lingeling Timing ============================================
-Subproblem	SAT Time	UNSAT Time	Total Time	SAT Count	UNSAT Count	Total count
-0		1.25		0.58		1.83		2191		2884		5075
------------------------------------------------------------------------------------------------------------
-TOTAL		1.25		0.58		1.83		2191		2884		5075
-===========================================================================================================
-
-dagster_sat_count 0 : 0
-dagster_unsat_count 0 : 0
-dagster_call_count: 0
-trying to stop workers
-exiting main
-CPP_TIME: 2.39948
-./VAL/build/linux64/release/bin/Validate /home/m/MEGA/ANU/PHD/benchmarks/decomposable/pipesworld-tankage/domain.pddl /home/m/MEGA/ANU/PHD/benchmarks/decomposable/pipesworld-tankage/p10-net1-b14-g8-t50.pddl /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_10__TPA4FBT87PBUG1X/plan
-number_isolated_instances:
-Checking plan: /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_10__TPA4FBT87PBUG1X/plan
-Plan executed successfully - checking goal
-Plan valid
-Final value: 92 
-
-Successful plans:
-Value: 92
- /home/m/MEGA/ANU/PHD/dagparser/tmp/tmp_2022_06_28__14_59_10__TPA4FBT87PBUG1X/plan 92 
-
-
-real	0m5.222s
-user	0m5.042s
-sys	0m0.186s
