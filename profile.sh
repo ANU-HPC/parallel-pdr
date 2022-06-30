@@ -1,6 +1,6 @@
 #!/bin/bash -i
 # Used by the author for benchmarking between versions
-NAME=$(python hash.py | cut -c 1-20)
+NAME=$(python get_tmp_name.py | cut -c 1-20)
 
 cat set
 rm -r tests/profile_results
