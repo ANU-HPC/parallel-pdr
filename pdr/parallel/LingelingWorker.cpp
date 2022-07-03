@@ -33,6 +33,9 @@ void LingelingWorker::loop(string in_tmp_dir, const map<int, vector<int>>& in_su
     if (message_tag == MPI_TAG_NEW_ASSIGNMENT) {
       VLOG(3) << "LingelingWORKER " << comms->world_rank << ": recieved new assignment";
       assert (incoming_message!=NULL);
+#if FLUSH_CLAUSES_ON_OBLIGATION_COUNT 
+      obligation_for_flush_learnt_clauses();
+#endif
       if (solve(incoming_message, return_message)) comms->send_message(0, MPI_TAG_SOLUTION, return_message);
       else                                         comms->send_message(0, MPI_TAG_REQUEST_FOR_ASSIGNMENT, return_message);
     } else if (message_tag == MPI_TAG_NEW_CLAUSES) {
@@ -189,4 +192,17 @@ void LingelingWorker::initialise_solver_from_message(Message* m) {
 int LingelingWorker::solve_and_generate_message(Message* m) {
   assert(0);
   return -1;
+}
+
+void LingelingWorker::obligation_for_flush_learnt_clauses() {
+  // This function registers that a new obligation has been processed, and considers flushing the learnt clauses
+  obligations_since_last_flush_learnt_clauses++;
+  if (obligations_since_last_flush_learnt_clauses >= FLUSH_CLAUSES_ON_OBLIGATION_COUNT) {
+    for (int i=0; i<solvers.size(); i++) {
+      if (solvers[i] != NULL) solvers[i]->flush_learnt_clauses();
+    }
+
+    obligations_since_last_flush_learnt_clauses = 0;
+    cout << "Flushing clauses parallel rank " << comms->world_rank << endl;
+  }
 }

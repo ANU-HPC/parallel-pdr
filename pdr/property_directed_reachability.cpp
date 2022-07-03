@@ -661,6 +661,22 @@ namespace property_directed_reachability {
     }
   }
 
+  void obligation_for_flush_learnt_clauses() {
+    // This function registers that a new obligation has been processed, and considers flushing the learnt clauses
+    obligations_since_last_flush_learnt_clauses++;
+    if (obligations_since_last_flush_learnt_clauses >= FLUSH_CLAUSES_ON_OBLIGATION_COUNT) {
+      for (int i=0; i < single_layers.layer_to_steps_solvers.size(); i++) {
+        for (int j=0; j < single_layers.layer_to_steps_solvers[i].size(); j++) {
+          Lingeling* solver =  single_layers.layer_to_steps_solvers[i][j];
+          if (solver != NULL) solver->flush_learnt_clauses();
+        }
+      }
+
+      obligations_since_last_flush_learnt_clauses = 0;
+      //cout << "Flushing clauses serial" << endl;
+    }
+  }
+
   // TODO neatness rename the layer for state layer, and succ state layer for clarity
   vector<int> single_get_successor(const vector<int>& state, int layer, int subproblem, bool record) {
 #if MS_ONLY_MAX_SOLVER_STEP
@@ -902,6 +918,8 @@ namespace property_directed_reachability {
 #if TEST_NAL
   set<int> activation_vars;
 #endif
+
+  int obligations_since_last_flush_learnt_clauses = 0;
 
   // Dagster specific
   int num_subproblems;

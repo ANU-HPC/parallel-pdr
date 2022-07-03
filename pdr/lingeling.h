@@ -36,6 +36,7 @@ class Lingeling {
     vector<int> get_model();
     vector<int> used_assumptions();
     void set_important(const vector<int>& variables);
+    void flush_learnt_clauses();
 
   private:
     void load_DIMACS_Cnf(const char* fname);

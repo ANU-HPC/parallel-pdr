@@ -142,6 +142,7 @@ namespace property_directed_reachability {
   bool same_as_previous(int layer, set<int> layers_to_check);
   int get_first_empty_layer();
   void push_nonfinal_up_to_layer(int just_empty_layer);
+  void obligation_for_flush_learnt_clauses();
 
   // member variables
   extern int MS_steps_used;
@@ -202,6 +203,8 @@ namespace property_directed_reachability {
 #if TEST_NAL
   extern set<int> activation_vars;
 #endif
+
+  extern int obligations_since_last_flush_learnt_clauses;
 
   // Dagster specific
   extern int num_subproblems;

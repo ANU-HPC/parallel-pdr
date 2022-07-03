@@ -241,3 +241,8 @@ void Lingeling::set_important(const vector<int>& variables) {
     lglsetimportant(solver, *it);
   }
 }
+
+void Lingeling::flush_learnt_clauses() {
+  lglflushcache(solver);
+  lglreducecache(solver);
+}

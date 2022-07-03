@@ -392,6 +392,9 @@ class Parallel_Buffer {
       assert(original_obl.worker == -1); // if doing single 
 
       PDR::MS_steps_used = MS_DEFAULT_STEPS_USED;
+#if FLUSH_CLAUSES_ON_OBLIGATION_COUNT 
+      PDR::obligation_for_flush_learnt_clauses();
+#endif
       const vector<int> succ_state = PDR::single_get_successor(original_obl.state, original_obl.layer, original_obl.subproblem, original_obl.reduce);
       if (succ_state.size()) {
         PDR::Obligation succ_obl = original_obl;
