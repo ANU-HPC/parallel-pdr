@@ -106,9 +106,9 @@ namespace property_directed_reachability {
 
     set<int> references_to_delete;
 
-    for (auto const& slot_entry : specific_queue->get_all_in_timestamp_order()) {
-      const int slot = get<0>(slot_entry);
-      const Queue_Entry* entry = get<1>(slot_entry);
+    for (auto const& reference_entry : specific_queue->get_all_in_timestamp_order()) {
+      const int reference = get<0>(reference_entry);
+      const Queue_Entry* entry = get<1>(reference_entry);
 
       if (!function_keep(entry->compressed_state)) {
         // If not keeping, remove it, but first check for obligation rescheduling, and remove the hash
@@ -126,11 +126,11 @@ namespace property_directed_reachability {
           }
         }
 
-        references_to_delete.insert(slot);
+        references_to_delete.insert(reference);
       }
     }
 
-    for (int const& slot : references_to_delete) specific_queue->erase(slot);
+    for (int const& reference : references_to_delete) specific_queue->erase(reference);
 
     assert(DEBUG_starting_size-DEBUG_num_removed == specific_queue->size());
   }

@@ -73,7 +73,6 @@ namespace property_directed_reachability {
       vector<tuple<int, Queue_Entry*>> get_all_in_timestamp_order();
 
       unordered_map<int, Queue_Entry> underlying_queue_entries;
-      set<int> valid_underlying_queue_entry_references; // MAKE PRIVATE
     private:
       // References to the actual data, sorted by the various heuristics employed
       unordered_map<int, set<Reference_Entry, reference_entry_comp_struct>> orderings;

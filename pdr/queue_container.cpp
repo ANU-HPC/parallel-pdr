@@ -76,9 +76,7 @@ namespace property_directed_reachability {
   }
 
   Queue_Container::Queue_Container() {
-#if ALLOW_HEURISTIC_NONE
     orderings[HEURISTIC_NONE] = set<Reference_Entry, reference_entry_comp_struct>();
-#endif
 #if ALLOW_HEURISTIC_H_ADD
     orderings[HEURISTIC_H_ADD] = set<Reference_Entry, reference_entry_comp_struct>();
 #endif
@@ -96,7 +94,6 @@ namespace property_directed_reachability {
     // checking all wanted heuristics are allowed
     bool using_unsuported_heuristic = false;
     for (const int& heuristic_to_use : heuristics_to_use) {
-      using_unsuported_heuristic = using_unsuported_heuristic || ((heuristic_to_use == HEURISTIC_NONE) && (ALLOW_HEURISTIC_NONE == 0));
       using_unsuported_heuristic = using_unsuported_heuristic || ((heuristic_to_use == HEURISTIC_H_ADD) && (ALLOW_HEURISTIC_H_ADD == 0));
       using_unsuported_heuristic = using_unsuported_heuristic || ((heuristic_to_use == HEURISTIC_NOVELTY) && (ALLOW_HEURISTIC_NOVELTY == 0));
       using_unsuported_heuristic = using_unsuported_heuristic || ((heuristic_to_use == HEURISTIC_RANDOM) && (ALLOW_HEURISTIC_RANDOM == 0));
@@ -120,9 +117,7 @@ namespace property_directed_reachability {
 
     underlying_queue_entries.clear();
 
-#if ALLOW_HEURISTIC_NONE
     orderings[HEURISTIC_NONE].clear();
-#endif
 #if ALLOW_HEURISTIC_H_ADD
     orderings[HEURISTIC_H_ADD].clear();
 #endif
@@ -155,18 +150,13 @@ namespace property_directed_reachability {
       slot = next_unassigned_free_slot;
       next_unassigned_free_slot++;
     }
-    assert(valid_underlying_queue_entry_references.find(slot) == valid_underlying_queue_entry_references.end());
-    valid_underlying_queue_entry_references.insert(slot);
     underlying_queue_entries[slot] = queue_entry;
     num_elements++;
-    assert(valid_underlying_queue_entry_references.size() == num_elements);
 
     // reference where it is in the various sorted orderings
-#if ALLOW_HEURISTIC_NONE
     Reference_Entry reference_entry_none = Reference_Entry(slot, 1, queue_entry.timestamp);
     orderings[HEURISTIC_NONE].insert(reference_entry_none);
     assert(orderings[HEURISTIC_NONE].size() == num_elements);
-#endif
 
 #if ALLOW_HEURISTIC_H_ADD
     Reference_Entry reference_entry_h_add = Reference_Entry(slot, queue_entry.heuristic_cost_h_add, queue_entry.timestamp);
@@ -188,16 +178,13 @@ namespace property_directed_reachability {
   }
 
   Queue_Entry Queue_Container::pop() {
-    //cout << "pop" << endl;
     // determine the heuristic to use
     const int heuristic_to_use = heuristics_to_use[heuristic_to_use_next_index];
     heuristic_to_use_next_index++;
     if (heuristic_to_use_next_index >= heuristics_to_use.size()) heuristic_to_use_next_index = 0;
-    //cout << "heuristic_to_use: (" << heuristic_to_use_next_index << "/" << heuristics_to_use.size() << ") " << heuristic_to_use << endl;
 
     // Get the entry to return from the suitable ordering
     const int slot = (*orderings[heuristic_to_use].begin()).reference;
-    assert(valid_underlying_queue_entry_references.find(slot) != valid_underlying_queue_entry_references.end());
     Queue_Entry queue_entry = underlying_queue_entries[slot];
     erase(slot);
     return queue_entry;
@@ -206,16 +193,12 @@ namespace property_directed_reachability {
   void Queue_Container::erase(const int slot) {
     Queue_Entry queue_entry = underlying_queue_entries[slot];
     free_slots.push_back(slot);
-    valid_underlying_queue_entry_references.erase(slot);
     num_elements--;
 
     // remove the corresponding reference from all orders
-    // TODO ASSUMING MATCHING ON COMP
-#if ALLOW_HEURISTIC_NONE
     Reference_Entry reference_entry_none = Reference_Entry(slot, 1, queue_entry.timestamp);
     orderings[HEURISTIC_NONE].erase(reference_entry_none);
     assert(orderings[HEURISTIC_NONE].size() == num_elements);
-#endif
 
 #if ALLOW_HEURISTIC_H_ADD
     Reference_Entry reference_entry_h_add = Reference_Entry(slot, queue_entry.heuristic_cost_h_add, queue_entry.timestamp);
