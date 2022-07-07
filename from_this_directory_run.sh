@@ -16,10 +16,11 @@ USE_FD_HEURISTIC=`cat pdr/options.h | grep "#define USE_FD_HEURISTIC 1" | wc -l`
 DAGPARSER_ROOT=`dirname "$0"` 
 echo `readlink -f $DAGPARSER_ROOT/run.sh` $@
 echo HOSTNAME: `cat /proc/sys/kernel/hostname`
+echo GIT_COMMIT: `git rev-parse HEAD`
 
 echo START_EXTRA_SETTINGS
 cat $SET
-cat pdr/options.h | grep \^\#define
+cat pdr/options.h | grep \^\#define | grep -v OPTIONS_H | cut -d\  -f2-
 echo STOP_EXTRA_SETTINGS
 
 TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
