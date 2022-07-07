@@ -2,6 +2,7 @@
 #define QUEUE_H
 
 #include "property_directed_reachability.h"
+#include "queue_container.h"
 
 #if PORTFOLIO_QUEUE
 #define QUEUE_TYPE PDR::PDR_Portfolio_Queue
@@ -10,23 +11,6 @@
 #endif
 
 namespace property_directed_reachability {
-  class Queue_Entry {
-    public:
-      Queue_Entry(const vector<int>& in_compressed_state, const int in_heuristic_cost, const unsigned long long int in_adding_timestamp);
-      Queue_Entry(const Queue_Entry& existing);
-      vector<int> compressed_state;
-      int heuristic_cost;
-      unsigned long long int timestamp; // Guaranteed to be at least 64 bits
-  };
-
-  bool queue_entry_comp(Queue_Entry i,Queue_Entry j);
-
-  struct queue_entry_comp_struct {
-    bool operator() (Queue_Entry i, Queue_Entry j) const {
-      return queue_entry_comp(i, j);
-    }
-  };
-
   class PDR_Queue {
     // TODO efficiency copying? pass by reference?
     public:
@@ -34,7 +18,7 @@ namespace property_directed_reachability {
       PDR_Queue(int* in_obligation_rescheduling_upper_layer);
       ~PDR_Queue();
       void set_up_novelty_heuristic();
-      void helper_remove_states_matching_reason_include_layer_subproblem_specific_layer(set<Queue_Entry, queue_entry_comp_struct>* specific_queue, const vector<int>& reason, const int layer, const int subproblem);
+      void helper_remove_states_matching_reason_include_layer_subproblem_specific_layer(property_directed_reachability::Queue_Container* specific_queue, const vector<int>& reason, const int layer, const int subproblem);
       void remove_states_matching_reason_layer_subproblem(const vector<int>& reason, const int max_layer, const int subproblem);
       void remove_subproblem(int subproblem);
       void make_layer_exist(int layer);
@@ -73,7 +57,7 @@ namespace property_directed_reachability {
       int num_subproblems = -1;
       int max_layer_ever = -1;
       //vector<vector<Set_Trie>>* reasons;
-      vector<vector<set<Queue_Entry, queue_entry_comp_struct>*>> data; // subproblem to layer to deque of compressed states
+      vector<vector<Queue_Container*>> data; // subproblem to layer to deque of compressed states
       set<pair<pair<vector<int>, int>, int>> hash;
       set<int> available_layers;
       vector<set<int>> available_layers_subproblems;

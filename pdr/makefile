@@ -50,6 +50,7 @@ OBJS = ./parallel/message.o \
 	   parser.o \
 	   state_actions.o \
 	   layers.o \
+	   queue_container.o \
 					
 HEADERS	= main_pdr.h \
 		  lingeling.h \
@@ -61,6 +62,7 @@ HEADERS	= main_pdr.h \
 		  options.h \
 		  state_actions.h \
 		  layers.h \
+		  queue_container.h \
 
 INCLUDES += -I../lingeling \
             -I./parallel \

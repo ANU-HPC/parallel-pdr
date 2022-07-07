@@ -15,7 +15,7 @@ INJECT_STATE = "inject state"
 CONSOLIDATING_NODE_PREFIX = "consolidating node of: "
 NODE_NONEXISTENT = -2
 MAX_SOLVER_STEPS = import_option("MAX_SOLVER_STEPS")
-ALLOW_CALCULATE_H_ADD = import_option("ALLOW_CALCULATE_H_ADD")
+ALLOW_HEURISTIC_H_ADD = import_option("ALLOW_HEURISTIC_H_ADD")
 
 def isSpecialNode(x):
     if x == DECOMPOSITION_COLLATING_NODE: return True
@@ -360,7 +360,7 @@ class Dag:
             jsonObject["subproblem_to_actions"] = self.subproblemToActions
             #jsonObject["decomposition_root_nodes"] = rootNodes
 
-            if ALLOW_CALCULATE_H_ADD:
+            if ALLOW_HEURISTIC_H_ADD:
                 actionToPreconditions = {}
                 actionToEffects = {}
                 assert(len(self.problem.actionPre) == len(self.problem.actionEff))

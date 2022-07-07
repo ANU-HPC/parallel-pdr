@@ -61,7 +61,7 @@ int Parser::parse(string tmp_dir) {
   assert(document.HasMember("subproblem_to_propositions"));
   assert(document.HasMember("subproblem_to_isolate_goal"));
 
-#if ALLOW_CALCULATE_H_ADD
+#if ALLOW_HEURISTIC_H_ADD
   assert(document.HasMember("action_to_preconditions"));
   assert(document.HasMember("action_to_effects"));
 #endif
@@ -230,7 +230,7 @@ int Parser::parse(string tmp_dir) {
     }
   }
 
-#if ALLOW_CALCULATE_H_ADD
+#if ALLOW_HEURISTIC_H_ADD
   const Value& action_to_preconditions_object = document["action_to_preconditions"]; 
   assert(action_to_preconditions_object.IsObject());
   for (Value::ConstMemberIterator ita = action_to_preconditions_object.MemberBegin(); ita != action_to_preconditions_object.MemberEnd(); ita++) {

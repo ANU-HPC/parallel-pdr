@@ -543,7 +543,7 @@ namespace property_directed_reachability {
       if (lit>0) positive_goal_condition.push_back(lit);
     }
 
-#if ALLOW_CALCULATE_H_ADD
+#if ALLOW_HEURISTIC_H_ADD
     for (auto const& var : propositions) positive_effect_to_actions[var] = vector<int>();
     for (auto const& action : actions) action_to_positive_preconditions[action] = vector<int>();
 
@@ -597,7 +597,7 @@ namespace property_directed_reachability {
   }
 
   int h_add(const vector<int>& compressed_state) {
-    assert(ALLOW_CALCULATE_H_ADD);
+    assert(ALLOW_HEURISTIC_H_ADD);
     if (h_add_memo.find(compressed_state) != h_add_memo.end()) return h_add_memo[compressed_state];
 
     h_add_h_function_memo.clear();

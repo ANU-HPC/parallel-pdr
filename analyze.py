@@ -74,21 +74,12 @@ def process_regular_logfile(log, filename):
     if stop != None and start != None:
         for i in range(start+1, stop):
             components = log[i].split(" ")
-            if len(components) == 3:
-                key, value = components[1:]
-                try:
-                    data[key] = int(value)
-                except:
-                    data[key] = value
-
-            else:
-                assert len(components) == 2
-                key, value = components
-                if key == "#define":
-                    assert value == "OPTIONS_H"
-                else:
-                    data[key] = int(value)
-            
+            key = components[0]
+            value_raw = " ".join(components[1:])
+            try:
+                data[key] = int(value_raw)
+            except:
+                data[key] = value_raw
 
     data["run_command"] = log[0]
     for line_num in range(len(log)):

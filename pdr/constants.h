@@ -1,0 +1,9 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define HEURISTIC_NONE (111)
+#define HEURISTIC_H_ADD (222)
+#define HEURISTIC_NOVELTY (333)
+#define HEURISTIC_RANDOM (444)
+
+#endif

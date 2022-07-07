@@ -1,4 +1,5 @@
 #include "queue.h"
+#include "queue_container.h"
 
 // Used inside the queue
 class compressed_not_matches_reason {
@@ -47,35 +48,18 @@ namespace property_directed_reachability {
   PDR_Queue queue;
 #endif
 
-  Queue_Entry::Queue_Entry(const vector<int>& in_compressed_state, const int in_heuristic_cost, const unsigned long long int in_timestamp) {
-    compressed_state = in_compressed_state;
-    heuristic_cost = in_heuristic_cost;
-    timestamp = in_timestamp;
-  }
-
-  Queue_Entry::Queue_Entry(const Queue_Entry& existing) {
-    compressed_state = existing.compressed_state;
-    heuristic_cost = existing.heuristic_cost;
-    timestamp = existing.timestamp;
-  }
-
-  bool queue_entry_comp(Queue_Entry i,Queue_Entry j) { 
-    if (i.heuristic_cost == j.heuristic_cost) {
-      return i.timestamp > j.timestamp; // break ties favouring newer entries
-    } else {
-      return i.heuristic_cost < j.heuristic_cost;
-    }
-  }
-
   // TODO efficiency copying? pass by reference?
   // PDR_Queue 
 
   PDR_Queue::PDR_Queue() {
+    // Deliberately blank
   }
 
   PDR_Queue::PDR_Queue(int* in_obligation_rescheduling_upper_layer) {
     obligation_rescheduling_upper_layer = in_obligation_rescheduling_upper_layer;
+#if ALLOW_HEURISTIC_NOVELTY 
     set_up_novelty_heuristic();
+#endif
   }
 
   PDR_Queue::~PDR_Queue() {
@@ -112,7 +96,7 @@ namespace property_directed_reachability {
     }
   }
 
-  void PDR_Queue::helper_remove_states_matching_reason_include_layer_subproblem_specific_layer(set<Queue_Entry, queue_entry_comp_struct>* specific_queue, const vector<int>& reason, const int layer, const int subproblem) {
+  void PDR_Queue::helper_remove_states_matching_reason_include_layer_subproblem_specific_layer(Queue_Container* specific_queue, const vector<int>& reason, const int layer, const int subproblem) {
     if(specific_queue->size() == 0) return;
 
     const int DEBUG_starting_size = specific_queue->size();
@@ -120,27 +104,34 @@ namespace property_directed_reachability {
 
     auto function_keep = compressed_not_matches_reason(reason);
 
-    auto it = specific_queue->begin();
-    while(it != specific_queue->end()) {
-      if(!function_keep(it->compressed_state)) {
+    set<int> references_to_delete;
+
+    for (auto const& slot_entry : specific_queue->get_all_in_timestamp_order()) {
+      const int slot = get<0>(slot_entry);
+      const Queue_Entry* entry = get<1>(slot_entry);
+
+      if (!function_keep(entry->compressed_state)) {
         // If not keeping, remove it, but first check for obligation rescheduling, and remove the hash
         DEBUG_num_removed++;
 
         // remove from hash
-        pair<vector<int>, int> thing1 = pair<vector<int>, int>(it->compressed_state, layer);
+        pair<vector<int>, int> thing1 = pair<vector<int>, int>(entry->compressed_state, layer);
         pair<pair<vector<int>, int>, int> thing2 (thing1, subproblem); //C.G. 
         hash.erase(thing2);
 
-        // Add state back at at the next layer if applicable.
+        // Add state back at the next layer if applicable.
         if (PDR::obligation_rescheduling) {
           if (layer < *obligation_rescheduling_upper_layer) {
-            push(Queue_Entry(*it), layer+1, subproblem);
+            push(Queue_Entry(*entry), layer+1, subproblem);
           }
         }
 
-        it = specific_queue->erase(it);
-      } else it++;
+        references_to_delete.insert(slot);
+      }
     }
+
+    for (int const& slot : references_to_delete) specific_queue->erase(slot);
+
     assert(DEBUG_starting_size-DEBUG_num_removed == specific_queue->size());
   }
 
@@ -194,9 +185,9 @@ namespace property_directed_reachability {
 
   void PDR_Queue::make_layer_exist(int layer) {
     while (data.size() <= layer) {
-      vector<set<Queue_Entry, queue_entry_comp_struct>*> subproblems_stacks;
+      vector<Queue_Container*> subproblems_stacks;
       for (int subproblem=0; subproblem<PDR::num_subproblems; subproblem++) {
-        set<Queue_Entry, queue_entry_comp_struct>* stack = new set<Queue_Entry, queue_entry_comp_struct>();
+        Queue_Container* stack = new Queue_Container();
         subproblems_stacks.push_back(stack);
       }
       data.push_back(subproblems_stacks);
@@ -245,14 +236,12 @@ namespace property_directed_reachability {
     assert(available_layers_subproblems[layer].size());
     assert(data[layer][subproblem]->size());
 
-    const Queue_Entry& queue_entry = *(data[layer][subproblem]->begin()); 
+    const Queue_Entry& queue_entry = data[layer][subproblem]->pop();
     const vector<int> state = PDR::uncompress_state(queue_entry.compressed_state);
 
     pair<vector<int>, int> thing1 = pair<vector<int>, int>(queue_entry.compressed_state, layer);
     pair<pair<vector<int>, int>, int> thing2 (thing1, subproblem);
     hash.erase(thing2);
-
-    data[layer][subproblem]->erase(queue_entry);
 
     // record that it was removed
     if (data[layer][subproblem]->size() == 0) {
@@ -563,14 +552,19 @@ vector<tuple<vector<int>, int, int, bool, bool>> PDR_Queue::get_states_priority_
   void PDR_Queue::push(const vector<int>& state, int layer, int subproblem){
     // Heuristic cost and timestamp not given, so create it
     const vector<int>& compressed_state = PDR::compress_state(state, subproblem, true);
-#if USE_HEURISTIC
-    const int heuristic_cost = get_heuristic_cost(compressed_state);
-#else
-    const int heuristic_cost = 1;
-#endif
     const unsigned long long int timestamp = next_timestamp;
     next_timestamp++;
-    push(Queue_Entry(compressed_state, heuristic_cost, timestamp), layer, subproblem);
+    Queue_Entry queue_entry = Queue_Entry(compressed_state, timestamp);
+#if ALLOW_HEURISTIC_H_ADD
+    queue_entry.heuristic_cost_h_add = PDR::h_add(compressed_state);
+#endif
+#if ALLOW_HEURISTIC_NOVELTY
+    queue_entry.heuristic_cost_novelty = get_novelty_heuristic_cost(compressed_state);
+#endif
+#if ALLOW_HEURISTIC_RANDOM
+    queue_entry.heuristic_cost_random = rand();
+#endif
+    push(queue_entry, layer, subproblem);
   }
 
   void PDR_Queue::push(Queue_Entry queue_entry, int layer, int subproblem){
@@ -593,7 +587,8 @@ vector<tuple<vector<int>, int, int, bool, bool>> PDR_Queue::get_states_priority_
     active_subproblems.insert(subproblem);
     available_layers.insert(layer);
     available_layers_subproblems[layer].insert(subproblem);
-    data[layer][subproblem]->insert(queue_entry);
+
+    data[layer][subproblem]->push(queue_entry);
   }
 
   void PDR_Queue::print_size() {
