@@ -10,9 +10,9 @@ CRAY_PLATFORM_NAME              = nakuru
 
 ifeq (${ANU_PLATFORM_NAME}, $(findstring ${ANU_PLATFORM_NAME}, ${UNAME}))
         #Variables for ANU dev system (dolphin?)
-        MPICXX                  = mpic++ -L/home/milthorpe/cudd/lib/ -I/home/marshall/
+        MPICXX                  = mpic++ -I/home/marshall/
         CXXFLAGS                += -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
-        LDFLAGS                 = -lglog -lstdc++fs -lcudd -lz
+        LDFLAGS                 = -lglog -lstdc++fs
 else ifeq (${CRAY_PLATFORM_NAME}, $(findstring ${CRAY_PLATFORM_NAME}, ${UNAME}))
         #Variables for Nakuru Cray system
         MPICXX                  = CC
@@ -29,7 +29,7 @@ else
         MPICXX                  = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
         CXXFLAGS                += -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
         #CXXFLAGS                += -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
-        LDFLAGS                 = -lglog -lstdc++fs -lcudd -lz
+        LDFLAGS                 = -lglog -lstdc++fs
 #       LDFLAGS                 += -L/usr/local/lib/openmpi -lmpiP -lm -lbfd -liberty -lunwind -L.. -ldummy_mpi1
 endif
 
@@ -75,7 +75,7 @@ CXXFLAGS += `cat ../SET_NDEBUG`
 pdr: $(OBJS) 
 	$(MPICXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) -L. -llgl $(LDFLAGS) -o pdrDagster
 
-%.o: %.cpp %.h $(HEADERS)
+%.o: %.cpp %.h $(HEADERS) ../SET_NDEBUG
 	$(MPICXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
 
 clean:
