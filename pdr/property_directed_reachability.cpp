@@ -874,7 +874,7 @@ namespace property_directed_reachability {
   unordered_map<int, int> h_add_h_function_memo; // MUST BE CLEARED BETWEEN EACH H_ADD CALL
   unordered_set<int> h_add_h_function_open;
 
-  // TODO tmp
+  // clause assuming a one step problem - the conversion to multiple steps is done on the worker nodes
   vector<vector<vector<vector<int>>>> worker_upper_layer_dagster_clauses_to_add;
 
   // at runtime, use dagster? if false use lingeling instead, ONLY ONE AT A TIME

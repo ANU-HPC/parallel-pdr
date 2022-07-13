@@ -14,6 +14,7 @@
 #include "arguments.h"
 #include "mpi_global.h"
 #include "exceptions.h"
+#include "../property_directed_reachability.h"
 
 #define ADD_CLAUSES_FROM 123
 
@@ -103,13 +104,10 @@ void LingelingWorker::add_clauses(Message* incoming_message) {
 
   for (int c = 0; c < incoming_message->additional_clauses->cc; c++) {
     vector<int> clause;
-    //cout << "adding new clause: " << endl;
     for (int i = 0; i < incoming_message->additional_clauses->cl[c]; i++) {
       clause.push_back(incoming_message->additional_clauses->clauses[c][i]);
-      //cout << incoming_message->additional_clauses->clauses[c][i] << " ";
     }
-    //cout << endl;
-    for (int solver = 0; solver<= max_solver; solver++) solvers[solver]->add_clause(clause);
+    for (int solver = 0; solver<= max_solver; solver++) solvers[solver]->add_clause(PDR::convert_clause_for_steps(clause, MAX_SOLVER_STEPS));
   }
 }
 
