@@ -138,9 +138,9 @@ namespace property_directed_reachability {
   }
 
 
-  bool state_conforms_to_only_one_cliques(vector<int> state, const int subproblem){
+  bool state_conforms_to_only_one_strips_cliques(vector<int> state, const int subproblem){
     sort(state.begin(), state.end());
-    const vector<vector<int>>& cliques = subproblem_to_only_one_cliques[subproblem];
+    const vector<vector<int>>& cliques = subproblem_to_only_one_strips_cliques[subproblem];
     for (auto it=cliques.begin(); it!=cliques.end(); it++) {
       vector<int> clique = *it;
       sort(clique.begin(), clique.end());
@@ -232,7 +232,7 @@ namespace property_directed_reachability {
     sort(state.begin(), state.end(), state_print_comp);
     for (int i=0; i<state.size(); i++) {
       if (state[i] > 0) ret_val += "  \033[38;5;10m";
-      else              ret_val += " \033[38;5;9m-";
+      else              ret_val += " \033[38;5;9m";
       ret_val += lit_string(state[i]);
       ret_val += "\033[0m";
     }
@@ -321,7 +321,7 @@ namespace property_directed_reachability {
     // assume this is a consistent state, so for each 
     // assume cliques are disjoint
     set<int> props_to_remove;
-    const vector<vector<int>>& cliques = subproblem_to_only_one_cliques[subproblem];
+    const vector<vector<int>>& cliques = subproblem_to_only_one_strips_cliques[subproblem];
     for (auto it=cliques.begin(); it!=cliques.end(); it++) {
       const vector<int>& clique = *it; 
       const vector<int>& projected = project_state_to_propositions(state, clique);
@@ -351,10 +351,11 @@ namespace property_directed_reachability {
     assert(is_abs_sorted(assignment));
     vector<vector<int>> succ_state_sequence;
     vector<vector<int>> actions_executed_sequence;
-    assert(assignment.size() == (steps_used+1)*total_per_timestep);
+    assert(assignment.size() == (steps_used+1)*total_per_timestep - num_aux);
 
     const int num_actions = actions.size(); 
-    const int num_propositions = total_per_timestep - num_actions;
+    const int num_propositions = total_per_timestep - num_actions - num_aux;
+    assert(subproblem == 0);
     assert(PDR::subproblem_to_propositions[0].size() == num_propositions);
 
     int DEBUG_largest_var=-1;
@@ -362,7 +363,7 @@ namespace property_directed_reachability {
       const int lower_action_bound = timestep*total_per_timestep+1;
       const int upper_action_bound = num_actions + timestep*total_per_timestep+1;
       const int lower_proposition_bound = num_actions + timestep*total_per_timestep+1;
-      const int upper_proposition_bound = (timestep+1)*total_per_timestep+1;
+      const int upper_proposition_bound = (timestep+1)*total_per_timestep+1 - num_aux;
 
       vector<int> actions_executed;
       vector<int> succ_state;
@@ -374,12 +375,14 @@ namespace property_directed_reachability {
         DEBUG_largest_var = max(DEBUG_largest_var, action_var);
       }
 
+      // then all the propositions
       for (int proposition_var = lower_proposition_bound ; proposition_var < upper_proposition_bound; proposition_var++) {
         succ_state.push_back(tilde_lit(assignment[proposition_var-1], -timestep));
         assert(abs(assignment[proposition_var-1]) == proposition_var);
         DEBUG_largest_var = max(DEBUG_largest_var, proposition_var);
       }
 
+      assert(succ_state.size() == num_propositions);
       assert(actions_executed == project_state_to_propositions(actions_executed, PDR::actions));
       assert(succ_state == project_state_to_propositions(succ_state, PDR::subproblem_to_propositions[0])); // TODO fix for subproblems
       assert(actions_executed.size() == num_actions);
@@ -389,8 +392,8 @@ namespace property_directed_reachability {
       actions_executed_sequence.push_back(actions_executed);
     }
 
-    assert(DEBUG_largest_var == (steps_used+1)*total_per_timestep);
-    assert(DEBUG_largest_var == assignment.size());
+    assert(DEBUG_largest_var == (steps_used+1)*total_per_timestep - num_aux);
+    assert(DEBUG_largest_var == assignment.size()); // There are some aux variables in the assignment - but these are not at the end, so the largest var will still be the assignment size
 
     return pair<vector<vector<int>>, vector<vector<int>>>(succ_state_sequence, actions_executed_sequence);
   }
@@ -484,6 +487,7 @@ namespace property_directed_reachability {
     //parser.print();
 
     total_per_timestep                         = parser.total_per_timestep;
+    num_aux                                    = parser.num_aux;
     actions                                    = parser.actions;
     actions_set                                = parser.actions_set;
     num_subproblems                            = parser.num_subproblems;
@@ -493,7 +497,7 @@ namespace property_directed_reachability {
     subproblem_to_actions                      = parser.subproblem_to_actions;
     subproblem_to_clause_validating_lits       = parser.subproblem_to_clause_validating_lits;
     subproblem_to_assumptions                  = parser.subproblem_to_assumptions;
-    subproblem_to_only_one_cliques             = parser.subproblem_to_only_one_cliques;
+    subproblem_to_only_one_strips_cliques      = parser.subproblem_to_only_one_strips_cliques;
 
     for (int i=0; i<initial_state.size(); i++) {
       int var = abs(initial_state[i]);
@@ -505,11 +509,11 @@ namespace property_directed_reachability {
 
     if (use_OOC) exit(1); // not set up for it
     /* For use in use_ooc - unused and sometiems problematic when introducing more types of cliques
-    // process subproblem_only_one_cliques
+    // process subproblem_only_one_strips_cliques
     for (int subproblem=0; subproblem<num_subproblems; subproblem++) {
       set<int> props_mentioned; // just a check
-      for (int clique=0; clique<subproblem_to_only_one_cliques[subproblem].size(); clique++) {
-        vector<int> clause_zero = subproblem_to_only_one_cliques[subproblem][clique];
+      for (int clique=0; clique<subproblem_to_only_one_strips_cliques[subproblem].size(); clique++) {
+        vector<int> clause_zero = subproblem_to_only_one_strips_cliques[subproblem][clique];
         assert(is_abs_sorted(clause_zero));
         vector<int> clause_one;
         for (auto it=clause_zero.begin(); it!=clause_zero.end(); it++) {
@@ -544,7 +548,7 @@ namespace property_directed_reachability {
     }
 
 #if ALLOW_HEURISTIC_H_ADD
-    for (auto const& var : propositions) positive_effect_to_actions[var] = vector<int>();
+    for (auto const& var : propositions) positive_effect_strips_to_actions[var] = vector<int>();
     for (auto const& action : actions) action_to_positive_preconditions[action] = vector<int>();
 
     for (auto const& action_preconditions : parser.action_to_preconditions) {
@@ -554,10 +558,27 @@ namespace property_directed_reachability {
       }
     }
 
-    for (auto const& action_effects : parser.action_to_effects) {
-      const int action = action_effects.first;
-      for (int const& effect : action_effects.second) {
-        if (effect>0) positive_effect_to_actions[effect].push_back(action);
+    for (auto const& action_effects_strips : parser.action_to_effects_strips) {
+      const int action = action_effects_strips.first;
+      for (int const& effect : action_effects_strips.second) {
+        if (effect>0) positive_effect_strips_to_actions[effect].push_back(action);
+      }
+    }
+
+    // Deal with ADL conditional effects
+    // map from prop_to_be_made_true, to the actions AND the conditions for making it true
+    for (auto const& prop : propositions) {
+      positive_effect_adl_to_actions_conditions[prop] = vector<vector<int>>();
+    }
+
+    for (auto const& action_condition_then_consequence : parser.action_literals_to_extra_positive_effects) {
+      const auto& action_condition = action_condition_then_consequence.first;
+      const auto& consequence = action_condition_then_consequence.second;
+      for (auto const& consequence_prop : consequence) {
+        assert(consequence_prop > 0);
+        assert(propositions_set.find(consequence_prop) != propositions_set.end());
+        positive_effect_adl_to_actions_conditions[consequence_prop].push_back(action_condition);
+        //cout << "consequence " << lit_string(consequence_prop) << " activated by " << state_string(action_condition) << endl;
       }
     }
 #endif
@@ -578,7 +599,7 @@ namespace property_directed_reachability {
     subproblem_to_actions[0]                   = parser.subproblem_to_actions[PDR::isolate_subproblems_number];
     subproblem_to_clause_validating_lits[0]    = parser.subproblem_to_clause_validating_lits[PDR::isolate_subproblems_number];
     subproblem_to_assumptions[0]               = parser.subproblem_to_assumptions[PDR::isolate_subproblems_number];
-    subproblem_to_only_one_cliques[0]          = parser.subproblem_to_only_one_cliques[PDR::isolate_subproblems_number];
+    subproblem_to_only_one_strips_cliques[0]   = parser.subproblem_to_only_one_strips_cliques[PDR::isolate_subproblems_number];
     goal_condition                             = parser.subproblem_to_isolate_goal[isolate_subproblems_number];
     initial_state                              = project_state_to_propositions(parser.initial_state, subproblem_to_propositions[0]);
 
@@ -601,9 +622,10 @@ namespace property_directed_reachability {
     if (h_add_memo.find(compressed_state) != h_add_memo.end()) return h_add_memo[compressed_state];
 
     h_add_h_function_memo.clear();
+    const unordered_set<int> state_props(compressed_state.begin()+2, compressed_state.end());
     int sum = 0;
     for (int const positive_goal : positive_goal_condition) {
-      sum += h_add_h_function(positive_goal, compressed_state);
+      sum += h_add_h_function(positive_goal, state_props);
       //sum =max(sum, h_add_h_function(positive_goal, compressed_state)); // to change to h^max
     }
 
@@ -611,7 +633,7 @@ namespace property_directed_reachability {
     return sum;
   }
 
-  int h_add_h_function(const int p, const vector<int>& compressed_state) {
+  int h_add_h_function(const int p, const unordered_set<int>& state_props) {
     // If already working on it, are in a loop, so cut this path off
     if (h_add_h_function_open.find(p) != h_add_h_function_open.end()) return 100000;
 
@@ -619,16 +641,45 @@ namespace property_directed_reachability {
     if (h_add_h_function_memo.find(p) != h_add_h_function_memo.end()) return h_add_h_function_memo[p];
 
     // If p \in s, return 0
-    if (binary_search(compressed_state.begin()+2, compressed_state.end(), p)) return 0;
+    if (state_props.find(p) != state_props.end()) return 0;
 
     // Mark as "open" investigation into p
     h_add_h_function_open.insert(p);
     // Not an end, so instead return the min
     int min_so_far = 10000;
-    for (int const& action : positive_effect_to_actions[p]) {
+
+    // Start out with strips
+    vector<int> actions_to_test = positive_effect_strips_to_actions[p];
+
+    // Add some more from ADL
+    for (auto const& action_condition : positive_effect_adl_to_actions_conditions[p]) {
+      const int action = *action_condition.begin();
+      assert(actions_set.find(action) != actions_set.end());
+
+      for (auto it=action_condition.begin()+1; it!=action_condition.end(); it++) {
+        const int condition_lit = *it;
+        const int condition_prop = abs(condition_lit);
+        assert(propositions_set.find(condition_prop) != propositions_set.end());
+        if (condition_lit>0) {
+          if (state_props.find(condition_prop) == state_props.end()) {
+            // To be relevant this prop has to be in the state. It is not so the action is not relevant.
+            continue;
+          }
+        } else {
+          if (state_props.find(condition_prop) != state_props.end()) {
+            // To be relevant this prop has to NOT be in the state. It IS so the action is not relevant.
+            continue;
+          }
+        }
+      }
+      // Got through that, so must be relevant
+      actions_to_test.push_back(action);
+    }
+
+    for (int const& action : actions_to_test) {
       int one_plus_sum = 1;
       for (int const& q : action_to_positive_preconditions[action]) {
-        one_plus_sum += h_add_h_function(q, compressed_state);
+        one_plus_sum += h_add_h_function(q, state_props);
       }
       min_so_far = min(min_so_far, one_plus_sum);
     }
@@ -861,6 +912,7 @@ namespace property_directed_reachability {
   vector<int> actions;
   set<int> actions_set;
   int total_per_timestep;
+  int num_aux;
   vector<string> symbols;
   string tmp_dir;
 
@@ -868,7 +920,8 @@ namespace property_directed_reachability {
   vector<Lingeling*> baseLingelings;
 
   // Some things used in calculating the h^add heuristic
-  unordered_map<int, vector<int>> positive_effect_to_actions;
+  unordered_map<int, vector<int>> positive_effect_strips_to_actions;
+  unordered_map<int, vector<vector<int>>> positive_effect_adl_to_actions_conditions;
   unordered_map<int, vector<int>> action_to_positive_preconditions;
   map<vector<int>, int> h_add_memo;
   unordered_map<int, int> h_add_h_function_memo; // MUST BE CLEARED BETWEEN EACH H_ADD CALL
@@ -910,5 +963,5 @@ namespace property_directed_reachability {
   map<int, vector<int>> subproblem_to_assumptions;
   map<int, vector<int>> subproblem_to_clause_validating_lits;
 
-  map<int, vector<vector<int>>> subproblem_to_only_one_cliques;
+  map<int, vector<vector<int>>> subproblem_to_only_one_strips_cliques;
 }

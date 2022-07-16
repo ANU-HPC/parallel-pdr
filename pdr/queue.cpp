@@ -75,8 +75,8 @@ namespace property_directed_reachability {
     novelty_single = PDR::propositions_set;
 
     assert(PDR::num_subproblems == 1);
-    const auto begin_cliques = PDR::subproblem_to_only_one_cliques[0].begin();
-    const auto end_cliques = PDR::subproblem_to_only_one_cliques[0].end();
+    const auto begin_cliques = PDR::subproblem_to_only_one_strips_cliques[0].begin();
+    const auto end_cliques = PDR::subproblem_to_only_one_strips_cliques[0].end();
 
     for (auto ita=begin_cliques; ita!=end_cliques; ita++) {
       // First find all possible propositions in following cliques

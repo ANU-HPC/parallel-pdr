@@ -63,7 +63,6 @@ void outputDIMACS();
 satinstance outputNSAT(int,int,int);
 
 
-int nOfAux;
 int nOfClauses;
 int nOfTClauses;
 

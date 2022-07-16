@@ -99,7 +99,7 @@ namespace property_directed_reachability {
   bool subset(vector<int> a, vector<int> b);
 
   string str(const Obligation& obl);
-  bool state_conforms_to_only_one_cliques(vector<int> state, const int subproblem);
+  bool state_conforms_to_only_one_strips_cliques(vector<int> state, const int subproblem);
   void BUFFER_print_state_count();
   bool state_print_comp(int i,int j);
 
@@ -127,7 +127,7 @@ namespace property_directed_reachability {
   void read_problem_input();
   void read_problem_input_isolate_subproblems();
   int h_add(const vector<int>& compressed_state);
-  int h_add_h_function(const int p, const vector<int>& compressed_state);
+  int h_add_h_function(const int p, const unordered_set<int>& compressed_state);
   void dagster_initialize_to_send_clauses(const set<int>& workers_to_compile_clauses_for);
   vector<int> single_get_successor(const vector<int>& state, int layer, int subproblem, bool record);
   bool single_has_successor(const vector<int>& state, int layer, int subproblem);
@@ -161,13 +161,15 @@ namespace property_directed_reachability {
   extern vector<int> actions;
   extern set<int> actions_set;
   extern int total_per_timestep;
+  extern int num_aux;
   extern vector<string> symbols;
   extern string tmp_dir;
   extern int num_workers;
   extern vector<Lingeling*> baseLingelings;
 
   // Some things used in calculating the h^add heuristic
-  extern unordered_map<int, vector<int>> positive_effect_to_actions;
+  extern unordered_map<int, vector<int>> positive_effect_strips_to_actions;
+  extern unordered_map<int, vector<vector<int>>> positive_effect_adl_to_actions_conditions;
   extern unordered_map<int, vector<int>> action_to_positive_preconditions;
   extern map<vector<int>, int> h_add_memo; // TODO add a hash function if this is causing problems
   extern unordered_map<int, int> h_add_h_function_memo; // MUST BE CLEARED BETWEEN EACH H_ADD CALL
@@ -210,6 +212,6 @@ namespace property_directed_reachability {
   extern map<int, vector<int>> subproblem_to_assumptions;
   extern map<int, vector<int>> subproblem_to_clause_validating_lits;
 
-  extern map<int, vector<vector<int>>> subproblem_to_only_one_cliques;
+  extern map<int, vector<vector<int>>> subproblem_to_only_one_strips_cliques;
 }
 #endif

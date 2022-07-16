@@ -17,6 +17,7 @@ class Parser {
     //void print();
 
     int total_per_timestep;
+    int num_aux;
     vector<int> actions;
     set<int> actions_set;
     int dagster_num_layers_supported;
@@ -24,6 +25,7 @@ class Parser {
 
     vector<int> initial_state;
     vector<int> goal_condition;
+    vector<pair<vector<int>,vector<int>>> action_literals_to_extra_positive_effects; // a vector of pairs, each pair has 2 int vectors. The first is a set of conditions to be met, the second is the propositions that become true (adl when A B form)
     map<int, vector<int>> dag_node_to_nogood_propositions;
     map<int, map<int, int>> subproblem_layer_to_root_dag_node;
     map<int, map<int, map<int, int>>> subproblem_layer_base_scc_node_to_dag_node;
@@ -37,7 +39,7 @@ class Parser {
     map<int, vector<int>> subproblem_to_assumptions;
     map<int, vector<int>> subproblem_to_clause_validating_lits;
     map<int, vector<int>> action_to_preconditions;
-    map<int, vector<int>> action_to_effects;
-    map<int, vector<vector<int>>> subproblem_to_only_one_cliques;
+    map<int, vector<int>> action_to_effects_strips;
+    map<int, vector<vector<int>>> subproblem_to_only_one_strips_cliques;
 };
 #endif

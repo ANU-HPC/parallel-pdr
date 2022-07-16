@@ -46,13 +46,55 @@ def extraSettings(filename):
         assert(len(seenOptions) == expectedNum)
     return [useActivationLiterals, useOOC, isolateSubproblems]
 
+def treeParenthesisDecompose(string):
+    level_one_zones = []
+    level_one_zone_start = None
+    level = 0
+    for i in range(len(string)):
+        char = string[i]
+        if char == "(":
+            level += 1
+            if level == 1:
+                assert level_one_zone_start == None
+                level_one_zone_start = i
+        if char == ")":
+            assert level
+            if level == 1:
+                assert level_one_zone_start != None
+                level_one_zones.append((level_one_zone_start, i))
+                level_one_zone_start = None
+            level -= 1
+    assert level == 0
+
+    # break into components
+    ret_val = []
+    for pair in range(len(level_one_zones)):
+        start, stop = level_one_zones[pair]
+
+        if pair == 0: previous_end = -1
+        else:         previous_end = level_one_zones[pair-1][1]
+
+        # So 2 things here
+        # 1: have up to the start added to main ret_val
+        ret_val.extend(string[previous_end+1:start].split(" "))
+
+        # 2: have the start to stop processed recursively and added
+        ret_val.append(treeParenthesisDecompose(string[start+1:stop]))
+
+    # Then for the last bit (perhaps all of it) that is after the last level one block
+    if len(level_one_zones): previous_end = level_one_zones[-1][1]
+    else:                    previous_end = -1
+    ret_val.extend(string[previous_end+1:len(string)].split(" "))
+
+    return [x for x in ret_val if x != ""]
+
 class Problem:
-    def __init__(self, tmpDir, dag, symbols, actionPre, actionEff, actionRange, propositionRange, totalPerTimestep, clauses, ICRs, GCRs, TCRss, UCRss):
+    def __init__(self, tmpDir, dag, symbols, actionPre, actionEffStrips, actionRange, propositionRange, totalPerTimestep, clauses, ICRs, GCRs, TCRss, UCRss):
         self.tmpDir = tmpDir
         self.dag = dag
         self.symbols = symbols
         self.actionPre = actionPre
-        self.actionEff = actionEff
+        self.actionEffStrips = actionEffStrips
         self.actionRange = actionRange
         self.propositionRange = propositionRange
         self.totalPerTimestep = totalPerTimestep
@@ -64,7 +106,7 @@ class Problem:
         self.UCRss = UCRss # Invariants
 
         # Checks
-        assert len(symbols) - 1 == len(actionRange) + len(propositionRange)
+        #assert len(symbols) - 1 == len(actionRange) + len(propositionRange) + numAux (as numAux given later)
         assert len(symbols) - 1 == totalPerTimestep
 
         assert actionRange.start == 1
@@ -550,6 +592,8 @@ class Problem:
                 return "action"
             elif x in self.propositionRange:
                 return "used_proposition"
+            elif x <= self.totalPerTimestep:
+                return "aux_variable"
             else: assert 0
 
         with open(self.tmpDir + "/tmp_mapping.txt","w") as outfile:
@@ -1325,7 +1369,7 @@ class Problem:
 
     def noDecomposition(self):
         assert self.dag == None
-        mainDag = Dag.soleNode(self, LAYERS_TO_WRITE, self.onlyOneCliques)
+        mainDag = Dag.soleNode(self, LAYERS_TO_WRITE, self.onlyOneStripsCliques)
         mainDag.write()
 
     def knoblockDecomposition(self):
@@ -1449,7 +1493,7 @@ class Problem:
                 allPropositionsInPath = allPropositionsInPath.union(node)
             if allPropositionsInPath == set(self.propositionRange):
                 print("no decomposition found, reverting to monolythic:")
-                mainDag = Dag.soleNode(self, LAYERS_TO_WRITE, self.onlyOneCliques)
+                mainDag = Dag.soleNode(self, LAYERS_TO_WRITE, self.onlyOneStripsCliques)
                 mainDag.write()
                 return
 
@@ -1558,7 +1602,7 @@ class Problem:
 
             relevantActions = self.projectionToRelevantActions(actionVars, projectedGraph, self.subproblemToKnoblockExtraPropositions[subproblem])
             #self.writeSubproblemCnf(subproblem, projectedGraph)
-            problemDag = Dag.fromSCCGraph(self, self.SCCGraph, self.indexToSCCNode, projectedGraph, subproblem, 0, extraAssumptions, clauseValidatingLits, self.onlyOneCliques, SCCNodeToCumulativeActions, relevantActions)
+            problemDag = Dag.fromSCCGraph(self, self.SCCGraph, self.indexToSCCNode, projectedGraph, subproblem, 0, extraAssumptions, clauseValidatingLits, self.OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
             x = time.time()
             if TRADITIONAL_DAGSTER:
                 for i in range(LAYERS_TO_WRITE):
@@ -1593,7 +1637,7 @@ class Problem:
 
         relevantActions = self.projectionToRelevantActions(actionVars, self.SCCGraph, self.subproblemToKnoblockExtraPropositions[subproblem])
         #self.writeSubproblemCnf(subproblem, self.SCCGraph)
-        finalProblemDag = Dag.fromSCCGraph(self, self.SCCGraph, self.indexToSCCNode, self.SCCGraph, subproblem, 0, extraAssumptions, clauseValidatingLits, self.onlyOneCliques, SCCNodeToCumulativeActions, relevantActions)
+        finalProblemDag = Dag.fromSCCGraph(self, self.SCCGraph, self.indexToSCCNode, self.SCCGraph, subproblem, 0, extraAssumptions, clauseValidatingLits, self.OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
         for i in range(LAYERS_TO_WRITE):
             mainDag.extend(finalProblemDag.getIncrementedLayerCopy(i))
 
@@ -1797,6 +1841,9 @@ class Problem:
                         if atomNum in unusedAtoms: return None
                         movedDown = moveDownToUsed(atomNum)
                         return -(1 + numActions + movedDown + totalPerTimestep)
+                    elif x[:5] == "-*AUX":
+                        auxNum = int(x[5:])
+                        return -(1 + numActions + numAtoms + auxNum + totalPerTimestep)
                     elif x[:4] == "-*OP": return -(1 + int(x[4:]) + totalPerTimestep)
                 else:
                     if x[:5] == "-ATOM": 
@@ -1804,6 +1851,9 @@ class Problem:
                         if atomNum in unusedAtoms: return None
                         movedDown = moveDownToUsed(atomNum)
                         return -(1 + numActions + movedDown)
+                    elif x[:4] == "-AUX":
+                        auxNum = int(x[4:])
+                        return -(1 + numActions + numAtoms + auxNum)
                     elif x[:3] == "-OP": return -(1 + int(x[3:]))
             else:
                 if x[0] == "*":
@@ -1812,6 +1862,9 @@ class Problem:
                         if atomNum in unusedAtoms: return None
                         movedDown = moveDownToUsed(atomNum)
                         return 1 + numActions + movedDown + totalPerTimestep
+                    elif x[:4] == "*AUX":
+                        auxNum = int(x[4:])
+                        return 1 + numActions + numAtoms + auxNum + totalPerTimestep
                     elif x[:3] == "*OP": return 1 + int(x[3:]) + totalPerTimestep
                 else:
                     if x[:4] == "ATOM": 
@@ -1819,7 +1872,11 @@ class Problem:
                         if atomNum in unusedAtoms: return None
                         movedDown = moveDownToUsed(atomNum)
                         return 1 + numActions + movedDown
+                    elif x[:3] == "AUX":
+                        auxNum = int(x[3:])
+                        return 1 + numActions + numAtoms + auxNum
                     elif x[:2] == "OP": return 1 + int(x[2:])
+            print("Cannot parse:",x)
             assert 0
 
         def makeUnique(x):
@@ -1832,6 +1889,7 @@ class Problem:
                 return list(set(x))
 
         def parseExternFormula(x):
+            if x == "TRUE": return None
             if x[0] == "(" and x[1] != "(":
                 clauses = [makeUnique([parseExternUnit(externUnit) for externUnit in x[1:-1].split("|")])]
             elif x[0] == "(" and x[0] == "(":
@@ -1843,6 +1901,7 @@ class Problem:
             elif isExternUnit(x): 
                 clauses = [[parseExternUnit(x)]]
             else: 
+                print("cannot parse:",x)
                 assert 0
 
             # if clause lit are all None, return None, else return clauses
@@ -1865,7 +1924,11 @@ class Problem:
         litToMutex = {}
 
         with open(tmpDir + "/tmp_instance.txt") as instanceFile:
-            allLines = [x.rstrip() for x in instanceFile.readlines()]
+            allLinesRaw = [x.rstrip() for x in instanceFile.readlines()]
+            NUM_AUX_TEXT, numAuxRaw = allLinesRaw[-1].split(" ")
+            assert NUM_AUX_TEXT == "NUM_AUX:"
+            numAux = int(numAuxRaw)
+            allLines = allLinesRaw[:-1]
             modes = set(["formula", "allatoms", "unusedatoms", "invariants", "allactions", "general"])
             mode = "general"
             numAtomsIncludingUnused, numActions = [int(x) for x in allLines[0].split(" ")]
@@ -1883,7 +1946,7 @@ class Problem:
                     elif firstWord == "Actions:": 
                         mode = "allactions"
                         encoding = allLines[i].split(" ")[1]
-                        assert encoding == "STRIPS" # TODO review if other encodings are converted down and supported
+                        print("encoding:", encoding)
                     elif firstWord == "Plan_type:":
                         mode = "formula"
                         planType = allLines[i].split(" ")[1]
@@ -1909,7 +1972,7 @@ class Problem:
                     i += 1
                     mode = "general"
                     numAtoms = numAtomsIncludingUnused - len(unusedAtoms)
-                    totalPerTimestep = numActions + numAtoms
+                    totalPerTimestep = numActions + numAtoms + numAux
 
                 elif mode == "invariants":
                     if isExternUnit(firstWord):
@@ -1930,7 +1993,7 @@ class Problem:
                         preExternLineSplit = allLines[i+1].split(" ")
                         effExternLineSplit = allLines[i+2].split(" ")
 
-                        # precondion, should be one atom, or multiple atoms in an and
+                        # precondition, should be one atom, or multiple atoms in an and
                         assert preExternLineSplit[0] == "action_pre"
                         if preExternLineSplit[1] == "(and":
                             pre = [parseExternUnit(x) for x in preExternLineSplit[2:-1] + [preExternLineSplit[-1][:-1]]]
@@ -1938,11 +2001,29 @@ class Problem:
                             pre = [parseExternUnit(preExternLineSplit[1])]
                         else: assert 0
 
-                        # effect, should be a list of atoms
-                        eff = [parseExternUnit(x) for x in effExternLineSplit[1:]]
+                        # effect in 2 parts. Strips part is a sequence of atoms, adl is nested when, and sections
+                        components = treeParenthesisDecompose(allLines[i+2])
+                        assert components[0] == "action_eff" 
+
+                        components_strips = [x for x in components[1:] if type(x) == type("STRING")]
+                        eff_strips = [parseExternUnit(x) for x in components_strips]
+
+                        components_adl = [x for x in components[1:] if type(x) == type([])]
+                        eff_adl = []
+                        for adl_component in components_adl:
+                            assert adl_component[0] == "when"
+                            condition_raw = adl_component[1]
+                            if type(condition_raw) == type([]):
+                                assert condition_raw[0] == "and"
+                                adl_condition = [parseExternUnit(x) for x in condition_raw[1:]]
+                            else:
+                                adl_condition = [parseExternUnit(condition_raw)]
+                            adl_consequence = [parseExternUnit(x) for x in adl_component[2:]]
+
+                            eff_adl.append((adl_condition, adl_consequence))
 
                         assert len(actions) == actionNumExtern
-                        actions.append((symbol, pre, eff))
+                        actions.append((symbol, pre, eff_strips, eff_adl))
                         
                         i += 3
                     else: mode = "general"
@@ -1978,15 +2059,20 @@ class Problem:
         unusedPropositions = set()
         symbols = [None]
         actionPre = [None]
-        actionEff = [None]
-        for symbol, pre, eff in actions:
+        actionEffStrips = [None]
+        actionEffAdl = [None]
+        for symbol, pre, effStrips, effAdl in actions:
             symbols.append(symbol)
             actionPre.append(pre)
-            actionEff.append(eff)
+            actionEffStrips.append(effStrips)
+            actionEffAdl.append(effAdl)
             for lit in pre:
                 usedPropositions.add(abs(lit))
-            for lit in eff:
+            for lit in effStrips:
                 usedPropositions.add(abs(lit))
+            for condition, consequence in effAdl:
+                for lit in condition + consequence:
+                    usedPropositions.add(abs(lit))
 
         actionRange = range(1, numActions+1)
         allPropositionRange = range(numActions+1, numActions+1+numAtoms)
@@ -2006,6 +2092,10 @@ class Problem:
 
 
         symbols.extend(atoms)
+
+        # add symbols for AUX variables
+        for i in range(numAux):
+            symbols.append("auxilliary_variable_" + str(i))
 
         assert numAtoms == len(usedPropositions) + len(unusedPropositions)
         
@@ -2033,7 +2123,7 @@ class Problem:
             for timestep in [0,1]:
                 usedT.append([prop + timestep*totalPerTimestep])
 
-        assert numActions + numAtoms == len(symbols)-1
+        assert numActions + numAtoms + numAux == len(symbols)-1
         for clause in I: 
             for lit in clause: assert abs(lit) in allPropositionRange
         for clause in G: 
@@ -2042,8 +2132,11 @@ class Problem:
             for lit in clause: assert abs(lit) in allPropositionRange
         for propSet in actionPre[1:]: 
             for lit in propSet: assert abs(lit) in allPropositionRange
-        for propSet in actionEff[1:]: 
+        for propSet in actionEffStrips[1:]: 
             for lit in propSet: assert abs(lit) in allPropositionRange
+        for actionSpecificPairs in actionEffAdl[1:]: 
+            for condition, consequence in actionSpecificPairs: 
+                for lit in condition+consequence: assert abs(lit) in allPropositionRange
 
         assert(len(unusedPropositions) == 0)
 
@@ -2076,13 +2169,13 @@ class Problem:
         useActivationLiterals, useOOC, isolateSubproblems = extraSettings(extraSettingsFilename)
 
         # First generate reverse dictionary mapping variables (literals in the paper) to actions which they appear in
-        variableToActionsWithItAsEff = {}
+        variableToActionsWithItAsEffStrips = {}
         for var in propositionRange:
-            variableToActionsWithItAsEff[var] = []
+            variableToActionsWithItAsEffStrips[var] = []
         for action in actionRange:
-            for polarisedVar in actionEff[action]:
+            for polarisedVar in actionEffStrips[action]:
                 var = abs(polarisedVar)
-                variableToActionsWithItAsEff[var].append(action)
+                variableToActionsWithItAsEffStrips[var].append(action)
 
         # compute and enforce only_1_cliques
         initial_state_as_cube = set()
@@ -2090,7 +2183,7 @@ class Problem:
             assert(len(clause)==1)
             initial_state_as_cube.add(clause[0])
 
-        onlyOneCliques = []
+        onlyOneStripsCliques = []
         if True:
             # then find cliques from mutex graph
             mutexGraph = nx.Graph()
@@ -2109,9 +2202,9 @@ class Problem:
                 # work out if this is a only_1_clique
                 valid = True # assume true prove otherwise
                 for var in cliqueVars:
-                    for action in variableToActionsWithItAsEff[var]:
+                    for action in variableToActionsWithItAsEffStrips[var]:
                         # check that the num pos ones equal the num neg ones
-                        effects = actionEff[action]
+                        effects = actionEffStrips[action]
                         if len(cliqueVars.intersection(effects)) != len(cliqueNegativeVars.intersection(effects)):
                             valid = False
                     if not valid: break
@@ -2120,15 +2213,15 @@ class Problem:
                     valid = False
 
                 if valid:
-                    onlyOneCliques.append(sorted(cliqueVars))
+                    onlyOneStripsCliques.append(sorted(cliqueVars))
             
             '''
             print("found cliques:")
-            for clique in onlyOneCliques:
+            for clique in onlyOneStripsCliques:
                 print([symbols[var] for var in clique])
             '''
-            #U.extend(onlyOneCliques)
-            onlyOneCliques = sorted(onlyOneCliques)
+            #U.extend(onlyOneStripsCliques)
+            onlyOneStripsCliques = sorted(onlyOneStripsCliques)
 
 
 
@@ -2159,14 +2252,18 @@ class Problem:
         ICRs = list(range(endU, endI))
         GCRs = list(range(endI, endG))
 
-        retVal = Problem(tmpDir, None, symbols, actionPre, actionEff, actionRange, propositionRange, totalPerTimestep, clauses, ICRs, GCRs, [TCRs], [UCRs])
+        retVal = Problem(tmpDir, None, symbols, actionPre, actionEffStrips, actionRange, propositionRange, totalPerTimestep, clauses, ICRs, GCRs, [TCRs], [UCRs])
+        retVal.actionEffAdl = actionEffAdl
         retVal.trivialClause = trivialClause
         retVal.DCRs = DCRs
         retVal.varToD = varToD
-        retVal.variableToActionsWithItAsEff = variableToActionsWithItAsEff
-        retVal.onlyOneCliques = onlyOneCliques
+        retVal.encoding = encoding
+        if encoding == "strips": retVal.variableToActionsWithItAsEff = variableToActionsWithItAsEffStrips
+        else:                    retVal.variableToActionsWithItAsEff = "NOT SUPPORTED FOR NON-STRIPS"
+        retVal.onlyOneStripsCliques = onlyOneStripsCliques
         retVal.useOOC = useOOC
         retVal.useActivationLiterals = useActivationLiterals
         retVal.isolateSubproblems = isolateSubproblems
         retVal.litToMutex = litToMutex
+        retVal.numAux = numAux
         return retVal
