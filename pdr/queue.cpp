@@ -71,28 +71,8 @@ namespace property_directed_reachability {
   }
 
   void PDR_Queue::set_up_novelty_heuristic() {
-    // Set up novelty
-    novelty_single = PDR::propositions_set;
-
-    assert(PDR::num_subproblems == 1);
-    const auto begin_cliques = PDR::subproblem_to_only_one_strips_cliques[0].begin();
-    const auto end_cliques = PDR::subproblem_to_only_one_strips_cliques[0].end();
-
-    for (auto ita=begin_cliques; ita!=end_cliques; ita++) {
-      // First find all possible propositions in following cliques
-      set<int> other_props;
-      for (auto itb = ita + 1; itb!=end_cliques; itb++) {
-        const vector<int>& clique = *itb;
-        for (auto it=clique.begin(); it!=clique.end(); it++) {
-          other_props.insert(*it);
-        }
-      }
-
-      // Assign the set of them to each base clique
-      const vector<int>& base_clique = *ita;
-      for (auto it=base_clique.begin(); it!=base_clique.end(); it++) {
-        novelty_pair[*it] = other_props;
-      }
+    for (int const& a : PDR::propositions_set) {
+      novelty_pair_seen[a] = unordered_set<int>();
     }
   }
 
@@ -300,16 +280,16 @@ namespace property_directed_reachability {
           const tuple<vector<int>, int, int>& X = get_next_state_layer(layer); // This has been broken into 2 lines, because there are inconsistent return types
           ret_val.push_back(tuple<vector<int>, int, int, bool, bool>(get<0>(X), get<1>(X), get<2>(X), true, true));
         } else break;
-        }
-        // Charles's way of doing this
-        if (it == available_layers_copy.begin()) break;
       }
-      while ((ret_val.size() != num_states) && (!empty())) {
-        const tuple<vector<int>, int, int>& X = get_next_state();
-        ret_val.push_back(tuple<vector<int>, int, int, bool, bool>(get<0>(X), get<1>(X), get<2>(X), true, true));
-      }
-      return ret_val;
+      // Charles's way of doing this
+      if (it == available_layers_copy.begin()) break;
     }
+    while ((ret_val.size() != num_states) && (!empty())) {
+      const tuple<vector<int>, int, int>& X = get_next_state();
+      ret_val.push_back(tuple<vector<int>, int, int, bool, bool>(get<0>(X), get<1>(X), get<2>(X), true, true));
+    }
+    return ret_val;
+  }
 
     /*
     // state subroblem layer reduce keep_state
@@ -460,47 +440,23 @@ vector<tuple<vector<int>, int, int, bool, bool>> PDR_Queue::get_states_priority_
   }
   */
 
-    int PDR_Queue::get_heuristic_cost(const vector<int>& compressed_state) {
-      // For now just set this manually
-      return PDR::h_add(compressed_state);
-      //return get_fd_heuristic_cost(compressed_state);
-    }
-
   int PDR_Queue::get_novelty_heuristic_cost(const vector<int>& compressed_state) {
-    // first check novelty_single
-    //cout << "start get_heuristic_cost" << endl;
-    vector<int> single_intersection(compressed_state.size()-2);
-    auto single_end = std::set_intersection(compressed_state.begin()+2, compressed_state.end(), novelty_single.begin(), novelty_single.end(), single_intersection.begin());
-    if (single_end != single_intersection.begin()) {
-      // some intersection with the novely_single
-      for (auto it=single_intersection.begin(); it!=single_end; it++) {
-        novelty_single.erase(*it);
+    int ret_val = 3;
+    for (auto ita=compressed_state.begin()+2; ita!=compressed_state.end(); ita++) {
+      const int a = *ita;
+      if (novelty_single_seen.find(a) == novelty_single_seen.end()) {
+        ret_val = min(1, ret_val);
+        novelty_single_seen.insert(a);
       }
-      return 1;
-    }
-
-    // Then check for novelty pair
-    bool found_pair = false;
-    for (auto base_prop_it=compressed_state.begin()+2; base_prop_it!=compressed_state.end(); base_prop_it++) {
-      // see if this base_prop has a novelty_pair entry
-      if (novelty_pair.find(*base_prop_it) == novelty_pair.end()) continue;
-
-      // if it does, then find the intersection
-      const set<int>& other_props = novelty_pair[*base_prop_it];
-      vector<int> pair_intersection(compressed_state.end() - base_prop_it);
-      auto pair_end = std::set_intersection(base_prop_it+1, compressed_state.end(), other_props.begin(), other_props.end(), pair_intersection.begin());
-
-      // If there was some intersection, mark that a pair has been found, and remove the entries from novelty_pair
-      if (pair_end != pair_intersection.begin()) {
-        found_pair = true;
-        for (auto it=pair_intersection.begin(); it!=pair_end; it++) {
-          novelty_pair[*base_prop_it].erase(*it);
+      for (auto itb=ita+1; itb!=compressed_state.end(); itb++) {
+        const int b = *itb;
+        if (novelty_pair_seen[a].find(b) == novelty_pair_seen[a].end()) {
+          ret_val = min(2, ret_val);
+          novelty_pair_seen[a].insert(b);
         }
       }
     }
-
-    if (found_pair) return 2;
-    return 3; // default
+    return ret_val;
   }
 
   string exec(const char* cmd) {

@@ -305,6 +305,9 @@ int Parser::parse(string tmp_dir) {
     dag_node_to_base_scc_node[dag_node] = base_scc_node;
   }
 
+  /*
+  This is valid code, but these cliques are no longer being calculated on the python side (can be turned on easily if wanted) - too expensive and not useful
+
   const Value& subproblem_to_only_one_strips_cliques_object = document["subproblem_to_only_one_strips_cliques"];
   assert(subproblem_to_only_one_strips_cliques_object.IsObject());
   for (Value::ConstMemberIterator ita = subproblem_to_only_one_strips_cliques_object.MemberBegin(); ita != subproblem_to_only_one_strips_cliques_object.MemberEnd(); ita++) {
@@ -326,6 +329,7 @@ int Parser::parse(string tmp_dir) {
     }
     //cout << subproblem << endl;
     subproblem_to_only_one_strips_cliques[subproblem] = only_one_strips_cliques;
+  */
 
 
 
@@ -341,7 +345,7 @@ int Parser::parse(string tmp_dir) {
       only_one_strips_cliques.push_back(only_one_clique);
     }
     */
-  }
+  //}
 
   const Value& subproblem_to_isolate_goal_object = document["subproblem_to_isolate_goal"]; 
   assert(subproblem_to_isolate_goal_object.IsObject());

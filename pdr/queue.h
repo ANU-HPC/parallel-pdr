@@ -41,7 +41,6 @@ namespace property_directed_reachability {
          vector<tuple<vector<int>, int, int, bool, bool>> get_states_priority_lower(int num_states);
          vector<tuple<vector<int>, int, int, bool, bool>> get_states_uniform(int num_states);
          */
-      int get_heuristic_cost(const vector<int>& compressed_state);
       int get_fd_heuristic_cost(const vector<int>& compressed_state);
       int get_novelty_heuristic_cost(const vector<int>& state);
       void push(const vector<int>& state, int layer, int subproblem);
@@ -64,8 +63,8 @@ namespace property_directed_reachability {
       set<int> debug_removed_subproblems;
       set<int> active_subproblems;
       unsigned long long int next_timestamp = 0;
-      set<int> novelty_single;
-      map<int, set<int>> novelty_pair;
+      unordered_set<int> novelty_single_seen;
+      unordered_map<int, unordered_set<int>> novelty_pair_seen;
   };
 
   class PDR_Portfolio_Queue {

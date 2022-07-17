@@ -1999,6 +1999,8 @@ class Problem:
                             pre = [parseExternUnit(x) for x in preExternLineSplit[2:-1] + [preExternLineSplit[-1][:-1]]]
                         elif isExternUnit(preExternLineSplit[1]):
                             pre = [parseExternUnit(preExternLineSplit[1])]
+                        elif preExternLineSplit[1] == "TRUE":
+                            pre = []
                         else: assert 0
 
                         # effect in 2 parts. Strips part is a sequence of atoms, adl is nested when, and sections
@@ -2183,7 +2185,8 @@ class Problem:
             assert(len(clause)==1)
             initial_state_as_cube.add(clause[0])
 
-        onlyOneStripsCliques = []
+        onlyOneStripsCliques = None
+        '''
         if True:
             # then find cliques from mutex graph
             mutexGraph = nx.Graph()
@@ -2215,13 +2218,13 @@ class Problem:
                 if valid:
                     onlyOneStripsCliques.append(sorted(cliqueVars))
             
-            '''
-            print("found cliques:")
-            for clique in onlyOneStripsCliques:
-                print([symbols[var] for var in clique])
-            '''
+            #print("found cliques:")
+            #for clique in onlyOneStripsCliques:
+                #print([symbols[var] for var in clique])
+
             #U.extend(onlyOneStripsCliques)
             onlyOneStripsCliques = sorted(onlyOneStripsCliques)
+        '''
 
 
 

@@ -139,6 +139,8 @@ namespace property_directed_reachability {
 
 
   bool state_conforms_to_only_one_strips_cliques(vector<int> state, const int subproblem){
+    cout << "ERROR CLIQUES NO LONGER PASSED ALONG" << endl;
+    exit(0);
     sort(state.begin(), state.end());
     const vector<vector<int>>& cliques = subproblem_to_only_one_strips_cliques[subproblem];
     for (auto it=cliques.begin(); it!=cliques.end(); it++) {
@@ -317,6 +319,8 @@ namespace property_directed_reachability {
   int get_reason_scc_node(const vector<int>& reason);
 
   vector<int> project_state_to_only_one_mutex_cliques(const vector<int>& state, const int subproblem) {
+    cout << "ERROR CLIQUES NO LONGER PASSED ALONG" << endl;
+    exit(0);
     cout << "WARNING - seems to be slow" << endl;
     // assume this is a consistent state, so for each 
     // assume cliques are disjoint
@@ -497,7 +501,7 @@ namespace property_directed_reachability {
     subproblem_to_actions                      = parser.subproblem_to_actions;
     subproblem_to_clause_validating_lits       = parser.subproblem_to_clause_validating_lits;
     subproblem_to_assumptions                  = parser.subproblem_to_assumptions;
-    subproblem_to_only_one_strips_cliques      = parser.subproblem_to_only_one_strips_cliques;
+    //subproblem_to_only_one_strips_cliques      = parser.subproblem_to_only_one_strips_cliques;
 
     for (int i=0; i<initial_state.size(); i++) {
       int var = abs(initial_state[i]);
@@ -599,7 +603,7 @@ namespace property_directed_reachability {
     subproblem_to_actions[0]                   = parser.subproblem_to_actions[PDR::isolate_subproblems_number];
     subproblem_to_clause_validating_lits[0]    = parser.subproblem_to_clause_validating_lits[PDR::isolate_subproblems_number];
     subproblem_to_assumptions[0]               = parser.subproblem_to_assumptions[PDR::isolate_subproblems_number];
-    subproblem_to_only_one_strips_cliques[0]   = parser.subproblem_to_only_one_strips_cliques[PDR::isolate_subproblems_number];
+    //subproblem_to_only_one_strips_cliques[0]   = parser.subproblem_to_only_one_strips_cliques[PDR::isolate_subproblems_number];
     goal_condition                             = parser.subproblem_to_isolate_goal[isolate_subproblems_number];
     initial_state                              = project_state_to_propositions(parser.initial_state, subproblem_to_propositions[0]);
 

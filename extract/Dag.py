@@ -39,7 +39,7 @@ class Dag:
         self.dagNodeToNogood = {} # get nogood when node is undat
         self.dagNodeToBaseSCCNode = {} # when a node is unsat, can find out what SCC node it corresponds to 
         self.subproblemLayerBaseSCCNodeToDagNode = {} # reasons can be added to the right nodes
-        self.subproblemToOnlyOneStripsCliques = {} # cliques where one and only one prop is true, the ones relevant to each subproblem
+        #self.subproblemToOnlyOneStripsCliques = {} # cliques where one and only one prop is true, the ones relevant to each subproblem
         self.subproblemToIsolateGoal = {}
     def nodeName(self, node):
         n = node
@@ -128,7 +128,7 @@ class Dag:
         self.printDictionary("self.dagNodeToNogood", self.dagNodeToNogood)
         self.printDictionary("self.dagNodeToBaseSCCNode", self.dagNodeToBaseSCCNode)
         self.printDictionary("self.subproblemLayerBaseSCCNodeToDagNode", self.subproblemLayerBaseSCCNodeToDagNode)
-        self.printDictionary("self.subproblemToOnlyOneStripsCliques", self.subproblemToOnlyOneStripsCliques)
+        #self.printDictionary("self.subproblemToOnlyOneStripsCliques", self.subproblemToOnlyOneStripsCliques)
 
     def printDag(self):
         for node in sorted(self.graph.nodes()):
@@ -404,7 +404,7 @@ class Dag:
 
             jsonObject["subproblem_to_assumptions"] = subproblemToAssumptions
             jsonObject["subproblem_to_clause_validating_lits"] = self.subproblemToClauseValidatingLits
-            jsonObject["subproblem_to_only_one_strips_cliques"] = self.subproblemToOnlyOneStripsCliques
+            #jsonObject["subproblem_to_only_one_strips_cliques"] = self.subproblemToOnlyOneStripsCliques
             if (self.subproblemToIsolateGoal == {}) and (numSubproblems==1):
                 x = {}
                 x[0] = jsonObject["goal_condition"]
@@ -579,7 +579,7 @@ class Dag:
         newDag.dagNodeToNogood = deepcopy(self.dagNodeToNogood)
         newDag.dagNodeToBaseSCCNode = deepcopy(self.dagNodeToBaseSCCNode)
         newDag.collatingDagNodeToSubproblem = deepcopy(self.collatingDagNodeToSubproblem)
-        newDag.subproblemToOnlyOneStripsCliques = deepcopy(self.subproblemToOnlyOneStripsCliques)
+        #newDag.subproblemToOnlyOneStripsCliques = deepcopy(self.subproblemToOnlyOneStripsCliques)
         newDag.subproblemToIsolateGoal = deepcopy(self.subproblemToIsolateGoal)
 
         newDag.subproblemLayerToRootDagNode = {}
@@ -677,12 +677,14 @@ class Dag:
             else:
                 self.subproblemLayerBaseSCCNodeToDagNode[key] = val + offset
 
+        '''
         for key, val in otherDag.subproblemToOnlyOneStripsCliques.items():
             if key in self.subproblemToOnlyOneStripsCliques.keys():
                 # if already registered this one, check they are the same
                 assert self.subproblemToOnlyOneStripsCliques[key] == otherDag.subproblemToOnlyOneStripsCliques[key]
             else:
                 self.subproblemToOnlyOneStripsCliques[key] = val
+        '''
 
     def computeSCCNodeToCumulativeActions(self):
         assert 0 # uncalled, careful, there is also a version in Problem.py
@@ -1177,7 +1179,7 @@ class Dag:
         self.dagNodeToNogood[0] = all_propositions
         self.dagNodeToBaseSCCNode[0] = 0
         self.subproblemLayerBaseSCCNodeToDagNode[(0,0,0)] = 0
-        self.subproblemToOnlyOneStripsCliques[0] = onlyOneStripsCliques
+        #self.subproblemToOnlyOneStripsCliques[0] = onlyOneStripsCliques
         # to make it work in the larger system - not doing any decomposition
 
     def overwriteWithSCCGraph(self, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions):
@@ -1338,11 +1340,13 @@ class Dag:
                             self.dagNodeToBaseSCCNode[dagNode] = self.decompositionNodeToIndex[decompositionNode]
                             break
 
+        '''
         # Handle OnlyOneStripsCliques
         relevantOnlyOneStripsCliques = []
         for clique in OnlyOneStripsCliques:
             if len(clique) == len(allPropositions.intersection(clique)):
                 relevantOnlyOneStripsCliques.append(sorted(clique))
         self.subproblemToOnlyOneStripsCliques[subproblem] = relevantOnlyOneStripsCliques
+        '''
 
         print("populate dictionaries: ", time.time() - x)
