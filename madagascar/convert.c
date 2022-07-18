@@ -699,10 +699,12 @@ int convert_main(int argc,char **argv,const char* instance_location) {
 
   eliminatestaticvariables();
 
+
   fprintf(f,"%i",nOfAtoms);
   fprintf(f," ");
   fprintf(f,"%i",nOfActions);
   fprintf(f,"\n");
+
 
   if(flagEliminateConverses) mergecontras(f);
 
@@ -769,6 +771,8 @@ int convert_main(int argc,char **argv,const char* instance_location) {
 
   encoding(f);
   
+  fprintf(f,"NUM_AUX: %i\n",nOfAux);
+
   fclose(f);
 
   return 0;

@@ -269,13 +269,12 @@ namespace property_directed_reachability {
     }
 
     const vector<int>& clause_one_step = get_clause_from_reason(reason, subproblem);
-    const vector<int>& clause_MS = convert_clause_for_steps(clause_one_step, MAX_SOLVER_STEPS);
 
     for (int worker=1; worker<num_workers+1; worker++) {
       while (worker_upper_layer_dagster_clauses_to_add[worker].size()<=layer) {
         worker_upper_layer_dagster_clauses_to_add[worker].push_back(vector<vector<int>>()); // just make sure it is full
       }
-      worker_upper_layer_dagster_clauses_to_add[worker][layer].push_back(clause_MS);
+      worker_upper_layer_dagster_clauses_to_add[worker][layer].push_back(clause_one_step);
     }
   }
 

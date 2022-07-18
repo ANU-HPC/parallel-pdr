@@ -1,8 +1,9 @@
-all: FORCE
+default:
+	$(MAKE) all -j16
+all: lingeling_then_pdr mad val
+lingeling_then_pdr:
 	$(MAKE) lingeling -j16
-	$(MAKE) mad -j16
 	$(MAKE) pdr -j16
-	$(MAKE) val -j16
 test:
 	./tests/test.sh
 pdrclean:

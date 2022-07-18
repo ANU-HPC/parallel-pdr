@@ -15,7 +15,7 @@ INJECT_STATE = "inject state"
 CONSOLIDATING_NODE_PREFIX = "consolidating node of: "
 NODE_NONEXISTENT = -2
 MAX_SOLVER_STEPS = import_option("MAX_SOLVER_STEPS")
-ALLOW_CALCULATE_H_ADD = import_option("ALLOW_CALCULATE_H_ADD")
+ALLOW_HEURISTIC_H_ADD = import_option("ALLOW_HEURISTIC_H_ADD")
 
 def isSpecialNode(x):
     if x == DECOMPOSITION_COLLATING_NODE: return True
@@ -39,7 +39,7 @@ class Dag:
         self.dagNodeToNogood = {} # get nogood when node is undat
         self.dagNodeToBaseSCCNode = {} # when a node is unsat, can find out what SCC node it corresponds to 
         self.subproblemLayerBaseSCCNodeToDagNode = {} # reasons can be added to the right nodes
-        self.subproblemToOnlyOneCliques = {} # cliques where one and only one prop is true, the ones relevant to each subproblem
+        #self.subproblemToOnlyOneStripsCliques = {} # cliques where one and only one prop is true, the ones relevant to each subproblem
         self.subproblemToIsolateGoal = {}
     def nodeName(self, node):
         n = node
@@ -128,7 +128,7 @@ class Dag:
         self.printDictionary("self.dagNodeToNogood", self.dagNodeToNogood)
         self.printDictionary("self.dagNodeToBaseSCCNode", self.dagNodeToBaseSCCNode)
         self.printDictionary("self.subproblemLayerBaseSCCNodeToDagNode", self.subproblemLayerBaseSCCNodeToDagNode)
-        self.printDictionary("self.subproblemToOnlyOneCliques", self.subproblemToOnlyOneCliques)
+        #self.printDictionary("self.subproblemToOnlyOneStripsCliques", self.subproblemToOnlyOneStripsCliques)
 
     def printDag(self):
         for node in sorted(self.graph.nodes()):
@@ -345,6 +345,7 @@ class Dag:
 
             jsonObject = {}
             jsonObject["total_per_timestep"] = self.problem.totalPerTimestep
+            jsonObject["num_aux"] = self.problem.numAux
             jsonObject["action_min"] = action_min
             jsonObject["action_max"] = action_max
             jsonObject["initial_state"] = sorted(I,key=abs)
@@ -360,15 +361,21 @@ class Dag:
             jsonObject["subproblem_to_actions"] = self.subproblemToActions
             #jsonObject["decomposition_root_nodes"] = rootNodes
 
-            if ALLOW_CALCULATE_H_ADD:
+            if ALLOW_HEURISTIC_H_ADD:
                 actionToPreconditions = {}
-                actionToEffects = {}
-                assert(len(self.problem.actionPre) == len(self.problem.actionEff))
+                actionToEffectsStrips = {}
+                action_literals_to_extra_positive_effects = [] # the way this is handled is a different
                 for i in range(1,len(self.problem.actionPre)):
                     actionToPreconditions[i] = self.problem.actionPre[i]
-                    actionToEffects[i] = self.problem.actionEff[i]
+                    actionToEffectsStrips[i] = self.problem.actionEffStrips[i]
+
+                    for pair in self.problem.actionEffAdl[i]:
+                        first, second = pair
+                        first = [i] + first
+                        action_literals_to_extra_positive_effects.append((first, [eff for eff in second if eff>0]))
                 jsonObject["action_to_preconditions"] = actionToPreconditions
-                jsonObject["action_to_effects"] = actionToEffects
+                jsonObject["action_to_effects_strips"] = actionToEffectsStrips
+                jsonObject["action_literals_to_extra_positive_effects"] = action_literals_to_extra_positive_effects
 
             if TRADITIONAL_DAGSTER:
                 jsonObject["subproblem_layer_to_root_dag_node"] = jsonSubproblemLayerToRootDagNode
@@ -397,7 +404,7 @@ class Dag:
 
             jsonObject["subproblem_to_assumptions"] = subproblemToAssumptions
             jsonObject["subproblem_to_clause_validating_lits"] = self.subproblemToClauseValidatingLits
-            jsonObject["subproblem_to_only_one_cliques"] = self.subproblemToOnlyOneCliques
+            #jsonObject["subproblem_to_only_one_strips_cliques"] = self.subproblemToOnlyOneStripsCliques
             if (self.subproblemToIsolateGoal == {}) and (numSubproblems==1):
                 x = {}
                 x[0] = jsonObject["goal_condition"]
@@ -485,7 +492,7 @@ class Dag:
             clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.UCRss[0]])
             with open(self.problem.tmpDir + "/tmp_regular_" + str(steps) + ".cnf", 'w') as cnfFile2:
                 numClauses = len(clausesToWrite)
-                numVariables = self.problem.totalPerTimestep * (steps+1)
+                numVariables = self.problem.totalPerTimestep * (steps+1) - self.problem.numAux
     
                 cnfFile2.write("p cnf " + str(numVariables) + " " + str(numClauses) + "\n")
                 self.problem.cnfDimacsStringF(clausesToWrite, cnfFile2)
@@ -572,7 +579,7 @@ class Dag:
         newDag.dagNodeToNogood = deepcopy(self.dagNodeToNogood)
         newDag.dagNodeToBaseSCCNode = deepcopy(self.dagNodeToBaseSCCNode)
         newDag.collatingDagNodeToSubproblem = deepcopy(self.collatingDagNodeToSubproblem)
-        newDag.subproblemToOnlyOneCliques = deepcopy(self.subproblemToOnlyOneCliques)
+        #newDag.subproblemToOnlyOneStripsCliques = deepcopy(self.subproblemToOnlyOneStripsCliques)
         newDag.subproblemToIsolateGoal = deepcopy(self.subproblemToIsolateGoal)
 
         newDag.subproblemLayerToRootDagNode = {}
@@ -670,12 +677,14 @@ class Dag:
             else:
                 self.subproblemLayerBaseSCCNodeToDagNode[key] = val + offset
 
-        for key, val in otherDag.subproblemToOnlyOneCliques.items():
-            if key in self.subproblemToOnlyOneCliques.keys():
+        '''
+        for key, val in otherDag.subproblemToOnlyOneStripsCliques.items():
+            if key in self.subproblemToOnlyOneStripsCliques.keys():
                 # if already registered this one, check they are the same
-                assert self.subproblemToOnlyOneCliques[key] == otherDag.subproblemToOnlyOneCliques[key]
+                assert self.subproblemToOnlyOneStripsCliques[key] == otherDag.subproblemToOnlyOneStripsCliques[key]
             else:
-                self.subproblemToOnlyOneCliques[key] = val
+                self.subproblemToOnlyOneStripsCliques[key] = val
+        '''
 
     def computeSCCNodeToCumulativeActions(self):
         assert 0 # uncalled, careful, there is also a version in Problem.py
@@ -1134,13 +1143,13 @@ class Dag:
         plt.show() # Actually show it
 
     @classmethod
-    def fromSCCGraph(cls, problem, baseSCCGraph, indexToBaseSCCGraph, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, onlyOneCliques, SCCNodeToCumulativeActions, relevantActions): # SCCNodeToIndex, indexToSCCNode):
+    def fromSCCGraph(cls, problem, baseSCCGraph, indexToBaseSCCGraph, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions): # SCCNodeToIndex, indexToSCCNode):
         newDag = Dag(problem, baseSCCGraph, indexToBaseSCCGraph)
-        newDag.overwriteWithSCCGraph(SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, onlyOneCliques, SCCNodeToCumulativeActions, relevantActions)
+        newDag.overwriteWithSCCGraph(SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
         return newDag
     
     @classmethod
-    def soleNode(cls, problem, layers, onlyOneCliques): # SCCNodeToIndex, indexToSCCNode):
+    def soleNode(cls, problem, layers, onlyOneStripsCliques): # SCCNodeToIndex, indexToSCCNode):
         all_propositions = list(problem.propositionRange)
         baseSCCGraph = nx.DiGraph()
         baseSCCGraph.add_node(frozenset(all_propositions))
@@ -1149,13 +1158,13 @@ class Dag:
         baseDag = Dag(problem, baseSCCGraph, indexToBaseSCCGraph)
 
         newDag = Dag(problem, baseSCCGraph, indexToBaseSCCGraph)
-        newDag.overwriteWithSoleNode(onlyOneCliques)
+        newDag.overwriteWithSoleNode(onlyOneStripsCliques)
         for layer in range(layers):
             baseDag.extend(newDag.getIncrementedLayerCopy(layer))
 
         return baseDag
 
-    def overwriteWithSoleNode(self, onlyOneCliques):
+    def overwriteWithSoleNode(self, onlyOneStripsCliques):
         all_propositions = list(self.problem.propositionRange)
         all_actions = list(self.problem.actionRange)
         self.subproblemToPropositions[0] = all_propositions
@@ -1170,10 +1179,10 @@ class Dag:
         self.dagNodeToNogood[0] = all_propositions
         self.dagNodeToBaseSCCNode[0] = 0
         self.subproblemLayerBaseSCCNodeToDagNode[(0,0,0)] = 0
-        self.subproblemToOnlyOneCliques[0] = onlyOneCliques
+        #self.subproblemToOnlyOneStripsCliques[0] = onlyOneStripsCliques
         # to make it work in the larger system - not doing any decomposition
 
-    def overwriteWithSCCGraph(self, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, onlyOneCliques, SCCNodeToCumulativeActions, relevantActions):
+    def overwriteWithSCCGraph(self, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions):
         # the stuff that historically was in "knoblockDecomposition"
 
         SCCNodeToCumulativeActions = None # make sure it isn't used
@@ -1331,11 +1340,13 @@ class Dag:
                             self.dagNodeToBaseSCCNode[dagNode] = self.decompositionNodeToIndex[decompositionNode]
                             break
 
-        # Handle onlyOneCliques
-        relevantOnlyOneCliques = []
-        for clique in onlyOneCliques:
+        '''
+        # Handle OnlyOneStripsCliques
+        relevantOnlyOneStripsCliques = []
+        for clique in OnlyOneStripsCliques:
             if len(clique) == len(allPropositions.intersection(clique)):
-                relevantOnlyOneCliques.append(sorted(clique))
-        self.subproblemToOnlyOneCliques[subproblem] = relevantOnlyOneCliques
+                relevantOnlyOneStripsCliques.append(sorted(clique))
+        self.subproblemToOnlyOneStripsCliques[subproblem] = relevantOnlyOneStripsCliques
+        '''
 
         print("populate dictionaries: ", time.time() - x)

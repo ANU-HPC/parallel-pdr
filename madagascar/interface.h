@@ -80,6 +80,8 @@ typedef struct {
 } RD;
 #endif
 
+int nOfAux;
+
 typedef struct _satinstance {
   short id;	/* Unique integer id for the instance */
   int thread;	/* The thread this is run in. */

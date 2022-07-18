@@ -47,6 +47,7 @@ int Parser::parse(string tmp_dir) {
   assert(document.IsObject()); 
 
   assert(document.HasMember("total_per_timestep"));
+  assert(document.HasMember("num_aux"));
   assert(document.HasMember("action_min"));
   assert(document.HasMember("action_max"));
   assert(document.HasMember("initial_state"));
@@ -61,12 +62,14 @@ int Parser::parse(string tmp_dir) {
   assert(document.HasMember("subproblem_to_propositions"));
   assert(document.HasMember("subproblem_to_isolate_goal"));
 
-#if ALLOW_CALCULATE_H_ADD
+#if ALLOW_HEURISTIC_H_ADD
   assert(document.HasMember("action_to_preconditions"));
-  assert(document.HasMember("action_to_effects"));
+  assert(document.HasMember("action_to_effects_strips"));
+  assert(document.HasMember("action_literals_to_extra_positive_effects"));
 #endif
 
   assert(document["total_per_timestep"].IsNumber());
+  assert(document["num_aux"].IsNumber());
   assert(document["action_min"].IsNumber());
   assert(document["action_max"].IsNumber());
   //assert(document["num_decomposition_nodes"].IsNumber());
@@ -75,6 +78,7 @@ int Parser::parse(string tmp_dir) {
   assert(document["num_subproblems"].IsNumber());
 
   total_per_timestep = document["total_per_timestep"].GetInt();
+  num_aux = document["num_aux"].GetInt();
   int action_min = document["action_min"].GetInt();
   int action_max = document["action_max"].GetInt();
   for (int i=action_min; i<=action_max; i++) {
@@ -230,7 +234,7 @@ int Parser::parse(string tmp_dir) {
     }
   }
 
-#if ALLOW_CALCULATE_H_ADD
+#if ALLOW_HEURISTIC_H_ADD
   const Value& action_to_preconditions_object = document["action_to_preconditions"]; 
   assert(action_to_preconditions_object.IsObject());
   for (Value::ConstMemberIterator ita = action_to_preconditions_object.MemberBegin(); ita != action_to_preconditions_object.MemberEnd(); ita++) {
@@ -244,9 +248,9 @@ int Parser::parse(string tmp_dir) {
     action_to_preconditions[action] = preconditions;
   }
 
-  const Value& action_to_effects_object = document["action_to_effects"]; 
-  assert(action_to_effects_object.IsObject());
-  for (Value::ConstMemberIterator ita = action_to_effects_object.MemberBegin(); ita != action_to_effects_object.MemberEnd(); ita++) {
+  const Value& action_to_effects_strips_object = document["action_to_effects_strips"]; 
+  assert(action_to_effects_strips_object.IsObject());
+  for (Value::ConstMemberIterator ita = action_to_effects_strips_object.MemberBegin(); ita != action_to_effects_strips_object.MemberEnd(); ita++) {
     int action = stoi(ita->name.GetString());
     vector<int> effects;
     assert(ita->value.IsArray());
@@ -254,7 +258,26 @@ int Parser::parse(string tmp_dir) {
     for (int i = 0; i < effects_array.Size(); i++) {
       effects.push_back(effects_array[i].GetInt());
     }
-    action_to_effects[action] = effects;
+    action_to_effects_strips[action] = effects;
+  }
+
+  // Dealing with: action_literals_to_extra_positive_effects
+  const Value& adl_pairs_array = document["action_literals_to_extra_positive_effects"];
+  assert(adl_pairs_array.IsArray());
+  for (SizeType pair_num = 0; pair_num < adl_pairs_array.Size(); pair_num++) {
+    const Value& adl_pair = adl_pairs_array[pair_num];
+    vector<int> first;
+    vector<int> second;
+    for (SizeType pair_first_second = 0; pair_first_second < 2; pair_first_second++) {
+      const Value& first_second_array = adl_pair[pair_first_second];
+      for (SizeType i = 0; i < first_second_array.Size(); i++) {
+        assert(first_second_array[i].IsNumber());
+        const int val = first_second_array[i].GetInt();
+        if (pair_first_second == 0) first.push_back(val);
+        else                        second.push_back(val);
+      }
+    }
+    action_literals_to_extra_positive_effects.push_back(pair<vector<int>, vector<int>>(first, second));
   }
 #endif
 
@@ -282,43 +305,47 @@ int Parser::parse(string tmp_dir) {
     dag_node_to_base_scc_node[dag_node] = base_scc_node;
   }
 
-  const Value& subproblem_to_only_one_cliques_object = document["subproblem_to_only_one_cliques"];
-  assert(subproblem_to_only_one_cliques_object.IsObject());
-  for (Value::ConstMemberIterator ita = subproblem_to_only_one_cliques_object.MemberBegin(); ita != subproblem_to_only_one_cliques_object.MemberEnd(); ita++) {
+  /*
+  This is valid code, but these cliques are no longer being calculated on the python side (can be turned on easily if wanted) - too expensive and not useful
+
+  const Value& subproblem_to_only_one_strips_cliques_object = document["subproblem_to_only_one_strips_cliques"];
+  assert(subproblem_to_only_one_strips_cliques_object.IsObject());
+  for (Value::ConstMemberIterator ita = subproblem_to_only_one_strips_cliques_object.MemberBegin(); ita != subproblem_to_only_one_strips_cliques_object.MemberEnd(); ita++) {
     int subproblem = stoi(ita->name.GetString());
-    vector<vector<int>> only_one_cliques;
+    vector<vector<int>> only_one_strips_cliques;
     assert(ita->value.IsArray());
-    const Value& only_one_cliques_array = ita->value;
-    //cout << "only_one_cliques_array.Size(): " << only_one_cliques_array.Size() << endl;
-    for (int i=0; i<only_one_cliques_array.Size(); i++) {
+    const Value& only_one_strips_cliques_array = ita->value;
+    //cout << "only_one_strips_cliques_array.Size(): " << only_one_strips_cliques_array.Size() << endl;
+    for (int i=0; i<only_one_strips_cliques_array.Size(); i++) {
      // cout << "i: " << i << endl;
-      //cout << "only_one_cliques_array[i].Size(): " << only_one_cliques_array[i].Size() << endl;
+      //cout << "only_one_strips_cliques_array[i].Size(): " << only_one_strips_cliques_array[i].Size() << endl;
       vector<int> only_one_clique;
-      for (int j=0; j<only_one_cliques_array[i].Size(); j++) {
-        //cout << only_one_cliques_array[i][j].GetInt() << " ";
-        only_one_clique.push_back(only_one_cliques_array[i][j].GetInt());
+      for (int j=0; j<only_one_strips_cliques_array[i].Size(); j++) {
+        //cout << only_one_strips_cliques_array[i][j].GetInt() << " ";
+        only_one_clique.push_back(only_one_strips_cliques_array[i][j].GetInt());
       }
-      only_one_cliques.push_back(only_one_clique);
+      only_one_strips_cliques.push_back(only_one_clique);
       //cout << endl;
     }
     //cout << subproblem << endl;
-    subproblem_to_only_one_cliques[subproblem] = only_one_cliques;
+    subproblem_to_only_one_strips_cliques[subproblem] = only_one_strips_cliques;
+  */
 
 
 
 
     /*
-    for (Value::ConstMemberIterator itb = only_one_cliques_array.MemberBegin(); itb != only_one_cliques_array.MemberEnd(); itb++) {
+    for (Value::ConstMemberIterator itb = only_one_strips_cliques_array.MemberBegin(); itb != only_one_strips_cliques_array.MemberEnd(); itb++) {
       assert(itb->value.IsArray());
       const Value& only_one_clique_array = itb->value;
       vector<int> only_one_clique;
       for (int i = 0; i < only_one_clique_array.Size(); i++) {
         only_one_clique.push_back(only_one_clique_array[i].GetInt());
       }
-      only_one_cliques.push_back(only_one_clique);
+      only_one_strips_cliques.push_back(only_one_clique);
     }
     */
-  }
+  //}
 
   const Value& subproblem_to_isolate_goal_object = document["subproblem_to_isolate_goal"]; 
   assert(subproblem_to_isolate_goal_object.IsObject());

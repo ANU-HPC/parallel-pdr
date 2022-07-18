@@ -77,7 +77,20 @@ int main(int argc, char **argv) {
     PDR::dagster_unsat_counts.push_back(0);
   }
 
-  if (PDR::runtime_dagster) PDR::dagster_start(argc, argv);
+  if (PDR::runtime_dagster) {
+    PDR::dagster_start(argc, argv);
+
+    const bool dagster_options_valid =
+      (MULTI_STEP_REASON_CALCULATE_AT_ALL == 0) &&
+      (MULTI_STEP_REASON_ACTUALLY_USE == 0) &&
+      (MULTI_STEP_INTERLEAVED == 0) &&
+      (MS_ONLY_MAX_SOLVER_STEP == 1) &&
+      (MAX_SOLVER_STEPS == MS_DEFAULT_STEPS_USED);
+    if (!dagster_options_valid) {
+      cerr << "ERROR: entering dagster mode with disallowed macro options" << endl;
+      exit(1);
+    }
+  }
 
   PDR::num_workers = world_size-1;
   for (int worker=0; worker<PDR::num_workers+1; worker++) { // as workers start at 1
