@@ -11,4 +11,4 @@ DOMAIN=`readlink -m $1`
 PROBLEM=`readlink -m $2`
 SET=`readlink -m $3`
 
-{ time $DAGPARSER_ROOT/from_this_directory_run.sh $DOMAIN $PROBLEM $SET ; } 2>&1 
+{ /usr/bin/time -p $DAGPARSER_ROOT/from_this_directory_run.sh $DOMAIN $PROBLEM $SET ; } 2>&1 

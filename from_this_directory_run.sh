@@ -131,3 +131,4 @@ export GREP_COLORS='ms=01;32'
 cat $TMP_DIR/val_out | grep --color "Plan valid" -A 100 -B 100
 export GREP_COLORS='ms=01;31'
 cat $TMP_DIR/val_out | grep --color "Plan invalid" -A 100 -B 100
+exit 0
