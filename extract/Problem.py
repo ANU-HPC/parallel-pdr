@@ -20,7 +20,7 @@ LAYERS_TO_WRITE = 1
 
 def extraSettings(filename):
     ignoreKeys = ["obligation_rescheduling", "project_last", "complete_nonfinal", "decomposed", "report_plan", "dagster", "mpi_nodes"]
-    expectedNum = 11
+    expectedNum = 12
     with open(filename) as f:
         seenOptions = set()
         for line in [x.rstrip() for x in f.readlines() if len(x.rstrip())]:
@@ -44,11 +44,15 @@ def extraSettings(filename):
                 valInt = int(val)
                 assert valInt in [0,1]
                 backwards = valInt
+            elif key == "max_macro_steps":
+                valInt = int(val)
+                assert valInt > 0
+                max_macro_steps = valInt
             else: assert(0)
 
         print(seenOptions)
         assert(len(seenOptions) == expectedNum)
-    return [useActivationLiterals, useOOC, isolateSubproblems, backwards]
+    return [useActivationLiterals, useOOC, isolateSubproblems, backwards, max_macro_steps]
 
 def treeParenthesisDecompose(string):
     level_one_zones = []
@@ -1875,11 +1879,12 @@ class Problem:
         if baseProblem.encoding == "STRIPS": retVal.variableToActionsWithItAsEff = baseProblem.variableToActionsWithItAsEff
         else:                                retVal.variableToActionsWithItAsEff = "NOT SUPPORTED FOR NON-STRIPS"
         retVal.onlyOneStripsCliques = None
-        useActivationLiterals, useOOC, isolateSubproblems, backwards = extraSettings(extraSettingsFilename)
+        _, _, _, backwards, _ = extraSettings(extraSettingsFilename)
         assert(backwards) # should be backwards, as why we are doing this
         retVal.useOOC = useOOC
-        retVal.useActivationLiterals = useActivationLiterals
-        retVal.isolateSubproblems = isolateSubproblems
+        retVal.useActivationLiterals = baseProblem.useActivationLiterals
+        retVal.isolateSubproblems = baseProblem.isolateSubproblems
+        retVal.max_macro_steps = baseProblem.max_macro_steps
         retVal.litToMutex = baseProblem.litToMutex
         retVal.numAux = baseProblem.numAux
         return retVal
@@ -2250,7 +2255,7 @@ class Problem:
         for x in varToD.keys():
             assert x == varToD[x]
 
-        useActivationLiterals, useOOC, isolateSubproblems, _ = extraSettings(extraSettingsFilename)
+        useActivationLiterals, useOOC, isolateSubproblems, _, max_macro_steps = extraSettings(extraSettingsFilename)
 
         # First generate reverse dictionary mapping variables (literals in the paper) to actions which they appear in
         variableToActionsWithItAsEffStrips = {}
@@ -2349,6 +2354,7 @@ class Problem:
         retVal.useOOC = useOOC
         retVal.useActivationLiterals = useActivationLiterals
         retVal.isolateSubproblems = isolateSubproblems
+        retVal.max_macro_steps = max_macro_steps
         retVal.litToMutex = litToMutex
         retVal.numAux = numAux
         return retVal

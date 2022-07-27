@@ -194,6 +194,7 @@ namespace property_directed_reachability {
   extern bool use_OOC; // use only_one_clique information
   extern bool isolate_subproblems;
   extern bool extra_settings_read;
+  extern int max_macro_steps;
 
   // In the case of isolate_subproblem, the subproblem we are dealing with in this instance
   extern int isolate_subproblems_number;

@@ -118,7 +118,7 @@ baseProblem = Problem.fromMadagascar(tmpDir, extraSettingsFilename)
 print("Completed in " + str(round(time.time() - startTime,2)))
 if baseProblem == None: exit(0)
 
-_,_,_,backwards = extraSettings(extraSettingsFilename)
+_,_,_,backwards,_ = extraSettings(extraSettingsFilename)
 if backwards: usedProblem = Problem.backwards(baseProblem, extraSettingsFilename)
 else:         usedProblem = baseProblem
 

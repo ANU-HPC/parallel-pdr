@@ -448,7 +448,7 @@ namespace property_directed_reachability {
   void read_extra_settings(string extra_settings_filename) {
     PDR::extra_settings_read = true;
     // read extra settings - the is mainly for testing, so new feastures can be quickly added and removed
-    const int total_expected = 11;
+    const int total_expected = 12;
     set<string> ignore_keys;
     ignore_keys.insert("activation_literals");
 
@@ -491,6 +491,9 @@ namespace property_directed_reachability {
         if (val_int == 1)      isolate_subproblems = true;
         else if (val_int == 0) isolate_subproblems = false;
         else assert(0);
+      } else if (key == "max_macro_steps") {
+        assert(val_int>0);
+        max_macro_steps = val_int;
       } else {
         cout << "ERROR setting: " << key << endl;
         assert(0);
@@ -499,6 +502,10 @@ namespace property_directed_reachability {
     extra_settings_file.close();
     if (complete_nonfinal && project_last) {
       assert(0); // Can't handle projecting AND complete nonfinal - will try do them together, and not do it well
+    }
+    if ((MS_ONLY_MAX_SOLVER_STEP == 1) && (MS_DEFAULT_STEPS_USED != 0)) {
+      cerr << "ERROR: MS_DEFAULT_STEPS_USED must be set to 0 when MS_ONLY_MAX_SOLVER_STEP is set to 1, as the default is meaningless when only using the max" << endl;
+      exit(1);
     }
     assert(seen == total_expected);
   }
@@ -744,7 +751,7 @@ namespace property_directed_reachability {
   // TODO neatness rename the layer for state layer, and succ state layer for clarity
   vector<int> single_get_successor(const vector<int>& state, int layer, int subproblem, bool record) {
 #if MS_ONLY_MAX_SOLVER_STEP
-    assert(MS_steps_used == MAX_SOLVER_STEPS);
+    assert(MS_steps_used == max_macro_steps);
 #endif
 
     // TODO giving memo result in the function means unsat cores will be wrong for subsequent reason call
@@ -811,7 +818,7 @@ namespace property_directed_reachability {
 
   bool single_has_successor(const vector<int>& state, int layer, int subproblem){
 #if MS_ONLY_MAX_SOLVER_STEP
-    assert(MS_steps_used == MAX_SOLVER_STEPS);
+    assert(MS_steps_used == max_macro_steps);
 #endif
     if(LOUD) cout << "single_has_successor for layer " << layer << " subproblem: " << subproblem << endl;
     assert(single_layers.layer_to_steps_solvers.size()>layer-1);
@@ -840,7 +847,7 @@ namespace property_directed_reachability {
   vector<int> single_get_reason(const vector<int>& state, int layer, int subproblem) {
     // TODO does not use state, could be confusing
 #if MS_ONLY_MAX_SOLVER_STEP
-    assert(MS_steps_used == MAX_SOLVER_STEPS);
+    assert(MS_steps_used == max_macro_steps);
 #endif
 
     vector<int> running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
@@ -927,7 +934,7 @@ namespace property_directed_reachability {
     else                      return single_layers.push_nonfinal_up_to_layer(just_empty_layer);
   }
 
-  int MS_steps_used = MS_DEFAULT_STEPS_USED;
+  int MS_steps_used = -1;
   string state_string(vector<int> state);
   vector<vector<int>> BUFFER_layer_to_subproblem_to_state_count; // for use in buffer only (would be a member of buffer, but scope and position of classes)
 
@@ -978,6 +985,7 @@ namespace property_directed_reachability {
   bool use_OOC = true; // use only_one_clique information
   bool isolate_subproblems = true;
   bool extra_settings_read = false;
+  int max_macro_steps = -1;
 
   // In the case of isolate_subproblem, the subproblem we are dealing with in this instance
   int isolate_subproblems_number = -1;

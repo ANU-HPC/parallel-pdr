@@ -9,3 +9,4 @@ report_plan 1
 dagster 1
 mpi_nodes 5
 backwards 0
+max_macro_steps 1

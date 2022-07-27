@@ -246,7 +246,6 @@ namespace property_directed_reachability {
   // upper layer to add to, this function adds to all less also
   void Dagster_Layers::solver_add_reason(const vector<int>& reason, int layer, int subproblem) { // TODO rename
     // dagster only set up for static constant number of steps
-    assert(PDR::MS_steps_used == MS_DEFAULT_STEPS_USED);
     assert(MS_ONLY_MAX_SOLVER_STEP);
 
     if(LOUD) cout << "dagster layer solver_add_reason layer, subproblem: " << layer << " " << subproblem << endl;
@@ -280,7 +279,7 @@ namespace property_directed_reachability {
 
   Single_Layers::~Single_Layers() {
 #if MS_ONLY_MAX_SOLVER_STEP
-    const int START_STEP = MAX_SOLVER_STEPS;
+    const int START_STEP = PDR::max_macro_steps;
 #else
     const int START_STEP = 1;
 #endif
@@ -291,15 +290,15 @@ namespace property_directed_reachability {
 
   void Single_Layers::make_layer_exist(int layer) {
 #if MS_ONLY_MAX_SOLVER_STEP
-    const int START_STEP = MAX_SOLVER_STEPS;
+    const int START_STEP = PDR::max_macro_steps;
 #else
     const int START_STEP = 1;
 #endif
 
     if (baseLingelings.size() == 0) {
-      baseLingelings = vector<Lingeling*>(MAX_SOLVER_STEPS+1, NULL);
+      baseLingelings = vector<Lingeling*>(PDR::max_macro_steps+1, NULL);
 
-      for (int steps = START_STEP; steps < MAX_SOLVER_STEPS + 1; steps++) {
+      for (int steps = START_STEP; steps < PDR::max_macro_steps + 1; steps++) {
         cout << "starting getting cnf " << steps << endl;
         baseLingelings[steps] = new Lingeling((tmp_dir + "/tmp_regular_" + to_string(steps) + ".cnf").c_str());
         if (use_OOC) {
@@ -322,10 +321,10 @@ namespace property_directed_reachability {
       }
       reasons.push_back(new_layer);
 
-      layer_to_steps_solvers.push_back(vector<Lingeling*>(MAX_SOLVER_STEPS+1, NULL));
+      layer_to_steps_solvers.push_back(vector<Lingeling*>(PDR::max_macro_steps+1, NULL));
       const int new_layer_number = layer_to_steps_solvers.size()-1;
       //layer_to_steps_solvers[new_layer_number].push_back(NULL); // as 1 indexed, for number of steps
-      for (int steps = START_STEP; steps < MAX_SOLVER_STEPS + 1; steps++) {
+      for (int steps = START_STEP; steps < PDR::max_macro_steps + 1; steps++) {
         Lingeling* new_solver = new Lingeling(baseLingelings[steps]);
         layer_to_steps_solvers[new_layer_number][steps] = new_solver;
       }
@@ -340,7 +339,7 @@ namespace property_directed_reachability {
   // upper layer to add to, this function adds to all less also
   void Single_Layers::solver_add_reason(const vector<int>& reason, const int layer, const int subproblem) {
 #if MS_ONLY_MAX_SOLVER_STEP
-    const int START_STEP = MAX_SOLVER_STEPS;
+    const int START_STEP = PDR::max_macro_steps;
 #else
     const int START_STEP = 1;
 #endif
@@ -381,12 +380,12 @@ namespace property_directed_reachability {
 
 #if MULTI_STEP_INTERLEAVED
       // Interleaved
-      for (int starting_higher_layer = 0; starting_higher_layer<MAX_SOLVER_STEPS; starting_higher_layer++) {
-        const int max_steps = min(i+starting_higher_layer+1, MAX_SOLVER_STEPS);
+      for (int starting_higher_layer = 0; starting_higher_layer<PDR::max_macro_steps; starting_higher_layer++) {
+        const int max_steps = min(i+starting_higher_layer+1, PDR::max_macro_steps);
         const int min_steps = starting_higher_layer+1;
-        assert(MAX_SOLVER_STEPS != 1 || ((max_steps == 1) && (min_steps ==1)));
+        assert(PDR::max_macro_steps != 1 || ((max_steps == 1) && (min_steps ==1)));
 #if MS_ONLY_MAX_SOLVER_STEP
-        const int steps = MAX_SOLVER_STEPS;
+        const int steps = PDR::max_macro_steps;
         if ((steps <= max_steps) && (steps >= min_steps)) {
 #else
         for (int steps = min_steps; steps <= max_steps; steps++) {
@@ -398,7 +397,7 @@ namespace property_directed_reachability {
       }
 #else
       // Macros
-      for (int steps = START_STEP; steps<MAX_SOLVER_STEPS+1; steps++) {
+      for (int steps = START_STEP; steps<PDR::max_macro_steps+1; steps++) {
         layer_to_steps_solvers[i][steps]->add_clause(convert_clause_for_steps(clause, steps));
       }
 #endif

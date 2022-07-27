@@ -79,12 +79,8 @@ void LingelingWorker::make_solver_exist(int solver) {
         cout << "ERROR, dagster in use, must only use max number of steps";
         exit(1);
       }
-      if (MAX_SOLVER_STEPS != MS_DEFAULT_STEPS_USED) {
-        cout << "ERROR, dagster in use, default must be the max";
-        exit(1);
-      }
 
-      baseLingeling = new Lingeling((tmp_dir + "/tmp_regular_" + to_string(MS_DEFAULT_STEPS_USED) + ".cnf").c_str());
+      baseLingeling = new Lingeling((tmp_dir + "/tmp_regular_" + to_string(PDR::max_macro_steps) + ".cnf").c_str());
       const vector<int> blank = vector<int>();
       baseLingeling->solve(blank);
     }
@@ -107,7 +103,7 @@ void LingelingWorker::add_clauses(Message* incoming_message) {
     for (int i = 0; i < incoming_message->additional_clauses->cl[c]; i++) {
       clause.push_back(incoming_message->additional_clauses->clauses[c][i]);
     }
-    for (int solver = 0; solver<= max_solver; solver++) solvers[solver]->add_clause(PDR::convert_clause_for_steps(clause, MAX_SOLVER_STEPS));
+    for (int solver = 0; solver<= max_solver; solver++) solvers[solver]->add_clause(PDR::convert_clause_for_steps(clause, PDR::max_macro_steps));
   }
 }
 

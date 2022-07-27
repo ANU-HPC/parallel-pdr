@@ -51,6 +51,9 @@ int main(int argc, char **argv) {
   PDR::tmp_dir = string(argv[3]);
   PDR::read_extra_settings(string(argv[4]));
 
+  if (MS_ONLY_MAX_SOLVER_STEP) PDR::MS_steps_used = PDR::max_macro_steps;
+  else                         PDR::MS_steps_used = MS_DEFAULT_STEPS_USED;
+
 #if PORTFOLIO_QUEUE
   if (!PDR::runtime_dagster) {
     cout << "ERROR using portfolio queue in single mode" << endl;
@@ -84,8 +87,7 @@ int main(int argc, char **argv) {
       (MULTI_STEP_REASON_CALCULATE_AT_ALL == 0) &&
       (MULTI_STEP_REASON_ACTUALLY_USE == 0) &&
       (MULTI_STEP_INTERLEAVED == 0) &&
-      (MS_ONLY_MAX_SOLVER_STEP == 1) &&
-      (MAX_SOLVER_STEPS == MS_DEFAULT_STEPS_USED);
+      (MS_ONLY_MAX_SOLVER_STEP == 1);
     if (!dagster_options_valid) {
       cerr << "ERROR: entering dagster mode with disallowed macro options" << endl;
       exit(1);
@@ -215,7 +217,6 @@ class Parallel_Buffer {
     }
 
     // dagster only set up for static constant number of steps
-    assert(PDR::MS_steps_used == MS_DEFAULT_STEPS_USED);
     assert(MS_ONLY_MAX_SOLVER_STEP);
 
     // if sync solve, will solve every obligation to completion, then return, else will send them off, and check previous ones
@@ -407,7 +408,6 @@ class Parallel_Buffer {
       assert(original_obl.reduce == original_obl.keep_states);
       assert(original_obl.worker == -1); // if doing single 
 
-      PDR::MS_steps_used = MS_DEFAULT_STEPS_USED;
       const vector<int> succ_state = PDR::single_get_successor(original_obl.state, original_obl.layer, original_obl.subproblem, original_obl.reduce);
       if (succ_state.size()) {
         PDR::Obligation succ_obl = original_obl;
@@ -430,7 +430,7 @@ class Parallel_Buffer {
 #endif
         // Try create another reason using more steps
         vector<int> reason2;
-        assert(MAX_SOLVER_STEPS == 4); // For the next line randomness
+        assert(PDR::max_macro_steps == 4); // For the next line randomness
         PDR::MS_steps_used = min(original_obl.layer, 2 + (rand() % 3));
         vector<int> multi_step_succ = PDR::single_get_successor(original_obl.state, original_obl.layer, original_obl.subproblem, original_obl.reduce);
 #if MULTI_STEP_INTERLEAVED
@@ -1092,9 +1092,9 @@ bool push_check_unsat(Parallel_Buffer* buffer_ptr, const int layer_just_complete
 #if MULTI_STEP_INTERLEAVED
     cout << "WARNING multi step convergance testing" << endl;
     bool many_same = false;
-    if (i >= MAX_SOLVER_STEPS) {
+    if (i >= PDR::max_macro_steps) {
       many_same = true;
-      for (int check_back=0; check_back<MAX_SOLVER_STEPS; check_back++) {
+      for (int check_back=0; check_back<PDR::max_macro_steps; check_back++) {
         many_same = many_same && PDR::same_as_previous(i + check_back, subproblems_to_check);
       }
     }

@@ -14,7 +14,6 @@ DECOMPOSITION_COLLATING_NODE = "decomposition collating node"
 INJECT_STATE = "inject state"
 CONSOLIDATING_NODE_PREFIX = "consolidating node of: "
 NODE_NONEXISTENT = -2
-MAX_SOLVER_STEPS = import_option("MAX_SOLVER_STEPS")
 ALLOW_HEURISTIC_H_ADD = import_option("ALLOW_HEURISTIC_H_ADD")
 
 def isSpecialNode(x):
@@ -487,7 +486,7 @@ class Dag:
             '''
 
         clausesToWrite = []
-        for steps in range(1,MAX_SOLVER_STEPS+1):
+        for steps in range(1,self.problem.max_macro_steps+1):
             clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.TCRss[0]])
             clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.UCRss[0]])
             with open(self.problem.tmpDir + "/tmp_regular_" + str(steps) + ".cnf", 'w') as cnfFile2:
