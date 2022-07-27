@@ -100,25 +100,42 @@ namespace property_directed_reachability {
     return result;
   }
 
-  vector<int> compress_state(const vector<int>& state, const int subproblem, const bool proper_state) {
+  vector<int> compress_state(const vector<int>& state, const int subproblem, const int compress_mode) {
+    assert((compress_mode >= 0) && (compress_mode <= 2));
+    // No overlap or the comparison will not work
+    if (compress_mode == COMPRESS_FULL_STATE) assert(state.size() == PDR::propositions.size());
+    if (compress_mode == COMPRESS_PARTIAL_STATE) assert(state.size() != PDR::propositions.size());
+
     vector<int> result;
     result.push_back(subproblem);
-    if (proper_state) result.push_back(1);
-    else              result.push_back(0);
-    
-    for (auto it=state.begin(); it!=state.end(); it++) {
-      if ((*it)>0) result.push_back(*it);
+    result.push_back(compress_mode);
+    if (compress_mode == COMPRESS_FULL_STATE || compress_mode == COMPRESS_ACTION) {
+      for (auto it=state.begin(); it!=state.end(); it++) {
+        if ((*it)>0) result.push_back(*it);
+      }
+      assert(is_sorted(result.begin()+2, result.end()));
+    } else {
+      for (auto it=state.begin(); it!=state.end(); it++) result.push_back(*it);
     }
 
-    assert(is_sorted(result.begin()+2, result.end()));
     return result;
   }
 
   vector<int> uncompress_state(const vector<int>& compressed_state) {
     const int subproblem = compressed_state[0];
-    const bool proper_state = compressed_state[1];
-    if (proper_state) return inflate_compressed_to_full(compressed_state, subproblem_to_propositions[subproblem]);
-    else              return inflate_compressed_to_full(compressed_state, subproblem_to_actions[subproblem]);
+    const int compress_mode = compressed_state[1];
+    switch (compress_mode) {
+      case COMPRESS_ACTION:
+        return inflate_compressed_to_full(compressed_state, subproblem_to_actions[subproblem]);
+      case COMPRESS_FULL_STATE:
+        return inflate_compressed_to_full(compressed_state, subproblem_to_propositions[subproblem]);
+      case COMPRESS_PARTIAL_STATE:
+        return vector<int>(compressed_state.begin()+2, compressed_state.end());
+      default:
+        cerr << "ERROR trying to inflate unknown compressed state: " << compress_mode << " " << PDR::state_string(compressed_state) << endl;
+        assert(0);
+        exit(1);
+    }
   }
 
   bool subset(vector<int> a, vector<int> b) { //b is a subset of a
@@ -215,6 +232,7 @@ namespace property_directed_reachability {
 
 #if VERBOSE_STATE
   string lit_string(int lit) {
+    if (lit == 0) return "0";
     assert(lit);
     string ret_val = "";
     if (lit<0) ret_val += "-";
@@ -430,7 +448,7 @@ namespace property_directed_reachability {
   void read_extra_settings(string extra_settings_filename) {
     PDR::extra_settings_read = true;
     // read extra settings - the is mainly for testing, so new feastures can be quickly added and removed
-    const int total_expected = 10;
+    const int total_expected = 11;
     set<string> ignore_keys;
     ignore_keys.insert("activation_literals");
 
@@ -439,6 +457,7 @@ namespace property_directed_reachability {
     ignore_keys.insert("report_plan");
     ignore_keys.insert("dagster");
     ignore_keys.insert("mpi_nodes");
+    ignore_keys.insert("backwards");
 
     string line;
     ifstream extra_settings_file(extra_settings_filename);
@@ -503,8 +522,8 @@ namespace property_directed_reachability {
     subproblem_to_assumptions                  = parser.subproblem_to_assumptions;
     //subproblem_to_only_one_strips_cliques      = parser.subproblem_to_only_one_strips_cliques;
 
-    for (int i=0; i<initial_state.size(); i++) {
-      int var = abs(initial_state[i]);
+    for (int i=0; i<subproblem_to_propositions[0].size(); i++) {
+      int var = abs(subproblem_to_propositions[0][i]);
       propositions.push_back(var);
       propositions_set.insert(var);
     }
@@ -622,6 +641,12 @@ namespace property_directed_reachability {
   }
 
   int h_add(const vector<int>& compressed_state) {
+    if (compressed_state[1] == COMPRESS_PARTIAL_STATE) {
+      // a partial state, convert to full state format
+      const int subproblem = compressed_state[0];
+      return h_add(compress_state(uncompress_state(compressed_state), subproblem, COMPRESS_FULL_STATE));
+    }
+
     assert(ALLOW_HEURISTIC_H_ADD);
     if (h_add_memo.find(compressed_state) != h_add_memo.end()) return h_add_memo[compressed_state];
 
@@ -764,11 +789,15 @@ namespace property_directed_reachability {
       pair<vector<vector<int>>, vector<vector<int>>> x = project_to_state_actions(assignments, subproblem, PDR::MS_steps_used);
       vector<vector<int>> succ_state_sequence = get<0>(x);
       vector<vector<int>> actions_executed_sequence = get<1>(x);
-      if (PDR::storing_actions && record && subproblem == PDR::num_subproblems-1) assert(succ_state_sequence[0] == state); // broken on subproblems?
+      if (PDR::storing_actions && record && subproblem == PDR::num_subproblems-1) assert(PDR::subset(succ_state_sequence[0], state)); // broken on subproblems?
       vector<int> prev_state = state;
       for (int timestep = 0; timestep < PDR::MS_steps_used; timestep++) {
         if(LOUD) cout << "single found a successor state, used actions: " << state_string(actions_executed_sequence[timestep]) << endl;
-        if (PDR::storing_actions && record && subproblem == PDR::num_subproblems-1) state_actions.add_state(succ_state_sequence[timestep+1], succ_state_sequence[timestep], actions_executed_sequence[timestep], subproblem, layer+1);
+
+        if (PDR::storing_actions && record && subproblem == PDR::num_subproblems-1) {
+          if (timestep == 0) state_actions.add_state(succ_state_sequence[timestep+1], state, actions_executed_sequence[timestep], subproblem, layer+1);
+          else               state_actions.add_state(succ_state_sequence[timestep+1], succ_state_sequence[timestep], actions_executed_sequence[timestep], subproblem, layer+1);
+        }
         //prev_state = succ_state_sequence[future]; // for next time
       }
       return succ_state_sequence[PDR::MS_steps_used];

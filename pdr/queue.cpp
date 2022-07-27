@@ -10,7 +10,12 @@ class compressed_not_matches_reason {
     reason(reason)
   {}
 
+  bool equals_for_partial_state(const vector<int>& compressed_state) const {
+    return !PDR::subset(vector<int>(compressed_state.begin()+2, compressed_state.end()), reason);
+  }
+
   bool operator()(const vector<int>& compressed_state) const {
+    if (compressed_state[1] == COMPRESS_PARTIAL_STATE) return equals_for_partial_state(compressed_state);
     auto compressed_state_current = compressed_state.begin()+2;
     const auto compressed_state_end = compressed_state.end();
     auto reason_current = reason.begin();
@@ -505,9 +510,18 @@ vector<tuple<vector<int>, int, int, bool, bool>> PDR_Queue::get_states_priority_
 #endif
   }
 
-  void PDR_Queue::push(const vector<int>& state, int layer, int subproblem){
+  void PDR_Queue::push(const vector<int>& state, int layer, int subproblem) {
+    if (state.size() == PDR::propositions.size()) {
+      const vector<int>& compressed_state = PDR::compress_state(state, subproblem, COMPRESS_FULL_STATE);
+      push_compressed_state(compressed_state, layer, subproblem);
+    } else {
+      const vector<int>& compressed_state = PDR::compress_state(state, subproblem, COMPRESS_PARTIAL_STATE);
+      push_compressed_state(compressed_state, layer, subproblem);
+    }
+  }
+
+  void PDR_Queue::push_compressed_state(const vector<int>& compressed_state, int layer, int subproblem) {
     // Heuristic cost and timestamp not given, so create it
-    const vector<int>& compressed_state = PDR::compress_state(state, subproblem, true);
     const unsigned long long int timestamp = next_timestamp;
     next_timestamp++;
     Queue_Entry queue_entry = Queue_Entry(compressed_state, timestamp);

@@ -20,7 +20,7 @@ LAYERS_TO_WRITE = 1
 
 def extraSettings(filename):
     ignoreKeys = ["obligation_rescheduling", "project_last", "complete_nonfinal", "decomposed", "report_plan", "dagster", "mpi_nodes"]
-    expectedNum = 10
+    expectedNum = 11
     with open(filename) as f:
         seenOptions = set()
         for line in [x.rstrip() for x in f.readlines() if len(x.rstrip())]:
@@ -40,11 +40,15 @@ def extraSettings(filename):
                 valInt = int(val)
                 assert valInt in [0,1]
                 isolateSubproblems = valInt
+            elif key == "backwards":
+                valInt = int(val)
+                assert valInt in [0,1]
+                backwards = valInt
             else: assert(0)
 
         print(seenOptions)
         assert(len(seenOptions) == expectedNum)
-    return [useActivationLiterals, useOOC, isolateSubproblems]
+    return [useActivationLiterals, useOOC, isolateSubproblems, backwards]
 
 def treeParenthesisDecompose(string):
     level_one_zones = []
@@ -1803,6 +1807,84 @@ class Problem:
         self.visualize(newGraph)
 
     @classmethod
+    def backwardsClauses(self, clauses, TCRss, totalPerTimestep, propositionRange, actionRange, baseProblem):
+        # Turns all the clauses backwards, so that step 1 becomes step 2 and vice versa
+        if len(TCRss) == 1:
+            to_flip = TCRss[0]
+        else:
+            to_flip = set()
+            for x in TCRss:
+                to_flip.update(x)
+
+        for CR in to_flip:
+            for lit_index in range(len(clauses[CR])):
+                base_lit = clauses[CR][lit_index]
+                base_var = abs(base_lit)
+                if base_lit >= 0: base_pos_neg = 1
+                else:             base_pos_neg = -1
+
+                assert base_var <= totalPerTimestep*2
+
+                if base_var <= totalPerTimestep: 
+                    if base_var in propositionRange:
+                        clauses[CR][lit_index] = base_pos_neg*(base_var+totalPerTimestep)
+                    else:
+                        assert base_var in actionRange
+                else:
+                    if base_var-totalPerTimestep in propositionRange:
+                        clauses[CR][lit_index] = base_pos_neg*(base_var-totalPerTimestep)
+                    else:
+                        assert base_var-totalPerTimestep in actionRange
+
+    @classmethod
+    def backwards(cls, baseProblem, extraSettingsFilename):
+        if baseProblem.encoding != "STRIPS":
+            print("ERROR reversing the problem requires STRIPS") # Though only for the conditional effects to be properly reversed, PERHAPS for the aux vars to be properly accounted for
+            exit(1)
+
+        # Note - swapped
+        ICRs = baseProblem.GCRs
+        GCRs = baseProblem.ICRs
+        actionPre = baseProblem.actionEffStrips
+        actionEffStrips = baseProblem.actionPre
+
+        TCRss = baseProblem.TCRss
+        UCRss = baseProblem.UCRss
+
+        clauses = baseProblem.clauses
+        cls.backwardsClauses(clauses, TCRss, baseProblem.totalPerTimestep, baseProblem.propositionRange, baseProblem.actionRange, baseProblem)
+
+        retVal = Problem(baseProblem.tmpDir, \
+                         None, \
+                         baseProblem.symbols, \
+                         actionPre, \
+                         actionEffStrips, \
+                         baseProblem.actionRange, \
+                         baseProblem.propositionRange, \
+                         baseProblem.totalPerTimestep, \
+                         clauses, \
+                         ICRs, \
+                         GCRs, \
+                         baseProblem.TCRss, \
+                         baseProblem.UCRss)
+        retVal.actionEffAdl = [[] for i in baseProblem.actionRange] # AS IS STRIPS, TODO look up eff_adl
+        retVal.trivialClause = None # For dagster proper
+        retVal.DCRs = None # For dagster proper
+        retVal.varToD = None # For dagster proper
+        retVal.encoding = baseProblem.encoding
+        if baseProblem.encoding == "STRIPS": retVal.variableToActionsWithItAsEff = baseProblem.variableToActionsWithItAsEff
+        else:                                retVal.variableToActionsWithItAsEff = "NOT SUPPORTED FOR NON-STRIPS"
+        retVal.onlyOneStripsCliques = None
+        useActivationLiterals, useOOC, isolateSubproblems, backwards = extraSettings(extraSettingsFilename)
+        assert(backwards) # should be backwards, as why we are doing this
+        retVal.useOOC = useOOC
+        retVal.useActivationLiterals = useActivationLiterals
+        retVal.isolateSubproblems = isolateSubproblems
+        retVal.litToMutex = baseProblem.litToMutex
+        retVal.numAux = baseProblem.numAux
+        return retVal
+
+    @classmethod
     def fromMadagascar(cls, tmpDir, extraSettingsFilename):
         def isExternUnit(x):
             # is not quite true
@@ -2168,7 +2250,7 @@ class Problem:
         for x in varToD.keys():
             assert x == varToD[x]
 
-        useActivationLiterals, useOOC, isolateSubproblems = extraSettings(extraSettingsFilename)
+        useActivationLiterals, useOOC, isolateSubproblems, _ = extraSettings(extraSettingsFilename)
 
         # First generate reverse dictionary mapping variables (literals in the paper) to actions which they appear in
         variableToActionsWithItAsEffStrips = {}
@@ -2261,7 +2343,7 @@ class Problem:
         retVal.DCRs = DCRs
         retVal.varToD = varToD
         retVal.encoding = encoding
-        if encoding == "strips": retVal.variableToActionsWithItAsEff = variableToActionsWithItAsEffStrips
+        if encoding == "STRIPS": retVal.variableToActionsWithItAsEff = variableToActionsWithItAsEffStrips
         else:                    retVal.variableToActionsWithItAsEff = "NOT SUPPORTED FOR NON-STRIPS"
         retVal.onlyOneStripsCliques = onlyOneStripsCliques
         retVal.useOOC = useOOC

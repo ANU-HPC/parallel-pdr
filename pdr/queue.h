@@ -43,7 +43,8 @@ namespace property_directed_reachability {
          */
       int get_fd_heuristic_cost(const vector<int>& compressed_state);
       int get_novelty_heuristic_cost(const vector<int>& state);
-      void push(const vector<int>& state, int layer, int subproblem);
+      void push(const vector<int>& state, int layer, int subproblem); 
+      void push_compressed_state(const vector<int>& compressed_state, int layer, int subproblem);
       //void push(const Queue_Entry& queue_entry, int layer, int subproblem);
       void push(Queue_Entry queue_entry, int layer, int subproblem);
       void print_size();

@@ -11,6 +11,7 @@ REPORT_PLAN=`grep report_plan $SET | awk '{print $2}'`
 DAGSTER=`grep dagster $SET | awk '{print $2}'`
 MPI_NODES=`grep mpi_nodes $SET | awk '{print $2}'`
 isolate_subproblems=`grep isolate_subproblems $SET | grep 1 | wc -l`
+backwards=`grep backwards $SET | grep 1 | wc -l`
 USE_FD_HEURISTIC=`cat pdr/options.h | grep "#define USE_FD_HEURISTIC 1" | wc -l`
 
 DAGPARSER_ROOT=`dirname "$0"` 
@@ -46,7 +47,7 @@ else
 fi
 
 PYTHON_START_TIME=$(date +%s.%N)
-$USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR > $TMP_DIR/madagascar_output
+$USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR # used when using FD to test heuristics > $TMP_DIR/madagascar_output
 echo PYTHON_TIME: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
 
 # If using heuristic values from FD, set up for that
@@ -122,8 +123,18 @@ else # not isolate_parallel
 fi
 echo CPP_TIME: $(awk "BEGIN {print ($(date +%s.%N)-$CPP_START_TIME)}")
 
-# Check resulting plan
 cd ..
+
+if [ $backwards -eq "1" ]
+then
+    python3 reverse_plan.py $TMP_DIR/plan > $TMP_DIR/reversed_plan 2> /dev/null
+    if [ $? -eq 0 ]; then
+        # If successfully reversed a plan
+        cp $TMP_DIR/reversed_plan $TMP_DIR/plan
+    fi
+fi
+
+# Check resulting plan
 echo ./VAL/build/linux64/release/bin/Validate $DOMAIN $PROBLEM $TMP_DIR/plan 
 ./VAL/build/linux64/release/bin/Validate $DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/val_out
 

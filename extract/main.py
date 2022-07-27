@@ -1,7 +1,7 @@
 import sys
 import time
 from RunBash import runBash
-from Problem import Problem
+from Problem import Problem, extraSettings
 
 def parseError():
     print("planner usage:")
@@ -118,24 +118,20 @@ baseProblem = Problem.fromMadagascar(tmpDir, extraSettingsFilename)
 print("Completed in " + str(round(time.time() - startTime,2)))
 if baseProblem == None: exit(0)
 
-#baseProblem.printActions()
+_,_,_,backwards = extraSettings(extraSettingsFilename)
+if backwards: usedProblem = Problem.backwards(baseProblem, extraSettingsFilename)
+else:         usedProblem = baseProblem
 
-#startTime = time.time()
-#print("solve at " + str(s) + " steps...")
-#baseProblem.solveAtHorizonStandard(domainFilename, problemFilename, s)
-#print("Completed in " + str(round(time.time() - startTime,2)))
-
-baseProblem.writeMapping(timeSteps)
+usedProblem.writeMapping(timeSteps)
 
 startTime = time.time()
 print("Starting decomposition...")
-if (useDecomposition): decomposedProblem = baseProblem.knoblockDecomposition()
-else:                  decomposedProblem = baseProblem.noDecomposition()
+if (useDecomposition): decomposedProblem = usedProblem.knoblockDecomposition()
+else:                  decomposedProblem = usedProblem.noDecomposition()
 print("Completed in " + str(round(time.time() - startTime,2)))
 
 
 #decomposedProblem.writeDagCnfMultiple(s,2)
-#baseProblem.writePDRRegularCnf(timeSteps)
 
 #decomposedProblem.writePDRDagCnf(timeSteps)
 #decomposedProblem.writePDRDagCnfForEachPackage()

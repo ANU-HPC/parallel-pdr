@@ -94,7 +94,7 @@ namespace property_directed_reachability {
   // Functions
   vector<int> project_state_to_propositions(const vector<int>& state, const vector<int>& project_propositions);
   vector<int> inflate_compressed_to_full(const vector<int>& compressed_state, const vector<int>& full);
-  vector<int> compress_state(const vector<int>& state, const int subproblem, const bool proper_state);
+  vector<int> compress_state(const vector<int>& state, const int subproblem, const int compress_mode);
   vector<int> uncompress_state(const vector<int>& compressed_state);
   bool subset(vector<int> a, vector<int> b);
 

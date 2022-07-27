@@ -331,10 +331,13 @@ class Parallel_Buffer {
       const pair<vector<vector<int>>, vector<vector<int>>> x = PDR::project_to_state_actions(assignment, original_obl.subproblem, PDR::MS_steps_used);
       const vector<vector<int>>& succ_state_sequence = get<0>(x);
       const vector<vector<int>>& actions_executed_sequence = get<1>(x);
-      if (original_obl.keep_states && original_obl.subproblem == PDR::num_subproblems-1) assert(succ_state_sequence[0] == original_obl.state); // broken on subproblems?
+      // BROKEN BY PARTIAL STATES if (original_obl.keep_states && original_obl.subproblem == PDR::num_subproblems-1) assert(succ_state_sequence[0] == original_obl.state); // broken on subproblems?
       for (int timestep = 0; timestep < PDR::MS_steps_used; timestep++) {
         if(LOUD) cout << "single found a successor state, used actions: " << PDR::state_string(actions_executed_sequence[timestep]) << endl;
-        if (PDR::storing_actions && original_obl.keep_states && original_obl.subproblem == PDR::num_subproblems-1) PDR::state_actions.add_state(succ_state_sequence[timestep+1], succ_state_sequence[timestep], actions_executed_sequence[timestep], original_obl.subproblem, original_obl.layer+1);
+        if (PDR::storing_actions && original_obl.keep_states && original_obl.subproblem == PDR::num_subproblems-1) {
+          if (timestep == 0) PDR::state_actions.add_state(succ_state_sequence[timestep+1], original_obl.state, actions_executed_sequence[timestep], original_obl.subproblem, original_obl.layer+1);
+          else               PDR::state_actions.add_state(succ_state_sequence[timestep+1], succ_state_sequence[timestep], actions_executed_sequence[timestep], original_obl.subproblem, original_obl.layer+1);
+        }
       }
 
       PDR::Obligation succ_obl = original_obl;
@@ -500,6 +503,7 @@ bool parallel_pdr() {
   bool all_trivial = true;
   for (int subproblem = 0; subproblem < PDR::num_subproblems; subproblem++) {
     const vector<int>& projected_initial_state = PDR::project_state_to_propositions(PDR::initial_state, PDR::subproblem_to_propositions[subproblem]);
+    assert(projected_initial_state.size() == PDR::initial_state.size());
 
     set<int> initial_and_goal;
     for (int i=0; i<PDR::initial_state.size(); i++) initial_and_goal.insert(PDR::initial_state[i]);
@@ -592,7 +596,7 @@ bool parallel_pdr() {
               // Then add some more
               const vector<int>& projected_initial_state = subproblem_to_projected_initial_state[subproblem];
               if (projected_initial_state.size()) {
-                assert(projected_initial_state.size() == PDR::subproblem_to_propositions[subproblem].size());
+                assert(projected_initial_state.size() == PDR::initial_state.size()); // Review if revisiting subproblems
 #if PORTFOLIO_QUEUE
       // THE PUSHING WITH PORTFOLIOS IS NOT SET UP FOR THIS
                 exit(1);
@@ -683,7 +687,7 @@ bool parallel_pdr() {
         // Then add some more
         const vector<int>& projected_initial_state = subproblem_to_projected_initial_state[subproblem];
         if (projected_initial_state.size()) {
-          assert(projected_initial_state.size() == PDR::subproblem_to_propositions[subproblem].size());
+          assert(projected_initial_state.size() == PDR::initial_state.size()); // review if revisiting subproblems
 #if PORTFOLIO_QUEUE
           for (int worker = 1; worker<PDR::num_workers+1; worker++) PDR::queue.push(projected_initial_state, layers[subproblem], subproblem, worker);
 #else
@@ -816,7 +820,6 @@ bool handle_nogoods_from_buffer_unsat(Parallel_Buffer* buffer_ptr, const int* la
     const int subproblem = original_obl.subproblem;
     const int worker = original_obl.worker;
     vector<int>& unprogressable_state = reason_obl.state;
-    assert(unprogressable_state.size() != original_state.size());
     const int reduce = original_obl.reduce;
     const bool keep_states = original_obl.reduce;
 
