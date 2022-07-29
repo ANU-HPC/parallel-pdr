@@ -1881,7 +1881,7 @@ class Problem:
         retVal.onlyOneStripsCliques = None
         _, _, _, backwards, _ = extraSettings(extraSettingsFilename)
         assert(backwards) # should be backwards, as why we are doing this
-        retVal.useOOC = useOOC
+        retVal.useOOC = baseProblem.useOOC
         retVal.useActivationLiterals = baseProblem.useActivationLiterals
         retVal.isolateSubproblems = baseProblem.isolateSubproblems
         retVal.max_macro_steps = baseProblem.max_macro_steps
