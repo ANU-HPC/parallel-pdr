@@ -2,6 +2,8 @@ import sys
 import time
 from RunBash import runBash
 from Problem import Problem, extraSettings
+from import_option import import_option
+USE_FD_PARSER = import_option("USE_FD_PARSER")
 
 def parseError():
     print("planner usage:")
@@ -98,23 +100,25 @@ if timeSteps == None:
 
 
 # Madagascar
-print("Starting external PDDL parser (Madagascar)...")
-instance_location = tmpDir + "/tmp_instance.txt"
-exitcode, out, err, madagascarTime = runBash("./extract " + domainFilename + " " + problemFilename + madagascarOptions + instance_location)
-if exitcode:
-    print(" == Madagascar error == (try make)")
-    print(out.decode("utf-8"))
-    print(err.decode("utf-8"))
-    exit(1)
+if not USE_FD_PARSER:
+    print("Starting external PDDL parser (Madagascar)...")
+    instance_location = tmpDir + "/tmp_instance.txt"
+    exitcode, out, err, madagascarTime = runBash("./extract " + domainFilename + " " + problemFilename + madagascarOptions + instance_location)
+    if exitcode:
+        print(" == Madagascar error == (try make)")
+        print(out.decode("utf-8"))
+        print(err.decode("utf-8"))
+        exit(1)
 
-[print("   ",line) for line in out.decode("utf-8").split("\n") if "replaced" in line]
+    [print("   ",line) for line in out.decode("utf-8").split("\n") if "replaced" in line]
 
-print("Completed in " + str(round(madagascarTime,2)) + " seconds")
+    print("Completed in " + str(round(madagascarTime,2)) + " seconds")
 
 # Read in intermediate representation
 startTime = time.time()
 print("Starting reading in intermediate representation...")
-baseProblem = Problem.fromMadagascar(tmpDir, extraSettingsFilename)
+if USE_FD_PARSER: baseProblem = Problem.fromDownward(tmpDir, extraSettingsFilename)
+else:          baseProblem = Problem.fromMadagascar(tmpDir, extraSettingsFilename)
 print("Completed in " + str(round(time.time() - startTime,2)))
 if baseProblem == None: exit(0)
 
@@ -122,7 +126,7 @@ _,_,_,backwards,_ = extraSettings(extraSettingsFilename)
 if backwards: usedProblem = Problem.backwards(baseProblem, extraSettingsFilename)
 else:         usedProblem = baseProblem
 
-usedProblem.writeMapping(timeSteps)
+if not USE_FD_PARSER: usedProblem.writeMapping(timeSteps)
 
 startTime = time.time()
 print("Starting decomposition...")

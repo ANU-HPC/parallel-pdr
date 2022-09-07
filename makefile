@@ -1,6 +1,8 @@
 default:
 	$(MAKE) all -j16
-all: lingeling_then_pdr mad val
+all: lingeling_then_pdr mad val fd
+fd: FORCE
+	{ cd pddl-parser-fd/downward && python build.py release; }
 lingeling_then_pdr:
 	$(MAKE) lingeling -j16
 	$(MAKE) pdr -j16

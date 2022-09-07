@@ -281,6 +281,32 @@ int Parser::parse(string tmp_dir) {
   }
 #endif
 
+  const Value& er_to_corresponding_object = document["er_to_corresponding"]; 
+  assert(er_to_corresponding_object.IsObject());
+  for (Value::ConstMemberIterator ita = er_to_corresponding_object.MemberBegin(); ita != er_to_corresponding_object.MemberEnd(); ita++) {
+    int er = stoi(ita->name.GetString());
+    vector<int> corresponding;
+    assert(ita->value.IsArray());
+    const Value& corresponding_array = ita->value;
+    for (int i = 0; i < corresponding_array.Size(); i++) {
+      corresponding.push_back(corresponding_array[i].GetInt());
+    }
+    er_to_corresponding[er] = corresponding;
+  }
+
+  const Value& corresponding_to_er_object = document["corresponding_to_er"]; 
+  assert(corresponding_to_er_object.IsObject());
+  for (Value::ConstMemberIterator ita = corresponding_to_er_object.MemberBegin(); ita != corresponding_to_er_object.MemberEnd(); ita++) {
+    int corresponding = stoi(ita->name.GetString());
+    vector<int> er;
+    assert(ita->value.IsArray());
+    const Value& er_array = ita->value;
+    for (int i = 0; i < er_array.Size(); i++) {
+      er.push_back(er_array[i].GetInt());
+    }
+    corresponding_to_er[corresponding] = er;
+  }
+
   const Value& collating_dag_node_to_subproblem_object = document["collating_dag_node_to_subproblem"]; 
   assert(collating_dag_node_to_subproblem_object.IsObject());
   for (Value::ConstMemberIterator ita = collating_dag_node_to_subproblem_object.MemberBegin(); ita != collating_dag_node_to_subproblem_object.MemberEnd(); ita++) {

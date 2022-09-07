@@ -1,4 +1,5 @@
 #include "property_directed_reachability.h"
+#include "options.h"
 
 Cnf* get_cnf(const vector<vector<int>>& clauses) {
   Cnf* cnf = new Cnf();
@@ -41,6 +42,15 @@ string vector_string(vector<int> state) {
 
 bool in_pos_vector(int x, const vector<int>& vec) {
   return binary_search(vec.begin(), vec.end(), x);
+}
+
+bool in_abs_sorted_vector(int x, const vector<int>& vec) {
+  for (auto it=vec.begin(); it!=vec.end(); it++) {
+    if (*it == x) {
+      return true;
+    }
+  }
+  return false;
 }
 
 namespace property_directed_reachability {
@@ -527,6 +537,9 @@ namespace property_directed_reachability {
     subproblem_to_actions                      = parser.subproblem_to_actions;
     subproblem_to_clause_validating_lits       = parser.subproblem_to_clause_validating_lits;
     subproblem_to_assumptions                  = parser.subproblem_to_assumptions;
+    er_to_corresponding                        = parser.er_to_corresponding;
+    corresponding_to_er                        = parser.corresponding_to_er;
+
     //subproblem_to_only_one_strips_cliques      = parser.subproblem_to_only_one_strips_cliques;
 
     for (int i=0; i<subproblem_to_propositions[0].size(); i++) {
@@ -845,6 +858,7 @@ namespace property_directed_reachability {
   }
 
   vector<int> single_get_reason(const vector<int>& state, int layer, int subproblem) {
+    int sat_count = 0;
     // TODO does not use state, could be confusing
 #if MS_ONLY_MAX_SOLVER_STEP
     assert(MS_steps_used == max_macro_steps);
@@ -868,11 +882,84 @@ namespace property_directed_reachability {
       if (running_reason != possible_reason) {
         assert(running_reason.size() == possible_reason.size()+1);
         // have a new reason candidate, if a valid reason use as the new reason
+        sat_count++;
         if (!single_has_successor(possible_reason, layer, subproblem)) {
           running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
           if (S) cout << "In reduce, mid-way candidate [ " << running_reason.size() << " / " << subproblem_to_propositions[subproblem].size() << " ] " << state_string(running_reason) << endl;
         }
       }
+    }
+    reason_num_sat_calls.push_back(sat_count);
+#if USE_ER
+    running_reason = single_get_er_reason(running_reason, layer, subproblem);
+#endif
+    return running_reason;
+  }
+
+  vector<int> remove_if_in_vector(const vector<int>& in, const int x) {
+    // SLOW!!
+    vector<int> new_vector;
+    for (auto it=in.begin(); it!=in.end(); it++) {
+      if (*it != x) new_vector.push_back(*it);
+    }
+    return new_vector;
+  }
+
+  vector<int> single_get_er_reason(const vector<int>& existing_reason, int layer, int subproblem) {
+    vector<int> running_reason = existing_reason;
+
+    for (auto ita=er_to_corresponding.begin(); ita!=er_to_corresponding.end(); ita++) {
+      const int er = ita->first; 
+      const vector<int>& corresponding = ita->second;
+
+      vector<int> possible_reason = running_reason;
+
+      if (!in_abs_sorted_vector(er, running_reason)) {
+        // er is NOT in the reason, so lets see if any of the corresponding are either
+        bool a_corresponding_is_in = false;
+        for (auto itb=corresponding.begin(); itb!=corresponding.end(); itb++) {
+          const int var = *itb;
+
+          if (in_abs_sorted_vector(var, possible_reason)) {
+            possible_reason = remove_if_in_vector(possible_reason, var);
+            a_corresponding_is_in = true;
+          }
+        }
+
+        if (a_corresponding_is_in) {
+          // Test if this possible reason is a real reason
+          possible_reason.push_back(er);
+          sort(possible_reason.begin(), possible_reason.end(), abs_comp);
+          if (!single_has_successor(possible_reason, layer, subproblem)) {
+            running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
+          }
+        }
+      } else if (!in_abs_sorted_vector(-er, running_reason)) {
+        // Same as before but for negative
+        // -er is NOT in the reason, so lets see if any of the corresponding are either
+        bool a_corresponding_is_in = false;
+        for (auto itb=corresponding.begin(); itb!=corresponding.end(); itb++) {
+          const int var = *itb;
+          if (in_abs_sorted_vector(-var, possible_reason)) {
+            possible_reason = remove_if_in_vector(possible_reason, -var);
+            a_corresponding_is_in = true;
+          }
+        }
+
+        if (a_corresponding_is_in) {
+          // Test if this possible reason is a real reason
+          possible_reason.push_back(-er);
+          sort(possible_reason.begin(), possible_reason.end(), abs_comp);
+          if (!single_has_successor(possible_reason, layer, subproblem)) {
+            running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
+          }
+        }
+      }
+    }
+
+    if (running_reason != existing_reason) {
+      cout << "FROM : " << state_string(existing_reason) << endl;
+      cout << "TO   : " << state_string(running_reason) << endl;
     }
     return running_reason;
   }
@@ -970,6 +1057,7 @@ namespace property_directed_reachability {
   // clause assuming a one step problem - the conversion to multiple steps is done on the worker nodes
   vector<vector<vector<vector<int>>>> worker_upper_layer_dagster_clauses_to_add;
 
+  vector<int> reason_num_sat_calls;
   // at runtime, use dagster? if false use lingeling instead, ONLY ONE AT A TIME
   bool runtime_dagster = true;
   bool storing_actions = true;
@@ -1003,6 +1091,8 @@ namespace property_directed_reachability {
   map<int, vector<int>> subproblem_to_actions;
   map<int, vector<int>> subproblem_to_assumptions;
   map<int, vector<int>> subproblem_to_clause_validating_lits;
+  map<int, vector<int>> corresponding_to_er;
+  map<int, vector<int>> er_to_corresponding;
 
   map<int, vector<vector<int>>> subproblem_to_only_one_strips_cliques;
 }

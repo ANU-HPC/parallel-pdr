@@ -13,6 +13,7 @@ MPI_NODES=`grep mpi_nodes $SET | awk '{print $2}'`
 isolate_subproblems=`grep isolate_subproblems $SET | grep 1 | wc -l`
 backwards=`grep backwards $SET | grep 1 | wc -l`
 USE_FD_HEURISTIC=`cat pdr/options.h | grep "#define USE_FD_HEURISTIC 1" | wc -l`
+USE_FD_PARSER=`cat pdr/options.h | grep "#define USE_FD_PARSER 1" | wc -l`
 
 DAGPARSER_ROOT=`dirname "$0"` 
 echo `readlink -f $DAGPARSER_ROOT/run.sh` $@
@@ -37,7 +38,6 @@ echo $DOMAIN $PROBLEM > $TMP_DIR/domain_problem
 export GLOG_v=0 # verbose glog logging at level 5 (0 is least verbose)
 export GLOG_logtostderr=true # otherwise all logging goes to /tmp/appname.hostname.username.log.INFO.date.pid
 
-cd extract
 
 if [ "$(cat /proc/sys/kernel/hostname)" = "goedel" ]
 then
@@ -45,6 +45,17 @@ then
 else
     USED_PYTHON="python3"
 fi
+
+if [ $USE_FD_PARSER -eq "1" ]
+then 
+    base=$(pwd)
+    cd $TMP_DIR
+    $USED_PYTHON $base/pddl-parser-fd/downward/fast-downward.py --keep-sas-file $DOMAIN $PROBLEM --satprune 1 > $TMP_DIR/tmp_downward_instance.txt
+    $base/process_downward_instance.sh $TMP_DIR
+    cd $base
+fi
+
+cd extract
 
 PYTHON_START_TIME=$(date +%s.%N)
 $USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR # used when using FD to test heuristics > $TMP_DIR/madagascar_output

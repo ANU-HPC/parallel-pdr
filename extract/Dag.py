@@ -15,6 +15,7 @@ INJECT_STATE = "inject state"
 CONSOLIDATING_NODE_PREFIX = "consolidating node of: "
 NODE_NONEXISTENT = -2
 ALLOW_HEURISTIC_H_ADD = import_option("ALLOW_HEURISTIC_H_ADD")
+USE_FD_PARSER = import_option("USE_FD_PARSER")
 
 def isSpecialNode(x):
     if x == DECOMPOSITION_COLLATING_NODE: return True
@@ -351,6 +352,8 @@ class Dag:
             jsonObject["goal_condition"] = sorted(G,key=abs)
             jsonObject["dagster_num_layers_supported"] = numLayers
             jsonObject["num_subproblems"] = numSubproblems #len(self.packageNodesLogistics)+1
+            jsonObject["er_to_corresponding"] = self.problem.er_to_corresponding
+            jsonObject["corresponding_to_er"] = self.problem.corresponding_to_er
 
 
             jsonObject["subproblem_to_propositions"] = self.subproblemToPropositions #[sorted(x) for x in self.propositionsForSubproblems]
@@ -485,17 +488,18 @@ class Dag:
                     self.problem.cnfDimacsStringF(clausesToWrite, cnfFile2)
             '''
 
-        clausesToWrite = []
-        for steps in range(1,self.problem.max_macro_steps+1):
-            clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.TCRss[0]])
-            clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.UCRss[0]])
-            with open(self.problem.tmpDir + "/tmp_regular_" + str(steps) + ".cnf", 'w') as cnfFile2:
-                numClauses = len(clausesToWrite)
-                numVariables = self.problem.totalPerTimestep * (steps+1) - self.problem.numAux
-    
-                cnfFile2.write("p cnf " + str(numVariables) + " " + str(numClauses) + "\n")
-                self.problem.cnfDimacsStringF(clausesToWrite, cnfFile2)
-        os.system("cp " + self.problem.tmpDir + "/tmp_regular_1.cnf " + self.problem.tmpDir + "/tmp_regular.cnf") # Make a copy for dagster, before dagster has been given option
+        if not USE_FD_PARSER:
+            clausesToWrite = []
+            for steps in range(1,self.problem.max_macro_steps+1):
+                clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.TCRss[0]])
+                clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.UCRss[0]])
+                with open(self.problem.tmpDir + "/tmp_regular_" + str(steps) + ".cnf", 'w') as cnfFile2:
+                    numClauses = len(clausesToWrite)
+                    numVariables = self.problem.totalPerTimestep * (steps+1) - self.problem.numAux
+        
+                    cnfFile2.write("p cnf " + str(numVariables) + " " + str(numClauses) + "\n")
+                    self.problem.cnfDimacsStringF(clausesToWrite, cnfFile2)
+            os.system("cp " + self.problem.tmpDir + "/tmp_regular_1.cnf " + self.problem.tmpDir + "/tmp_regular.cnf") # Make a copy for dagster, before dagster has been given option
 
         '''
         TRAD
@@ -1171,7 +1175,7 @@ class Dag:
         self.subproblemToClauseValidatingLits[0] = []
         self.subproblemToActions[0] = all_actions
         self.graph.add_node(0)
-        self.dagNodeToClauses[0] = set(self.problem.TCRss[0] + self.problem.UCRss[0])
+        self.dagNodeToClauses[0] = None # for dagster proper : set(self.problem.TCRss[0] + self.problem.UCRss[0])
         self.subproblemLayerToRootDagNode[(0, 0)] = 0 
         self.collatingDagNodeToLayer[0] = 0 
         self.collatingDagNodeToSubproblem[0] = 0

@@ -54,7 +54,7 @@ def process_pdrplan_logfile(log, filename):
     for line_num in range(len(log)):
         line = log[line_num]
         if "real\t" in line: data["time_taken"] = get_time(line)
-        elif "real " in line: data["time_taken"] = float(line.split(" ")[1]))
+        elif "real " in line: data["time_taken"] = float(line.split(" ")[1])
         elif "SAT: plan of" in line: data["sat"] = True
         elif "UNSAT" in line: data["sat"] = False
         elif "problem is unsolvable!" in line: data["sat"] = False
@@ -112,7 +112,7 @@ def process_regular_logfile(log, filename):
         elif "real\t" in line:
             data["time_taken"] = get_time(line)
         elif "real " in line:
-            data["time_taken"] = float(line.split(" ")[1]))
+            data["time_taken"] = float(line.split(" ")[1])
         elif "out of memory reallocating" in line:
             if data["error"] == None: data["error"] = ""
             if "out_of_memory" not in data["error"]: data["error"] += "out_of_memory"

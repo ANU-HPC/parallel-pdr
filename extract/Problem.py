@@ -1,9 +1,11 @@
 # TODO remove the unused literals cancelled out by madagascar
 #from Lingeling import Lingeling
 from RunBash import runBash
+from import_option import import_option
 
 # lingeling dagster
 from Dag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_NODE_PREFIX, TRADITIONAL_DAGSTER
+USE_FD_PARSER = import_option("USE_FD_PARSER")
 
 # for use with traditional dagster for report
 #from SoleDag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_NODE_PREFIX 
@@ -115,7 +117,6 @@ class Problem:
 
         # Checks
         #assert len(symbols) - 1 == len(actionRange) + len(propositionRange) + numAux (as numAux given later)
-        assert len(symbols) - 1 == totalPerTimestep
 
         assert actionRange.start == 1
         assert 1 + totalPerTimestep not in actionRange
@@ -1416,7 +1417,7 @@ class Problem:
 
         # self.varToUClauses
         # self.varToTClauses
-        self.computeVarToClauses()
+        #self.computeVarToClauses() # as these dictionaries are not needed, can be reenabled if there is a need
 
         '''
         UNKNOWN what this is for
@@ -1809,6 +1810,110 @@ class Problem:
             newGraph.add_edge(text(a),text(frozenset(final_node)))
 
         self.visualize(newGraph)
+
+    @classmethod
+    def readMapping(cls, tmpDir):
+        symbols = [None]
+        actions = []
+        propositions = []
+        aux = []
+        with open(tmpDir + "/tmp_mapping.txt") as f:
+            for line in f.readlines():
+                symbolType, symbol, num, _ = line.rstrip().split(" ")
+                assert(int(num) == len(symbols))
+                symbols.append(symbol)
+
+                if symbolType == "action":
+                    actions.append(int(num))
+                elif symbolType == "used_proposition":
+                    propositions.append(int(num))
+                elif symbolType == "aux":
+                    aux.append(int(num))
+                else:
+                    assert(0)
+
+            for l in [actions, propositions, aux]:
+                for i in range(len(l)-1):
+                    assert(l[i] + 1 == l[i+1])
+
+            propositionRange = range(min(propositions), max(propositions)+1)
+            actionRange = range(min(actions), max(actions)+1)
+            numAux = len(aux)
+
+            return symbols, actionRange, propositionRange, numAux
+
+    @classmethod
+    def fromDownward(cls, tmpDir, extraSettingsFilename):
+        clauses = []
+        ICRs = []
+        GCRs = []
+
+        corresponding_to_er = {}
+        er_to_corresponding = {}
+
+        with open(tmpDir + "/tmp_for_python.txt") as f:
+            for line in f.readlines():
+                line = line.rstrip()
+                x = line.split(" ")
+                #print(x)
+                #print("previous x[0]:"+x[0]+": does it equal ER? :", x[0] == "ER")
+                if x[0] == "INITIAL_STATE":
+                    initial_var = int(x[1])
+                    assert initial_var != 0
+                    ICRs.append(len(clauses))
+                    clauses.append([initial_var])
+                elif x[0] == "GOAL_CONDITION":
+                    initial_var = int(x[1])
+                    assert initial_var != 0
+                    GCRs.append(len(clauses))
+                    clauses.append([initial_var])
+                elif x[0] == "ER":
+                    er = int(x[1])
+                    corresponding = [int(y) for y in x[2:]]
+
+                    er_to_corresponding[er] = corresponding
+                    for y in corresponding:
+                        if y not in corresponding_to_er.keys():
+                            corresponding_to_er[y] = []
+                        corresponding_to_er[y].append(er)
+
+        for key in corresponding_to_er.keys():
+            corresponding_to_er[key] = sorted(corresponding_to_er[key])
+        for key in er_to_corresponding.keys():
+            er_to_corresponding[key] = sorted(er_to_corresponding[key])
+
+        symbols, actionRange, propositionRange, numAux = cls.readMapping(tmpDir)
+        totalPerTimestep = len(symbols)-1
+
+        # Should not be used at all
+        DCRs = None
+        TCRs = None
+        UCRs = None
+
+        actionPre = [None] + [[] for i in actionRange]
+        actionEff = [None] + [[] for i in actionRange]
+        actionEffStrips = [None] + [[] for i in actionRange]
+
+        retVal = Problem(tmpDir, None, symbols, actionPre, actionEffStrips, actionRange, propositionRange, totalPerTimestep, clauses, ICRs, GCRs, [TCRs], [UCRs])
+        retVal.actionEffAdl = [[] for i in actionRange] # TODO look up eff_adl
+        retVal.trivialClause = None # For dagster proper
+        retVal.DCRs = None # For dagster proper
+        retVal.varToD = None # For dagster proper
+        encoding = "TODO downward"
+        retVal.encoding = encoding
+        if encoding == "strips": retVal.variableToActionsWithItAsEff = variableToActionsWithItAsEffStrips
+        else:                    retVal.variableToActionsWithItAsEff = "NOT SUPPORTED FOR NON-STRIPS"
+        retVal.onlyOneStripsCliques = None
+        useActivationLiterals, useOOC, isolateSubproblems, _, max_macro_steps = extraSettings(extraSettingsFilename)
+        retVal.useOOC = useOOC
+        retVal.useActivationLiterals = useActivationLiterals
+        retVal.isolateSubproblems = isolateSubproblems
+        retVal.max_macro_steps = max_macro_steps
+        retVal.litToMutex = {} # TODO address for isolate
+        retVal.numAux = numAux
+        retVal.corresponding_to_er = corresponding_to_er
+        retVal.er_to_corresponding = er_to_corresponding
+        return retVal
 
     @classmethod
     def backwardsClauses(self, clauses, TCRss, totalPerTimestep, propositionRange, actionRange, baseProblem):
@@ -2357,4 +2462,6 @@ class Problem:
         retVal.max_macro_steps = max_macro_steps
         retVal.litToMutex = litToMutex
         retVal.numAux = numAux
+        retVal.er_to_corresponding = {}
+        retVal.corresponding_to_er = {}
         return retVal

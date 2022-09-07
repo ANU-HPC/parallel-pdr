@@ -61,6 +61,13 @@ int main(int argc, char **argv) {
   }
 #endif
   
+#if USE_ER
+#if !USE_FD_PARSER
+    cerr << "ERROR using ER without FD parser" << endl;
+    exit(1);
+#endif
+#endif
+
   // Load symbols
   PDR::read_mapping(); // TODO not if not storing actions
 
@@ -715,6 +722,15 @@ bool parallel_pdr() {
   return false;
 }
 
+float mean(vector<int> x) {
+    long int sum = 0;
+
+    for (auto it=x.begin(); it!=x.end(); it++) {
+        sum += *it; 
+    }
+    return float(sum)/float(x.size());
+}
+
 bool handle_successor_states_from_buffer_sat(Parallel_Buffer* buffer_ptr, const int layer, set<int>* completed_subproblems_ptr, set<int>* newly_completed_subproblems_ptr) {
   // TODO BEWARE strange return types, true means stop, in this case for SAT
 
@@ -769,6 +785,9 @@ bool handle_successor_states_from_buffer_sat(Parallel_Buffer* buffer_ptr, const 
         if (subproblem == PDR::num_subproblems-1) {
           // Goal state for monolythic problem
           cout << "FOUND A PLAN" << endl;
+          cout << "num reasons found " << PDR::reason_num_sat_calls.size() << endl;
+          cout << "average sat calls per reason (main finding) " << mean(PDR::reason_num_sat_calls) << endl;
+
           if (PRINT_END_RESULT) PDR::queue.print_size();
           if (PDR::storing_actions) PDR::state_actions.set_final_state(succ_state, subproblem);
           else cout << "WAS NOT STORING ACTIONS" << endl;
@@ -1102,6 +1121,7 @@ bool push_check_unsat(Parallel_Buffer* buffer_ptr, const int layer_just_complete
 #else
     if (PDR::same_as_previous(i, subproblems_to_check)) {
 #endif
+      cout << i << endl;
       cout << "NO PLAN EXISTS" << endl;
       //#if LAST_PROJECT_TO_SUBPROBLEMS
       if (PDR::project_last) {

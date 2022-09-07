@@ -75,6 +75,7 @@ string string_float(float number);
 float float_time(clock_t time);
 string vector_string(vector<int> state);
 bool in_pos_vector(int x, const vector<int>& vec);
+bool in_abs_sorted_vector(int x, const vector<int>& vec);
 vector<int> project_state_to_propositions(const vector<int>& state, const vector<int>& project_propositions);
 
 namespace property_directed_reachability {
@@ -133,6 +134,7 @@ namespace property_directed_reachability {
   bool single_has_successor(const vector<int>& state, int layer, int subproblem);
   vector<int> single_get_reason_just_used(const vector<int>& state, int layer, int subproblem);
   vector<int> single_get_reason(const vector<int>& state, int layer, int subproblem);
+  vector<int> single_get_er_reason(const vector<int>& existing_reason, int layer, int subproblem);
   void print_dagster_stats();
   void dagster_start(int argc, char **argv);
   void dagster_stop();
@@ -178,6 +180,7 @@ namespace property_directed_reachability {
   // TODO tmp
   extern vector<vector<vector<vector<int>>>> worker_upper_layer_dagster_clauses_to_add;
 
+  extern vector<int> reason_num_sat_calls;
   // at runtime, use dagster? if false use lingeling instead, ONLY ONE AT A TIME
   extern bool runtime_dagster;
   extern bool storing_actions;
@@ -212,6 +215,9 @@ namespace property_directed_reachability {
   extern map<int, vector<int>> subproblem_to_actions;
   extern map<int, vector<int>> subproblem_to_assumptions;
   extern map<int, vector<int>> subproblem_to_clause_validating_lits;
+  extern map<int, vector<int>> corresponding_to_er;
+  extern map<int, vector<int>> er_to_corresponding;
+
 
   extern map<int, vector<vector<int>>> subproblem_to_only_one_strips_cliques;
 }
