@@ -1848,6 +1848,13 @@ class Problem:
         ICRs = []
         GCRs = []
 
+        symbols, actionRange, propositionRange, numAux = cls.readMapping(tmpDir)
+        totalPerTimestep = len(symbols)-1
+
+        actionPre = [None] + [[] for i in actionRange]
+        actionEffStrips = [None] + [[] for i in actionRange]
+        actionEffAdl = [None] + [[] for i in actionRange]
+
         corresponding_to_er = {}
         er_to_corresponding = {}
 
@@ -1876,26 +1883,33 @@ class Problem:
                         if y not in corresponding_to_er.keys():
                             corresponding_to_er[y] = []
                         corresponding_to_er[y].append(er)
+                elif x[0] == "ACTION_THEN_ENTIRE_PRECONDITION":
+                    action = int(x[1])
+                    precondition = [int(y) for y in x[2:]]
+                    actionPre[action] = precondition
+                elif x[0] == "ACTION_THEN_SINGLE_EFFECT_THEN_CONDITION":
+                    action = int(x[1])
+                    effect = int(x[2])
+                    condition = [int(y) for y in x[3:]]
+                    if len(condition):
+                        actionEffAdl[action].append((condition, effect))
+                    else:
+                        actionEffStrips[action].append(effect)
 
         for key in corresponding_to_er.keys():
             corresponding_to_er[key] = sorted(corresponding_to_er[key])
         for key in er_to_corresponding.keys():
             er_to_corresponding[key] = sorted(er_to_corresponding[key])
 
-        symbols, actionRange, propositionRange, numAux = cls.readMapping(tmpDir)
-        totalPerTimestep = len(symbols)-1
 
         # Should not be used at all
         DCRs = None
         TCRs = None
         UCRs = None
 
-        actionPre = [None] + [[] for i in actionRange]
-        actionEff = [None] + [[] for i in actionRange]
-        actionEffStrips = [None] + [[] for i in actionRange]
 
         retVal = Problem(tmpDir, None, symbols, actionPre, actionEffStrips, actionRange, propositionRange, totalPerTimestep, clauses, ICRs, GCRs, [TCRs], [UCRs])
-        retVal.actionEffAdl = [[] for i in actionRange] # TODO look up eff_adl
+        retVal.actionEffAdl = actionEffAdl
         retVal.trivialClause = None # For dagster proper
         retVal.DCRs = None # For dagster proper
         retVal.varToD = None # For dagster proper
@@ -2449,6 +2463,8 @@ class Problem:
 
         retVal = Problem(tmpDir, None, symbols, actionPre, actionEffStrips, actionRange, propositionRange, totalPerTimestep, clauses, ICRs, GCRs, [TCRs], [UCRs])
         retVal.actionEffAdl = actionEffAdl
+        #print(actionEffAdl)
+        #assert(0)
         retVal.trivialClause = trivialClause
         retVal.DCRs = DCRs
         retVal.varToD = varToD
