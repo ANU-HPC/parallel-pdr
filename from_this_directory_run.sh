@@ -50,7 +50,15 @@ if [ $USE_FD_PARSER -eq "1" ]
 then 
     base=$(pwd)
     cd $TMP_DIR
-    $USED_PYTHON $base/pddl-parser-fd/downward/fast-downward.py --keep-sas-file $DOMAIN $PROBLEM --satprune 1 > $TMP_DIR/tmp_downward_instance.txt
+    echo Parse PDDL into SAS file
+    $USED_PYTHON $base/pddl-parser-fd/downward/fast-downward.py --translate --keep-sas-file $DOMAIN $PROBLEM 
+
+    echo Finding H^2 Invariants:
+    mv output.sas original_output.sas
+    cat original_output.sas | /home/m/MEGA/ANU/PHD/exploring_systems/h2-fd-preprocessor/builds/release32/bin/preprocess
+
+    echo Process SAS file with mutex into SAT
+    $USED_PYTHON $base/pddl-parser-fd/downward/fast-downward.py output.sas --satprune 1 > $TMP_DIR/tmp_downward_instance.txt
     $base/process_downward_instance.sh $TMP_DIR
     cd $base
 fi

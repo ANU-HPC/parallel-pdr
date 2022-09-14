@@ -1889,7 +1889,7 @@ class Problem:
                     actionPre[action] = precondition
                 elif x[0] == "ACTION_THEN_SINGLE_EFFECT_THEN_CONDITION":
                     action = int(x[1])
-                    effect = int(x[2])
+                    effect = [int(x[2])]
                     condition = [int(y) for y in x[3:]]
                     if len(condition):
                         actionEffAdl[action].append((condition, effect))
