@@ -25,7 +25,8 @@ cat $SET
 cat pdr/options.h | grep \^\#define | grep -v OPTIONS_H | cut -d\  -f2-
 echo STOP_EXTRA_SETTINGS
 
-TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
+#TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
+TMP_DIR=`pwd`/tmp/fd
 mkdir $TMP_DIR
 echo TMP_DIR: $TMP_DIR
 
@@ -55,7 +56,7 @@ then
 
     echo Finding H^2 Invariants:
     mv output.sas original_output.sas
-    cat original_output.sas | /home/m/MEGA/ANU/PHD/exploring_systems/h2-fd-preprocessor/builds/release32/bin/preprocess
+    cat original_output.sas | $base/h2-fd-preprocessor/builds/release32/bin/preprocess
 
     echo Process SAS file with mutex into SAT
     $USED_PYTHON $base/pddl-parser-fd/downward/fast-downward.py output.sas --satprune 1 > $TMP_DIR/tmp_downward_instance.txt

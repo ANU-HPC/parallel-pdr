@@ -13,3 +13,7 @@ cd ..
 cd rapidjson
 git checkout master
 cd ..
+
+cd h2-fd-preprocessor
+git checkout master
+cd ..

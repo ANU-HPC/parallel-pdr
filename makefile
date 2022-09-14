@@ -1,6 +1,6 @@
 default:
 	$(MAKE) all -j16
-all: lingeling_then_pdr mad val fd
+all: lingeling_then_pdr mad val fd h2-fd-preprocessor
 fd: FORCE
 	{ cd pddl-parser-fd/downward && python build.py release; }
 lingeling_then_pdr:
@@ -27,4 +27,6 @@ val: FORCE
 lingeling: FORCE
 	cd lingeling && ./configure.sh && cd ..
 	$(MAKE) -C lingeling -j 16
+h2-fd-preprocessor: FORCE
+	cd h2-fd-preprocessor && mkdir -p builds/release32 && cd builds/release32 && cmake ../../ && make -j 4
 FORCE:

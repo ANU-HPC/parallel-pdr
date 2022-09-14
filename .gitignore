@@ -12,6 +12,9 @@ tmp/
 *~
 pdr/pdrDagster
 lingeling/lingeling
+h2-fd-preprocessor
+h2-fd-preprocessor/builds
+h2-fd-preprocessor/builds/*
 dagster/dagster
 dagster/strengthener/depend.mk
 __pycache__
