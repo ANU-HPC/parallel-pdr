@@ -2214,6 +2214,10 @@ class Problem:
                             pre = [parseExternUnit(preExternLineSplit[1])]
                         elif preExternLineSplit[1] == "TRUE":
                             pre = []
+                        elif "(or" in allLines[i+1]:
+                            print("PARSING PRE LINE", allLines[i+1])
+                            print("WARNING precondition disjunction ignored")
+                            pre = []
                         else: assert 0
 
                         # effect in 2 parts. Strips part is a sequence of atoms, adl is nested when, and sections
