@@ -2202,7 +2202,14 @@ class Problem:
                         # precondition, should be one atom, or multiple atoms in an and
                         assert preExternLineSplit[0] == "action_pre"
                         if preExternLineSplit[1] == "(and":
-                            pre = [parseExternUnit(x) for x in preExternLineSplit[2:-1] + [preExternLineSplit[-1][:-1]]]
+                            # This is getting rather hacky - added to handle an edge case where madagascar writes (and A B (and C D) E)
+                            most = list(preExternLineSplit[2:-1])
+                            an_and_exists = False
+                            most = [x for x in most if x != "(and"]
+                            for j in range(len(most)):
+                                if ")" == most[j][-1]:
+                                    most[j] = most[j][:-1]
+                            pre = [parseExternUnit(x) for x in most + [preExternLineSplit[-1][:-1]]]
                         elif isExternUnit(preExternLineSplit[1]):
                             pre = [parseExternUnit(preExternLineSplit[1])]
                         elif preExternLineSplit[1] == "TRUE":
