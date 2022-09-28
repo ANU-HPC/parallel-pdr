@@ -2,6 +2,9 @@
 #!/bin/sh
 cd `dirname "$0"` # moves to the directory in which this script is held (root of dagparser)
 
+red_text() { tput setaf 1; cat; tput sgr0; }
+green_text() { tput setaf 2; cat; tput sgr0; }
+
 DOMAIN=$1
 PROBLEM=$2
 SET=$3
@@ -49,10 +52,12 @@ fi
 
 if [ $USE_FD_PARSER -eq "1" ]
 then 
+    echo WARNING - FD PARSING NOT SET UP FOR GENERAL USE
     base=$(pwd)
     cd $TMP_DIR
     echo Parse PDDL into SAS file
     $USED_PYTHON $base/pddl-parser-fd/downward/fast-downward.py --translate --keep-sas-file $DOMAIN $PROBLEM 
+    #pypy3 $base/pddl-parser-fd/downward/fast-downward.py --translate --keep-sas-file $DOMAIN $PROBLEM 
 
     echo Finding H^2 Invariants:
     mv output.sas original_output.sas
@@ -158,8 +163,15 @@ fi
 echo ./VAL/build/linux64/release/bin/Validate $DOMAIN $PROBLEM $TMP_DIR/plan 
 ./VAL/build/linux64/release/bin/Validate $DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/val_out
 
-export GREP_COLORS='ms=01;32'
-cat $TMP_DIR/val_out | grep --color "Plan valid" -A 100 -B 100
-export GREP_COLORS='ms=01;31'
-cat $TMP_DIR/val_out | grep --color "Plan invalid" -A 100 -B 100
+plan_valid=`cat $TMP_DIR/val_out | grep --color "Plan valid" | wc -l`
+
+if [ $plan_valid -eq "1" ]
+then 
+    #export GREP_COLORS='ms=01;32'
+    cat $TMP_DIR/val_out | grep "Plan valid" | green_text
+else
+    #export GREP_COLORS='ms=01;31'
+    cat $TMP_DIR/val_out | red_text
+fi
+
 exit 0
