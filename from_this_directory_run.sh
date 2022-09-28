@@ -28,8 +28,8 @@ cat $SET
 cat pdr/options.h | grep \^\#define | grep -v OPTIONS_H | cut -d\  -f2-
 echo STOP_EXTRA_SETTINGS
 
-#TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
-TMP_DIR=`pwd`/tmp/fd
+TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
+#TMP_DIR=`pwd`/tmp/fd
 mkdir $TMP_DIR
 echo TMP_DIR: $TMP_DIR
 
