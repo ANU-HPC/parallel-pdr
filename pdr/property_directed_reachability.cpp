@@ -763,6 +763,7 @@ namespace property_directed_reachability {
 
   // TODO neatness rename the layer for state layer, and succ state layer for clarity
   vector<int> single_get_successor(const vector<int>& state, int layer, int subproblem, bool record) {
+    //cout << "get successor for: " << state_string(state) << endl;
 #if MS_ONLY_MAX_SOLVER_STEP
     assert(MS_steps_used == max_macro_steps);
 #endif
@@ -858,6 +859,8 @@ namespace property_directed_reachability {
   }
 
   vector<int> single_get_reason(const vector<int>& state, int layer, int subproblem) {
+    //cout << "getting reason for state: " << PDR::state_string(state) << endl;
+    //cout << "getting reason for state: " << vector_string(state) << endl;
     int sat_count = 0;
     // TODO does not use state, could be confusing
 #if MS_ONLY_MAX_SOLVER_STEP
@@ -865,6 +868,7 @@ namespace property_directed_reachability {
 #endif
 
     vector<int> running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
+    //vector<int> running_reason = state;
     if (S) cout << "in layer " << layer << endl;
     if (S) cout << "subproblem " << subproblem << endl;
     if (S) cout << "In reduce, starting candidate [ " << running_reason.size() << " / " << subproblem_to_propositions[subproblem].size() << " ] " << state_string(running_reason) << endl;
@@ -885,14 +889,13 @@ namespace property_directed_reachability {
         sat_count++;
         if (!single_has_successor(possible_reason, layer, subproblem)) {
           running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
+          //cout << running_reason.size() << " => " << possible_reason.size() << endl;
+          //running_reason = possible_reason;
           if (S) cout << "In reduce, mid-way candidate [ " << running_reason.size() << " / " << subproblem_to_propositions[subproblem].size() << " ] " << state_string(running_reason) << endl;
         }
       }
     }
     reason_num_sat_calls.push_back(sat_count);
-#if USE_ER
-    running_reason = single_get_er_reason(running_reason, layer, subproblem);
-#endif
     return running_reason;
   }
 
@@ -905,7 +908,86 @@ namespace property_directed_reachability {
     return new_vector;
   }
 
+  /*
+   * A collection of functions for finding better reasons when using extended resolution
+  bool is_er(int x) {
+    for (auto ita=er_to_corresponding.begin(); ita!=er_to_corresponding.end(); ita++) {
+      const int er = ita->first; 
+      if (er == x) return true;
+    }
+    return false;
+  }
+
+  bool er_consistent(const vector<int>& state) {
+    cout << "er_consistent on state: " << state_string(state) << endl;
+
+    // WARNING slow
+    // turn all negative ERs into their corresponding negatives
+    // For all positives check that they can be satisfies
+    // AND check the state is internally consistent
+    set<int> working;
+    vector<int> check_pos_er;
+
+    for (auto it=state.begin(); it!=state.end(); it++) {
+      int lit = *it;
+      bool pos = lit>0;
+      int var = abs(lit);
+      if (is_er(var)) {
+        if (!pos) {
+          // negative so add all the corresponding negatives
+          const vector<int>& corr = er_to_corresponding[var];
+          cout << "var " << var << " has corr of size " << corr.size() << endl;
+          for (auto itb=corr.begin(); itb!=corr.end(); itb++) {
+            working.insert(-*itb); 
+          }
+        } else {
+          // pos so check later
+          check_pos_er.push_back(var);
+        }
+      } else {
+        // normal
+        working.insert(lit);
+      }
+    }
+
+    // Now lets check all the positive er
+    for (auto itb=check_pos_er.begin(); itb!=check_pos_er.end(); itb++) {
+      int pos_er = *itb; 
+      const vector<int>& corr = er_to_corresponding[pos_er];
+      // these can't all be in the state negatively
+      bool at_least_one_is_not_in_negatively = false;
+      for (auto itc=corr.begin(); itc!=corr.end(); itc++) {
+        int cor = *itc;
+        // check if in negatively
+        if (working.find(-cor) == working.end()) {
+          // not in negatively
+          at_least_one_is_not_in_negatively = true;
+        }
+      }
+      if (!at_least_one_is_not_in_negatively) {
+        cout << "er_consistent false" << endl;
+        return false; // all are in negatively, so that pos is contradicted
+      }
+    }
+
+    // normal - check for inconsistency
+    cout << "er final check on " << working << endl;
+    for (auto it=working.begin(); it!=working.end(); it++) {
+      const int w_lit = *it;
+      if (working.find(-w_lit) != working.end()) {
+        // then the opposite is also here
+        cout << "er_consistent false" << endl;
+        return false;
+      }
+    }
+    cout << "er_consistent true" << endl;
+    return true;
+  }
+
+#define ERLOUD 0
   vector<int> single_get_er_reason(const vector<int>& existing_reason, int layer, int subproblem) {
+    // Tries to replace non er with er
+    if(ERLOUD) cout << "get er_reason starting with " << state_string(existing_reason) << endl;
     vector<int> running_reason = existing_reason;
 
     for (auto ita=er_to_corresponding.begin(); ita!=er_to_corresponding.end(); ita++) {
@@ -915,6 +997,7 @@ namespace property_directed_reachability {
       vector<int> possible_reason = running_reason;
 
       if (!in_abs_sorted_vector(er, running_reason)) {
+        if(ERLOUD) cout << "not in positively " << state_string(vector<int>(1,er)) << endl;
         // er is NOT in the reason, so lets see if any of the corresponding are either
         bool a_corresponding_is_in = false;
         for (auto itb=corresponding.begin(); itb!=corresponding.end(); itb++) {
@@ -926,43 +1009,54 @@ namespace property_directed_reachability {
           }
         }
 
+        // So if on(A,[UNSPECIFIED]) is NOT in the reason, but on(A, b) is, see if you can swap out on(a,b) for on(a,[UNSPECIFIED])
+
         if (a_corresponding_is_in) {
           // Test if this possible reason is a real reason
           possible_reason.push_back(er);
           sort(possible_reason.begin(), possible_reason.end(), abs_comp);
-          if (!single_has_successor(possible_reason, layer, subproblem)) {
-            running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
-          }
-        }
-      } else if (!in_abs_sorted_vector(-er, running_reason)) {
-        // Same as before but for negative
-        // -er is NOT in the reason, so lets see if any of the corresponding are either
-        bool a_corresponding_is_in = false;
-        for (auto itb=corresponding.begin(); itb!=corresponding.end(); itb++) {
-          const int var = *itb;
-          if (in_abs_sorted_vector(-var, possible_reason)) {
-            possible_reason = remove_if_in_vector(possible_reason, -var);
-            a_corresponding_is_in = true;
-          }
-        }
+          if(ERLOUD) cout << "Trying to swap in " << state_string(vector<int>(1,er)) << ", testing: " << state_string(possible_reason) << endl;
 
-        if (a_corresponding_is_in) {
-          // Test if this possible reason is a real reason
-          possible_reason.push_back(-er);
-          sort(possible_reason.begin(), possible_reason.end(), abs_comp);
-          if (!single_has_successor(possible_reason, layer, subproblem)) {
-            running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
+          if (er_consistent(possible_reason) && (!single_has_successor(possible_reason, layer, subproblem))) {
+            //if (!single_has_successor(possible_reason, layer, subproblem)) {
+            //running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
+            running_reason = possible_reason;
+          }
           }
         }
+        if (!in_abs_sorted_vector(-er, running_reason)) {
+          if(ERLOUD) cout << "not in negatively " << state_string(vector<int>(1,er)) << endl;
+          // Same as before but for negative
+          // -er is NOT in the reason, so lets see if any of the corresponding (negated) are either
+          bool a_corresponding_is_in = false;
+          for (auto itb=corresponding.begin(); itb!=corresponding.end(); itb++) {
+            const int var = *itb;
+            if (in_abs_sorted_vector(-var, possible_reason)) {
+              possible_reason = remove_if_in_vector(possible_reason, -var);
+              a_corresponding_is_in = true;
+            }
+          }
+
+          if (a_corresponding_is_in) {
+            // Test if this possible reason is a real reason
+            possible_reason.push_back(-er);
+            sort(possible_reason.begin(), possible_reason.end(), abs_comp);
+            if(ERLOUD) cout << "Trying to swap in " << state_string(vector<int>(1,er)) << ", testing: " << state_string(possible_reason) << endl;
+            if (er_consistent(possible_reason) && (!single_has_successor(possible_reason, layer, subproblem))) {
+              //running_reason = single_layers.layer_to_steps_solvers[layer-1][PDR::MS_steps_used]->used_assumptions();
+              running_reason = possible_reason;
+            }
+          }
+        } 
       }
-    }
 
-    if (running_reason != existing_reason) {
-      cout << "FROM : " << state_string(existing_reason) << endl;
-      cout << "TO   : " << state_string(running_reason) << endl;
+      if (running_reason != existing_reason) {
+        cout << "FROM : " << state_string(existing_reason) << endl;
+        cout << "TO   : " << state_string(running_reason) << endl;
+      }
+      return running_reason;
     }
-    return running_reason;
-  }
+    */
 
   void print_dagster_stats() {
     for (int subproblem=0; subproblem<PDR::num_subproblems; subproblem++) {

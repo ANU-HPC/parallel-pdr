@@ -61,13 +61,6 @@ int main(int argc, char **argv) {
   }
 #endif
   
-#if USE_ER
-#if !USE_FD_PARSER
-    cerr << "ERROR using ER without FD parser" << endl;
-    exit(1);
-#endif
-#endif
-
   // Load symbols
   PDR::read_mapping(); // TODO not if not storing actions
 
@@ -430,6 +423,7 @@ class Parallel_Buffer {
         vector<int> reason;
         if (original_obl.reduce) reason = PDR::single_get_reason(original_obl.state, original_obl.layer, original_obl.subproblem);
         else                     reason = PDR::single_get_reason_just_used(original_obl.state, original_obl.layer, original_obl.subproblem);
+        //cout << "main PDR returned reason " << PDR::state_string(reason) << endl;
 
 #if MULTI_STEP_REASON_CALCULATE_AT_ALL
 #if MS_ONLY_MAX_SOLVER_STEP 

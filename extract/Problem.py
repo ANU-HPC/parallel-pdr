@@ -2,6 +2,7 @@
 #from Lingeling import Lingeling
 from RunBash import runBash
 from import_option import import_option
+from itertools import combinations 
 
 # lingeling dagster
 from Dag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_NODE_PREFIX, TRADITIONAL_DAGSTER
@@ -419,6 +420,206 @@ class Problem:
             dagFile.write(self.getDagFileRanges(self.satReportingVariables))
             #dagFile.write("1-"+str(numVariables)+"\n")
     '''
+
+    def getAllERSymbols(self, baseSymbol):
+        retVal = []
+        predicate, argumentsWithCommasCloseBracket = baseSymbol.split("(")
+        arguments = argumentsWithCommasCloseBracket[:-1].split(",")
+        # Do all variations
+        n = len(arguments)
+        for i in range(1,n+1):
+            # What to turn into UNSPECIFIED
+            for toTurnOff in combinations(range(n),i):
+                resultantERSymbol = predicate + "("
+                for i in range(n):
+                    if i in toTurnOff:
+                        resultantERSymbol += "[UNSPECIFIED]"
+                    else:
+                        resultantERSymbol += arguments[i]
+
+                    if i==n-1:
+                        resultantERSymbol += ")"
+                    else:
+                        resultantERSymbol += ","
+                retVal.append(resultantERSymbol)
+        return retVal
+
+    def generateProblemWithERVariables(self):
+        # Find all the ER symbols
+        # Work out where to but them, in doing so create a mapping from "old" variables to "new" variables
+        # Convert everything and add in ER variables
+        oldToERSymbols = {}
+        ERSymbolToOlds = {}
+        for i in self.propositionRange:
+            symbol = self.symbols[i]
+            ERSymbols = self.getAllERSymbols(symbol)
+            oldToERSymbols[i] = ERSymbols
+            for ERSymbol in ERSymbols:
+                if ERSymbol not in ERSymbolToOlds.keys():
+                    ERSymbolToOlds[ERSymbol] = []
+                ERSymbolToOlds[ERSymbol].append(i)
+                
+        numER = len(ERSymbolToOlds.keys())
+        print("prop num ", len(self.propositionRange))
+        print("ER num ", numER)
+
+        newTotalPerTimestep = self.totalPerTimestep + numER
+
+        # so new is old offset by num ER:
+        # timestep: [old actions] [old props] [new ER props] [aux]
+        oldLitToNewLitMemo = {}
+        oldLitToNewLitMemo[self.totalPerTimestep*2 + 1] = newTotalPerTimestep*2 + 1 # Special edge case for unused extra single literal
+        def oldLitToNewLit(oldLit):
+            if oldLit in oldLitToNewLitMemo.keys():
+                return oldLitToNewLitMemo[oldLit]
+
+            oldVar = abs(oldLit)
+            if oldLit > 0:
+                posNeg = 1
+            else:
+                posNeg = -1
+            if oldVar <= self.totalPerTimestep:
+                # time step one
+                stepTwo = 0
+                oldVarOne = oldVar
+            else:
+                # time step two
+                stepTwo = 1
+                oldVarOne = oldVar - self.totalPerTimestep
+
+            assert oldVarOne <= self.totalPerTimestep # This might break with multiple subproblems, see above hardcoded memo addition
+
+            # great now have got the first time step action/prop/aux
+            if oldVarOne in self.actionRange or oldVarOne in self.propositionRange:
+                newVarOne = oldVarOne
+            else:
+                # Aux
+                print(oldVarOne, self.totalPerTimestep, self.numAux, "   ", stepTwo, posNeg, oldLit)
+                assert oldVarOne > self.totalPerTimestep - self.numAux
+                newVarOne = oldVarOne + numER
+
+            newLit = posNeg * (newVarOne + newTotalPerTimestep * stepTwo)
+            oldLitToNewLitMemo[oldLit] = newLit
+            return newLit
+
+        # Insert assign order and new var numbers for ER symbols
+        def ERSortKey(symbol):
+            return str(symbol.count("[UNSPECIFIED]")) + symbol
+
+        ERSymbols = sorted(ERSymbolToOlds.keys(), key=ERSortKey)
+        print(ERSymbols)
+
+        # With the ability to convert lets create new versions of everything
+        # Symbols first
+        endOfActionsProps = 1 + len(self.actionRange) + len(self.propositionRange)
+        newSymbols = self.symbols[:endOfActionsProps] + ERSymbols + self.symbols[endOfActionsProps:]
+
+        newPropositionRange = range(self.propositionRange.start, self.propositionRange.stop + numER)
+        ERRange = range(self.propositionRange.stop, self.propositionRange.stop + numER)
+
+        # Create ER to corresponding and back AND additions to T (and U later)
+        corresponding_to_er = {}
+        er_to_corresponding = {}
+
+        # Convert corresponding <-> er map to new var format
+        ERSymbolToNewVar = {}
+        for i in range(len(ERSymbols)):
+            ERSymbolToNewVar[ERSymbols[i]] = i + 1 + len(self.actionRange) + len(self.propositionRange)
+            #print(ERSymbols[i], i + 1 + len(self.actionRange) + len(self.propositionRange))
+
+        for old in oldToERSymbols.keys():
+            newCorresponding = oldLitToNewLit(old)
+            ERs = [ERSymbolToNewVar[symbol] for symbol in oldToERSymbols[old]]
+            corresponding_to_er[newCorresponding] = ERs
+
+        for ERSymbol in ERSymbolToOlds.keys():
+            ER = ERSymbolToNewVar[ERSymbol]
+            newCorrespondings = [oldLitToNewLit(oldCorresponding) for oldCorresponding in ERSymbolToOlds[ERSymbol]]
+            er_to_corresponding[ER] = newCorrespondings
+
+        # Now have er <-> corresponding maps, lets add clauses
+        newClauses = [[oldLitToNewLit(oldLit) for oldLit in clause] for clause in self.clauses]
+        for er in er_to_corresponding.keys():
+            corresponding = er_to_corresponding[er]
+            # if er is TRUE, then one of the corresponding must be true. Also, if the ER is FALSE, then 
+            addClauses = []
+            addClauses.append([-er] + corresponding)
+            addClauses.append([-(newTotalPerTimestep + er)] + [newTotalPerTimestep + c for c in corresponding])
+            for c in corresponding:
+                addClauses.append([newTotalPerTimestep + er, -(c + newTotalPerTimestep)])
+
+            for clause in addClauses:
+                newClauses.append(clause)
+                self.TCRss[0].append(len(newClauses)-1)
+
+        '''
+        for ER in ERRange:
+            newClauses.append([ER]) # unit clause for testing
+            self.TCRss[0].append(len(newClauses)-1)
+            newClauses.append([ER + newTotalPerTimestep]) # unit clause for testing
+            self.TCRss[0].append(len(newClauses)-1)
+        #ERRss = [range(len(self.clauses), len(newClauses))]
+        print(self.TCRss[0])
+        '''
+
+        # TODO
+        newActionPre = self.actionEffStrips
+        newActionEffStrips = self.actionPre
+
+        # TODO include it in the initial state? - it doesn't seem to need it, make sure that is for the right reasons
+
+        retVal = Problem(self.tmpDir, \
+                         None, \
+                         newSymbols, \
+                         newActionPre, \
+                         newActionEffStrips, \
+                         self.actionRange, \
+                         newPropositionRange, \
+                         newTotalPerTimestep, \
+                         newClauses, \
+                         self.ICRs, \
+                         self.GCRs, \
+                         self.TCRss, \
+                         self.UCRss)
+
+        # TODO
+        retVal.actionEffAdl = [[] for i in self.actionRange] # AS IS STRIPS, TODO look up eff_adl
+
+        retVal.trivialClause = None # For dagster proper
+        retVal.DCRs = None # For dagster proper
+        retVal.varToD = None # For dagster proper
+        retVal.encoding = self.encoding
+
+        retVal.variableToActionsWithItAsEff = "DROPPED WITH ER, READD IF WANTED"
+
+        #if baseProblem.encoding == "STRIPS": retVal.variableToActionsWithItAsEff = baseProblem.variableToActionsWithItAsEff
+        #else:                                retVal.variableToActionsWithItAsEff = "NOT SUPPORTED FOR NON-STRIPS"
+        retVal.onlyOneStripsCliques = None
+        retVal.useOOC = self.useOOC
+        retVal.useActivationLiterals = self.useActivationLiterals
+        retVal.isolateSubproblems = self.isolateSubproblems
+        retVal.max_macro_steps = self.max_macro_steps
+
+        # TODO Dropped for now
+        retVal.litToMutex = {}
+        #retVal.litToMutex = self.litToMutex
+
+        retVal.ERRange = ERRange
+        #retVal.ERRss = ERRss
+        retVal.er_to_corresponding = er_to_corresponding
+        retVal.corresponding_to_er = corresponding_to_er
+        retVal.numAux = self.numAux
+        return retVal
+
+
+
+
+
+
+
+
+
+
 
     def writePDRDagCnfForEachPackage(self):
         # ONLY WORKS FOR LOGISTICS
@@ -1557,6 +1758,7 @@ class Problem:
                     if abs(goalLit) in rootNode:
                         isolateGoal.add(goalLit)
                         assignedGoalLits.append(goalLit) # just for a check
+                        print("IF USING ER, REVIEW litToMutex CREATION!!!")
                         if goalLit in self.litToMutex.keys():
                             mutexLitsToExclude.update(self.litToMutex[goalLit])
     

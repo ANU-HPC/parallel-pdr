@@ -157,6 +157,7 @@ void Lingeling::add_clauses(const vector<vector<int>>& inClauses) {
 bool Lingeling::solve(const vector<int>& assumptions) {
   last_assumptions = assumptions;
   for (int i=0; i<assumptions.size(); i++){
+  //for (int i=assumptions.size()-1; i>=0; i--){
     lglassume(solver, assumptions[i]);
     lglfreeze(solver, assumptions[i]);
   }
@@ -174,6 +175,7 @@ bool Lingeling::solve_unmentioned_assumptions(const vector<int>& assumptions, co
   last_unmentioned_assumptions = unmentioned_assumptions;
   last_assumptions = assumptions;
   for (int i=0; i<assumptions.size(); i++){
+  //for (int i=assumptions.size()-1; i>=0; i--){
     lglassume(solver, assumptions[i]);
     lglfreeze(solver, assumptions[i]);
   }

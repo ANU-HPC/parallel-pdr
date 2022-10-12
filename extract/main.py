@@ -122,6 +122,9 @@ else:          baseProblem = Problem.fromMadagascar(tmpDir, extraSettingsFilenam
 print("Completed in " + str(round(time.time() - startTime,2)))
 if baseProblem == None: exit(0)
 
+#ERProblem = baseProblem.generateProblemWithERVariables()
+#baseProblem = ERProblem
+
 _,_,_,backwards,_ = extraSettings(extraSettingsFilename)
 if backwards: usedProblem = Problem.backwards(baseProblem, extraSettingsFilename)
 else:         usedProblem = baseProblem
