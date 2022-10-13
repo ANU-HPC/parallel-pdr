@@ -81,6 +81,7 @@ namespace property_directed_reachability {
   }
 
   vector<int> inflate_compressed_to_full(const vector<int>& compressed_state, const vector<int>& full) {
+    assert(compressed_state.size());
     auto full_current = full.begin();
     const auto full_end = full.end();
     auto compressed_current = compressed_state.begin()+2;
@@ -379,15 +380,50 @@ namespace property_directed_reachability {
     return projected_state;
   }
 
+  vector<int> tilde_state(const vector<int>& state, int steps) {
+    vector<int> ret_val;
+    for (auto it=state.begin(); it!=state.end(); it++) {
+      const int lit = *it;
+      if (lit > 0) ret_val.push_back(*it + steps*total_per_timestep);
+      else         ret_val.push_back(*it - steps*total_per_timestep);
+    }
+    return ret_val;
+  }
+
   pair<vector<vector<int>>, vector<vector<int>>> project_to_state_actions(const vector<int>& assignment, const int subproblem, const int steps_used) {
+    if (PDR::isolate_subproblems) {
+      return project_to_state_actions_non_contiguous(assignment, subproblem, steps_used);
+    } else {
+      return project_to_state_actions_contiguous(assignment, subproblem, steps_used);
+    }
+  }
+
+  pair<vector<vector<int>>, vector<vector<int>>> project_to_state_actions_non_contiguous(const vector<int>& assignment, const int subproblem, const int steps_used) {
+    vector<vector<int>> succ_state_sequence;
+    vector<vector<int>> actions_executed_sequence;
+
+    for (int timestep = 0; timestep < steps_used+1; timestep++) {
+      const vector<int> actions_executed = tilde_state(project_state_to_propositions(assignment, timestep_to_actions[timestep]), -timestep);
+      const vector<int> succ_state       = tilde_state(project_state_to_propositions(assignment, timestep_to_propositions[timestep]), -timestep);
+      actions_executed_sequence.push_back(actions_executed);
+      succ_state_sequence.push_back(succ_state);
+    }
+
+    return pair<vector<vector<int>>, vector<vector<int>>>(succ_state_sequence, actions_executed_sequence);
+  }
+
+  pair<vector<vector<int>>, vector<vector<int>>> project_to_state_actions_contiguous(const vector<int>& assignment, const int subproblem, const int steps_used) {
     assert(is_abs_sorted(assignment));
     vector<vector<int>> succ_state_sequence;
     vector<vector<int>> actions_executed_sequence;
+    //cout << "assignment" << assignment.size() << " | " << vector_string(assignment) << " | " << steps_used << " | " << total_per_timestep << " | " << num_aux << endl;
     assert(assignment.size() == (steps_used+1)*total_per_timestep - num_aux);
 
     const int num_actions = actions.size(); 
     const int num_propositions = total_per_timestep - num_actions - num_aux;
     assert(subproblem == 0);
+    //cout << "PDR::subproblem_to_propositions[0] " << PDR::subproblem_to_propositions[0] << endl;
+    //assert(PDR::subproblem_to_propositions[0].size() == PDR::propositions_set.size());
     assert(PDR::subproblem_to_propositions[0].size() == num_propositions);
 
     int DEBUG_largest_var=-1;
@@ -658,6 +694,11 @@ namespace property_directed_reachability {
 #if TEST_NAL
     exit(1); // not set up for it
 #endif
+
+    for (int i=0; i<=PDR::max_macro_steps; i++) {
+      timestep_to_actions[i] = tilde_state(subproblem_to_actions[0], i);
+      timestep_to_propositions[i] = tilde_state(subproblem_to_propositions[0], i);
+    }
   }
 
   int h_add(const vector<int>& compressed_state) {
@@ -1187,6 +1228,9 @@ namespace property_directed_reachability {
   map<int, vector<int>> subproblem_to_clause_validating_lits;
   map<int, vector<int>> corresponding_to_er;
   map<int, vector<int>> er_to_corresponding;
+
+  map<int, vector<int>> timestep_to_propositions;
+  map<int, vector<int>> timestep_to_actions;
 
   map<int, vector<vector<int>>> subproblem_to_only_one_strips_cliques;
 }

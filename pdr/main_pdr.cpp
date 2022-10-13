@@ -526,7 +526,7 @@ bool parallel_pdr() {
   assert(subproblem_to_projected_initial_state.size() == PDR::num_subproblems);
   if (all_trivial) {
     cout << "FOUND A PLAN (trivially) for all subproblems" << endl;
-    return false;
+    return true;
   }
 
   // first do lower subproblems, then do the final subproblem

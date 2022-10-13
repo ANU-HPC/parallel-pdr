@@ -1146,9 +1146,9 @@ class Dag:
         plt.show() # Actually show it
 
     @classmethod
-    def fromSCCGraph(cls, problem, baseSCCGraph, indexToBaseSCCGraph, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions): # SCCNodeToIndex, indexToSCCNode):
+    def fromSCCGraph(cls, problem, baseSCCGraph, indexToBaseSCCGraph, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, onlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions): # SCCNodeToIndex, indexToSCCNode):
         newDag = Dag(problem, baseSCCGraph, indexToBaseSCCGraph)
-        newDag.overwriteWithSCCGraph(SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
+        newDag.overwriteWithSCCGraph(SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, onlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
         return newDag
     
     @classmethod
@@ -1185,7 +1185,7 @@ class Dag:
         #self.subproblemToOnlyOneStripsCliques[0] = onlyOneStripsCliques
         # to make it work in the larger system - not doing any decomposition
 
-    def overwriteWithSCCGraph(self, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions):
+    def overwriteWithSCCGraph(self, SCCGraph, subproblem, layer, extraAssumptions, clauseValidatingLits, onlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions):
         # the stuff that historically was in "knoblockDecomposition"
 
         SCCNodeToCumulativeActions = None # make sure it isn't used

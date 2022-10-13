@@ -121,6 +121,8 @@ namespace property_directed_reachability {
 
   vector<int> convert_clause_for_steps(vector<int> clause, int steps);
   pair<vector<vector<int>>, vector<vector<int>>> project_to_state_actions(const vector<int>& assignment, const int subproblem, const int steps_used);
+  pair<vector<vector<int>>, vector<vector<int>>> project_to_state_actions_contiguous(const vector<int>& assignment, const int subproblem, const int steps_used);
+  pair<vector<vector<int>>, vector<vector<int>>> project_to_state_actions_non_contiguous(const vector<int>& assignment, const int subproblem, const int steps_used);
   vector<string> split(const string& input);
   void read_mapping();
   void read_extra_settings(string extra_settings_filename);
@@ -218,6 +220,8 @@ namespace property_directed_reachability {
   extern map<int, vector<int>> corresponding_to_er;
   extern map<int, vector<int>> er_to_corresponding;
 
+  extern map<int, vector<int>> timestep_to_propositions;
+  extern map<int, vector<int>> timestep_to_actions;
 
   extern map<int, vector<vector<int>>> subproblem_to_only_one_strips_cliques;
 }

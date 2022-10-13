@@ -888,12 +888,16 @@ class Problem:
             else: return -x
 
     def computeSCCGraphProcess(self):
+        for i in self.actionEffAdl[1:]:
+            if len(i):
+                print("ERROR cannot decompose when using ADL effects")
+                assert 0
         allEff = {}
         for var in self.propositionRange:
             allEff[var] = False
             allEff[-var] = False
         for action in self.actionRange:
-            for lit in self.actionEff[action]:
+            for lit in self.actionEffStrips[action]:
                 allEff[lit] = True
         self.notBothPolarityPropositions = set()
         for var in self.propositionRange:
@@ -990,7 +994,7 @@ class Problem:
             propositionToRelevantActions[proposition] = set() 
         for action in self.actionRange:
             relevantActionToPropositions[action] = set()
-            for lit in self.actionEff[action] + self.actionPre[action]:
+            for lit in self.actionEffStrips[action] + self.actionPre[action]:
                 baseLit = self.toBase(lit)
                 propositionToRelevantActions[baseLit].add(action)
                 relevantActionToPropositions[action].add(baseLit)
@@ -1287,7 +1291,7 @@ class Problem:
         ICRs = self.ICRs
         GCRs = self.GCRs
 
-        retVal = Problem(self.tmpDir, self.newDag, self.symbols, self.actionPre, self.actionEff, self.actionRange, self.propositionRange, self.totalPerTimestep, self.clauses, ICRs, GCRs, self.newTCRss, self.newUCRss)
+        retVal = Problem(self.tmpDir, self.newDag, self.symbols, self.actionPre, self.actionEffStrips, self.actionRange, self.propositionRange, self.totalPerTimestep, self.clauses, ICRs, GCRs, self.newTCRss, self.newUCRss)
 
         allNextStep = [x + self.totalPerTimestep for x in self.propositionRange]
 
@@ -1413,10 +1417,10 @@ class Problem:
         # TEST does there exist an action, excluded, which has effects in the cumulative propositions
         for node in SCCNodeToCumulativeActions.keys():
             for excludedAction in [action for action in self.actionRange if action not in SCCNodeToCumulativeActions[node]]:
-                if len(node.intersection(set([abs(x) for x in self.actionEff[excludedAction]]))):
+                if len(node.intersection(set([abs(x) for x in self.actionEffStrips[excludedAction]]))):
                     print("ERROR")
                     print(self.symbols[action])
-                    print(self.actionEff[action])
+                    print(self.actionEffStrips[action])
                     print(node)
                     assert(0)
         '''
@@ -1779,14 +1783,14 @@ class Problem:
 
         actionVars = {}
         for action in self.actionRange:
-            actionVars[action] = set([abs(x) for x in self.actionEff[action] + self.actionPre[action]]) # REVIEW 5%
+            actionVars[action] = set([abs(x) for x in self.actionEffStrips[action] + self.actionPre[action]]) # REVIEW 5%
 
         SCCNodeToCumulativeActions = None
 
         print("Processing", len(allPaths), "paths")
         for counter in range(len(allPaths)):
             clauseValidatingLits = [-(startNewVars + subproblem)]
-            extraAssumptions = sorted([-(startNewVars + pathNum) for pathNum in range(num_subproblems) if pathNum != subproblem] + [startNewVars + subproblem])
+            extraAssumptions = [] 
 
 
 
@@ -1813,7 +1817,7 @@ class Problem:
 
             relevantActions = self.projectionToRelevantActions(actionVars, projectedGraph, self.subproblemToKnoblockExtraPropositions[subproblem])
             #self.writeSubproblemCnf(subproblem, projectedGraph)
-            problemDag = Dag.fromSCCGraph(self, self.SCCGraph, self.indexToSCCNode, projectedGraph, subproblem, 0, extraAssumptions, clauseValidatingLits, self.OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
+            problemDag = Dag.fromSCCGraph(self, self.SCCGraph, self.indexToSCCNode, projectedGraph, subproblem, 0, extraAssumptions, clauseValidatingLits, self.onlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
             x = time.time()
             if TRADITIONAL_DAGSTER:
                 for i in range(LAYERS_TO_WRITE):
@@ -1848,7 +1852,7 @@ class Problem:
 
         relevantActions = self.projectionToRelevantActions(actionVars, self.SCCGraph, self.subproblemToKnoblockExtraPropositions[subproblem])
         #self.writeSubproblemCnf(subproblem, self.SCCGraph)
-        finalProblemDag = Dag.fromSCCGraph(self, self.SCCGraph, self.indexToSCCNode, self.SCCGraph, subproblem, 0, extraAssumptions, clauseValidatingLits, self.OnlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
+        finalProblemDag = Dag.fromSCCGraph(self, self.SCCGraph, self.indexToSCCNode, self.SCCGraph, subproblem, 0, extraAssumptions, clauseValidatingLits, self.onlyOneStripsCliques, SCCNodeToCumulativeActions, relevantActions)
         for i in range(LAYERS_TO_WRITE):
             mainDag.extend(finalProblemDag.getIncrementedLayerCopy(i))
 
@@ -1870,7 +1874,7 @@ class Problem:
                 constraintsDetermined.add(var)
                 for action in self.variableToActionsWithItAsEff[var]:
                     #print("action ", self.symbols[action])
-                    for polarisedEff in self.actionEff[action]:
+                    for polarisedEff in self.actionEffStrips[action]:
                         if not abs(polarisedEff) in self.notBothPolarityPropositions:
                             graph.add_edge(var, abs(polarisedEff))
                         else:
@@ -2192,7 +2196,7 @@ class Problem:
                          GCRs, \
                          baseProblem.TCRss, \
                          baseProblem.UCRss)
-        retVal.actionEffAdl = [[] for i in baseProblem.actionRange] # AS IS STRIPS, TODO look up eff_adl
+        retVal.actionEffAdl = [None] + [[] for i in baseProblem.actionRange] # AS IS STRIPS, TODO look up eff_adl
         retVal.trivialClause = None # For dagster proper
         retVal.DCRs = None # For dagster proper
         retVal.varToD = None # For dagster proper
