@@ -1714,7 +1714,6 @@ class Problem:
         for path in allPaths:
             if len(path) == 1:
                 print("WARNING!! not certainly bad, iffy... path len 1")
-                print([self.symbols[x] for x in path[0]])
 
         for path in allPaths + [self.SCCGraph]:
             extraPropositions = set()
@@ -2415,7 +2414,10 @@ class Problem:
                             for j in range(len(most)):
                                 if ")" == most[j][-1]:
                                     most[j] = most[j][:-1]
-                            pre = [parseExternUnit(x) for x in most + [preExternLineSplit[-1][:-1]]]
+                            last = preExternLineSplit[-1][:-1]
+                            if last[-1] == ")":
+                                last = last[:-1]
+                            pre = [parseExternUnit(x) for x in most + [last]]
                         elif isExternUnit(preExternLineSplit[1]):
                             pre = [parseExternUnit(preExternLineSplit[1])]
                         elif preExternLineSplit[1] == "TRUE":
