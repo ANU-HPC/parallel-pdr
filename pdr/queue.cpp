@@ -11,37 +11,52 @@ class compressed_not_matches_reason {
   {}
 
   bool equals_for_partial_state(const vector<int>& compressed_state) const {
+    assert(compressed_state[1] == COMPRESS_PARTIAL_STATE);
     return !PDR::subset(vector<int>(compressed_state.begin()+2, compressed_state.end()), reason);
   }
 
-  bool operator()(const vector<int>& compressed_state) const {
-    if (compressed_state[1] == COMPRESS_PARTIAL_STATE) return equals_for_partial_state(compressed_state);
+  bool matches(const vector<int>& compressed_state) const {
     auto compressed_state_current = compressed_state.begin()+2;
     const auto compressed_state_end = compressed_state.end();
     auto reason_current = reason.begin();
     const auto reason_end = reason.end();
 
-    assert(compressed_state[0] == 0); // This asserts the subproblem is 0. This is not necessary, but it is included here as a note/reminder, that this matches operator is only correct if the the subproblem of the 2 things are the same. There is a case where a reason mentions a variable outside of the state, this algorithm will read it as the state saying that lit is negative, as opposed to just not relevant.
-
-    assert(is_sorted(compressed_state_current, compressed_state_end));
-    assert(is_abs_sorted(reason));
-
-    while (compressed_state_current != compressed_state_end && reason_current != reason_end) {
-      if (*compressed_state_current == *reason_current) { // matching vars AND lits
-        compressed_state_current++;
-        reason_current++;
-      } else if (*compressed_state_current == - *reason_current) { // opposing lits
-        assert(reason_current != reason.end());
+    while (true) {
+      if (compressed_state_current == compressed_state_end) {
+        // ran out of compressed
+        // matches iff the rest of the reason is negative
+        while (reason_current != reason_end) {
+          if (*reason_current>0) return false;
+          else reason_current++;
+        }
         return true;
-      } else if (abs(*compressed_state_current) > abs(*reason_current)) {
-        if ((*reason_current)>0) return true; // reason lit was positive, but the cstate skipped it
-        else reason_current++;
-      } else {
-        assert(abs(*compressed_state_current) < abs(*reason_current));
+      } else if (reason_current == reason_end) {
+        return true; // gotten to the end of the reason, doesn't matter what the state is, it matches
+      } else if (*reason_current == *compressed_state_current) {
+        // match, keep up the assumption that they match
+        reason_current++;
         compressed_state_current++;
+      } else if (*reason_current == -(*compressed_state_current)) {
+        // opposite!
+        return false;
+      } else if (abs(*reason_current) > abs(*compressed_state_current)) { 
+        // At this point, they are unequal
+        // Reason is mentioning a variable that is later, so just let the compressed state catch up
+        compressed_state_current++;
+      } else {
+        assert(abs(*reason_current) < abs(*compressed_state_current));
+        // reason has mentioned a variable that compressed has skipped past
+        // So if the reason lit is negative, that is all fine, but if it is positive, then there is a mismatch
+        if (*reason_current>0) return false;
+        else reason_current++;
       }
     }
-    return false;
+  }
+
+  bool operator()(const vector<int>& compressed_state) const {
+    if (compressed_state[1] == COMPRESS_PARTIAL_STATE) return equals_for_partial_state(compressed_state);
+    assert(compressed_state[1] == COMPRESS_FULL_STATE);
+    return !matches(compressed_state);
   }
 };
 
