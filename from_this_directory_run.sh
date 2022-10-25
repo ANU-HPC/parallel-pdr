@@ -82,6 +82,16 @@ PYTHON_START_TIME=$(date +%s.%N)
 $USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR -f 1 # used when using FD to test heuristics > $TMP_DIR/madagascar_output
 echo PYTHON_TIME: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
 
+
+if [ $isolate_subproblems -eq "1" ]
+then
+    if [ `grep num_subproblems $TMP_DIR/tmp_dagster_info.json | awk '{print $2}' | awk -F, '{print $1}'` -eq "1" ]
+    then
+        echo NOT SUSCEPTIBLE TO DECOMPOSITION
+        exit 0
+    fi
+fi
+
 # If using heuristic values from FD, set up for that
 if [ $USE_FD_HEURISTIC -eq "1" ]
 then 
