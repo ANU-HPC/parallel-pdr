@@ -50,6 +50,13 @@ else
     USED_PYTHON="python3"
 fi
 
+DOMAIN_NO_COMMENTS=$TMP_DIR/tmp_commentless_domain.pddl
+cat $DOMAIN | sed -e 's/;.*$//' > $DOMAIN_NO_COMMENTS
+
+VAL_DOMAIN=$TMP_DIR/tmp_cleaned_domain.pddl
+$USED_PYTHON extract/clean_domain_for_val.py $DOMAIN_NO_COMMENTS > $VAL_DOMAIN
+#DOMAIN=$ORIGINAL_DOMAIN
+
 if [ $USE_FD_PARSER -eq "1" ]
 then 
     echo WARNING - FD PARSING NOT SET UP FOR GENERAL USE
@@ -72,7 +79,7 @@ fi
 cd extract
 
 PYTHON_START_TIME=$(date +%s.%N)
-$USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR # used when using FD to test heuristics > $TMP_DIR/madagascar_output
+$USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR -f 1 # used when using FD to test heuristics > $TMP_DIR/madagascar_output
 echo PYTHON_TIME: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
 
 # If using heuristic values from FD, set up for that
@@ -93,49 +100,85 @@ cd ../pdr
 CPP_START_TIME=$(date +%s.%N)
 if [ $isolate_subproblems -eq "1" ]
 then
-    all_subproblems=`grep num_subproblems $TMP_DIR/tmp_dagster_info.json | awk '{print $2}' | awk -F, '{print $1}'`
-    if [ $all_subproblems -eq "1" ] # only one subproblem, just go straight to monolyth
-    then
-        max_subproblem_to_complete=0
-        num_isolate_instances=1
-    else
-        max_subproblem_to_complete=`expr $all_subproblems - 2`
-        num_isolate_instances=`expr $all_subproblems - 1`
-    fi
-
-    echo number_isolated_instances: $num_isolate_instances
-
-    for subproblem in `echo 0 && seq $max_subproblem_to_complete`
+    RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=1
+    while [ $RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN -ne "0" ]
     do
-        if [ $DAGSTER -eq "1" ] # parallel
+
+        all_subproblems=`grep num_subproblems $TMP_DIR/tmp_dagster_info.json | awk '{print $2}' | awk -F, '{print $1}'`
+        if [ $all_subproblems -eq "1" ] # only one subproblem, just go straight to monolyth
         then
-            echo mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1
-            mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 &
+            max_subproblem_to_complete=0
+            num_isolate_instances=1
         else
-            echo ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1
-            ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 &
+            max_subproblem_to_complete=`expr $all_subproblems - 2`
+            num_isolate_instances=`expr $all_subproblems - 1`
+        fi
+
+        echo number_isolated_instances: $num_isolate_instances
+    
+        for subproblem in `echo 0 && seq $max_subproblem_to_complete`
+        do
+            if [ $DAGSTER -eq "1" ] # parallel
+            then
+                echo mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1
+                mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 &
+            else
+                echo ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1
+                ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 > $TMP_DIR/log_$subproblem &
+            fi
+        done
+    
+        echo done setting up jobs
+    
+        sleep 2 # HACKY - MAY GIVE RISE TO ERRORS give time for them all to start up - especially if they are parallel runs. Note this sleep only slows down the checker, so will only slow down very short runs
+    
+        # These are done in parallel, so wait until they are all finished
+        while [ `../isolate_subproblems/get_pid_matching_pdr.sh $TMP_DIR | wc -l` -ne "0" ]
+        do
+            ../isolate_subproblems/get_pid_matching_pdr.sh $TMP_DIR 
+            sleep 0.1
+        done
+    
+        num_partial_plans=`ls -l $TMP_DIR/ | grep partial_plan | wc -l`
+        echo number_isolated_instances: $num_isolate_instances
+        if [ $num_isolate_instances -eq $num_partial_plans ]
+        then
+            echo FOUND A COMBINED PLAN
+            python3 ../isolate_subproblems/combine_partial_plans.py $TMP_DIR/partial_plan* > $TMP_DIR/plan
+            ALL_SUBPROBLEMS_SAT=1
+            ../VAL/build/linux64/release/bin/Validate $DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/itermediate_val_out
+            FOUND_SUCCESFUL_COMBINED_PLAN=`cat $TMP_DIR/itermediate_val_out | grep --color "Plan valid" | wc -l`
+        else
+            ALL_SUBPROBLEMS_SAT=0
+            FOUND_SUCCESFUL_COMBINED_PLAN=0
+            echo UNKNOWN
+        fi
+
+        # Evaluate if need to/should run again - only run again if have many instances and don't have a valid plan
+
+        #if [ $num_isolate_instances -eq "1" ] && [ $ALL_SUBPROBLEMS_SAT -eq "1" ] && [ $FOUND_COMBINED_PLAN -eq "0" ]
+        #then
+            #echo One monolythinc problem, that pdr reported SAT, but VAL says is invalid. So there is a fault with PDR
+
+        if [ $num_isolate_instances -ne "1" ] && [ $FOUND_SUCCESFUL_COMBINED_PLAN -eq "0" ]
+        then
+            echo could not find a succesful combined plan with multiple subproblems - merging...
+            # Set up some information so that the next time around SCCs are combined
+            # At this point, either some are unsat:
+            #   For the unsat ones, make it so SCC are combined
+            # or the components are all sat (but there are multiple subproblems, and their combination does not make a valid overall plan)
+            #   Find the fault in the plan, find all corresponding subproblems and combine as before
+
+            VAL_ADVICE=`../VAL/build/linux64/release/bin/Validate -v $DOMAIN $PROBLEM $TMP_DIR/plan | grep Advice -A 999999 | grep " to "`
+            $USED_PYTHON ../isolate_subproblems/combine_subproblems.py $TMP_DIR $num_isolate_instances $ALL_SUBPROBLEMS_SAT $VAL_ADVICE > $TMP_DIR/tmp_merging_advice.txt
+            cd ../extract
+            $USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR -f 0
+            cd ../pdr
+            RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=1
+        else
+            RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=0
         fi
     done
-
-    echo done setting up jobs
-
-    sleep 2 # HACKY - MAY GIVE RISE TO ERRORS give time for them all to start up - especially if they are parallel runs. Note this sleep only slows down the checker, so will only slow down very short runs
-
-    # These are done in parallel, so wait until they are all finished
-    while [ `../isolate_subproblems/get_pid_matching_pdr.sh $TMP_DIR | wc -l` -ne "0" ]
-    do
-        sleep 0.1
-    done
-
-    num_partial_plans=`ls -l $TMP_DIR/ | grep partial_plan | wc -l`
-    if [ $num_isolate_instances -eq $num_partial_plans ]
-    then
-        echo FOUND A COMBINED PLAN
-        python3 ../isolate_subproblems/combine_partial_plans.py $TMP_DIR/partial_plan* > $TMP_DIR/plan
-    else
-        echo UNKNOWN
-    fi
-    echo number_isolated_instances: $num_isolate_instances
 else # not isolate_parallel
     if [ $DAGSTER -eq "1" ] # parallel
     then
@@ -160,8 +203,8 @@ then
 fi
 
 # Check resulting plan
-echo ./VAL/build/linux64/release/bin/Validate $DOMAIN $PROBLEM $TMP_DIR/plan 
-./VAL/build/linux64/release/bin/Validate $DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/val_out
+echo ./VAL/build/linux64/release/bin/Validate $VAL_DOMAIN $PROBLEM $TMP_DIR/plan
+./VAL/build/linux64/release/bin/Validate $VAL_DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/val_out
 
 plan_valid=`cat $TMP_DIR/val_out | grep --color "Plan valid" | wc -l`
 

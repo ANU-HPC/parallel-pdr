@@ -130,10 +130,12 @@ int main(int argc, char **argv) {
   cout << "trying to stop workers" << endl;
   if (PDR::runtime_dagster) PDR::dagster_stop();
 
+  /*
   if (!plan_exists && PDR::isolate_subproblems) {
     cout << "trying to stop other isolate_subproblem processes" << endl;
     system(("../isolate_subproblems/kill_matching_pdr.sh " + PDR::tmp_dir).c_str());
   }
+  */
 
   clock_t time_now = clock();
   cout << "total time in main: " << string_float(float_time(time_now-PDR::time_starting_main)) << endl;

@@ -71,6 +71,8 @@ while i < len(sys.argv):
             else: assert 0
         elif key == "e":
             extraSettingsFilename = nextVal
+        elif key == "f":
+            first_time_running = bool(int(nextVal))
         else: 
             print("Invalid key: ", key)
             parseError()
@@ -99,8 +101,10 @@ if timeSteps == None:
     parseError()
 
 
+print("======", sys.argv[11])
+
 # Madagascar
-if not USE_FD_PARSER:
+if (not USE_FD_PARSER) and first_time_running:
     print("Starting external PDDL parser (Madagascar)...")
     instance_location = tmpDir + "/tmp_instance.txt"
     exitcode, out, err, madagascarTime = runBash("./extract " + domainFilename + " " + problemFilename + madagascarOptions + instance_location)
@@ -118,7 +122,7 @@ if not USE_FD_PARSER:
 startTime = time.time()
 print("Starting reading in intermediate representation...")
 if USE_FD_PARSER: baseProblem = Problem.fromDownward(tmpDir, extraSettingsFilename)
-else:          baseProblem = Problem.fromMadagascar(tmpDir, extraSettingsFilename)
+else:             baseProblem = Problem.fromMadagascar(tmpDir, extraSettingsFilename)
 print("Completed in " + str(round(time.time() - startTime,2)))
 if baseProblem == None: exit(0)
 

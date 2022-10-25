@@ -1,5 +1,6 @@
 # TODO remove the unused literals cancelled out by madagascar
 #from Lingeling import Lingeling
+import os
 from RunBash import runBash
 from import_option import import_option
 from itertools import combinations 
@@ -887,6 +888,60 @@ class Problem:
             if x < -self.totalPerTimestep: return -x - self.totalPerTimestep
             else: return -x
 
+    def modifySCCGraphForCombiningSubproblems(self):
+        if "tmp_merging_advice.txt" not in os.listdir(self.tmpDir):
+            return
+
+        print(sorted(self.litToMutex.keys()))
+        #self.visualize(self.SCCGraph)
+        props = []
+        with open(self.tmpDir + "/tmp_merging_advice.txt") as f:
+            for line in f.readlines():
+                if "PROBLEMATIC_EXCLUSION" in line:
+                    props.append(int(line.rstrip().split(" ")[1]))
+
+        for prop in props:
+            print("merging sccs with prop",prop)
+            check_set = set([prop])
+            if  prop in self.litToMutex.keys(): check_set = check_set.union([abs(x) for x in self.litToMutex[prop]])
+            if -prop in self.litToMutex.keys(): check_set = check_set.union([abs(x) for x in self.litToMutex[-prop]])
+
+            for node in self.SCCGraph.nodes:
+                if len(check_set.intersection(node)):
+                    # found it, lets merge it together
+                    parents = set()
+                    to_merge = set() 
+                    frontier = [node]
+                    while len(frontier):
+                        print(frontier)
+                        node = frontier[-1]
+                        frontier = frontier[:-1]
+
+                        to_merge.add(node)
+                        frontier.extend([b for a,b in self.SCCGraph.out_edges(node)])
+                        for parent, child in self.SCCGraph.in_edges(node):
+                            parents.add(parent)
+
+            # trim from "parents" anything in to_merge
+            for x in to_merge:
+                if x in parents:
+                    parents.remove(x)
+            print("to_merge", to_merge)
+            print("parents", parents)
+
+            merged_node = set()
+            for x in to_merge:
+                merged_node = merged_node.union(x)
+            merged_node = frozenset(merged_node)
+    
+            for x in to_merge:
+                self.SCCGraph.remove_node(x)
+
+            for parent in parents:
+                self.SCCGraph.add_edge(parent, merged_node)
+
+            print("merged",merged_node)
+
     def computeSCCGraphProcess(self):
         for i in self.actionEffAdl[1:]:
             if len(i):
@@ -933,6 +988,8 @@ class Problem:
         # Get SCC from constraint graph NOTE this SCC does not contain a collating node
         print("    generating SCCs")
         self.SCCGraph = self.getSCCGraphNoCollating(constraintGraph) 
+
+        self.modifySCCGraphForCombiningSubproblems()
         
         '''
         # Check mutex - not always true - could be made true for logistics
@@ -1767,7 +1824,7 @@ class Problem:
     
                 for otherPathIndex in range(i+1,len(allPaths)): 
                     #range(len(allPaths))
-                    for node in allPaths[otherPathIndex]:
+                    for node in allPaths[otherPathIndex].nodes():
                         isolateGoal = isolateGoal.union([propositionToInitialStateLit[x] for x in node if (x in localPropositions) and (propositionToInitialStateLit[x] not in mutexLitsToExclude)])
                 assert(len(isolateGoal) == len([abs(x) for x in isolateGoal]))
                 subproblemToIsolateGoalList[i] = sorted(isolateGoal,key=abs)
