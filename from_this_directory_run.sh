@@ -131,10 +131,10 @@ then
             if [ $DAGSTER -eq "1" ] # parallel
             then
                 echo mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1
-                mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 &
+                mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 > $TMP_DIR/isolate_subproblems_log_$subproblem &
             else
                 echo ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1
-                ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 > $TMP_DIR/log_$subproblem &
+                ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 > $TMP_DIR/isolate_subproblems_log_$subproblem &
             fi
         done
     
@@ -179,6 +179,11 @@ then
             # or the components are all sat (but there are multiple subproblems, and their combination does not make a valid overall plan)
             #   Find the fault in the plan, find all corresponding subproblems and combine as before
 
+            base=$(pwd)
+            cd $TMP_DIR
+            rm *plan*
+            cd $base
+
             VAL_ADVICE=`../VAL/build/linux64/release/bin/Validate -v $DOMAIN $PROBLEM $TMP_DIR/plan | grep Advice -A 999999 | grep " to "`
             $USED_PYTHON ../isolate_subproblems/combine_subproblems.py $TMP_DIR $num_isolate_instances $ALL_SUBPROBLEMS_SAT $VAL_ADVICE > $TMP_DIR/tmp_merging_advice.txt
             cd ../extract
@@ -186,6 +191,7 @@ then
             cd ../pdr
             RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=1
         else
+            echo 1 isolated subproblem OR found a succesful plan, not going to merge again...
             RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=0
         fi
     done

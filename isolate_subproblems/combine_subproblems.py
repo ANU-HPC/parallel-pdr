@@ -1,9 +1,10 @@
 import sys
 import os
+import json
 
 tmp_dir = sys.argv[1]
-all_subproblems_sat = int(sys.argv[2])
-num_subproblems = int(sys.argv[3])
+num_subproblems = int(sys.argv[2])
+all_subproblems_sat = int(sys.argv[3])
 
 def IPC_to_MAD(string):
     chars = list(string)[1:]
@@ -46,5 +47,20 @@ if all_subproblems_sat:
 
 else:
     # not exclusions, see which subproblems failed to create plans
-    os.listdir(tmp_dir)
-    print("NEVER HAPPENED BEFORE")
+    unsat_subproblems = []
+    for filename in os.listdir(tmp_dir):
+        if "isolate_subproblems_log_" in filename:
+            subproblem = int(filename.split("_")[3])
+            with open(tmp_dir + "/" + filename) as f:
+                for line in f.readlines():
+                    if "NO PLAN EXISTS" in line:
+                        unsat_subproblems.append(subproblem)
+
+    with open(tmp_dir + "/tmp_dagster_info.json") as f:
+        data = json.load(f)
+        for subproblem in unsat_subproblems:
+            propositions_to_put_togther = data["subproblem_to_propositions"][str(subproblem)]
+            print("PROPOSITIONS_TO_COMBINE", end='')
+            for prop in propositions_to_put_togther:
+                print(" " + str(prop), end='')
+            print()

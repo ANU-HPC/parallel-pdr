@@ -888,59 +888,98 @@ class Problem:
             if x < -self.totalPerTimestep: return -x - self.totalPerTimestep
             else: return -x
 
+    def combineSCCGraphAspects(self, check_set, merge_in_parents):
+        check_set = set(check_set)
+        to_merge = set() 
+        parents = set()
+        for node in self.SCCGraph.nodes:
+            if len(check_set.intersection(node)):
+                # found it, lets merge it together
+                frontier = [node]
+                while len(frontier):
+                    print(frontier)
+                    node = frontier[-1]
+                    frontier = frontier[:-1]
+
+                    to_merge.add(node)
+                    frontier.extend([b for a,b in self.SCCGraph.out_edges(node)])
+                    for parent, child in self.SCCGraph.in_edges(node):
+                        parents.add(parent)
+
+        # trim from "parents" anything in to_merge
+        for x in to_merge:
+            if x in parents:
+                parents.remove(x)
+        print("to_merge", to_merge)
+        print("parents", parents)
+
+        merged_node = set()
+        for x in to_merge:
+            merged_node = merged_node.union(x)
+        merged_node = frozenset(merged_node)
+    
+        for x in to_merge:
+            self.SCCGraph.remove_node(x)
+
+        for parent in parents:
+            self.SCCGraph.add_edge(parent, merged_node)
+
+        self.SCCGraph.add_node(merged_node)
+
+        print("merged",merged_node)
+
+        # Now if ALSO merge parents take another step
+        if merge_in_parents:
+            grandparents = []
+            for parent in parents:
+                grandparents.extend([a for a,b in self.SCCGraph.in_edges(parent)])
+            grandparents = set(grandparents)
+            for parent in parents:
+                if parent in grandparents:
+                    grandparents.remove(parent)
+
+            new_merged_node = set(merged_node)
+            for parent in parents:
+                old_len = len(new_merged_node)
+                new_merged_node = new_merged_node.union(parent)
+                assert len(new_merged_node) == old_len + len(parent)
+            new_merged_node = frozenset(new_merged_node)
+                
+            for parent in parents:
+                self.SCCGraph.remove_node(parent)
+
+            self.SCCGraph.remove_node(merged_node)
+            self.SCCGraph.add_node(new_merged_node)
+
+            for grandparent in grandparents:
+                self.SCCGraph.add_edge(grandparent, new_merged_node)
+
     def modifySCCGraphForCombiningSubproblems(self):
         if "tmp_merging_advice.txt" not in os.listdir(self.tmpDir):
             return
 
         print(sorted(self.litToMutex.keys()))
         #self.visualize(self.SCCGraph)
-        props = []
+        problematic_exclusions = []
+        sets_of_to_combine_propositions = []
+
         with open(self.tmpDir + "/tmp_merging_advice.txt") as f:
             for line in f.readlines():
                 if "PROBLEMATIC_EXCLUSION" in line:
-                    props.append(int(line.rstrip().split(" ")[1]))
+                    problematic_exclusions.append(int(line.rstrip().split(" ")[1]))
+                if "PROPOSITIONS_TO_COMBINE" in line:
+                    sets_of_to_combine_propositions.append([int(x) for x in line.rstrip().split(" ")[1:]])
 
-        for prop in props:
+        for prop in problematic_exclusions:
             print("merging sccs with prop",prop)
             check_set = set([prop])
             if  prop in self.litToMutex.keys(): check_set = check_set.union([abs(x) for x in self.litToMutex[prop]])
             if -prop in self.litToMutex.keys(): check_set = check_set.union([abs(x) for x in self.litToMutex[-prop]])
 
-            for node in self.SCCGraph.nodes:
-                if len(check_set.intersection(node)):
-                    # found it, lets merge it together
-                    parents = set()
-                    to_merge = set() 
-                    frontier = [node]
-                    while len(frontier):
-                        print(frontier)
-                        node = frontier[-1]
-                        frontier = frontier[:-1]
+            self.combineSCCGraphAspects(check_set, False)
 
-                        to_merge.add(node)
-                        frontier.extend([b for a,b in self.SCCGraph.out_edges(node)])
-                        for parent, child in self.SCCGraph.in_edges(node):
-                            parents.add(parent)
-
-            # trim from "parents" anything in to_merge
-            for x in to_merge:
-                if x in parents:
-                    parents.remove(x)
-            print("to_merge", to_merge)
-            print("parents", parents)
-
-            merged_node = set()
-            for x in to_merge:
-                merged_node = merged_node.union(x)
-            merged_node = frozenset(merged_node)
-    
-            for x in to_merge:
-                self.SCCGraph.remove_node(x)
-
-            for parent in parents:
-                self.SCCGraph.add_edge(parent, merged_node)
-
-            print("merged",merged_node)
+        for combine_propositions in sets_of_to_combine_propositions:
+            self.combineSCCGraphAspects(combine_propositions, True)
 
     def computeSCCGraphProcess(self):
         for i in self.actionEffAdl[1:]:
