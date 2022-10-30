@@ -9,6 +9,10 @@ DOMAIN=$1
 PROBLEM=$2
 SET=$3
 
+# NOT YET IMPLEMENTED HERE
+# Change this value to pretend the isolate subproblem method is being performed on a computer with as many cores as wanted. The simulated runtime will be calculated and reported
+#ISOLATE_SUBPROBLEM_SIMULATED=0
+
 DECOMPOSED=`grep decomposed $SET | awk '{print $2}'`
 REPORT_PLAN=`grep report_plan $SET | awk '{print $2}'`
 DAGSTER=`grep dagster $SET | awk '{print $2}'`
@@ -30,6 +34,7 @@ echo STOP_EXTRA_SETTINGS
 
 TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
 #TMP_DIR=`pwd`/tmp/fd
+#rm $TMP_DIR/*
 mkdir $TMP_DIR
 echo TMP_DIR: $TMP_DIR
 
@@ -80,16 +85,20 @@ cd extract
 
 PYTHON_START_TIME=$(date +%s.%N)
 $USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR -f 1 # used when using FD to test heuristics > $TMP_DIR/madagascar_output
-echo PYTHON_TIME: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
-
+MAIN_PYTHON_EXIT_CODE=$?
 
 if [ $isolate_subproblems -eq "1" ]
 then
-    if [ `grep num_subproblems $TMP_DIR/tmp_dagster_info.json | awk '{print $2}' | awk -F, '{print $1}'` -eq "1" ]
-    then
-        echo NOT SUSCEPTIBLE TO DECOMPOSITION
-        exit 0
-    fi
+    PYTHON_TIME_NUMBER="_0"
+else
+    PYTHON_TIME_NUMBER=
+fi
+
+echo PYTHON_TIME$PYTHON_TIME_NUMBER: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
+
+if [ $MAIN_PYTHON_EXIT_CODE -ne "0" ]
+then 
+    exit 0 
 fi
 
 # If using heuristic values from FD, set up for that
@@ -110,10 +119,11 @@ cd ../pdr
 CPP_START_TIME=$(date +%s.%N)
 if [ $isolate_subproblems -eq "1" ]
 then
+    ISOLATE_ITERATION=0
     RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=1
     while [ $RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN -ne "0" ]
     do
-
+        ISOLATE_ITERATION=$((ISOLATE_ITERATION+1))
         all_subproblems=`grep num_subproblems $TMP_DIR/tmp_dagster_info.json | awk '{print $2}' | awk -F, '{print $1}'`
         if [ $all_subproblems -eq "1" ] # only one subproblem, just go straight to monolyth
         then
@@ -124,7 +134,13 @@ then
             num_isolate_instances=`expr $all_subproblems - 1`
         fi
 
-        echo number_isolated_instances: $num_isolate_instances
+        if [ $num_isolate_instances -eq 1 ] && [ $ISOLATE_ITERATION -eq 1 ]
+        then 
+            echo NOT SUSCEPTIBLE TO DECOMPOSITION - Created one subproblem on the first iteration
+            exit 0
+        fi
+
+        echo isolate_subproblem_iteration: $ISOLATE_ITERATION number_isolated_instances: $num_isolate_instances
     
         for subproblem in `echo 0 && seq $max_subproblem_to_complete`
         do
@@ -150,13 +166,12 @@ then
         done
     
         num_partial_plans=`ls -l $TMP_DIR/ | grep partial_plan | wc -l`
-        echo number_isolated_instances: $num_isolate_instances
         if [ $num_isolate_instances -eq $num_partial_plans ]
         then
             echo FOUND A COMBINED PLAN
             python3 ../isolate_subproblems/combine_partial_plans.py $TMP_DIR/partial_plan* > $TMP_DIR/plan
             ALL_SUBPROBLEMS_SAT=1
-            ../VAL/build/linux64/release/bin/Validate $DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/itermediate_val_out
+            ../VAL/build/linux64/release/bin/Validate $VAL_DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/itermediate_val_out
             FOUND_SUCCESFUL_COMBINED_PLAN=`cat $TMP_DIR/itermediate_val_out | grep --color "Plan valid" | wc -l`
         else
             ALL_SUBPROBLEMS_SAT=0
@@ -184,10 +199,13 @@ then
             rm *plan*
             cd $base
 
-            VAL_ADVICE=`../VAL/build/linux64/release/bin/Validate -v $DOMAIN $PROBLEM $TMP_DIR/plan | grep Advice -A 999999 | grep " to "`
+            VAL_ADVICE=`../VAL/build/linux64/release/bin/Validate -v $VAL_DOMAIN $PROBLEM $TMP_DIR/plan | grep Advice -A 999999 | grep " to "`
             $USED_PYTHON ../isolate_subproblems/combine_subproblems.py $TMP_DIR $num_isolate_instances $ALL_SUBPROBLEMS_SAT $VAL_ADVICE > $TMP_DIR/tmp_merging_advice.txt
             cd ../extract
+            PYTHON_START_TIME=$(date +%s.%N)
             $USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR -f 0
+            PYTHON_TIME_NUMBER="_"$ISOLATE_ITERATION
+            echo PYTHON_TIME$PYTHON_TIME_NUMBER: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
             cd ../pdr
             RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=1
         else

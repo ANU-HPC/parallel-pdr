@@ -5,6 +5,9 @@ from RunBash import runBash
 from import_option import import_option
 from itertools import combinations 
 
+import sys
+sys.setrecursionlimit(10000)
+
 # lingeling dagster
 from Dag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_NODE_PREFIX, TRADITIONAL_DAGSTER
 USE_FD_PARSER = import_option("USE_FD_PARSER")
@@ -985,7 +988,7 @@ class Problem:
         for i in self.actionEffAdl[1:]:
             if len(i):
                 print("ERROR cannot decompose when using ADL effects")
-                assert 0
+                exit(2)
         allEff = {}
         for var in self.propositionRange:
             allEff[var] = False
@@ -1764,7 +1767,8 @@ class Problem:
 
             # check
             globalRoots = [x for x in self.SCCGraph.nodes() if self.SCCGraph.in_degree(x)==0]
-            assert(set(sources).union(globalRoots) == set(sources))
+            if set(sources).union(globalRoots) != set(sources):
+                print("WARNING!! Problem.py:  set(sources).union(globalRoots) != set(sources)")
         else:
             sources = [x for x in self.SCCGraph.nodes() if self.SCCGraph.in_degree(x)==0]
 
@@ -1964,6 +1968,7 @@ class Problem:
 
     def findConstraintsRecursive(self, graph, constraintsDetermined, goal):
         for var in goal:
+            graph.add_node(var)
             #print("var ", self.symbols[var])
             if var not in constraintsDetermined:
                 constraintsDetermined.add(var)
@@ -2559,7 +2564,7 @@ class Problem:
                     elif firstWord == "G:": 
                         if secondWord == "FALSE":
                             print("NO PLAN EXISTS (from Madagascar)")
-                            return
+                            exit(2)
                         if secondWord[0] == "(" and secondWord[-1] == ")": secondWord = secondWord[1:-1]
                         clauses = [[parseExternUnit(atomExtern)] for atomExtern in secondWord.split("&")]
                         for clause in clauses:
