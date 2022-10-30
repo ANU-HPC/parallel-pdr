@@ -15,7 +15,7 @@ def IPC_to_MAD(string):
                 chars[i] = "("
                 first = False
             else:
-                chars[i] = ")"
+                chars[i] = ","
     out = ""
     for i in chars:
         out += i
@@ -38,9 +38,9 @@ if all_subproblems_sat:
                 if symbol == prop:
                     problematic_propositions_nums.append(int(num))
                     if t != "used_proposition":
-                        print("ERROR in combine subproblems")
+                        print("ERROR in combine subproblems 1")
     if len(problematic_propositions_nums) != len(problematic_propositions):
-        print("ERROR in combine subproblems")
+        print("ERROR in combine subproblems 2")
 
     for num in problematic_propositions_nums:
         print("PROBLEMATIC_EXCLUSION", num)

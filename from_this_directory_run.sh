@@ -9,9 +9,18 @@ DOMAIN=$1
 PROBLEM=$2
 SET=$3
 
-# NOT YET IMPLEMENTED HERE
 # Change this value to pretend the isolate subproblem method is being performed on a computer with as many cores as wanted. The simulated runtime will be calculated and reported
-#ISOLATE_SUBPROBLEM_SIMULATED=0
+ISOLATE_SUBPROBLEM_SIMULATED_CORES=0
+ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME=0
+ISOLATE_SUBPROBLEM_SIMULATED_START_STOPWATCH=$(date +%s.%N)
+ISOLATE_SUBPROBLEM_SIMULATED_TIMEOUT=1800
+
+if [ $ISOLATE_SUBPROBLEM_SIMULATED_CORES -eq "0" ]
+then 
+    NUM_PDR_CORES=999999999
+else
+    NUM_PDR_CORES=$((ISOLATE_SUBPROBLEM_SIMULATED_CORES-1))
+fi
 
 DECOMPOSED=`grep decomposed $SET | awk '{print $2}'`
 REPORT_PLAN=`grep report_plan $SET | awk '{print $2}'`
@@ -123,7 +132,6 @@ then
     RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=1
     while [ $RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN -ne "0" ]
     do
-        ISOLATE_ITERATION=$((ISOLATE_ITERATION+1))
         all_subproblems=`grep num_subproblems $TMP_DIR/tmp_dagster_info.json | awk '{print $2}' | awk -F, '{print $1}'`
         if [ $all_subproblems -eq "1" ] # only one subproblem, just go straight to monolyth
         then
@@ -134,7 +142,7 @@ then
             num_isolate_instances=`expr $all_subproblems - 1`
         fi
 
-        if [ $num_isolate_instances -eq 1 ] && [ $ISOLATE_ITERATION -eq 1 ]
+        if [ $num_isolate_instances -eq 1 ] && [ $ISOLATE_ITERATION -eq 0 ]
         then 
             echo NOT SUSCEPTIBLE TO DECOMPOSITION - Created one subproblem on the first iteration
             exit 0
@@ -142,28 +150,43 @@ then
 
         echo isolate_subproblem_iteration: $ISOLATE_ITERATION number_isolated_instances: $num_isolate_instances
     
+        # As moving from serial mode to simulated parallel, pause the main stopwatch
+        ISOLATE_SUBPROBLEM_SIMULATED_DURATION=$(awk "BEGIN {print ($(date +%s.%N)-$ISOLATE_SUBPROBLEM_SIMULATED_START_STOPWATCH)}")
+        ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME=$(awk "BEGIN {print ($ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME+$ISOLATE_SUBPROBLEM_SIMULATED_DURATION)}")
+        ISOLATE_SUBPROBLEM_SIMULATED_DURATION="not a number - just a check so this number is not used again"
+
+        echo PERIODIC_ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME $ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME
+        ISOLATE_SUBPROBLEM_SIMULATED_REMAINING_TIME=$(($ISOLATE_SUBPROBLEM_SIMULATED_TIMEOUT - ${ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME%%.*}))
+        echo Timeout to add to PDR batch $ISOLATE_SUBPROBLEM_SIMULATED_REMAINING_TIME
+
         for subproblem in `echo 0 && seq $max_subproblem_to_complete`
         do
             if [ $DAGSTER -eq "1" ] # parallel
             then
-                echo mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1
                 mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 > $TMP_DIR/isolate_subproblems_log_$subproblem &
             else
-                echo ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1
-                ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 > $TMP_DIR/isolate_subproblems_log_$subproblem &
+                echo timeout -s2 $ISOLATE_SUBPROBLEM_SIMULATED_REMAINING_TIME ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2\>\&1 \> $TMP_DIR/isolate_subproblems_log_$subproblem >> $TMP_DIR/isolate_subproblems_todo_iteration_$ISOLATE_ITERATION
             fi
         done
-    
-        echo done setting up jobs
-    
-        sleep 2 # HACKY - MAY GIVE RISE TO ERRORS give time for them all to start up - especially if they are parallel runs. Note this sleep only slows down the checker, so will only slow down very short runs
-    
-        # These are done in parallel, so wait until they are all finished
-        while [ `../isolate_subproblems/get_pid_matching_pdr.sh $TMP_DIR | wc -l` -ne "0" ]
-        do
-            ../isolate_subproblems/get_pid_matching_pdr.sh $TMP_DIR 
-            sleep 0.1
-        done
+
+        # Actually run the PDR instances, possibly we care about the simulated time, so we calculate it here
+        python3 ../isolate_subproblems/batch.py $NUM_PDR_CORES $TMP_DIR/isolate_subproblems_todo_iteration_$ISOLATE_ITERATION
+
+        # FInd the max time of a pdr instance, then add that time to the total accrued time
+        ISOLATE_SUBPROBLEM_SIMULATED_DURATION=$(cat $TMP_DIR/TIMES_isolate_subproblems_todo_iteration_$ISOLATE_ITERATION | awk '{print $1}' | sort -g | tail -n 1)
+        ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME=$(awk "BEGIN {print ($ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME+$ISOLATE_SUBPROBLEM_SIMULATED_DURATION)}")
+        ISOLATE_SUBPROBLEM_SIMULATED_DURATION="not a number - just a check so this number is not used again"
+
+        echo PERIODIC_ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME $ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME
+        ROUNDED=${ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME%%.*}
+        if [ "$ROUNDED" -gt "$ISOLATE_SUBPROBLEM_SIMULATED_TIMEOUT" ]
+        then 
+            echo Simulated time greater than wanted timeout
+            exit 0
+        fi
+
+        # Start the regular stopwatch again
+        ISOLATE_SUBPROBLEM_SIMULATED_START_STOPWATCH=$(date +%s.%N)
     
         num_partial_plans=`ls -l $TMP_DIR/ | grep partial_plan | wc -l`
         if [ $num_isolate_instances -eq $num_partial_plans ]
@@ -176,7 +199,6 @@ then
         else
             ALL_SUBPROBLEMS_SAT=0
             FOUND_SUCCESFUL_COMBINED_PLAN=0
-            echo UNKNOWN
         fi
 
         # Evaluate if need to/should run again - only run again if have many instances and don't have a valid plan
@@ -194,20 +216,21 @@ then
             # or the components are all sat (but there are multiple subproblems, and their combination does not make a valid overall plan)
             #   Find the fault in the plan, find all corresponding subproblems and combine as before
 
-            base=$(pwd)
-            cd $TMP_DIR
-            rm *plan*
-            cd $base
-
             VAL_ADVICE=`../VAL/build/linux64/release/bin/Validate -v $VAL_DOMAIN $PROBLEM $TMP_DIR/plan | grep Advice -A 999999 | grep " to "`
             $USED_PYTHON ../isolate_subproblems/combine_subproblems.py $TMP_DIR $num_isolate_instances $ALL_SUBPROBLEMS_SAT $VAL_ADVICE > $TMP_DIR/tmp_merging_advice.txt
             cd ../extract
+            ISOLATE_ITERATION=$((ISOLATE_ITERATION+1))
             PYTHON_START_TIME=$(date +%s.%N)
             $USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR -f 0
             PYTHON_TIME_NUMBER="_"$ISOLATE_ITERATION
             echo PYTHON_TIME$PYTHON_TIME_NUMBER: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
             cd ../pdr
             RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=1
+
+            base=$(pwd)
+            cd $TMP_DIR
+            rm *plan*
+            cd $base
         else
             echo 1 isolated subproblem OR found a succesful plan, not going to merge again...
             RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=0
@@ -250,5 +273,10 @@ else
     #export GREP_COLORS='ms=01;31'
     cat $TMP_DIR/val_out | red_text
 fi
+
+ISOLATE_SUBPROBLEM_SIMULATED_DURATION=$(awk "BEGIN {print ($(date +%s.%N)-$ISOLATE_SUBPROBLEM_SIMULATED_START_STOPWATCH)}")
+ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME=$(awk "BEGIN {print ($ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME+$ISOLATE_SUBPROBLEM_SIMULATED_DURATION)}")
+ISOLATE_SUBPROBLEM_SIMULATED_DURATION="not a number - just a check so this number is not used again"
+echo FINAL_ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME $ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME
 
 exit 0
