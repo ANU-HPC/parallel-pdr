@@ -229,6 +229,7 @@ then
 
             base=$(pwd)
             cd $TMP_DIR
+            grep PLAN *log*
             rm *plan*
             cd $base
         else

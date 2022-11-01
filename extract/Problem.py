@@ -900,7 +900,7 @@ class Problem:
                 # found it, lets merge it together
                 frontier = [node]
                 while len(frontier):
-                    print(frontier)
+                    #print(frontier)
                     node = frontier[-1]
                     frontier = frontier[:-1]
 
@@ -913,8 +913,8 @@ class Problem:
         for x in to_merge:
             if x in parents:
                 parents.remove(x)
-        print("to_merge", to_merge)
-        print("parents", parents)
+        #print("to_merge", to_merge)
+        #print("parents", parents)
 
         merged_node = set()
         for x in to_merge:
@@ -929,7 +929,7 @@ class Problem:
 
         self.SCCGraph.add_node(merged_node)
 
-        print("merged",merged_node)
+        #print("merged",merged_node)
 
         # Now if ALSO merge parents take another step
         if merge_in_parents:
@@ -961,7 +961,6 @@ class Problem:
         if "tmp_merging_advice.txt" not in os.listdir(self.tmpDir):
             return
 
-        print(sorted(self.litToMutex.keys()))
         #self.visualize(self.SCCGraph)
         problematic_exclusions = []
         sets_of_to_combine_propositions = []
@@ -1685,6 +1684,43 @@ class Problem:
         mainDag = Dag.soleNode(self, LAYERS_TO_WRITE, self.onlyOneStripsCliques)
         mainDag.write()
 
+    def commentOnSCCStructure(self):
+        node_to_num = {}
+        num_to_node = {}
+        num_to_next = {}
+        num_to_str = {}
+        num = 0
+        for node in self.SCCGraph.nodes():
+            node_to_num[node] = num
+            num_to_node[num] = node
+            num_to_next[num] = set()
+            num_to_str[num] = str(num) + "[" + str(len(node)) + "]"
+            num += 1
+
+        roots = set(self.SCCGraph.nodes())
+        leaves = set(self.SCCGraph.nodes())
+
+        for a,b in self.SCCGraph.edges():
+            num_to_next[node_to_num[a]].add(node_to_num[b])
+
+            if a in leaves:
+                leaves.remove(a)
+            if b in roots:
+                roots.remove(b)
+
+        for i in range(len(self.SCCGraph.nodes())):
+            other = ""
+            for x in [num_to_str[x] for x in sorted(num_to_next[i])]:
+                other+=x + " "
+
+            print("SCCSummary:", num_to_str[i], "=>", other)
+
+        root = ""
+        for x in [num_to_str[node_to_num[x]] for x in sorted(roots)]:
+            root+=x + " "
+
+        print("SCCSummary roots", root)
+
     def knoblockDecomposition(self):
         '''
         for CR in self.TCRss[0]:
@@ -1718,6 +1754,7 @@ class Problem:
         # self.indexToSCCNode
         # self.propositionToSCCNodeIndex
         self.computeSCCGraphProcess()
+        self.commentOnSCCStructure()
 
         # self.varToUClauses
         # self.varToTClauses
