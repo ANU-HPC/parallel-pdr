@@ -148,6 +148,13 @@ then
             exit 0
         fi
 
+        # Uncomment to stop at monolyth
+        #if [ $num_isolate_instances -eq 1 ]
+        #then 
+        #    echo just the monolyth - dont bother
+        #    exit 0
+        #fi
+
         echo isolate_subproblem_iteration: $ISOLATE_ITERATION number_isolated_instances: $num_isolate_instances
     
         # As moving from serial mode to simulated parallel, pause the main stopwatch
