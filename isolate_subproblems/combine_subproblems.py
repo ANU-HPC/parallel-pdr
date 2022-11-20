@@ -19,6 +19,10 @@ def IPC_to_MAD(string):
     out = ""
     for i in chars:
         out += i
+
+    if out[-1] == ")" and "(" not in out:
+        out = out[:-1] + "()"
+
     return out
 
 if all_subproblems_sat:
@@ -29,6 +33,11 @@ if all_subproblems_sat:
     problematic_propositions = [IPC_to_MAD(x) for x in problematic_propositions_ipc]
     #print(problematic_propositions)
     problematic_propositions_nums = []
+
+    #print(1, advice)
+    #print(2, problematic_propositions_ipc)
+    #print(3, problematic_propositions)
+    #print(4, problematic_propositions_nums)
 
     # Now lets look up all those propositions
     with open(tmp_dir + "/tmp_mapping.txt") as f:
@@ -64,3 +73,4 @@ else:
             for prop in propositions_to_put_togther:
                 print(" " + str(prop), end='')
             print()
+print("END_ADVICE_ROUND")

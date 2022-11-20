@@ -18,6 +18,9 @@ if len(sys.argv) == 1 or sys.argv[1] == "--help" or sys.argv[1] == "-help":
     exit(0)
 
 max_processes = int(sys.argv[1])
+if max_processes < 1:
+    print("ERROR: need at least one process")
+
 filename = sys.argv[2]
 #timeout = int(sys.argv[3])
 

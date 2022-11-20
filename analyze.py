@@ -47,17 +47,25 @@ def get_time(t_line):
 def process_pdrplan_logfile(log, filename):
     data = default.copy()
     data["filename"] = filename
-    _,d,p,_ = filename.split("/")[-1].split("___")
-    if d == "logistics": d="logistics00"
-    data["domain"] = d
-    data["problem"] = p
+    d,p,_ = filename.split("/")[-1].split("___")
+    data["filename_domain"] = d
+    data["filename_problem"] = p
+    data["error"] = None
     for line_num in range(len(log)):
         line = log[line_num]
+
         if "real\t" in line: data["time_taken"] = get_time(line)
+
+        elif "PDR took:" in line:
+            data["time_taken"] = float(line.split("PDR took:")[1].split(" seconds overall.")[0])
         elif "real " in line: data["time_taken"] = float(line.split(" ")[1])
         elif "SAT: plan of" in line: data["sat"] = True
         elif "UNSAT" in line: data["sat"] = False
         elif "problem is unsolvable!" in line: data["sat"] = False
+        elif "domain definition expected" in line: 
+            if data["error"] == None:
+                data["error"] = ""
+            data["error"] += "sudaparsing"
     summaries.append(data)
 
 def process_regular_logfile(log, filename):

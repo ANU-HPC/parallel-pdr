@@ -217,7 +217,18 @@ then
             #   Find the fault in the plan, find all corresponding subproblems and combine as before
 
             VAL_ADVICE=`../VAL/build/linux64/release/bin/Validate -v $VAL_DOMAIN $PROBLEM $TMP_DIR/plan | grep Advice -A 999999 | grep " to "`
-            $USED_PYTHON ../isolate_subproblems/combine_subproblems.py $TMP_DIR $num_isolate_instances $ALL_SUBPROBLEMS_SAT $VAL_ADVICE > $TMP_DIR/tmp_merging_advice.txt
+
+            $USED_PYTHON ../isolate_subproblems/combine_subproblems.py $TMP_DIR $num_isolate_instances $ALL_SUBPROBLEMS_SAT $VAL_ADVICE >> $TMP_DIR/tmp_merging_advice.txt
+            echo MERGING ADVICE:
+            cat $TMP_DIR/tmp_merging_advice.txt
+
+            base=$(pwd)
+            cd $TMP_DIR
+            grep PLAN *log*
+            rm *plan*
+            rm *log*
+            cd $base
+
             cd ../extract
             ISOLATE_ITERATION=$((ISOLATE_ITERATION+1))
             PYTHON_START_TIME=$(date +%s.%N)
@@ -227,11 +238,6 @@ then
             cd ../pdr
             RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=1
 
-            base=$(pwd)
-            cd $TMP_DIR
-            grep PLAN *log*
-            rm *plan*
-            cd $base
         else
             echo 1 isolated subproblem OR found a succesful plan, not going to merge again...
             RUN_THROUGH_ISOLATE_SUBPROBLEMS_AGAIN=0

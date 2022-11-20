@@ -891,7 +891,7 @@ class Problem:
             if x < -self.totalPerTimestep: return -x - self.totalPerTimestep
             else: return -x
 
-    def combineSCCGraphAspects(self, check_set, merge_in_parents):
+    def combineSCCGraphAspects(self, check_set):
         check_set = set(check_set)
         to_merge = set() 
         parents = set()
@@ -931,31 +931,37 @@ class Problem:
 
         #print("merged",merged_node)
 
-        # Now if ALSO merge parents take another step
-        if merge_in_parents:
-            grandparents = []
-            for parent in parents:
-                grandparents.extend([a for a,b in self.SCCGraph.in_edges(parent)])
-            grandparents = set(grandparents)
-            for parent in parents:
-                if parent in grandparents:
-                    grandparents.remove(parent)
+        return merged_node
 
-            new_merged_node = set(merged_node)
-            for parent in parents:
-                old_len = len(new_merged_node)
-                new_merged_node = new_merged_node.union(parent)
-                assert len(new_merged_node) == old_len + len(parent)
-            new_merged_node = frozenset(new_merged_node)
+    def SCCGraphMergeNodeWithParents(self, merged_node):
+        if merged_node not in self.SCCGraph:
+            return
+
+        parents = [a for a,b in self.SCCGraph.in_edges(merged_node)]
+
+        grandparents = []
+        for parent in parents:
+            grandparents.extend([a for a,b in self.SCCGraph.in_edges(parent)])
+        grandparents = set(grandparents)
+        for parent in parents:
+            if parent in grandparents:
+                grandparents.remove(parent)
+
+        new_merged_node = set(merged_node)
+        for parent in parents:
+            old_len = len(new_merged_node)
+            new_merged_node = new_merged_node.union(parent)
+            assert len(new_merged_node) == old_len + len(parent)
+        new_merged_node = frozenset(new_merged_node)
                 
-            for parent in parents:
-                self.SCCGraph.remove_node(parent)
+        for parent in parents:
+            self.SCCGraph.remove_node(parent)
 
-            self.SCCGraph.remove_node(merged_node)
-            self.SCCGraph.add_node(new_merged_node)
+        self.SCCGraph.remove_node(merged_node)
+        self.SCCGraph.add_node(new_merged_node)
 
-            for grandparent in grandparents:
-                self.SCCGraph.add_edge(grandparent, new_merged_node)
+        for grandparent in grandparents:
+            self.SCCGraph.add_edge(grandparent, new_merged_node)
 
     def modifySCCGraphForCombiningSubproblems(self):
         if "tmp_merging_advice.txt" not in os.listdir(self.tmpDir):
@@ -969,19 +975,40 @@ class Problem:
             for line in f.readlines():
                 if "PROBLEMATIC_EXCLUSION" in line:
                     problematic_exclusions.append(int(line.rstrip().split(" ")[1]))
-                if "PROPOSITIONS_TO_COMBINE" in line:
+                elif "PROPOSITIONS_TO_COMBINE" in line:
                     sets_of_to_combine_propositions.append([int(x) for x in line.rstrip().split(" ")[1:]])
+                elif "END_ADVICE_ROUND" == line.rstrip():
+                    # end this round, enact the advice
+                    # Make sure the advice is consistent
+                    assert len(problematic_exclusions) * len(sets_of_to_combine_propositions) == 0
+                    
+                    # note how the SCCGraph started, so we can check if there were any changes
+                    startingSCCGraphNodes = frozenset(self.SCCGraph.nodes())
 
-        for prop in problematic_exclusions:
-            print("merging sccs with prop",prop)
-            check_set = set([prop])
-            if  prop in self.litToMutex.keys(): check_set = check_set.union([abs(x) for x in self.litToMutex[prop]])
-            if -prop in self.litToMutex.keys(): check_set = check_set.union([abs(x) for x in self.litToMutex[-prop]])
+                    check_sets = set()
 
-            self.combineSCCGraphAspects(check_set, False)
+                    for prop in problematic_exclusions:
+                        check_set = set([prop])
+                        if  prop in self.litToMutex.keys(): check_set = check_set.union([abs(x) for x in self.litToMutex[prop]])
+                        if -prop in self.litToMutex.keys(): check_set = check_set.union([abs(x) for x in self.litToMutex[-prop]])
+                        check_sets.add(frozenset(check_set))
 
-        for combine_propositions in sets_of_to_combine_propositions:
-            self.combineSCCGraphAspects(combine_propositions, True)
+                    for combine_propositions in sets_of_to_combine_propositions:
+                        check_sets.add(frozenset(combine_propositions))
+
+                    for check_set in check_sets:
+                        startingSCCGraphNodes = frozenset(self.SCCGraph.nodes())
+
+                        merged_node = self.combineSCCGraphAspects(check_set)
+
+                        # Check if merging did anything
+                        endSCCGraphNodes = frozenset(self.SCCGraph.nodes())
+                        if startingSCCGraphNodes == endSCCGraphNodes:
+                            self.SCCGraphMergeNodeWithParents(merged_node)
+
+                    # Reset
+                    problematic_exclusions = []
+                    sets_of_to_combine_propositions = []
 
     def computeSCCGraphProcess(self):
         for i in self.actionEffAdl[1:]:
@@ -1852,15 +1879,100 @@ class Problem:
             if len(path) == 1:
                 print("WARNING!! not certainly bad, iffy... path len 1")
 
+        # Prep for finding the exclusions
+        # First find X^+-
+        appears_positively_eff = set()
+        appears_negatively_eff = set()
+
+        # for later
+        appears_positively_pre = set()
+        appears_negatively_pre = set()
+
+        for action in self.actionRange:
+            #print("action", self.symbols[action])
+            #print("  PRE", [str(x>0) + ":" + self.symbols[abs(x)] for x in self.actionPre[action]])
+            #print("  EFF", [str(x>0) + ":" + self.symbols[abs(x)] for x in self.actionEffStrips[action]])
+
+            for eff in self.actionEffStrips[action]:
+                if eff > 0:
+                    appears_positively_eff.add(eff)
+                else:
+                    appears_negatively_eff.add(-eff)
+
+            for pre in self.actionPre[action]:
+                if pre > 0:
+                    appears_positively_pre.add(pre)
+                else:
+                    appears_negatively_pre.add(-pre)
+
+        #print("appears_positively_eff", [self.symbols[x] for x in appears_positively_eff])
+        #print("appears_negatively_eff", [self.symbols[x] for x in appears_negatively_eff])
+        #print("appears_positively_pre", [self.symbols[x] for x in appears_positively_pre])
+        #print("appears_negatively_pre", [self.symbols[x] for x in appears_negatively_pre])
+
+        xpm = set()
+        for prop in self.propositionRange:
+            a = prop in appears_positively_eff and prop not in appears_negatively_eff
+            b = prop not in appears_positively_eff and prop in appears_negatively_eff
+            if a or b:
+                xpm.add(prop)
+
+        #print("xpm", xpm)
+
+        # Then prop to relevant exclusions
+        prop_to_exclusions = {}
+        for prop in self.propositionRange:
+            prop_to_exclusions[prop] = set()
+
+        for action in self.actionRange:
+            effs_abs = [abs(eff) for eff in self.actionEffStrips[action]]
+            effs_abs_and_xpm = [prop for prop in effs_abs if prop in xpm]
+            #print(effs_abs)
+
+            for prop in effs_abs:
+                for possible_exclusion in effs_abs_and_xpm:
+                    if possible_exclusion != prop:
+                        prop_to_exclusions[prop].add(possible_exclusion)
+        # OK, done with that
+        #print("prop_to_exclusions", prop_to_exclusions)
+
+        #print("Dependancy Graph")
+        #self.visualizeConstraintGraph()
+
+        #print("KNOBLOCK MINUS GRETTON")
+        #elf.visualize(self.knoblockMinusGretton, self.symbols)
+        #self.visualizeSCCGraph()
+
+        # Universal exclusions for old method
+        # find propositions where: there is no action which makes it in a certain polarity AND another action requires it to be in the opposite polarity
+        '''
+        universal_exclusions_old_method = set()
+        for prop in self.propositionRange:
+            if prop in appears_negatively_eff:
+                if prop in appears_positively_pre:
+                    # problem something makes it false, but something else requires it to be true
+                    continue
+
+            if prop in appears_positively_eff:
+                if prop in appears_negatively_pre:
+                    # problem
+                    continue
+
+            universal_exclusions_old_method.add(prop)
+        '''
+
         for path in allPaths + [self.SCCGraph]:
+            # Find the exclusions
+            all_in_path = set()
+            for x in path.nodes():
+                all_in_path = all_in_path.union(x)
+
             extraPropositions = set()
-            for node in path.nodes():
-                for prop in node:
-                    for extra in [extra for base, extra in self.knoblockMinusGretton.edges() if base == prop]:
-                        extraPropositions.add(extra)
+            for prop in all_in_path:
+                extraPropositions = extraPropositions.union(prop_to_exclusions[prop])
 
-            self.subproblemToKnoblockExtraPropositions.append(set([x for x in extraPropositions if x in self.unmentionedInSCCGraph]))
-
+            toAdd = set([x for x in extraPropositions if x not in all_in_path])
+            self.subproblemToKnoblockExtraPropositions.append(toAdd)
 
         mainDag = Dag(self, self.SCCGraph, self.indexToSCCNode)
         subproblem = 0
@@ -1885,11 +1997,11 @@ class Problem:
                 assert(len(rootNodes)==1)
                 rootNode = rootNodes[0]
                 #print("root node:",i,[self.symbols[x] for x in rootNode])
-                localPropositions = set()
+                FPG = set()
                 for node in allPaths[i]:
-                    localPropositions = localPropositions.union(node)
+                    FPG = FPG.union(node)
 
-                localPropositions.update(self.subproblemToKnoblockExtraPropositions[i])
+                ExPG = self.subproblemToKnoblockExtraPropositions[i]
 
                 mutexLitsToExclude = set()
                 isolateGoal = set()
@@ -1902,10 +2014,28 @@ class Problem:
                         if goalLit in self.litToMutex.keys():
                             mutexLitsToExclude.update(self.litToMutex[goalLit])
     
+                nodes_together = set()
                 for otherPathIndex in range(i+1,len(allPaths)): 
                     #range(len(allPaths))
                     for node in allPaths[otherPathIndex].nodes():
-                        isolateGoal = isolateGoal.union([propositionToInitialStateLit[x] for x in node if (x in localPropositions) and (propositionToInitialStateLit[x] not in mutexLitsToExclude)])
+                        nodes_together.update(node)
+
+                # isolateGoal Starts with the relevant concrete goal lits, lets add some more
+                for prop in nodes_together:
+                    # every prop in future subproblems
+                    if prop not in FPG:
+                        # Not relevant here, so don't restore (can't break in the first place)
+                        continue
+                    if propositionToInitialStateLit[prop] in mutexLitsToExclude:
+                        # some initial state restorations are mutex with the concrete projected goals we are trying to achieve, so don't restore them
+                        continue
+                    if prop in ExPG:
+                        #assert prop in localPropositions
+                        # An exclusion, don't restore this
+                        continue
+
+                    isolateGoal.add(propositionToInitialStateLit[prop])
+
                 assert(len(isolateGoal) == len([abs(x) for x in isolateGoal]))
                 subproblemToIsolateGoalList[i] = sorted(isolateGoal,key=abs)
             mainDag.subproblemToIsolateGoal = subproblemToIsolateGoalList
@@ -2012,11 +2142,15 @@ class Problem:
                 for action in self.variableToActionsWithItAsEff[var]:
                     #print("action ", self.symbols[action])
                     for polarisedEff in self.actionEffStrips[action]:
+                        edge = (var, abs(polarisedEff))
                         if not abs(polarisedEff) in self.notBothPolarityPropositions:
-                            graph.add_edge(var, abs(polarisedEff))
+                            if edge in self.knoblockMinusGretton.edges():
+                                self.knoblockMinusGretton.remove_edge(edge[0], edge[1])
+                            graph.add_edge(edge[0], edge[1])
                         else:
                             # This is an edge being missed out on
-                            self.knoblockMinusGretton.add_edge(var, abs(polarisedEff))
+                            if edge not in graph.edges():
+                                self.knoblockMinusGretton.add_edge(edge[0], edge[1])
                     for polarisedPre in self.actionPre[action]:
                         graph.add_edge(var, abs(polarisedPre))
                     self.findConstraintsRecursive(graph, constraintsDetermined, [abs(lit) for lit in self.actionPre[action]])
@@ -2089,7 +2223,16 @@ class Problem:
             for a, b in graph.edges(data=False):
                 print("Edge: ", a, "\t", b)
 
-    def visualize(self, graph):
+    def visualize(self, graph, custom_str=None):
+        if custom_str == None:
+            def custom_str(x):
+                return str(x)
+
+        if type(custom_str) in [type({}), type([])]:
+            y = custom_str
+            def custom_str(x):
+                return y[x]
+
         # is data used
         useData = False
         for a, b, c in graph.edges(data=True):
@@ -2100,14 +2243,16 @@ class Problem:
         visual = nx.DiGraph()
         if useData:
             for a, b, c in graph.edges(data=True):
-                visual.add_edge(str(a), str(b), label=str(c))
+                visual.add_edge(custom_str(a), custom_str(b), label=custom_str(c))
         else:
             for x in graph.nodes():
-                visual.add_node(str(x))
+                print(custom_str(x))
+                visual.add_node(custom_str(x))
             for a, b in graph.edges(data=False):
-                visual.add_edge(str(a), str(b))
+                visual.add_edge(custom_str(a), custom_str(b))
 
-        pos = nx.spring_layout(visual)
+        #pos = nx.spring_layout(visual)
+        pos = nx.spectral_layout(visual)
         nx.draw(visual, pos, font_size=16, with_labels=False)
         for p in pos:
             pos[p][1] += 0.01
