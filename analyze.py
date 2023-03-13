@@ -117,9 +117,9 @@ def process_regular_logfile(log, filename):
         elif line == "FOUND A PLAN":
             assert(data["sat"] == None)
             data["sat"] = True
-        elif "real\t" in line:
+        elif "real\t" in line and not data["isolate_subproblems"]:
             data["time_taken"] = get_time(line)
-        elif "real " in line:
+        elif "real " in line and not data["isolate_subproblems"]:
             data["time_taken"] = float(line.split(" ")[1])
         elif "out of memory reallocating" in line:
             if data["error"] == None: data["error"] = ""
@@ -162,6 +162,15 @@ def process_regular_logfile(log, filename):
         elif "out of memory" in line and "allocating" in line:
             if data["error"] == None: data["error"] = ""
             if "out_of_memory" not in data["error"]: data["error"] += "out_of_memory"
+
+        # Some handling for the decompositional approach
+        elif "Plan valid" in line:
+            data["sat"] = True
+        elif "FINAL_ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME" in line:
+            data["time_taken"] = float(line.split(" ")[1])
+        elif "Simulated time greater than wanted timeout" in line:
+            data["time_taken"] = 1800
+
 
         if "tmp/tmp_" in line:
             raw = [x for x in line.split(" ") if "tmp/tmp_" in x][0]
