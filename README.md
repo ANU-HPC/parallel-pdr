@@ -36,6 +36,10 @@ To run:
 
 An example invocation script can be found at example.sh
 
+VAL has problems with very long plans, this can be changed by increasing the limit defined in:
+
+    VAL/libraries/VAL/src/Parser/pddl+.cpp:# define YYMAXDEPTH 10000
+
 # Author
 
 Marshall Clifton marshall.clifton@anu.edu.au
