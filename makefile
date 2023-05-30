@@ -8,8 +8,6 @@ lingeling_then_pdr:
 	$(MAKE) pdr -j16
 test:
 	./tests/test.sh
-pdrclean:
-	$(MAKE) -C pdr clean
 clean:
 	$(MAKE) -C madagascar clean
 	$(MAKE) -C extract clean
@@ -20,8 +18,8 @@ mad: FORCE
 	$(MAKE) -C madagascar -j 16; true
 	$(MAKE) -C madagascar -j 16
 	$(MAKE) -C extract -j 16
-pdr: FORCE
-	$(MAKE) -C pdr -j 16
+solver: FORCE
+	$(MAKE) -C solver -j 16
 val: FORCE 
 	./VAL/scripts/linux/build_linux64.sh all release -j 16
 lingeling: FORCE

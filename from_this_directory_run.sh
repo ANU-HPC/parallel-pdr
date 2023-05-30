@@ -124,7 +124,7 @@ then
     cd pdr
 fi
 
-cd ../pdr
+cd ../solver
 CPP_START_TIME=$(date +%s.%N)
 if [ $isolate_subproblems -eq "1" ]
 then
@@ -253,11 +253,11 @@ then
 else # not isolate_parallel
     if [ $DAGSTER -eq "1" ] # parallel
     then
-        echo mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
-        mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        echo mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
     else
-        echo ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
-        ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        echo ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
     fi
 fi
 echo CPP_TIME: $(awk "BEGIN {print ($(date +%s.%N)-$CPP_START_TIME)}")
