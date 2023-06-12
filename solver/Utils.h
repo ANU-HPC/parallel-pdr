@@ -10,11 +10,11 @@
 #include <sstream>
 #include <cstdlib>
 #include <iterator>
-#include <iomanip>
-
-#include "test_class.h"
-#include "Problem.h"
-#include "Layers.h"
-#include "Global.h"
+#include <algorithm>
 
 using namespace std;
+
+class Utils {
+  public:
+    static vector<int> inflate_only_true_to_all(const vector<int>& only_true, const vector<int>& all);
+};

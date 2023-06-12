@@ -2,14 +2,24 @@ default:
 	$(MAKE) -j 16 solver
 
 MPICXX   = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
-CXXFLAGS += -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
+CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
+#CXXFLAGS += -g -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
 LDFLAGS  = -lglog -lstdc++fs
 
 OBJS = main.o \
-	   Problem.o
+	   Problem.o \
+	   Utils.o \
+	   Compressed_State.o \
+	   Obligation.o \
+	   Global.o
+
 					
 HEADERS	= main.h \
-		  Problem.h
+		  Problem.h \
+		  Utils.h \
+		  Compressed_State.h \
+		  Obligation.h \
+		  Global.h
 
 INCLUDES += -I../lingeling \
             -I./parallel \

@@ -138,6 +138,8 @@ void Problem::read_mapping(){
   }
 }
 
+Problem::Problem() {}
+
 Problem::Problem(int argc, char **argv) {
   process_command_line_arguments(argc, argv);
 
@@ -211,33 +213,6 @@ Problem::Problem(int argc, char **argv) {
   assert(goal_condition_array.IsArray());
   for (SizeType i = 0; i < goal_condition_array.Size(); i++)
     goal_condition.push_back(goal_condition_array[i].GetInt());
-
-  /*
-  const Value& decomposition_root_nodes_array = document["decomposition_root_nodes"];
-  assert(decomposition_root_nodes_array.IsArray());
-  for (SizeType i = 0; i < decomposition_root_nodes_array.Size(); i++)
-    decomposition_root_nodes.push_back(decomposition_root_nodes_array[i].GetInt());
-
-  const Value& decomposition_node_to_nogood_propositions_array = document["decomposition_node_to_nogood_propositions"]; 
-  assert(decomposition_node_to_nogood_propositions_array.IsArray());
-  for (SizeType i = 0; i < decomposition_node_to_nogood_propositions_array.Size(); i++) {
-    const Value& propositions_array = decomposition_node_to_nogood_propositions_array[i];
-    vector<int> propositions;
-    for (SizeType j = 0; j < propositions_array.Size(); j++) // rapidjson uses SizeType instead of size_t.
-      propositions.push_back(propositions_array[j].GetInt());
-    decomposition_node_to_nogood_propositions.push_back(propositions);
-  }
-
-  const Value& decomposition_node_to_local_propositions_array = document["decomposition_node_to_local_propositions"]; 
-  assert(decomposition_node_to_local_propositions_array.IsArray());
-  for (SizeType i = 0; i < decomposition_node_to_local_propositions_array.Size(); i++) {
-    const Value& propositions_array = decomposition_node_to_local_propositions_array[i];
-    vector<int> propositions = vector<int>();
-    for (SizeType j = 0; j < propositions_array.Size(); j++) // rapidjson uses SizeType instead of size_t.
-      propositions.push_back(propositions_array[j].GetInt());
-    decomposition_node_to_local_propositions.push_back(propositions);
-  }
-  */
 
   const Value& base_scc_node_to_propositions_object = document["base_scc_node_to_propositions"]; 
   assert(base_scc_node_to_propositions_object.IsObject());
@@ -468,22 +443,6 @@ Problem::Problem(int argc, char **argv) {
     subproblem_to_only_one_strips_cliques[subproblem] = only_one_strips_cliques;
   */
 
-
-
-
-    /*
-    for (Value::ConstMemberIterator itb = only_one_strips_cliques_array.MemberBegin(); itb != only_one_strips_cliques_array.MemberEnd(); itb++) {
-      assert(itb->value.IsArray());
-      const Value& only_one_clique_array = itb->value;
-      vector<int> only_one_clique;
-      for (int i = 0; i < only_one_clique_array.Size(); i++) {
-        only_one_clique.push_back(only_one_clique_array[i].GetInt());
-      }
-      only_one_strips_cliques.push_back(only_one_clique);
-    }
-    */
-  //}
-
   const Value& subproblem_to_isolate_goal_object = document["subproblem_to_isolate_goal"]; 
   assert(subproblem_to_isolate_goal_object.IsObject());
   for (Value::ConstMemberIterator ita = subproblem_to_isolate_goal_object.MemberBegin(); ita != subproblem_to_isolate_goal_object.MemberEnd(); ita++) {
@@ -497,130 +456,5 @@ Problem::Problem(int argc, char **argv) {
     subproblem_to_isolate_goal[subproblem] = goal_lits;
   }
 
-  /*
-  const Value& subproblem_layer_base_scc_node_to_dag_node_object = document["subproblem_layer_base_scc_node_to_dag_node"]; 
-  assert(subproblem_layer_base_scc_node_to_dag_node_object.IsObject());
-  for (Value::ConstMemberIterator ita = subproblem_layer_base_scc_node_to_dag_node_object.MemberBegin(); ita != subproblem_layer_base_scc_node_to_dag_node_object.MemberEnd(); ita++) {
-    int subproblem = stoi(ita->name.GetString());
-    subproblem_layer_base_scc_node_to_dag_node[subproblem] = map<int, map<int, int>>();
-    for (auto itb = ita->value.MemberBegin(); itb != ita->value.MemberEnd(); itb++) {
-      int layer = stoi(itb->name.GetString());
-      subproblem_layer_base_scc_node_to_dag_node[subproblem][layer] = map<int, int>();
-      for (auto itc = itb->value.MemberBegin(); itc != itb->value.MemberEnd(); itc++) {
-        int base_scc_node = stoi(itc->name.GetString());
-        int dag_node = itc->value.GetInt();
-        subproblem_layer_base_scc_node_to_dag_node[subproblem][layer][base_scc_node] = dag_node;
-      }
-    }
-  }
-  */
-
-
-
-
-
-
-  /*
-
-  const Value& base_scc_node_to_propositions_array = document["base_scc_node_to_propositions"]; 
-  cout << "C1" << endl;
-  cout << "base scc node to props:  " << base_scc_node_to_propositions_array[0][0].GetInt() << endl;
-  assert(base_scc_node_to_propositions_array.IsArray());
-  for (SizeType i = 0; i < base_scc_node_to_propositions_array.Size(); i++) {
-    const Value& propositions_array = base_scc_node_to_propositions_array[i];
-    vector<int> propositions;
-    for (SizeType j = 0; j < propositions_array.Size(); j++)
-      propositions.push_back(propositions_array[j].GetInt());
-    base_scc_node_to_propositions.push_back(propositions);
-  }
-
-  cout << "D" << endl;
-
-  const Value& dag_node_to_nogood_propositions_array = document["dag_node_to_nogood_propositions"]; 
-  assert(dag_node_to_nogood_propositions_array.IsArray());
-  for (SizeType i = 0; i < dag_node_to_nogood_propositions_array.Size(); i++) {
-    const Value& propositions_array = dag_node_to_nogood_propositions_array[i];
-    vector<int> propositions;
-    for (SizeType j = 0; j < propositions_array.Size(); j++)
-      propositions.push_back(propositions_array[j].GetInt());
-    dag_node_to_nogood_propositions.push_back(propositions);
-  }
-  */
-
-  /*
-  const Value& dag_node_to_nogood_propositions_array = document["dag_node_to_nogood_propositions"]; 
-  assert(dag_node_to_nogood_propositions_array.IsArray());
-  for (SizeType i = 0; i < dag_node_to_nogood_propositions_array.Size(); i++) {
-    const Value& propositions_array = dag_node_to_nogood_propositions_array[i];
-    vector<int> propositions;
-    for (SizeType j = 0; j < propositions_array.Size(); j++)
-      propositions.push_back(propositions_array[j].GetInt());
-    dag_node_to_nogood_propositions.push_back(propositions);
-  }
-
-  const Value& dag_node_to_nogood_propositions_array = document["dag_node_to_nogood_propositions"]; 
-  assert(dag_node_to_nogood_propositions_array.IsArray());
-  for (SizeType i = 0; i < dag_node_to_nogood_propositions_array.Size(); i++) {
-    const Value& propositions_array = dag_node_to_nogood_propositions_array[i];
-    vector<int> propositions;
-    for (SizeType j = 0; j < propositions_array.Size(); j++)
-      propositions.push_back(propositions_array[j].GetInt());
-    dag_node_to_nogood_propositions.push_back(propositions);
-  }
-  */
-
-  /*
-
-  cout << "E" << endl;
-
-  const Value& subproblem_layer_to_root_dag_node_array = document["subproblem_layer_to_root_dag_node"]; 
-  assert(subproblem_layer_to_root_dag_node_array.IsArray());
-  for (SizeType i = 0; i < subproblem_layer_to_root_dag_node_array.Size(); i++) {
-    const Value& root_dag_nodes_array = subproblem_layer_to_root_dag_node_array[i];
-    vector<int> root_dag_nodes;
-    for (SizeType j = 0; j < root_dag_nodes_array.Size(); j++) 
-      root_dag_nodes.push_back(root_dag_nodes_array[j].GetInt());
-    subproblem_layer_to_root_dag_node.push_back(root_dag_nodes);
-  }
-
-  const Value& collating_dag_node_to_subproblem_array = document["collating_dag_node_to_subproblem"];
-  assert(collating_dag_node_to_subproblem_array.IsArray());
-  for (SizeType i = 0; i < collating_dag_node_to_subproblem_array.Size(); i++)
-    collating_dag_node_to_subproblem.push_back(collating_dag_node_to_subproblem_array[i].GetInt());
-
-  const Value& collating_dag_node_to_layer_array = document["collating_dag_node_to_layer"];
-  assert(collating_dag_node_to_layer_array.IsArray());
-  for (SizeType i = 0; i < collating_dag_node_to_layer_array.Size(); i++)
-    collating_dag_node_to_layer.push_back(collating_dag_node_to_layer_array[i].GetInt());
-
-  cout << "F" << endl;
-
-  const Value& subproblem_layer_base_scc_node_to_dag_node_array = document["subproblem_layer_base_scc_node_to_dag_node"]; 
-  assert(subproblem_layer_base_scc_node_to_dag_node_array.IsArray());
-  for (SizeType i = 0; i < subproblem_layer_base_scc_node_to_dag_node_array.Size(); i++) {
-    const Value& layer_base_scc_node_to_dag_node_array = subproblem_layer_base_scc_node_to_dag_node_array[i];
-    vector<vector<int>> layer_base_scc_node_to_dag_node;
-    for (SizeType j = 0; j < layer_base_scc_node_to_dag_node_array.Size(); j++) {
-      const Value& base_scc_node_to_dag_node_array = layer_base_scc_node_to_dag_node_array[j];
-      vector<int> base_scc_node_to_dag_node;
-      for (SizeType k = 0; k < base_scc_node_to_dag_node_array.Size(); k++) 
-        base_scc_node_to_dag_node.push_back(base_scc_node_to_dag_node_array[k].GetInt());
-      layer_base_scc_node_to_dag_node.push_back(base_scc_node_to_dag_node);
-    }
-    subproblem_layer_base_scc_node_to_dag_node.push_back(layer_base_scc_node_to_dag_node);
-  }
-
-  cout << "G" << endl;
-
-  const Value& subproblem_to_propositions_array = document["subproblem_to_propositions"]; 
-  assert(subproblem_to_propositions_array.IsArray());
-  for (SizeType i = 0; i < subproblem_to_propositions_array.Size(); i++) {
-    const Value& propositions_array = subproblem_to_propositions_array[i];
-    vector<int> propositions;
-    for (SizeType j = 0; j < propositions_array.Size(); j++) // rapidjson uses SizeType instead of size_t.
-      propositions.push_back(propositions_array[j].GetInt());
-    subproblem_to_propositions.push_back(propositions);
-  }
-
-  */
+  cout << "Finished loading in problem!!" << endl;
 }

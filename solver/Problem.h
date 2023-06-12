@@ -16,6 +16,7 @@ using namespace std;
 
 class Problem {
   public:
+    Problem();
     Problem(int argc, char **argv);
     //void print();
 
