@@ -1,14 +1,17 @@
+#ifndef OBLIGATION_H
+#define OBLIGATION_H
+
 #include "Compressed_State.h"
-#include "MPI_Communicatable.h"
 
 using namespace std;
 
-class Obligation : public MPI_Communicatable {
+class Obligation {
   public:
     //Obligation(const vector<int>& state, const int layer, const int subproblem);
+    Obligation();
     Obligation(const Compressed_State& compressed_state, int layer, int subproblem);
     Obligation(int* data, int start, int stop);
-    //Obligation();
+    string to_string();
     int layer();
     int subproblem();
     Compressed_State compressed_state();
@@ -20,3 +23,5 @@ class Obligation : public MPI_Communicatable {
     int _layer;
     int _subproblem;
 };
+
+#endif

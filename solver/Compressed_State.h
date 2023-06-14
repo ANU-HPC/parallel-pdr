@@ -5,20 +5,22 @@
 
 #include "Utils.h"
 #include "Global.h"
-#include "Compressed_State_Or_Actions.h"
 
 using namespace std;
 
-class Compressed_State : public Compressed_State_Or_Actions {
+class Compressed_State {
   public:
     Compressed_State();
     Compressed_State(const vector<int>& state, int subproblem);
     Compressed_State(int* data, int start, int stop);
+    string to_string();
     vector<int> get_state();
     void get_as_MPI_message(int* data, int start);
     int MPI_message_size();
-    int MPI_message_tag();
     // something about matches reason?
+  protected:
+    vector<int> _raw = vector<int>();
+    int _subproblem; // for compression
 };
 
 #endif
