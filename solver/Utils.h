@@ -1,3 +1,6 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <vector>
 #include <map>
 #include <unordered_map>
@@ -18,3 +21,5 @@ class Utils {
   public:
     static vector<int> inflate_only_true_to_all(const vector<int>& only_true, const vector<int>& all);
 };
+
+#endif

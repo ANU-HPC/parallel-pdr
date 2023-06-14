@@ -11,7 +11,12 @@ OBJS = main.o \
 	   Utils.o \
 	   Compressed_State.o \
 	   Obligation.o \
-	   Global.o
+	   Global.o \
+	   MPI_Interface.o \
+	   MPI_Communicatable.o \
+	   Compressed_State_Or_Actions.o \
+	   Compressed_State.o \
+	   Compressed_Actions.o
 
 					
 HEADERS	= main.h \
@@ -19,7 +24,12 @@ HEADERS	= main.h \
 		  Utils.h \
 		  Compressed_State.h \
 		  Obligation.h \
-		  Global.h
+		  Global.h \
+		  MPI_Interface.h \
+		  MPI_Communicatable.h \
+		  Compressed_State_Or_Actions.h \
+		  Compressed_State.h \
+		  Compressed_Actions.h
 
 INCLUDES += -I../lingeling \
             -I./parallel \

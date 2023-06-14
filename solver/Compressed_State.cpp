@@ -1,14 +1,11 @@
 #include "Compressed_State.h"
 
-Compressed_State::Compressed_State() {}
-
-Compressed_State::Compressed_State(const vector<int>& state, const int subproblem) {
-  for (auto it=state.begin(); it!=state.end(); it++) {
-    if ((*it)>0) _compressed_state.push_back(*it);
-  }
-  _subproblem = subproblem;
-}
+Compressed_State::Compressed_State() { }
 
 vector<int> Compressed_State::get_state() {
-  return Utils::inflate_only_true_to_all(_compressed_state, Global::problem.subproblem_to_propositions[_subproblem]);
+  return Utils::inflate_only_true_to_all(_raw, Global::problem.subproblem_to_propositions[_subproblem]);
+}
+
+int Compressed_State::MPI_message_tag() {
+  return MPI_Interface::MESSAGE_TAG_COMPRESSED_ACTIONS;
 }

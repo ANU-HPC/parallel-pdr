@@ -10,7 +10,7 @@ MpC
 *.a
 tmp/
 *~
-pdr/parallel-pdr
+solver/parallel-pdr
 lingeling/lingeling
 h2-fd-preprocessor
 h2-fd-preprocessor/builds
