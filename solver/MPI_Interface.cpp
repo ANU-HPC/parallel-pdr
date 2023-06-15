@@ -48,7 +48,7 @@ void MPI_Interface::maybe_cleanup_isend_outbox() {
     for (auto it=_isend_outbox.begin(); it!=_isend_outbox.end(); it++) {
       auto [data, request] = *it;
 
-      MPI_Request_get_status(*request, &completed_flag, &_status);
+      MPI_Request_get_status(*request, &completed_flag, &_scratch_status);
       if (completed_flag) {
         delete data;
         delete request;
@@ -68,6 +68,13 @@ void MPI_Interface::isend_then_delete_message(int destination, int tag, int* dat
 
 void MPI_Interface::send_then_delete_message(int destination, int tag, int* data, int size) {
   MPI_Send(data, size, MPI_INT, destination, tag, _main_communicator);
+}
+
+bool MPI_Interface::message_waiting() {
+  int completed_flag;
+  const int error_code = MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, _main_communicator, &completed_flag, &_scratch_status);
+  assert(error_code==0);
+  return completed_flag;
 }
 
 int MPI_Interface::world_size() {

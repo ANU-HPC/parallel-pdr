@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 
 
   MPI_Orchestrator mpi_orchestrator;
-  mpi_orchestrator.handle_obligation(o1, 1);
+  mpi_orchestrator.send_obligation(o1, 1);
   mpi_orchestrator.finalize();
 
 

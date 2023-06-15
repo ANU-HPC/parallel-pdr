@@ -5,6 +5,7 @@
 #include <mpi.h>
 #include <vector>
 #include <tuple>
+#include <cassert>
 
 using namespace std;
 
@@ -14,6 +15,7 @@ class MPI_Interface {
     void setup();
     bool is_worker();
 
+    bool message_waiting();
     tuple<int,int,int*,int> recieve_message();
     void send_then_delete_message(int destination, int tag, int* data, int size);
     void isend_then_delete_message(int destination, int tag, int* data, int size);
@@ -34,7 +36,7 @@ class MPI_Interface {
     vector<tuple<int*, MPI_Request*>> _isend_outbox;
     const int CLEANUP_ISEND_OUTBOX_TICKER_COUNT = 100; // how often to clear out the outbox
     int _cleanup_isend_outbox_ticker = CLEANUP_ISEND_OUTBOX_TICKER_COUNT;
-    MPI_Status _status;
+    MPI_Status _scratch_status;
 };
 
 #endif
