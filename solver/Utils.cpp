@@ -49,7 +49,7 @@ vector<int> Utils::inflate_only_true_to_all(const vector<int>& only_true, const 
 
 string Utils::to_string(vector<int> x) {
   // give by copy
-  string ret_val = "";
+  string ret_val = "{";
   for (int i=0; i<x.size(); i++) {
     if (x[i] > 0) {
       ret_val += "  \033[38;5;10m";
@@ -60,13 +60,31 @@ string Utils::to_string(vector<int> x) {
     }
     ret_val += "\033[0m";
   }
-  return ret_val;
+  return ret_val + " }";
 }
 
 string Utils::to_string(int* data, int size) {
   string ret_val = "";
   for (int i=0; i<size; i++) {
     ret_val += std::to_string(data[i]) + " ";
+  }
+  return ret_val;
+}
+
+void Utils::get_as_MPI_message(int* data, int start, vector<int> x) {
+  for (int i=0; i<x.size(); i++) {
+    data[start+i] = x[i];
+  }
+}
+
+int Utils::MPI_message_size(int* data, int start, vector<int> x) {
+  return x.size();
+}
+
+vector<int> Utils::get_from_MPI_message(int* data, int start, int stop) {
+  vector<int> ret_val;
+  for (int i=start; i<stop; i++) {
+    ret_val.push_back(data[i]);
   }
   return ret_val;
 }

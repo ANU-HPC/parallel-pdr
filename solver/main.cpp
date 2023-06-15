@@ -39,16 +39,10 @@ int main(int argc, char **argv) {
   cout << "Recovered!! " << recovered.to_string() << endl;
   cout << "AAA" << recovered.original_obligation().to_string();
 
-
-
-
-
-
-
-
-
   // Parse in command line arguments, and problem specific attributes
   Global::problem = Problem(argc, argv);
+
+  cout << "props in prob1" << Utils::to_string(Global::problem.subproblem_to_propositions[0]) << endl;
 
   // Setup MPI
   if (Global::problem.MPI_active) { 

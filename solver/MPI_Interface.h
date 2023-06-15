@@ -2,7 +2,9 @@
 #define MPI_INTERFACE_H
 // strict MPI things
 
-#include<mpi.h>
+#include <mpi.h>
+#include <vector>
+#include <tuple>
 
 using namespace std;
 
@@ -11,12 +13,24 @@ class MPI_Interface {
     // have a default constructor that doesn't do anything - not sure the best way to go about it, I would like the constructor to just set up everything, but this is being called even if not in MPI, and there is no way to check if in MPI (cleanly)...
     void setup();
     bool is_worker();
+
+    tuple<int,int,int*,int> recieve_message();
+    void send_then_delete_message(int destination, int tag, int* data, int size);
+    void isend_then_delete_message(int destination, int tag, int* data, int size);
+
     const static int MESSAGE_TAG_OBLIGATION         = 1;
     const static int MESSAGE_TAG_SUCCESS            = 2;
+    const static int MESSAGE_TAG_REASON             = 3;
   private:
+    void maybe_cleanup_isend_outbox();
     int _world_size;
     int _world_rank;
     MPI_Comm _main_communicator;
+
+    vector<tuple<int*, MPI_Request*>> _isend_outbox;
+    const int CLEANUP_ISEND_OUTBOX_TICKER_COUNT = 100; // how often to clear out the outbox
+    int _cleanup_isend_outbox_ticker = CLEANUP_ISEND_OUTBOX_TICKER_COUNT;
+    MPI_Status _status;
 };
 
 #endif

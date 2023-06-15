@@ -49,8 +49,8 @@ void Obligation::get_as_MPI_message(int* data, int start) {
 }
 
 Obligation::Obligation(int* data, int start, int stop) {
-  _layer = data[0];
-  _subproblem = data[1];
+  _layer = data[start];
+  _subproblem = data[start+1];
   _compressed_state = Compressed_State(data, start+2, stop);
 }
 
