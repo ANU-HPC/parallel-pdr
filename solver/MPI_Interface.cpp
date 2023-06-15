@@ -69,3 +69,11 @@ void MPI_Interface::isend_then_delete_message(int destination, int tag, int* dat
 void MPI_Interface::send_then_delete_message(int destination, int tag, int* data, int size) {
   MPI_Send(data, size, MPI_INT, destination, tag, _main_communicator);
 }
+
+int MPI_Interface::world_size() {
+  return _world_size;
+}
+
+int MPI_Interface::world_rank() {
+  return _world_rank;
+}

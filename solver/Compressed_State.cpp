@@ -18,11 +18,11 @@ Compressed_State::Compressed_State(int* data, int start, int stop) {
   }
 }
 
-vector<int> Compressed_State::get_state() {
+vector<int> Compressed_State::get_state()  const{
   return Utils::inflate_only_true_to_all(_raw, Global::problem.subproblem_to_propositions[_subproblem]);
 }
 
-void Compressed_State::get_as_MPI_message(int* data, int start) {
+void Compressed_State::get_as_MPI_message(int* data, int start)  const{
   data[start] = _subproblem;
 
   for (int i=0; i<_raw.size(); i++) {
@@ -30,11 +30,10 @@ void Compressed_State::get_as_MPI_message(int* data, int start) {
   }
 }
 
-int Compressed_State::MPI_message_size() {
+int Compressed_State::MPI_message_size()  const{
   return 1 + _raw.size();
 }
 
-string Compressed_State::to_string() {
-  cout << "cs to string on size: " << std::to_string(_raw.size()) << endl;
+string Compressed_State::to_string()  const{
   return Utils::to_string(_raw);
 }

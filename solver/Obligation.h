@@ -11,13 +11,14 @@ class Obligation {
     Obligation();
     Obligation(const Compressed_State& compressed_state, int layer, int subproblem);
     Obligation(int* data, int start, int stop);
-    string to_string();
-    int layer();
-    int subproblem();
-    Compressed_State compressed_state();
-    void get_as_MPI_message(int* data, int start);
-    int MPI_message_size();
-    int MPI_message_tag();
+    string to_string() const;
+    int layer() const;
+    int subproblem() const;
+    Compressed_State compressed_state() const;
+    void get_as_MPI_message(int* data, int start) const;
+    int* get_as_MPI_message() const;
+    int MPI_message_size() const;
+    int MPI_message_tag() const;
   private:
     Compressed_State _compressed_state;
     int _layer;

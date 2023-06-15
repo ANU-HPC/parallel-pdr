@@ -77,7 +77,7 @@ void Utils::get_as_MPI_message(int* data, int start, vector<int> x) {
   }
 }
 
-int Utils::MPI_message_size(int* data, int start, vector<int> x) {
+int Utils::MPI_message_size(vector<int> x) {
   return x.size();
 }
 

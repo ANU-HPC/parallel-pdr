@@ -13,7 +13,7 @@ class Utils {
     static string to_string(int* data, int size);
 
     static void get_as_MPI_message(int* data, int start, vector<int> x);
-    static int MPI_message_size(int* data, int start, vector<int> x);
+    static int MPI_message_size(vector<int> x);
     static vector<int> get_from_MPI_message(int* data, int start, int stop);
 };
 

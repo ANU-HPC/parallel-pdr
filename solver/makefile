@@ -14,7 +14,10 @@ OBJS = main.o \
 	   MPI_Interface.o \
 	   Compressed_State.o \
 	   Compressed_Actions.o \
-	   Success.o
+	   Success.o \
+	   Reason.o \
+	   MPI_Orchestrator.o \
+	   MPI_Worker.o
 
 					
 HEADERS	= main.h \
@@ -25,7 +28,10 @@ HEADERS	= main.h \
 		  MPI_Interface.h \
 		  Compressed_State.h \
 		  Compressed_Actions.h \
-		  Success.h
+		  Success.h \
+		  Reason.o \
+		  MPI_Orchestrator.h \
+		  MPI_Worker.h
 
 INCLUDES += -I../lingeling \
             -I./parallel \
