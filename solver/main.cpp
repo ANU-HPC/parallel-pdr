@@ -23,8 +23,8 @@ int main(int argc, char **argv) {
   vector<int> state2 = vector<int>({-1,-2,3,-4,5});
 
   Compressed_Actions ca = Compressed_Actions(actions, 1000);
-  Compressed_State cs1 = Compressed_State(state1, 1000);
-  Compressed_State cs2 = Compressed_State(state2, 1000);
+  Compressed_State cs1 = Compressed_State(state1, 1000, true);
+  Compressed_State cs2 = Compressed_State(state2, 1000, true);
 
   Obligation o1 = Obligation(cs1, 99, 1000);
   Obligation o2 = Obligation(cs2, 98, 1000);

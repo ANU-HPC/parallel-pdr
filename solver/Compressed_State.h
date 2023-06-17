@@ -11,7 +11,7 @@ using namespace std;
 class Compressed_State {
   public:
     Compressed_State();
-    Compressed_State(const vector<int>& state, int subproblem);
+    Compressed_State(const vector<int>& state, int subproblem, bool guaranteed_full);
     Compressed_State(int* data, int start, int stop);
     string to_string() const;
     vector<int> get_state() const;
@@ -20,6 +20,7 @@ class Compressed_State {
     // something about matches reason?
   protected:
     vector<int> _raw = vector<int>();
+    bool _guaranteed_full; // means all the literals will be stored and without compression
     int _subproblem; // for compression
 };
 

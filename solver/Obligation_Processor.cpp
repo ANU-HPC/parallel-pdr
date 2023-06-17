@@ -85,7 +85,7 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
   const int next_layer = original_obligation.layer()-1;
 
   Compressed_Actions ca = Compressed_Actions(actions, subproblem);
-  Compressed_State cs = Compressed_State(positive_propositions, subproblem);
+  Compressed_State cs = Compressed_State(positive_propositions, subproblem, true);
 
   Obligation successor_obligation = Obligation(cs, next_layer, subproblem);
 

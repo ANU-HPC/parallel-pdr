@@ -23,7 +23,6 @@
 #include "Compressed_State.h"
 #include "Obligation.h"
 #include "Success.h"
-#include "MPI_Orchestrator.h"
 #include "MPI_Worker.h"
 
 using namespace std;

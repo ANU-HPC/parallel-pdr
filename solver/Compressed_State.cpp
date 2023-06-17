@@ -2,11 +2,23 @@
 
 Compressed_State::Compressed_State() { }
 
-Compressed_State::Compressed_State(const vector<int>& state, int subproblem) {
-  for (auto it=state.begin(); it!=state.end(); it++) {
-    if ((*it)>0) _raw.push_back(*it);
-  }
+// TODO make this nicer?
+Compressed_State::Compressed_State(const vector<int>& state, int subproblem, bool guaranteed_full) {
   _subproblem = subproblem;
+  _guaranteed_full = guaranteed_full;
+
+  // Want to be able to have a full state by only passing the true ones.
+  //assert(!_guaranteed_full || state.size() == Global::problem.subproblem_to_propositions[_subproblem]);
+
+  if (_guaranteed_full) {
+    // so only need to store the positive ones
+    for (auto it=state.begin(); it!=state.end(); it++) {
+      if ((*it)>0) _raw.push_back(*it);
+    }
+  } else {
+    _raw = state;
+  }
+
   cout << "finished cs constructor, raw size: " << std::to_string(_raw.size());
 }
 
