@@ -18,16 +18,21 @@
 using namespace std;
 
 vector<int> Utils::inflate_only_true_to_all(const vector<int>& only_true, const vector<int>& all) {
+  cout << "inflate_only_true_to_all" << endl;
+  cout << "only true: " << Utils::to_string(only_true) << endl;
+  cout << "all: " << Utils::to_string(all) << endl;
   assert(is_sorted(only_true.begin(), only_true.end()));
   assert(is_sorted(all.begin(), all.end()));
     
+  cout << "A" << endl;
   auto full_current = all.begin();
   const auto full_end = all.end();
-  auto only_true_current = only_true.begin()+2;
+  auto only_true_current = only_true.begin();
   const auto only_true_end = only_true.end();
 
   vector<int> result;
 
+  cout << "B" << endl;
   while (only_true_current != only_true_end) {
     if (abs(*full_current) == *only_true_current) {
       result.push_back(*full_current);
@@ -39,12 +44,15 @@ vector<int> Utils::inflate_only_true_to_all(const vector<int>& only_true, const 
     }
   }
 
+  cout << "C" << endl;
   while (full_current != full_end) {
     result.push_back(-(*full_current));
     full_current++;
   }
+  cout << "D" << endl;
 
   return result;
+  cout << "END inflate_only_true_to_all" << endl;
 }
 
 string Utils::to_string(vector<int> x) {

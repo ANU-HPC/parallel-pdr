@@ -1,4 +1,5 @@
 #include "main.h"
+#include "Worker_Interface.h"
 
 
 int main(int argc, char **argv) {
@@ -41,9 +42,9 @@ int main(int argc, char **argv) {
 
   cout << "original obligation to send: " << o1.to_string() << endl;
 
-  MPI_Orchestrator mpi_orchestrator;
-  mpi_orchestrator.handle_obligation(o1, 1);
-  mpi_orchestrator.finalize();
+  Worker_Interface worker_interface;
+  worker_interface.handle_obligation(o1, 1);
+  worker_interface.finalize();
 
   sleep(4);
 

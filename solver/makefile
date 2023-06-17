@@ -3,7 +3,7 @@ default:
 
 MPICXX   = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
 #CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
-CXXFLAGS += -g -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
+CXXFLAGS += -rdynamic -g -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
 LDFLAGS  = -lstdc++fs
 
 OBJS = main.o \
@@ -16,10 +16,12 @@ OBJS = main.o \
 	   Compressed_Actions.o \
 	   Success.o \
 	   Reason.o \
-	   MPI_Orchestrator.o \
 	   MPI_Worker.o \
 	   Obligation_Processor.o \
-	   Lingeling.o
+	   Lingeling.o \
+	   Distributed_Worker_Interface.o \
+	   Serial_Worker_Interface.o \
+	   Worker_Interface.o
 
 					
 HEADERS	= main.h \
@@ -32,10 +34,12 @@ HEADERS	= main.h \
 		  Compressed_Actions.h \
 		  Success.h \
 		  Reason.o \
-		  MPI_Orchestrator.h \
 		  MPI_Worker.h \
 		  Obligation_Processor.h \
-		  Lingeling.o
+		  Lingeling.o \
+		  Distributed_Worker_Interface.o \
+		  Serial_Worker_Interface.o \
+		  Worker_Interface.o
 
 INCLUDES += -I../lingeling \
             -I./parallel \

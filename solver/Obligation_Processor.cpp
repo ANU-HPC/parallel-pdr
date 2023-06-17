@@ -21,6 +21,7 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
   cout << "Obligation_Processor handling obligation " << original_obligation.to_string() << endl;
   const int solver_id = get_solver_to_send_to(original_obligation);
   ensure_solver_exist(solver_id);
+  cout << "wanted " << solver_id << " size" << _solvers.size() << endl;
   _last_interaction_was_a_success = _solvers[solver_id]->solve(original_obligation.compressed_state().get_state());
 
   if (_last_interaction_was_a_success) {

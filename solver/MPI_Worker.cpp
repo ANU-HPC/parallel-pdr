@@ -1,5 +1,4 @@
 #include "MPI_Worker.h"
-#include "MPI_Interface.h"
 
 // maybe make it so mpi_interface is stored in here?
 
@@ -35,8 +34,24 @@ void MPI_Worker::run() {
 
 void MPI_Worker::handle_obligation(const Obligation& obl) {
   cout << "worker received obligation: [[[" << obl.to_string() << "]]]" << endl;
+
+  _obligation_processor.process_obligation(obl);
+
+  // send back success or reason
+  if (_obligation_processor.last_interaction_was_a_success()) {
+    const Success& success = _obligation_processor.last_interactions_success();
+    const int size = success.MPI_message_size();
+    int* data = success.get_as_MPI_message();
+    Global::mpi_interface.isend_then_delete_message(0, MPI_Interface::MESSAGE_TAG_SUCCESS, data, size);
+  } else {
+    const Reason& reason = _obligation_processor.last_interactions_reason();
+    const int size = reason.MPI_message_size();
+    int* data = reason.get_as_MPI_message();
+    Global::mpi_interface.isend_then_delete_message(0, MPI_Interface::MESSAGE_TAG_REASON, data, size);
+  }
 }
 
 void MPI_Worker::handle_reason(const Reason& reason) {
   cout << "worker received reason: [[[" << reason.to_string() << "]]]" << endl;
+  _obligation_processor.add_reason(reason);
 }
