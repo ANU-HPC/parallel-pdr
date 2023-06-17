@@ -14,8 +14,8 @@ using namespace std;
 
 class MPI_Orchestrator {
   public:
-    void send_obligation(const Obligation& obl, int worker);
-    void send_reason(const Reason& reason, int worker);
+    void handle_obligation(const Obligation& obl, int worker);
+    void handle_reason(const Reason& reason, int worker);
 
     void process_inbox();
 

@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 int main(int argc, char **argv) {
   Global::problem.subproblem_to_propositions[1000] = vector<int>({1,2,3,4,5});
 
@@ -15,8 +16,6 @@ int main(int argc, char **argv) {
       return 0;
     }
   }
-
-
 
   vector<int> state1 = vector<int>({1,-2,3,4,-5});
   vector<int> actions = vector<int>({6,7,-8,9});
@@ -42,15 +41,14 @@ int main(int argc, char **argv) {
 
   cout << "original obligation to send: " << o1.to_string() << endl;
 
-
   MPI_Orchestrator mpi_orchestrator;
-  mpi_orchestrator.send_obligation(o1, 1);
+  mpi_orchestrator.handle_obligation(o1, 1);
   mpi_orchestrator.finalize();
 
+  sleep(4);
 
-
-  // when we are ready, start the PDR main loop
-
+  cout << "end" << endl;
 
   return 0;
 }
+

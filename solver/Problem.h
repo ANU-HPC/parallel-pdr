@@ -16,6 +16,7 @@ using namespace std;
 
 class Problem {
   public:
+    // TODO add bounds on actions, props etc, and tell that to the successor extractor
     Problem();
     Problem(int argc, char **argv);
     //void print();

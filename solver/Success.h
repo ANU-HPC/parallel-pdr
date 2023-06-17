@@ -9,15 +9,16 @@ using namespace std;
 
 class Success {
   public:
+    Success();
     Success(Obligation original_obligation, Compressed_Actions actions, Obligation successor_obligation);
     Success(int* data, int start, int stop); // MPI
-    string to_string();
-    Obligation original_obligation();
-    Compressed_Actions action();
-    Obligation successor_obligation();
-    int* get_as_MPI_message();
-    int MPI_message_size();
-    int MPI_message_tag();
+    string to_string() const;
+    Obligation original_obligation() const;
+    Compressed_Actions action() const;
+    Obligation successor_obligation() const;
+    int* get_as_MPI_message() const;
+    int MPI_message_size() const;
+    int MPI_message_tag() const;
   private:
     Obligation _original_obligation;
     Compressed_Actions _actions;

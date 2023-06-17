@@ -15,6 +15,7 @@ class Obligation {
     int layer() const;
     int subproblem() const;
     Compressed_State compressed_state() const;
+    bool should_reduce_reason_if_unsat() const;
     void get_as_MPI_message(int* data, int start) const;
     int* get_as_MPI_message() const;
     int MPI_message_size() const;
@@ -23,6 +24,6 @@ class Obligation {
     Compressed_State _compressed_state;
     int _layer;
     int _subproblem;
+    bool _should_reduce_reason_if_unsat = true; // TODO for starting
 };
-
 #endif

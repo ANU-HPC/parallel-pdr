@@ -88,3 +88,37 @@ vector<int> Utils::get_from_MPI_message(int* data, int start, int stop) {
   }
   return ret_val;
 }
+
+int Utils::tilde(int lit, int amount) {
+  assert(lit != 0);
+  if (lit > 0) return lit + amount * Global::problem.total_per_timestep;
+  else         return lit - amount * Global::problem.total_per_timestep;
+}
+
+vector<int> Utils::tilde(const vector<int>& clause, int amount) {
+  vector<int> ret_val(clause.size());
+  for (int i=0; i<clause.size(); i++) {
+    ret_val[i] = tilde(clause[i], amount);
+  }
+  return ret_val;
+}
+
+bool Utils::in(const set<int>& container, int element) {
+  return container.find(element) != container.end();
+}
+
+
+/*
+bool in_pos_vector(int x, const vector<int>& vec) {
+  return binary_search(vec.begin(), vec.end(), x);
+}
+
+bool in_abs_sorted_vector(int x, const vector<int>& vec) {
+  for (auto it=vec.begin(); it!=vec.end(); it++) {
+    if (*it == x) {
+      return true;
+    }
+  }
+  return false;
+}
+*/

@@ -17,11 +17,11 @@ Compressed_Actions::Compressed_Actions(int* data, int start, int stop) {
   }
 }
 
-vector<int> Compressed_Actions::get_actions() {
+vector<int> Compressed_Actions::get_actions() const {
   return Utils::inflate_only_true_to_all(_raw, Global::problem.subproblem_to_propositions[_subproblem]);
 }
 
-void Compressed_Actions::get_as_MPI_message(int* data, int start) {
+void Compressed_Actions::get_as_MPI_message(int* data, int start) const {
   data[start] = _subproblem;
 
   for (int i=0; i<_raw.size(); i++) {
@@ -29,10 +29,10 @@ void Compressed_Actions::get_as_MPI_message(int* data, int start) {
   }
 }
 
-int Compressed_Actions::MPI_message_size() {
+int Compressed_Actions::MPI_message_size() const {
   return 1 + _raw.size();
 }
 
-string Compressed_Actions::to_string() {
+string Compressed_Actions::to_string() const {
   return Utils::to_string(_raw);
 }

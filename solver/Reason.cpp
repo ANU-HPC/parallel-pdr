@@ -26,6 +26,14 @@ vector<int> Reason::reason() const {
   return _reason;
 }
 
+vector<int> Reason::nogood_clause() const {
+  vector<int> ret_val;
+  for (auto it=_reason.begin(); it!=_reason.end(); it++) {
+    ret_val.push_back(*it); 
+  }
+  return ret_val;
+}
+
 // MPI
 // TYPE, layer, subproblem, positive_props
 

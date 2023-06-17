@@ -2,25 +2,27 @@
 #include "Compressed_Actions.h"
 #include "MPI_Interface.h"
 
+Success::Success() { }
+
 Success::Success(Obligation original_obligation, Compressed_Actions actions, Obligation successor_obligation) {
   _original_obligation = original_obligation;
   _actions = actions;
   _successor_obligation = successor_obligation;
 }
 
-string Success::to_string() {
+string Success::to_string() const {
   return "{Success, original: " + _original_obligation.to_string() + " actions: " + _actions.to_string() + " successor: " + _successor_obligation.to_string() + "}";
 }
 
-Obligation Success::original_obligation() {
+Obligation Success::original_obligation() const {
   return _original_obligation;
 }
 
-Compressed_Actions Success::action() {
+Compressed_Actions Success::action() const {
   return _actions;
 }
 
-Obligation Success::successor_obligation() {
+Obligation Success::successor_obligation() const {
   return _successor_obligation;
 }
 
@@ -41,7 +43,7 @@ Success::Success(int* data, int start, int stop) {
   _successor_obligation = Obligation(data, stop_b, stop_c);
 }
 
-int* Success::get_as_MPI_message() {
+int* Success::get_as_MPI_message() const {
   int* data = new int[MPI_message_size()];
 
   const int a = _original_obligation.MPI_message_size();
@@ -65,7 +67,7 @@ int* Success::get_as_MPI_message() {
   return data;
 }
 
-int Success::MPI_message_size() {
+int Success::MPI_message_size() const {
   const int a = _original_obligation.MPI_message_size();
   const int b = _actions.MPI_message_size();
   const int c = _successor_obligation.MPI_message_size();
@@ -73,6 +75,6 @@ int Success::MPI_message_size() {
   return 3+a+b+c;
 }
 
-int Success::MPI_message_tag() {
+int Success::MPI_message_tag() const {
   return MPI_Interface::MESSAGE_TAG_SUCCESS;
 }

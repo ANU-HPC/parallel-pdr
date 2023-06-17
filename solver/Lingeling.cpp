@@ -37,20 +37,34 @@ void Lingeling::flush_cache() {
 }
 
 Lingeling Lingeling::clone() {
+  exit(1);
   assert(0); // TODO causes problems.. look into it
   //return Lingeling(lglclone(solver));
   return Lingeling();
 }
 
+void Lingeling::test_non_null(int* x) {
+  if (x==NULL) {
+    cerr << "Parsing Error";
+    exit(1);
+  }
+}
+
 // Taken from tinisat
 void Lingeling::load_DIMACS_Cnf(const char* fname) {
   FILE *ifp;
-  TEST_NOT_NULL(ifp = fopen(fname, "r"));
+  ifp = fopen(fname, "r");
+  if (ifp == 0) {
+    cerr << "Parsing Error";
+    exit(1);
+  }
+
   cc = 0;
   vc = 0;
   int max_clause_len = 1024, max_clause_count = 1024, *literals;
-  TEST_NOT_NULL(literals = (int *) malloc(max_clause_len * sizeof(int)))
-    char line[100000];
+  literals = (int *) malloc(max_clause_len * sizeof(int));
+  test_non_null(literals);
+  char line[100000];
   size_t len = 100000;
   char c;
 
@@ -58,85 +72,106 @@ void Lingeling::load_DIMACS_Cnf(const char* fname) {
   int header_vc, header_cc;
   while((c=getc(ifp)) != EOF){ 
     if (isspace(c)) continue; else ungetc(c,ifp);
-    char* UNUSED = fgets(line, len, ifp);
+    fgets(line, len, ifp);
     if (c=='p'){
-      if(sscanf(line, "p cnf %d %d", &header_vc, &header_cc) == 2)
-        break;
-      else
-        throw ParsingException(" Invalid CNF file\n");
+      if(sscanf(line, "p cnf %d %d", &header_vc, &header_cc) == 2) break;
+      else {
+        cerr << "Parsing Exception: Invalid CNF file" << endl;
+        exit(1);
+      }
     }
   }
   // allocate original data buffers
-  TEST_NOT_NULL(clauses = (int **) calloc(max_clause_count, sizeof(int *)))
-    TEST_NOT_NULL(cl = (unsigned *) calloc(max_clause_count, sizeof(unsigned)))
+  clauses = (int **) calloc(max_clause_count, sizeof(int *));
+  cl = (unsigned *) calloc(max_clause_count, sizeof(unsigned));
 
-    // for each line
-    while((c=getc(ifp)) != EOF){
-      if (isspace(c)) continue; else ungetc(c,ifp);
-      // search for the first non-whitespace character
-      if ((c=='-') || isdigit(c)) {
-        int literal_input_count;
-        int literal_input;
-        int j=-1;
-        // scan the line into the literals buffer one character at a time, until the zero is scanned
-        do {
-          j++;
-          literal_input_count = fscanf(ifp, "%d", &literal_input);
-          if (literal_input_count == 0)
-            throw ParsingException("Invalid CNF file - cnf lines must involve digits and terminate with zero\n");
-          if (j == max_clause_len) {
-            max_clause_len *= 2;
-            TEST_NOT_NULL(literals = (int *) realloc(literals, max_clause_len * sizeof(int)))
-          }
-          literals[j] = literal_input;
-          if (abs(literal_input) > vc)
-            vc = abs(literal_input);
-        } while (literal_input != 0);
-        // allocate room for the new clause
-        TEST_NOT_NULL(clauses[cc] = (int *) calloc(j + 1, sizeof(int)))
-          // load the new clause in checking for duplicate and contradicting literals
-          for(int k = 0; k <= j; k++){
-            for(int x = 0; x < k; x++) {
-              if(literals[x] == literals[k]) {
-                for (int pri=0; pri<=j; pri++) {
-                  printf("%d ", literals[pri]);
-                }
-                printf("\n");
-                printf("duplicate lit %d\n", literals[x]);
-                throw ParsingException("duplicate literals in clause in CNF file \n");
-              }
-              else if (literals[x] + literals[k] == 0)
-                throw ParsingException("contradicting literals in clause in CNF file \n");
+  if ((clauses == 0) || (cl == 0)) {
+    cerr << "Parsing Error!" << endl;
+    exit(1);
+  }
+
+  // for each line
+  while((c=getc(ifp)) != EOF){
+    if (isspace(c)) continue; else ungetc(c,ifp);
+    // search for the first non-whitespace character
+    if ((c=='-') || isdigit(c)) {
+      int literal_input_count;
+      int literal_input;
+      int j=-1;
+      // scan the line into the literals buffer one character at a time, until the zero is scanned
+      do {
+        j++;
+        literal_input_count = fscanf(ifp, "%d", &literal_input);
+        if (literal_input_count == 0) {
+          cerr << "Parsing Exception Invalid CNF file - cnf lines must involve digits and terminate with zero" << endl;
+          exit(1);
+        }
+        if (j == max_clause_len) {
+          max_clause_len *= 2;
+          literals = (int *) realloc(literals, max_clause_len * sizeof(int));
+          test_non_null(literals);
+
+        }
+        literals[j] = literal_input;
+        if (abs(literal_input) > vc)
+          vc = abs(literal_input);
+      } while (literal_input != 0);
+      // allocate room for the new clause
+      clauses[cc] = (int *) calloc(j + 1, sizeof(int));
+      test_non_null(clauses[cc]);
+      // load the new clause in checking for duplicate and contradicting literals
+      for(int k = 0; k <= j; k++){
+        for(int x = 0; x < k; x++) {
+          if(literals[x] == literals[k]) {
+            for (int pri=0; pri<=j; pri++) {
+              printf("%d ", literals[pri]);
             }
-            clauses[cc][k] = literals[k];
-
-            // == THE ONLY CHANGE ========
-            lgladd(solver, literals[k]);
-            if (literals[k]) lglfreeze(solver, literals[k]);
-            // ===========================
+            printf("\n");
+            printf("duplicate lit %d\n", literals[x]);
+            cerr << "Parsing Exception duplicate literals in clause in CNF file" << endl;
+            exit(1);
+          } else if (literals[x] + literals[k] == 0) {
+            cerr << "Parsing Exception contradicting literals in clause in CNF file" << endl;
+            exit(1);
           }
-        // set the clause length, increment the clause count, and expand buffers as nessisary
-        cl[cc] = j;
-        cc++;
-        if(cc+1 >= max_clause_count) {
-          max_clause_count *= 2;
-          TEST_NOT_NULL(clauses = (int **)realloc(clauses, max_clause_count * sizeof(int *)))
-            TEST_NOT_NULL(cl = (unsigned *) realloc(cl,max_clause_count * sizeof(unsigned)))
+        }
+        clauses[cc][k] = literals[k];
+
+        // == THE ONLY CHANGE ========
+        lgladd(solver, literals[k]);
+        if (literals[k]) lglfreeze(solver, literals[k]);
+        // ===========================
+      }
+      // set the clause length, increment the clause count, and expand buffers as nessisary
+      cl[cc] = j;
+      cc++;
+      if(cc+1 >= max_clause_count) {
+        max_clause_count *= 2;
+        clauses = (int **)realloc(clauses, max_clause_count * sizeof(int *));
+        cl = (unsigned *) realloc(cl,max_clause_count * sizeof(unsigned));
+
+        if ((clauses == 0) || (cl == 0)) {
+          cerr << "Parsing Error!" << endl;
+          exit(1);
         }
       }
-      // get a new line
-      char* UNUSED = fgets(line, len, ifp);
     }
+    // get a new line
+    fgets(line, len, ifp);
+  }
   clauses[cc] = NULL;
   //cl[cc] = NULL; // TODO Makes some data structures wrong
-  if ((header_vc != vc) || (header_cc != cc))
-    throw ParsingException("CNF has header that dosnt match its body - bad variable count or clause count \n");
+  if ((header_vc != vc) || (header_cc != cc)) {
+    cerr << "Parsing Exception: CNF has header that doesn't match its body - bad variable count or clause count" << endl;
+    exit(1);
+  }
   free(literals);
   free(clauses);
   fclose(ifp);
 }
 
 void Lingeling::add_clause(const vector<int>& inClause) {
+  cout << "Lingeling::add_clause" << endl;
   for (int i=0; i<inClause.size(); i++) {
     lgladd(solver, inClause[i]);
     lglfreeze(solver, inClause[i]);

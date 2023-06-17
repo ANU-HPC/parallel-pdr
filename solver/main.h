@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include <iterator>
 #include <iomanip>
+#include <string>
+#include <sstream>
 
 #include "test_class.h"
 #include "Problem.h"

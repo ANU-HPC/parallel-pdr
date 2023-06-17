@@ -38,6 +38,10 @@ Compressed_State Obligation::compressed_state() const {
   return _compressed_state;
 }
 
+bool Obligation::should_reduce_reason_if_unsat() const {
+  return _should_reduce_reason_if_unsat;
+}
+
 // MPI
 // TYPE, layer, subproblem, positive_props
 

@@ -2,9 +2,9 @@ default:
 	$(MAKE) -j 16 solver
 
 MPICXX   = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
-CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
-#CXXFLAGS += -g -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
-LDFLAGS  = -lglog -lstdc++fs
+#CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
+CXXFLAGS += -g -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
+LDFLAGS  = -lstdc++fs
 
 OBJS = main.o \
 	   Problem.o \
@@ -17,7 +17,9 @@ OBJS = main.o \
 	   Success.o \
 	   Reason.o \
 	   MPI_Orchestrator.o \
-	   MPI_Worker.o
+	   MPI_Worker.o \
+	   Obligation_Processor.o \
+	   Lingeling.o
 
 					
 HEADERS	= main.h \
@@ -31,7 +33,9 @@ HEADERS	= main.h \
 		  Success.h \
 		  Reason.o \
 		  MPI_Orchestrator.h \
-		  MPI_Worker.h
+		  MPI_Worker.h \
+		  Obligation_Processor.h \
+		  Lingeling.o
 
 INCLUDES += -I../lingeling \
             -I./parallel \

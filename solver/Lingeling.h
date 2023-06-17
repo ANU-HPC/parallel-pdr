@@ -1,3 +1,8 @@
+#ifndef LINGELING_H
+#define LINGELING_H
+
+// Some code taken from Dagster/Tinisat
+
 // TODO destructors
 // A wrapper for Lingeling for convenient use
 extern "C" {
@@ -12,11 +17,6 @@ extern "C" {
 #include <glog/logging.h>
 #include <algorithm>
 #include <unistd.h>
-
-// From Dagster/Tinisat
-//#include "utilities.h"
-//#include "exceptions.h"
-//#include "mpi_global.h"
 
 using namespace std;
 
@@ -42,6 +42,7 @@ class Lingeling {
     vector<int> last_assumptions;
     vector<int> last_unmentioned_assumptions;
     LGL* solver = NULL;
+    void test_non_null(int* x);
 
     // TODO refine these tinisat variables
     unsigned vc;	// var count
@@ -49,3 +50,4 @@ class Lingeling {
     int **clauses;	// 2-dim. array with entries same as in cnf file
     unsigned *cl;	// clause length
 };
+#endif

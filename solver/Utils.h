@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "Global.h"
+
 using namespace std;
 
 class Utils {
@@ -15,6 +17,10 @@ class Utils {
     static void get_as_MPI_message(int* data, int start, vector<int> x);
     static int MPI_message_size(vector<int> x);
     static vector<int> get_from_MPI_message(int* data, int start, int stop);
-};
 
+    static int tilde(int lit, int amount);
+    static vector<int> tilde(const vector<int>& clause, int amount);
+
+    static bool in(const set<int>& container, int element);
+};
 #endif

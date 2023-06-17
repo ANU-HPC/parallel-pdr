@@ -19,6 +19,7 @@ class Reason {
     int layer() const;
     int subproblem() const;
     vector<int> reason() const;
+    vector<int> nogood_clause() const;
     int* get_as_MPI_message() const;
     void get_as_MPI_message(int* data, int start) const;
     int MPI_message_size() const;

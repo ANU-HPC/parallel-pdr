@@ -2,13 +2,15 @@
 
 // maybe make it so mpi_interface is stored in here?
 
-void MPI_Orchestrator::send_obligation(const Obligation& obl, int worker) {
+void MPI_Orchestrator::handle_obligation(const Obligation& obl, int worker) {
+  cout << "MPI_Orchestrator handling obligation " << obl.to_string() << endl;
   int size = obl.MPI_message_size();
   int* data = obl.get_as_MPI_message();
   Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_OBLIGATION, data, size);
 }
 
-void MPI_Orchestrator::send_reason(const Reason& reason, int worker) {
+void MPI_Orchestrator::handle_reason(const Reason& reason, int worker) {
+  cout << "MPI_Orchestrator handling reason " << reason.to_string() << endl;
   int size = reason.MPI_message_size();
   int* data = reason.get_as_MPI_message();
   Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_REASON, data, size);
