@@ -24,28 +24,30 @@ Compressed_State::Compressed_State(const vector<int>& state, int subproblem, boo
 
 Compressed_State::Compressed_State(int* data, int start, int stop) {
   _subproblem = data[start];
+  _guaranteed_full = data[start+1]==1 ? true : false;
   
-  for (int i=start+1; i<stop; i++) {
+  for (int i=start+2; i<stop; i++) {
     _raw.push_back(data[i]);
   }
 }
 
-vector<int> Compressed_State::get_state()  const{
+vector<int> Compressed_State::get_state() const {
   return Utils::inflate_only_true_to_all(_raw, Global::problem.subproblem_to_propositions[_subproblem]);
 }
 
-void Compressed_State::get_as_MPI_message(int* data, int start)  const{
+void Compressed_State::get_as_MPI_message(int* data, int start) const {
   data[start] = _subproblem;
+  data[start+1] = _guaranteed_full ? 1 : 0;
 
   for (int i=0; i<_raw.size(); i++) {
-    data[start+1+i] = _raw[i];
+    data[start+2+i] = _raw[i];
   }
 }
 
-int Compressed_State::MPI_message_size()  const{
-  return 1 + _raw.size();
+int Compressed_State::MPI_message_size() const {
+  return 2 + _raw.size();
 }
 
-string Compressed_State::to_string()  const{
+string Compressed_State::to_string() const {
   return Utils::to_string(_raw);
 }
