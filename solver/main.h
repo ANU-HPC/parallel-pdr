@@ -24,5 +24,7 @@
 #include "Obligation.h"
 #include "Success.h"
 #include "MPI_Worker.h"
+#include "Worker_Interface.h"
+#include "Log.h"
 
 using namespace std;

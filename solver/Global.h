@@ -3,6 +3,7 @@
 
 #include "Problem.h"
 #include "MPI_Interface.h"
+#include <mpi.h>
 
 class Global {
   public:

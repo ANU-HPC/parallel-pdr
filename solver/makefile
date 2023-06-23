@@ -21,7 +21,9 @@ OBJS = main.o \
 	   Lingeling.o \
 	   Distributed_Worker_Interface.o \
 	   Serial_Worker_Interface.o \
-	   Worker_Interface.o
+	   Worker_Interface.o \
+	   Shape.o \
+	   Rect.o
 
 					
 HEADERS	= main.h \
@@ -33,13 +35,16 @@ HEADERS	= main.h \
 		  Compressed_State.h \
 		  Compressed_Actions.h \
 		  Success.h \
-		  Reason.o \
+		  Reason.h \
 		  MPI_Worker.h \
 		  Obligation_Processor.h \
-		  Lingeling.o \
-		  Distributed_Worker_Interface.o \
-		  Serial_Worker_Interface.o \
-		  Worker_Interface.o
+		  Lingeling.h \
+		  Distributed_Worker_Interface.h \
+		  Serial_Worker_Interface.h \
+		  Worker_Interface.h \
+		  Log.h \
+		  Shape.h \
+		  Rect.h
 
 INCLUDES += -I../lingeling \
             -I./parallel \

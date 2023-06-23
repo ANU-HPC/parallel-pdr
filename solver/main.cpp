@@ -1,8 +1,16 @@
 #include "main.h"
-#include "Worker_Interface.h"
-
+#include "Rect.h"
 
 int main(int argc, char **argv) {
+  Rect rect = Rect();
+
+  LOG << rect.get_side_length() << endl;
+  LOG << rect.get_area() << endl;
+
+  Shape* shape = new Rect();
+
+  LOG << shape->get_area() << endl;
+
   Global::problem.subproblem_to_propositions[1000] = vector<int>({1,2,3,4,5});
 
   // Parse in command line arguments, and problem specific attributes
@@ -26,8 +34,8 @@ int main(int argc, char **argv) {
   Compressed_State cs1 = Compressed_State(state1, 1000, true);
   Compressed_State cs2 = Compressed_State(state2, 1000, true);
 
-  Obligation o1 = Obligation(cs1, 99, 1000);
-  Obligation o2 = Obligation(cs2, 98, 1000);
+  Obligation o1 = Obligation(cs1, 99, 1000, true);
+  Obligation o2 = Obligation(cs2, 98, 1000, true);
 
   Success s = Success(o1, ca, o2);
 

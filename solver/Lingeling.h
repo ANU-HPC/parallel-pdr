@@ -14,7 +14,6 @@ extern "C" {
 #include <iostream>
 #include <stdio.h>
 #include <ctype.h>
-#include <glog/logging.h>
 #include <algorithm>
 #include <unistd.h>
 
