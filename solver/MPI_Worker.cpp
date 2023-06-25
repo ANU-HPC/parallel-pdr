@@ -11,6 +11,12 @@ void MPI_Worker::run() {
   int* data;
   int size;
 
+  // mark as used - the compiler doesn't seem to recognise being used in an "if" and passed to a function as "used"
+  (void)_;
+  (void)mpi_tag;
+  (void)data;
+  (void)size;
+
   while (true) {
     cout << "MPI_Worker waiting for message " << endl;
     auto [_, mpi_tag, data, size] = Global::mpi_interface.recieve_message();

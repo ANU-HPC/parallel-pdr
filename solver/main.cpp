@@ -1,7 +1,13 @@
 #include "main.h"
-#include "Rect.h"
+
+#include "Default_Queue.h"
 
 int main(int argc, char **argv) {
+  Single_Layer_Of_Queue sl;
+
+  Default_Queue dq;
+  dq.size();
+
   Rect rect = Rect();
 
   LOG << rect.get_side_length() << endl;

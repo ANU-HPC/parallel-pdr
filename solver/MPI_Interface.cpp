@@ -45,6 +45,9 @@ void MPI_Interface::maybe_cleanup_isend_outbox() {
     MPI_Request* request;
     int completed_flag;
 
+    (void)data;
+    (void)request;
+
     for (auto it=_isend_outbox.begin(); it!=_isend_outbox.end(); it++) {
       auto [data, request] = *it;
 

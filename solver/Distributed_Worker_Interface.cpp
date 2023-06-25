@@ -37,6 +37,12 @@ void Distributed_Worker_Interface::process_inbox() {
   int* data;
   int size;
 
+  // mark as used - the compiler doesn't seem to recognise being used in an "if" and passed to a function as "used"
+  (void)worker;
+  (void)mpi_tag;
+  (void)data;
+  (void)size;
+
   while (Global::mpi_interface.message_waiting()) {
     auto [worker, mpi_tag, data, size] = Global::mpi_interface.recieve_message();
 

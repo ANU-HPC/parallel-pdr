@@ -22,9 +22,15 @@ OBJS = main.o \
 	   Distributed_Worker_Interface.o \
 	   Serial_Worker_Interface.o \
 	   Worker_Interface.o \
+	   Log.o \
 	   Shape.o \
-	   Rect.o
-
+	   Rect.o \
+	   queue/Heuristics.o \
+	   queue/Single_Layer_Of_Queue.o \
+	   queue/Queue_Reference.o \
+	   queue/Queue_Entry.o \
+	   queue/Queue_Entry_Container.o \
+	   queue/Default_Queue.o
 					
 HEADERS	= main.h \
 		  Problem.h \
@@ -44,14 +50,22 @@ HEADERS	= main.h \
 		  Worker_Interface.h \
 		  Log.h \
 		  Shape.h \
-		  Rect.h
+		  Rect.h \
+		  queue/Heuristics.h \
+		  queue/Single_Layer_Of_Queue.h \
+		  queue/Queue_Reference.h \
+		  queue/Queue_Entry.h \
+		  queue/Queue_Entry_Container.h \
+		  queue/Default_Queue.h
 
 INCLUDES += -I../lingeling \
             -I./parallel \
+            -I./queue \
 			-I../rapidjson/include \
 			-I.
 
 LDFLAGS += -L../lingeling \
+		   -L./queue \
 		   -llgl \
 
 solver: $(OBJS) 
@@ -61,4 +75,4 @@ solver: $(OBJS)
 	$(MPICXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
 
 clean:
-	-rm parallel-pdr *.o ./parallel/*.o
+	-rm parallel-pdr *.o ./parallel/*.o ./queue/*.o

@@ -26,5 +26,7 @@
 #include "MPI_Worker.h"
 #include "Worker_Interface.h"
 #include "Log.h"
+#include "Rect.h"
+#include "Single_Layer_Of_Queue.h"
 
 using namespace std;

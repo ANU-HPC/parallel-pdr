@@ -31,8 +31,54 @@ Compressed_State::Compressed_State(int* data, int start, int stop) {
   }
 }
 
+bool Compressed_State::trimmed_by_reason(const Reason& reason) {
+  if (!_guaranteed_full) {
+    LOG << "ERROR trying to trim on partial state, not set up for this" << endl;
+    exit(1);
+  }
+
+  const vector<int>& reason_state = reason.reason();
+
+  auto compressed_state_current = _raw.begin();
+  const auto compressed_state_end = _raw.end();
+  auto reason_current = reason_state.begin();
+  const auto reason_end = reason_state.end();
+
+  while (true) {
+    if (compressed_state_current == compressed_state_end) {
+      // ran out of compressed
+      // matches iff the rest of the reason is negative
+      while (reason_current != reason_end) {
+        if (*reason_current>0) return false;
+        else reason_current++;
+      }
+      return true;
+    } else if (reason_current == reason_end) {
+      return true; // gotten to the end of the reason, doesn't matter what the state is, it matches
+    } else if (*reason_current == *compressed_state_current) {
+      // match, keep up the assumption that they match
+      reason_current++;
+      compressed_state_current++;
+    } else if (*reason_current == -(*compressed_state_current)) {
+      // opposite!
+      return false;
+    } else if (abs(*reason_current) > abs(*compressed_state_current)) { 
+      // At this point, they are unequal
+      // Reason is mentioning a variable that is later, so just let the compressed state catch up
+      compressed_state_current++;
+    } else {
+      assert(abs(*reason_current) < abs(*compressed_state_current));
+      // reason has mentioned a variable that compressed has skipped past
+      // So if the reason lit is negative, that is all fine, but if it is positive, then there is a mismatch
+      if (*reason_current>0) return false;
+      else reason_current++;
+    }
+  }
+}
+
 vector<int> Compressed_State::get_state() const {
-  return Utils::inflate_only_true_to_all(_raw, Global::problem.subproblem_to_propositions[_subproblem]);
+  if (_guaranteed_full) return Utils::inflate_only_true_to_all(_raw, Global::problem.subproblem_to_propositions[_subproblem]);
+  else return _raw; // return as is
 }
 
 void Compressed_State::get_as_MPI_message(int* data, int start) const {

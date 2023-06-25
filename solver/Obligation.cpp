@@ -26,6 +26,9 @@ string Obligation::to_string() const {
   return "{ OBL, L:" + std::to_string(_layer) + " S:" + std::to_string(_subproblem) + " REDUCE:" + std::to_string(_reduce_reason_add_successor_to_queue) + " " + _compressed_state.to_string()  + " }";
 }
 
+bool Obligation::trimmed_by_reason(const Reason& reason) {
+  return _compressed_state.trimmed_by_reason(reason);
+}
 
 int Obligation::layer() const {
   return _layer;
