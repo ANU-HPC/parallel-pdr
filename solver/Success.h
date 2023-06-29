@@ -14,7 +14,7 @@ class Success {
     Success(int* data, int start, int stop); // MPI
     string to_string() const;
     Obligation original_obligation() const;
-    Compressed_Actions action() const;
+    Compressed_Actions actions() const;
     Obligation successor_obligation() const;
     int* get_as_MPI_message() const;
     int MPI_message_size() const;

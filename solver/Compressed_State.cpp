@@ -31,6 +31,24 @@ Compressed_State::Compressed_State(int* data, int start, int stop) {
   }
 }
 
+bool Compressed_State::operator==(const Compressed_State& other) const {
+  if (!_guaranteed_full) {
+    LOG << "ERROR not set up to compare partial states" << endl;
+    exit(1);
+  }
+
+  return (_subproblem == other._subproblem) & (_raw == other._raw);
+}
+
+size_t Compressed_State::hash() const {
+  if (!_guaranteed_full) {
+    LOG << "ERROR not set up to hash partial states" << endl;
+    exit(1);
+  }
+
+  return Utils::hash(_raw) ^ _subproblem;
+}
+
 bool Compressed_State::trimmed_by_reason(const Reason& reason) {
   if (!_guaranteed_full) {
     LOG << "ERROR trying to trim on partial state, not set up for this" << endl;

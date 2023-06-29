@@ -26,6 +26,18 @@ string Obligation::to_string() const {
   return "{ OBL, L:" + std::to_string(_layer) + " S:" + std::to_string(_subproblem) + " REDUCE:" + std::to_string(_reduce_reason_add_successor_to_queue) + " " + _compressed_state.to_string()  + " }";
 }
 
+bool Obligation::operator==(const Obligation& other) const {
+  return 
+    (other.compressed_state() == _compressed_state) & 
+    (other.layer() == _layer) & 
+    (other.subproblem() & _subproblem) & 
+    (other.reduce_reason_add_successor_to_queue() == _reduce_reason_add_successor_to_queue);
+}
+
+size_t Obligation::hash() const {
+  return _compressed_state.hash() ^ (_layer<<4) ^ (_subproblem<<8) ^ _reduce_reason_add_successor_to_queue;
+}
+
 bool Obligation::trimmed_by_reason(const Reason& reason) {
   return _compressed_state.trimmed_by_reason(reason);
 }

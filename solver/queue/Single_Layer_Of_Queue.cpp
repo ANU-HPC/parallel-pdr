@@ -1,6 +1,13 @@
 #include "Single_Layer_Of_Queue.h"
 
+Single_Layer_Of_Queue::Single_Layer_Of_Queue() { }
+
 void Single_Layer_Of_Queue::push(const Obligation& obligation) {
+  // first check it is not already in here
+
+  if (_all_obligations.find(obligation) != _all_obligations.end()) return;
+  _all_obligations.insert(obligation);
+
   // first make the entry
   Queue_Entry queue_entry = Queue_Entry(obligation);
 
@@ -26,7 +33,11 @@ Obligation Single_Layer_Of_Queue::pop(int heuristic) {
   Queue_Reference* queue_reference = *_heuristic_to_references[heuristic].rbegin();
 
   // then the slot, and remove and return it
-  return remove_obligation_at_slot(queue_reference->slot());
+  Obligation ret_val = remove_obligation_at_slot(queue_reference->slot());
+
+  // remove from global set
+  _all_obligations.erase(ret_val);
+  return ret_val;
 }
 
 Obligation Single_Layer_Of_Queue::remove_obligation_at_slot(int slot) {

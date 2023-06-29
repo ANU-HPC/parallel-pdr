@@ -15,6 +15,10 @@ class Reason {
     Reason();
     Reason(const vector<int>& reason, int layer, int subproblem);
     Reason(int* data, int start, int stop);
+    bool operator==(const Reason& other) const;
+    size_t hash() const;
+    size_t hash_contextless() const;
+    bool equal_contextless(const Reason& other_reason) const;
     string to_string() const;
     int layer() const;
     int subproblem() const;
@@ -28,6 +32,27 @@ class Reason {
     vector<int> _reason;
     int _layer;
     int _subproblem;
+};
+
+struct Reason_Hash {
+  std::size_t operator () (Reason const &reason) const
+  {
+    return reason.hash();
+  }
+};
+
+struct Reason_Hash_Contextless {
+  std::size_t operator () (Reason const &reason) const
+  {
+    return reason.hash_contextless();
+  }
+};
+
+struct Reason_Equal_Contextless {
+  std::size_t operator () (Reason const &reason_a, Reason const &reason_b) const
+  {
+    return reason_a.equal_contextless(reason_b);
+  }
 };
 
 #endif

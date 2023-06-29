@@ -14,6 +14,9 @@ class Obligation {
     Obligation(int* data, int start, int stop);
     string to_string() const;
 
+    bool operator==(const Obligation& other) const;
+    size_t hash() const;
+
     bool trimmed_by_reason(const Reason& reason);
 
     int layer() const;
@@ -31,4 +34,12 @@ class Obligation {
     int _subproblem;
     bool _reduce_reason_add_successor_to_queue;
 };
+
+struct Obligation_Hash {
+  std::size_t operator () (Obligation const &obligation) const
+  {
+    return obligation.hash();
+  }
+};
+
 #endif

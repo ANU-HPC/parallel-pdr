@@ -21,6 +21,7 @@ class Worker_Interface {
     bool all_workers_idle();
     void handle_obligation(const Obligation& obl, int worker);
     void handle_reason(const Reason& reason, int worker);
+    void handle_reason_all_workers(const Reason& reason);
     void process_inbox();
     vector<tuple<int, Reason>>* get_returned_reasons_buffer();
     vector<tuple<int, Success>>* get_returned_successes_buffer();

@@ -25,6 +25,8 @@ OBJS = main.o \
 	   Log.o \
 	   Shape.o \
 	   Rect.o \
+	   Layers.o \
+	   Plan_Builder.o \
 	   queue/Heuristics.o \
 	   queue/Single_Layer_Of_Queue.o \
 	   queue/Queue_Reference.o \
@@ -51,6 +53,8 @@ HEADERS	= main.h \
 		  Log.h \
 		  Shape.h \
 		  Rect.h \
+		  Layers.h \
+		  Plan_Builder.o \
 		  queue/Heuristics.h \
 		  queue/Single_Layer_Of_Queue.h \
 		  queue/Queue_Reference.h \

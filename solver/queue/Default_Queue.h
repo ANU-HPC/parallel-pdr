@@ -11,6 +11,7 @@ using namespace std;
 
 class Default_Queue {
   public:
+    Default_Queue();
     void push(const Obligation& obligation);
     Obligation pop(int heuristic);
     bool empty();

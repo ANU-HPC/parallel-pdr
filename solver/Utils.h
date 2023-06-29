@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 #include "Global.h"
 
@@ -22,5 +23,8 @@ class Utils {
     static vector<int> tilde(const vector<int>& clause, int amount);
 
     static bool in(const set<int>& container, int element);
+    static bool in(const unordered_set<int>& container, int element);
+
+    static size_t hash(const vector<int>& hashee);
 };
 #endif

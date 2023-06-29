@@ -18,7 +18,7 @@ Obligation Success::original_obligation() const {
   return _original_obligation;
 }
 
-Compressed_Actions Success::action() const {
+Compressed_Actions Success::actions() const {
   return _actions;
 }
 

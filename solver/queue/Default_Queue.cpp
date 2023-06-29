@@ -1,6 +1,8 @@
 #include "Default_Queue.h"
 #include "Single_Layer_Of_Queue.h"
 
+Default_Queue::Default_Queue() { }
+
 void Default_Queue::push(const Obligation& obligation) {
   const int layer = obligation.layer();
   _layers[layer].push(obligation);
@@ -34,14 +36,6 @@ Obligation Default_Queue::pop(int heuristic) {
   return ret_val;
 }
 
-bool Default_Queue::empty() {
-  return _size == 0;
-}
-
-int Default_Queue::size() {
-  return _size;
-}
-
 void Default_Queue::trim(const Reason& reason, int k) {
   // if not at the k, then can push to one above the reason, if at k, then just drop them TODO maybe should just keep them for next time
   make_layer_exist(k); // presumably will exist by this point
@@ -57,10 +51,16 @@ void Default_Queue::trim(const Reason& reason, int k) {
   for (int layer = reason.layer(); layer<_layers.size(); layer++) {
     _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to);
   }
-
-
 }
 
 void Default_Queue::make_layer_exist(int layer) {
   while (_layers.size() <= layer) _layers.push_back(Single_Layer_Of_Queue());
+}
+
+bool Default_Queue::empty() {
+  return _size == 0;
+}
+
+int Default_Queue::size() {
+  return _size;
 }

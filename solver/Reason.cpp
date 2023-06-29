@@ -10,12 +10,28 @@ Reason::Reason(const vector<int>& reason, int layer, int subproblem) {
   _subproblem = subproblem;
 }
 
+int Reason::layer() const {
+  return _layer;
+}
+
 string Reason::to_string() const {
   return "{ Reason, L:" + std::to_string(_layer) + " S:" + std::to_string(_subproblem) + " " + Utils::to_string(_reason)  + " }";
 }
 
-int Reason::layer() const {
-  return _layer;
+bool Reason::operator==(const Reason& other) const {
+  return (other.reason() == _reason) & (other.layer() == _layer) & (other.subproblem() & _subproblem);
+}
+
+size_t Reason::hash() const {
+  return Utils::hash(_reason) ^ (_layer<<4) ^ _subproblem;
+}
+
+size_t Reason::hash_contextless() const {
+  return Utils::hash(_reason);
+}
+
+bool Reason::equal_contextless(const Reason& other_reason) const {
+  return _reason == other_reason.reason();
 }
 
 int Reason::subproblem() const {

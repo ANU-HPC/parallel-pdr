@@ -110,6 +110,21 @@ bool Utils::in(const set<int>& container, int element) {
   return container.find(element) != container.end();
 }
 
+bool Utils::in(const unordered_set<int>& container, int element) {
+  return container.find(element) != container.end();
+}
+
+size_t Utils::hash(const vector<int>& hashee) {
+  size_t ret_val = 0;
+  int offset = 0;
+  for (auto i : hashee) {
+    ret_val ^= i<<offset;
+    ret_val ^= i<<(offset+8);
+    offset += 3;
+    offset = offset%16;
+  }
+  return ret_val + (ret_val<<32);
+}
 
 /*
 bool in_pos_vector(int x, const vector<int>& vec) {

@@ -17,6 +17,9 @@ class Compressed_State {
     Compressed_State(int* data, int start, int stop);
     string to_string() const;
 
+    bool operator==(const Compressed_State& other) const;
+    size_t hash() const;
+
     bool trimmed_by_reason(const Reason& reason);
 
     vector<int> get_state() const;
@@ -28,6 +31,13 @@ class Compressed_State {
     vector<int> _raw = vector<int>();
     bool _guaranteed_full; // this being FALSE means all the literals will be stored and without compression
     int _subproblem; // for compression
+};
+
+struct Compressed_State_Hash {
+  std::size_t operator () (Compressed_State const &compressed_state) const
+  {
+    return compressed_state.hash();
+  }
 };
 
 #endif
