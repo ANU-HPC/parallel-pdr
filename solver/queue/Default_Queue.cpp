@@ -5,6 +5,8 @@ Default_Queue::Default_Queue() { }
 
 void Default_Queue::push(const Obligation& obligation) {
   const int layer = obligation.layer();
+  make_layer_exist(layer);
+
   _layers[layer].push(obligation);
 
   _size++;
@@ -54,6 +56,7 @@ void Default_Queue::trim(const Reason& reason, int k) {
 }
 
 void Default_Queue::make_layer_exist(int layer) {
+  assert(layer>=0);
   while (_layers.size() <= layer) _layers.push_back(Single_Layer_Of_Queue());
 }
 

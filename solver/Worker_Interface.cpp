@@ -32,7 +32,7 @@ void Worker_Interface::handle_reason_all_workers(const Reason& reason) {
       _distributed_worker_interface->handle_reason(reason, worker);
     }
   }
-  else                            _serial_worker_interface->handle_reason(reason, 1);
+  else _serial_worker_interface->handle_reason(reason, 1);
 }
 
 void Worker_Interface::process_inbox() {

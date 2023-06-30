@@ -1,4 +1,5 @@
 #include "Obligation_Processor.h"
+#include "Utils.h"
 
 Obligation_Processor::Obligation_Processor() {
   const int steps = 1;
@@ -18,10 +19,9 @@ Obligation_Processor::Obligation_Processor() {
 }
 
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
-  cout << "Obligation_Processor handling obligation " << original_obligation.to_string() << endl;
+  //LOG << "Obligation_Processor handling obligation " << original_obligation.to_string() << endl;
   const int solver_id = get_solver_to_send_to(original_obligation);
   ensure_solver_exist(solver_id);
-  cout << "wanted " << solver_id << " size" << _solvers.size() << endl;
   _last_interaction_was_a_success = _solvers[solver_id]->solve(original_obligation.compressed_state().get_state());
 
   if (_last_interaction_was_a_success) {
@@ -70,13 +70,13 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
 
   // extract from the model
   for (auto it=actions.begin(); it!=Global::problem.subproblem_to_actions[subproblem].end(); it++) {
-    const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,1)], -1);
+    const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,1)-1], -1);
     assert(abs(model_var_tilded_to_timestep_zero) == *it);
     if (model_var_tilded_to_timestep_zero>0) executed_actions.push_back(model_var_tilded_to_timestep_zero);
   }
 
   for (auto it=propositions.begin(); it!=propositions.end(); it++) {
-    const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,1)], -1);
+    const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,1)-1], -1);
     assert(abs(model_var_tilded_to_timestep_zero) == *it);
     if (model_var_tilded_to_timestep_zero>0) positive_propositions.push_back(model_var_tilded_to_timestep_zero);
   }
@@ -137,6 +137,7 @@ int Obligation_Processor::get_solver_to_send_to(const Reason& reason) {
 }
 
 void Obligation_Processor::ensure_solver_exist(int solver_id) {
+  assert (solver_id>=0);
   while (solver_id >= _solvers.size()) {
     _solvers.push_back(new Lingeling(_base_solver));
   }

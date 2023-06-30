@@ -13,6 +13,8 @@
 #include "Heuristics.h"
 #include "Global.h"
 
+using namespace std;
+
 struct Queue_Reference_Pointer_Compare {
   bool operator() (const Queue_Reference* a, const Queue_Reference* b) const {
     return *a < *b;

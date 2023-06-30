@@ -29,6 +29,8 @@ void Single_Layer_Of_Queue::push(const Obligation& obligation) {
 }
 
 Obligation Single_Layer_Of_Queue::pop(int heuristic) {
+  assert(!empty());
+
   // first get the relevant reference
   Queue_Reference* queue_reference = *_heuristic_to_references[heuristic].rbegin();
 
@@ -74,10 +76,8 @@ int Single_Layer_Of_Queue::trim(const Reason& reason, Single_Layer_Of_Queue* oth
       else num_removed++;
     }
   }
-
   return num_removed;
 }
-
 
 int Single_Layer_Of_Queue::size() {
   return _entries.size();

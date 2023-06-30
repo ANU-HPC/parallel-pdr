@@ -12,7 +12,10 @@ class Layers {
     bool add_reason(const Reason& reason); // trimming the queue, adding to workers is done outside this function
     unordered_set<Reason, Reason_Hash>* reasons_not_in_next_layer(int layer);
     bool same_as_previous(int layer);
+    void print_sizes();
   private:
+    void make_layer_exist(int layer);
+
     // make this simpler than last time.
 
     // have a collection of all the reasons, store it in a set and have it "searchable" by a contextless reason, just to check it it is in there, then if it is, get it it out and see its reason

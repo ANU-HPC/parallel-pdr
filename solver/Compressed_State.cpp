@@ -18,8 +18,6 @@ Compressed_State::Compressed_State(const vector<int>& state, int subproblem, boo
   } else {
     _raw = state;
   }
-
-  cout << "finished cs constructor, raw size: " << std::to_string(_raw.size());
 }
 
 Compressed_State::Compressed_State(int* data, int start, int stop) {

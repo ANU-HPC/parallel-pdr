@@ -1,8 +1,6 @@
 #include "Reason.h"
 
-Reason::Reason() {
-  cout << "Reason empty constructor" << endl;
-}
+Reason::Reason() { }
 
 Reason::Reason(const vector<int>& reason, int layer, int subproblem) {
   _reason = reason;

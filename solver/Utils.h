@@ -6,6 +6,7 @@
 #include <unordered_set>
 
 #include "Global.h"
+#include "Log.h"
 
 using namespace std;
 

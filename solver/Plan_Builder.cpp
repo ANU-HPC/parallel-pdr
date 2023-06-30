@@ -1,13 +1,15 @@
 #include "Plan_Builder.h"
-#include "Compressed_Actions.h"
-#include "Global.h"
 
 void Plan_Builder::register_success(const Success& success) {
   const Compressed_State& original_state = success.original_obligation().compressed_state();
   const Compressed_Actions& actions = success.actions();
   const Compressed_State& successor_state = success.successor_obligation().compressed_state();
-  
-  _tree[successor_state] = tuple<Compressed_Actions, Compressed_State>(actions, original_state);
+
+  if (original_state == successor_state) {
+    LOG << "WARNING: trying to register a loop in a plan, stopped" << endl;
+  } else {
+    _tree[successor_state] = tuple<Compressed_Actions, Compressed_State>(actions, original_state);
+  }
 }
 
 void Plan_Builder::write_plan(const Success& success) {

@@ -171,7 +171,6 @@ void Lingeling::load_DIMACS_Cnf(const char* fname) {
 }
 
 void Lingeling::add_clause(const vector<int>& inClause) {
-  cout << "Lingeling::add_clause" << endl;
   for (int i=0; i<inClause.size(); i++) {
     lgladd(solver, inClause[i]);
     lglfreeze(solver, inClause[i]);

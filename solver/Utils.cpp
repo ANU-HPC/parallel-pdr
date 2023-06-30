@@ -18,9 +18,8 @@
 using namespace std;
 
 vector<int> Utils::inflate_only_true_to_all(const vector<int>& only_true, const vector<int>& all) {
-  cout << "inflate_only_true_to_all" << endl;
-  cout << "only true: " << Utils::to_string(only_true) << endl;
-  cout << "all: " << Utils::to_string(all) << endl;
+  //LOG << "only true: " << Utils::to_string(only_true) << endl;
+  //LOG << "all: " << Utils::to_string(all) << endl;
   assert(is_sorted(only_true.begin(), only_true.end()));
   assert(is_sorted(all.begin(), all.end()));
     

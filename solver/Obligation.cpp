@@ -11,9 +11,7 @@ Obligation::Obligation(const vector<int>& state, const int layer, const int subp
 }
 */
 
-Obligation::Obligation() {
-  cout << "Obligation empty constructor" << endl;
-}
+Obligation::Obligation() { }
 
 Obligation::Obligation(const Compressed_State& compressed_state, int layer, int subproblem, bool reduce_reason_add_successor_to_queue) {
   _compressed_state = compressed_state;

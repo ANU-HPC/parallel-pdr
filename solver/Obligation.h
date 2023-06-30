@@ -3,6 +3,7 @@
 
 #include "Compressed_State.h"
 #include "Reason.h"
+#include "Log.h"
 
 using namespace std;
 
