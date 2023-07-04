@@ -143,6 +143,8 @@ Problem::Problem() {}
 Problem::Problem(int argc, char **argv) {
   process_command_line_arguments(argc, argv);
 
+  read_mapping();
+
   ifstream dagster_info_file(tmp_dir + "/tmp_dagster_info.json");
   if (!dagster_info_file.is_open()) exit(1);
   string all_lines;

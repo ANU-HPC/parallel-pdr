@@ -11,16 +11,18 @@ Obligation_Processor::Obligation_Processor() {
   // create layer 1->0 solver
   Lingeling test = Lingeling(_base_solver);
 
+  // initialize with 
   ensure_solver_exist(0);
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
-    vector<int> reason = vector<int>({-*it});
-    _solvers[0]->add_clause(reason);
+    vector<int> clause = vector<int>({Utils::tilde(*it, 1)});
+    _solvers[0]->add_clause(clause);
   }
 }
 
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
-  //LOG << "Obligation_Processor handling obligation " << original_obligation.to_string() << endl;
+  LOG << "Obligation_Processor handling obligation " << original_obligation.to_string() << endl;
   const int solver_id = get_solver_to_send_to(original_obligation);
+  LOG << "about to solve with solver" << solver_id << endl;
   ensure_solver_exist(solver_id);
   _last_interaction_was_a_success = _solvers[solver_id]->solve(original_obligation.compressed_state().get_state());
 
@@ -32,6 +34,7 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
 }
 
 void Obligation_Processor::add_reason(const Reason& reason) {
+  LOG << "asked to process reason " << endl;
   const int solver_id = get_solver_to_send_to(reason);
   ensure_solver_exist(solver_id);
   _solvers[solver_id]->add_clause(reason.nogood_clause());
@@ -62,17 +65,17 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
 
   const int subproblem = original_obligation.subproblem();
 
-  const vector<int>& actions = Global::problem.subproblem_to_actions[subproblem];
+  const vector<int>& all_actions = Global::problem.subproblem_to_actions[subproblem];
   const vector<int>& propositions = Global::problem.subproblem_to_propositions[subproblem];
 
   vector<int> executed_actions;
   vector<int> positive_propositions;
 
   // extract from the model
-  for (auto it=actions.begin(); it!=Global::problem.subproblem_to_actions[subproblem].end(); it++) {
-    const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,1)-1], -1);
-    assert(abs(model_var_tilded_to_timestep_zero) == *it);
-    if (model_var_tilded_to_timestep_zero>0) executed_actions.push_back(model_var_tilded_to_timestep_zero);
+  for (auto it=all_actions.begin(); it!=all_actions.end(); it++) {
+    const int model_var = model[*it-1];
+    assert(abs(model_var) == *it);
+    if (model_var>0) executed_actions.push_back(model_var);
   }
 
   for (auto it=propositions.begin(); it!=propositions.end(); it++) {
@@ -85,7 +88,7 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
   const int next_layer = original_obligation.layer()-1;
   const bool reduce_reason_add_successor_to_queue = original_obligation.reduce_reason_add_successor_to_queue();
 
-  Compressed_Actions ca = Compressed_Actions(actions, subproblem);
+  Compressed_Actions ca = Compressed_Actions(executed_actions, subproblem);
   Compressed_State cs = Compressed_State(positive_propositions, subproblem, true);
 
   Obligation successor_obligation = Obligation(cs, next_layer, subproblem, reduce_reason_add_successor_to_queue);

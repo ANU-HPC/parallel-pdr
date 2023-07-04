@@ -1,4 +1,5 @@
 #include "Plan_Builder.h"
+#include "Global.h"
 
 void Plan_Builder::register_success(const Success& success) {
   const Compressed_State& original_state = success.original_obligation().compressed_state();
@@ -28,11 +29,11 @@ void Plan_Builder::write_plan(const Success& success) {
   if (Global::problem.isolate_subproblems) plan_file.open(Global::problem.tmp_dir + "/partial_plan" + to_string(99999)); // TODO
   else                                     plan_file.open(Global::problem.tmp_dir + "/plan");
 
-  for (auto it=reverse_cronology_actions.rbegin(); it!=reverse_cronology_actions.rend(); it++) {
-    const Compressed_Actions actions = *it; 
+  int plan_step = 0;
+  for (auto ita=reverse_cronology_actions.rbegin(); ita!=reverse_cronology_actions.rend(); ita++) {
+    const Compressed_Actions actions = *ita; 
     const vector<int>& action_variables = actions.get_actions();
-    int plan_step = 0;
-    for (auto itb=action_variables.begin(); itb!=action_variables.end(); it++) {
+    for (auto itb=action_variables.begin(); itb!=action_variables.end(); itb++) {
       const int action = *itb;
       string symbol = Global::problem.symbols[action];
       for (int j=0; j<= symbol.size(); j++) {

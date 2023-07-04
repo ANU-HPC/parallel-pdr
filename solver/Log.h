@@ -2,11 +2,14 @@
 #define LOG_H
 
 #include <mpi.h>
+#include <string>
 
 using namespace std;
 
 int MPI_RANK();
 string RANK_TEXT();
+string COLOUR_START(string filename);
+string COLOUR_END();
 
 /*
 #define LOG_LEVEL 3
@@ -44,6 +47,6 @@ string RANK_TEXT();
 #endif
 */
 
-#define LOG cout << RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: "
+#define LOG cout << COLOUR_START(__FILE__) << RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: " << COLOUR_END()
 
 #endif

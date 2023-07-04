@@ -7,34 +7,21 @@ void Default_Queue::push(const Obligation& obligation) {
   const int layer = obligation.layer();
   make_layer_exist(layer);
 
-  _layers[layer].push(obligation);
-
-  _size++;
-  _lowest_layer_with_content = min(_lowest_layer_with_content, layer);
+  if (_layers[layer].push(obligation)) {
+    _size++;
+    _lowest_layer_with_content = min(_lowest_layer_with_content, layer);
+  }
 }
 
 Obligation Default_Queue::pop(int heuristic) {
   assert(!empty());
+  assert(!_layers[_lowest_layer_with_content].empty());
   const Obligation& ret_val = _layers[_lowest_layer_with_content].pop(heuristic);
   _size--;
 
-  // update the lowest layer with content
-  if (_layers[_lowest_layer_with_content].empty()) {
-    // need to do something, because this one is now empty!
-    if (empty()) {
-      // if overall empty, just reset this var
-      _lowest_layer_with_content = INT_MAX;
-    } else {
-      // go and find the first layer with content
-      for (int layer=_lowest_layer_with_content+1; ;layer++) {
-        if (!_layers[layer].empty()) {
-          _lowest_layer_with_content = layer;
-          break;
-        }
-      }
-    }
-  }
+  update_lowest_layer_with_content();
 
+  if (!empty()) assert(!_layers[_lowest_layer_with_content].empty());
   return ret_val;
 }
 
@@ -52,6 +39,24 @@ void Default_Queue::trim(const Reason& reason, int k) {
     
   for (int layer = reason.layer(); layer<_layers.size(); layer++) {
     _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to);
+  }
+
+  update_lowest_layer_with_content();
+}
+
+void Default_Queue::update_lowest_layer_with_content() {
+  if (empty()) {
+    // if overall empty, just reset this var
+    _lowest_layer_with_content = INT_MAX;
+    return;
+  } else if (_layers[_lowest_layer_with_content].empty()) { // there is content overall, lets see if there is content in this one
+    // need to do something, because this one is now empty! Go and find the first layer with content
+    for (int layer=_lowest_layer_with_content+1; ;layer++) {
+      if (!_layers[layer].empty()) {
+        _lowest_layer_with_content = layer;
+        break;
+      }
+    }
   }
 }
 

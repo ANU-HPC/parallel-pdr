@@ -22,6 +22,7 @@ void Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
 }
 
 void Worker_Interface::handle_reason(const Reason& reason, int worker) {
+  LOG << "A" << endl;
   if (Global::problem.MPI_active) _distributed_worker_interface->handle_reason(reason, worker);
   else                            _serial_worker_interface->handle_reason(reason, worker);
 }

@@ -29,7 +29,7 @@ class Reason {
     int MPI_message_size() const;
     int MPI_message_tag() const;
   private:
-    vector<int> _reason;
+    vector<int> _reason; // TODO should be a compressed state
     int _layer;
     int _subproblem;
 };

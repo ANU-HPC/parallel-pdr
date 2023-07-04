@@ -28,5 +28,6 @@
 #include "Log.h"
 #include "Rect.h"
 #include "Single_Layer_Of_Queue.h"
+#include "Strategies.h"
 
 using namespace std;

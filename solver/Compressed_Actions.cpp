@@ -18,7 +18,8 @@ Compressed_Actions::Compressed_Actions(int* data, int start, int stop) {
 }
 
 vector<int> Compressed_Actions::get_actions() const {
-  return Utils::inflate_only_true_to_all(_raw, Global::problem.subproblem_to_propositions[_subproblem]);
+  return _raw;
+  //return Utils::inflate_only_true_to_all(_raw, Global::problem.subproblem_to_propositions[_subproblem]);
 }
 
 void Compressed_Actions::get_as_MPI_message(int* data, int start) const {

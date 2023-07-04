@@ -18,6 +18,7 @@ class Default_Queue {
     int size();
     void trim(const Reason& reason, int obligation_rescheduling_upper_layer);
   private:
+    void update_lowest_layer_with_content();
     vector<Single_Layer_Of_Queue> _layers;
     void make_layer_exist(int layer);
     int _size = 0;

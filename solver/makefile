@@ -3,7 +3,7 @@ default:
 
 MPICXX   = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
 #CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
-CXXFLAGS += -rdynamic -g -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
+CXXFLAGS += -rdynamic -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
 LDFLAGS  = -lstdc++fs
 
 OBJS = main.o \
@@ -27,6 +27,7 @@ OBJS = main.o \
 	   Rect.o \
 	   Layers.o \
 	   Plan_Builder.o \
+	   Strategies.o \
 	   queue/Heuristics.o \
 	   queue/Single_Layer_Of_Queue.o \
 	   queue/Queue_Reference.o \
@@ -54,7 +55,8 @@ HEADERS	= main.h \
 		  Shape.h \
 		  Rect.h \
 		  Layers.h \
-		  Plan_Builder.o \
+		  Plan_Builder.h \
+		  Strategies.h \
 		  queue/Heuristics.h \
 		  queue/Single_Layer_Of_Queue.h \
 		  queue/Queue_Reference.h \

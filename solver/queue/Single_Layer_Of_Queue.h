@@ -24,12 +24,13 @@ struct Queue_Reference_Pointer_Compare {
 class Single_Layer_Of_Queue {
   public:
     Single_Layer_Of_Queue();
-    void push(const Obligation& obligation);
+    bool push(const Obligation& obligation);
     Obligation pop(int heuristic);
     int size();
     bool empty();
     int trim(const Reason& reason, Single_Layer_Of_Queue* other_to_push_to);
   private:
+    void sizes_correct();
     Obligation remove_obligation_at_slot(int slot);
 
     unordered_set<Obligation, Obligation_Hash> _all_obligations;

@@ -22,7 +22,7 @@ class Layers {
     unordered_set<Reason, Reason_Hash_Contextless, Reason_Equal_Contextless> _all_reasons_contextless_set;
 
     // also have a collection of reasons for each layer
-    vector<unordered_set<Reason, Reason_Hash>> _layer_to_reasons;
+    vector<unordered_set<Reason, Reason_Hash>> _layer_to_reasons_last_appearing_here;
 };
 
 #endif
