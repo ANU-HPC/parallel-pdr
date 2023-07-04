@@ -11,7 +11,7 @@ Obligation_Processor::Obligation_Processor() {
   // create layer 1->0 solver
   Lingeling test = Lingeling(_base_solver);
 
-  // initialize with 
+  // initialize with goal TODO maybe it is better to do this manually by sending reasons?..
   ensure_solver_exist(0);
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
     vector<int> clause = vector<int>({Utils::tilde(*it, 1)});
@@ -20,21 +20,15 @@ Obligation_Processor::Obligation_Processor() {
 }
 
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
-  LOG << "Obligation_Processor handling obligation " << original_obligation.to_string() << endl;
   const int solver_id = get_solver_to_send_to(original_obligation);
-  LOG << "about to solve with solver" << solver_id << endl;
   ensure_solver_exist(solver_id);
   _last_interaction_was_a_success = _solvers[solver_id]->solve(original_obligation.compressed_state().get_state());
 
-  if (_last_interaction_was_a_success) {
-    set_success_from_solver(original_obligation, solver_id);
-  } else {
-    set_reason_from_solver(original_obligation, solver_id);
-  }
+  if (_last_interaction_was_a_success) set_success_from_solver(original_obligation, solver_id);
+  else                                 set_reason_from_solver(original_obligation, solver_id);
 }
 
 void Obligation_Processor::add_reason(const Reason& reason) {
-  LOG << "asked to process reason " << endl;
   const int solver_id = get_solver_to_send_to(reason);
   ensure_solver_exist(solver_id);
   _solvers[solver_id]->add_clause(reason.nogood_clause());
@@ -42,7 +36,6 @@ void Obligation_Processor::add_reason(const Reason& reason) {
 
 bool Obligation_Processor::last_interaction_was_a_success() {
   return _last_interaction_was_a_success;
-
 }
 
 Success Obligation_Processor::last_interactions_success() {
@@ -105,9 +98,13 @@ set<int> vector_to_set(const vector<int>& x) {
   return set<int>(x.begin(), x.end());
 }
 
+vector<int> set_to_abs_sorted_vector(const set<int>& x) {
+  vector<int> as_vector = set_to_vector(x);
+  sort(as_vector.begin(), as_vector.end(), Utils::abs_comp);
+  return as_vector;
+}
 
 void Obligation_Processor::set_reason_from_solver(const Obligation& original_obligation, int solver_id) {
-  cout << "Obligation_Processor, set reason_from_solver" << endl;
   // So this is actually doing a process of strengthening - lit removal
 
   set<int> running_reason = vector_to_set(_solvers[solver_id]->used_assumptions());
@@ -128,7 +125,7 @@ void Obligation_Processor::set_reason_from_solver(const Obligation& original_obl
     }
   }
 
-  _reason = Reason(set_to_vector(running_reason), original_obligation.layer(), original_obligation.subproblem());
+  _reason = Reason(set_to_abs_sorted_vector(running_reason), original_obligation.layer(), original_obligation.subproblem());
 }
 
 int Obligation_Processor::get_solver_to_send_to(const Obligation& obl) {

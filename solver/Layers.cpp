@@ -17,8 +17,8 @@ bool Layers::add_reason(const Reason& reason) {
     if (new_layer == existing_layer) return false; // redundant
 
     // remove the old one
+    _layer_to_reasons_last_appearing_here[existing_layer].erase(*reference_to_existing_entry);
     _all_reasons_contextless_set.erase(reference_to_existing_entry);
-    _layer_to_reasons_last_appearing_here[existing_layer].erase(reason);
   }
 
   // now lets add the new reason (we may have just removed the old one)
@@ -46,5 +46,14 @@ void Layers::print_sizes() {
   LOG << "number of layers: " << _layer_to_reasons_last_appearing_here.size() << endl;
   for (int layer=0; layer<_layer_to_reasons_last_appearing_here.size(); layer++) {
     LOG << "Layer: " << layer << " size: " << _layer_to_reasons_last_appearing_here[layer].size() << endl;
+  }
+}
+
+void Layers::print() {
+  for (int layer=0; layer<_layer_to_reasons_last_appearing_here.size(); layer++) {
+    LOG << "Layer: " << layer << " size: " << _layer_to_reasons_last_appearing_here[layer].size() << endl;
+    for (auto it=_layer_to_reasons_last_appearing_here[layer].begin(); it!=_layer_to_reasons_last_appearing_here[layer].end(); it++) {
+      LOG << "  Reason: " << it->to_string() << endl;
+    }
   }
 }

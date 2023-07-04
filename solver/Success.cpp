@@ -35,9 +35,7 @@ Success::Success(int* data, int start, int stop) {
   const int stop_b = start+3+a+b;
   const int stop_c = start+3+a+b+c;
 
-  cout << "getting back original obligation" << endl;
   _original_obligation = Obligation(data, start+3, stop_a);
-  cout << _original_obligation.to_string() << endl;
 
   _actions = Compressed_Actions(data, stop_a, stop_b);
   _successor_obligation = Obligation(data, stop_b, stop_c);
@@ -49,8 +47,6 @@ int* Success::get_as_MPI_message() const {
   const int a = _original_obligation.MPI_message_size();
   const int b = _actions.MPI_message_size();
   const int c = _successor_obligation.MPI_message_size();
-
-  cout << "sizes" << a << b << c << endl;
 
   const int start_a = 3;
   const int start_b = 3+a;

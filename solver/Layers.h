@@ -13,6 +13,7 @@ class Layers {
     unordered_set<Reason, Reason_Hash>* reasons_not_in_next_layer(int layer);
     bool same_as_previous(int layer);
     void print_sizes();
+    void print();
   private:
     void make_layer_exist(int layer);
 

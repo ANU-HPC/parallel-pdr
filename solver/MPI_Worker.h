@@ -12,6 +12,7 @@
 #include "Obligation_Processor.h"
 #include "Reason.h"
 #include "Success.h"
+#include "Log.h"
 
 using namespace std;
 

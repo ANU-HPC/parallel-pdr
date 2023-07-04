@@ -15,17 +15,16 @@ bool Distributed_Worker_Interface::all_workers_idle() {
 }
 
 void Distributed_Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
-  cout << "Distributed_Worker handling obligation " << obl.to_string() << endl;
+  assert(Utils::in(_workers_wanting_work, worker));
+
   int size = obl.MPI_message_size();
   int* data = obl.get_as_MPI_message();
   Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_OBLIGATION, data, size);
 
-  assert(Utils::in(_workers_wanting_work, worker));
   _workers_wanting_work.erase(worker);
 }
 
 void Distributed_Worker_Interface::handle_reason(const Reason& reason, int worker) {
-  cout << "Distributed_Worker handling reason " << reason.to_string() << endl;
   int size = reason.MPI_message_size();
   int* data = reason.get_as_MPI_message();
   Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_REASON, data, size);
@@ -53,7 +52,7 @@ void Distributed_Worker_Interface::process_inbox() {
       Reason reason = Reason(data, 0, size);
       _returned_reasons_buffer->push_back(tuple<int, Reason>(worker, reason));
     } else {
-      cerr << "Unknown message tag: " << mpi_tag << endl;
+      LOG << "ERROR: Unknown message tag: " << mpi_tag << endl;
       exit(1);
     }
 

@@ -20,6 +20,10 @@ bool Strategies::run_default() {
   Worker_Interface worker_interface;
   Plan_Builder plan_builder;
 
+  // tmp unpackers
+  tuple<int, Success> worker_success;
+  tuple<int, Reason> worker_reason;
+
   // add the goal to the reasons object
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
     vector<int> bad_state = vector<int>({-*it});
@@ -38,9 +42,6 @@ bool Strategies::run_default() {
 
     // Process it
     while (!queue.empty() || !worker_interface.all_workers_idle()) {
-      LOG << "starting another queue not empty workers not idle loop" << endl;
-      LOG << "queue: " << queue.size() << endl;
-      LOG << "worker_interface.all_workers_idle() " << worker_interface.all_workers_idle() << endl;
       // add some more work
       const set<int> workers = worker_interface.workers_wanting_work_snapshot();
       for (auto it=workers.begin(); it!=workers.end(); it++) {
@@ -54,19 +55,12 @@ bool Strategies::run_default() {
       worker_interface.process_inbox();
       vector<tuple<int, Success>>* worker_successes = worker_interface.get_returned_successes_buffer();
       vector<tuple<int, Reason>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
-      LOG << "processing inbox, successes: " << worker_successes->size() << " reasons" << worker_reasons->size() << endl;
-
-      // tmp unpackers
-      tuple<int, Success> worker_success;
-      tuple<int, Reason> worker_reason;
 
       // handle successes
       for (auto it=worker_successes->begin(); it!=worker_successes->end(); it++) {
         worker_success = *it;
         const Success& success = get<1>(worker_success);
         plan_builder.register_success(success);
-        //LOG << "Got new success! " << success.to_string() << endl;
-        LOG << "successor obligation hash" <<  success.successor_obligation().hash() << endl;
 
         assert(success.original_obligation().reduce_reason_add_successor_to_queue());
         assert(success.successor_obligation().reduce_reason_add_successor_to_queue());
@@ -75,7 +69,6 @@ bool Strategies::run_default() {
         queue.push(success.successor_obligation());
 
         // check if found a plan
-        LOG << success.successor_obligation().layer() << endl;
         if (success.successor_obligation().layer() == 0) {
           plan_builder.write_plan(success);
           worker_interface.finalize();
@@ -90,7 +83,7 @@ bool Strategies::run_default() {
 
         if (layers.add_reason(reason)) {
           queue.trim(reason, k);
-          LOG << "Am sending out a reason" << endl;
+          //LOG << "Am sending out a reason" << endl;
           worker_interface.handle_reason_all_workers(reason);
         }
 
@@ -102,12 +95,8 @@ bool Strategies::run_default() {
       worker_successes->clear();
     }
 
-    layers.print_sizes();
-
-    LOG << "completed k:" << k << endl;
     // completed the k, lets do a convergance check and clause pushing
     for (int layer=1; layer<=k+1; layer++) {
-      LOG << "checking " << layer << endl;
       if (layers.same_as_previous(layer)) {
         LOG << "converged as layer " << layer << " is apparently the same as the previous one" << endl;
         worker_interface.finalize();

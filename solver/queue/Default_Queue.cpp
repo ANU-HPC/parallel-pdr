@@ -16,12 +16,13 @@ void Default_Queue::push(const Obligation& obligation) {
 Obligation Default_Queue::pop(int heuristic) {
   assert(!empty());
   assert(!_layers[_lowest_layer_with_content].empty());
+
   const Obligation& ret_val = _layers[_lowest_layer_with_content].pop(heuristic);
   _size--;
 
   update_lowest_layer_with_content();
 
-  if (!empty()) assert(!_layers[_lowest_layer_with_content].empty());
+  assert (empty() || !_layers[_lowest_layer_with_content].empty());
   return ret_val;
 }
 

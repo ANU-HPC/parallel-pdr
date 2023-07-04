@@ -10,6 +10,7 @@
 #include "Reason.h"
 #include "Success.h"
 #include "Utils.h"
+#include "Log.h"
 
 using namespace std;
 

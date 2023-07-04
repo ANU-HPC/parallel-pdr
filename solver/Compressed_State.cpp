@@ -4,6 +4,8 @@ Compressed_State::Compressed_State() { }
 
 // TODO make this nicer?
 Compressed_State::Compressed_State(const vector<int>& state, int subproblem, bool guaranteed_full) {
+  assert(Utils::is_abs_sorted(state));
+
   _subproblem = subproblem;
   _guaranteed_full = guaranteed_full;
 
