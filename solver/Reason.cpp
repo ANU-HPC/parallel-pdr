@@ -3,6 +3,8 @@
 Reason::Reason() { }
 
 Reason::Reason(const vector<int>& reason, int layer, int subproblem) {
+  assert(Utils::is_abs_sorted(reason));
+
   _reason = reason;
   _layer = layer;
   _subproblem = subproblem;
@@ -17,7 +19,7 @@ string Reason::to_string() const {
 }
 
 bool Reason::operator==(const Reason& other) const {
-  return (other.reason() == _reason) & (other.layer() == _layer) & (other.subproblem() & _subproblem);
+  return (other.reason() == _reason) & (other.layer() == _layer) & (other.subproblem() == _subproblem);
 }
 
 size_t Reason::hash() const {
