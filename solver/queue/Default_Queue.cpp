@@ -29,15 +29,15 @@ void Default_Queue::trim(const Reason& reason, int k) {
   // if not at the k, then can push to one above the reason, if at k, then just drop them TODO maybe should just keep them for next time
   make_layer_exist(k); // presumably will exist by this point
 
-  const int layer = reason.layer();
-  const int layer_to_push_to = layer+1;
-  const bool push = layer<k;
+  const int reason_layer = reason.layer();
+  const int layer_to_push_to = reason_layer+1;
+  const bool push = layer_to_push_to<k;
 
   Single_Layer_Of_Queue* single_layer_of_queue_to_push_to;
   if (push) single_layer_of_queue_to_push_to = &_layers[layer_to_push_to];
   else single_layer_of_queue_to_push_to = NULL;
     
-  for (int layer = reason.layer(); layer<_layers.size(); layer++) {
+  for (int layer = 1; layer<reason_layer; layer++) {
     _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to);
   }
 
@@ -51,12 +51,17 @@ void Default_Queue::update_lowest_layer_with_content() {
     return;
   } else if (_layers[_lowest_layer_with_content].empty()) { // there is content overall, lets see if there is content in this one
     // need to do something, because this one is now empty! Go and find the first layer with content
-    for (int layer=_lowest_layer_with_content+1; ;layer++) {
+    for (int layer = _lowest_layer_with_content+1; layer < _layers.size(); layer++) {
       if (!_layers[layer].empty()) {
         _lowest_layer_with_content = layer;
-        break;
+        return;
       }
     }
+
+    // if have not found a layer with content when searching upwards, there is a problem
+    LOG << "ERROR: SHOULD NOT BE HERE!" << endl;
+    assert(0);
+    exit(1);
   }
 }
 

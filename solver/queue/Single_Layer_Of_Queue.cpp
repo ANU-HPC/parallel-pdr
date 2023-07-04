@@ -4,8 +4,8 @@ Single_Layer_Of_Queue::Single_Layer_Of_Queue() { }
 
 bool Single_Layer_Of_Queue::push(const Obligation& obligation) {
   sizes_correct();
-  // first check it is not already in here
 
+  // first check it is not already in here
   if (_all_obligations.find(obligation) != _all_obligations.end()) return false;
   _all_obligations.insert(obligation);
 
@@ -94,8 +94,11 @@ int Single_Layer_Of_Queue::trim(const Reason& reason, Single_Layer_Of_Queue* oth
   for (auto it=slots_to_remove.begin(); it!=slots_to_remove.end(); it++) {
     const int slot = *it;
     Obligation obligation = remove_obligation_at_slot(slot);
-    if (pushing) other_to_push_to->push(obligation);
-    else num_removed++;
+    if (pushing) {
+      const bool successful_push_up = other_to_push_to->push(obligation);
+      assert(successful_push_up); // maybe not that bad? it should at least correct the num_removed
+      if (!successful_push_up) num_removed--;
+    } else num_removed++;
   }
 
   sizes_correct();
@@ -112,13 +115,6 @@ bool Single_Layer_Of_Queue::empty() {
 }
 
 void Single_Layer_Of_Queue::sizes_correct() {
-
-  //LOG << "checking sizes" << endl;
-  for (auto it=Global::active_heuristics.begin(); it!=Global::active_heuristics.end(); it++) {
-    const int heuristic = *it; 
-    //LOG << "entries size: " << _entries.size() << " references set size " << _heuristic_to_references[heuristic].size() << endl;
-  }
-
   for (auto it=Global::active_heuristics.begin(); it!=Global::active_heuristics.end(); it++) {
     const int heuristic = *it; 
     assert (_entries.size() == _heuristic_to_references[heuristic].size());
