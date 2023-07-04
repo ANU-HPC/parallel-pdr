@@ -125,6 +125,14 @@ size_t Utils::hash(const vector<int>& hashee) {
   return ret_val + (ret_val<<32);
 }
 
+bool Utils::abs_comp(const int a, const int b) {
+  return abs(a)<abs(b); 
+}
+
+bool Utils::is_abs_sorted(const vector<int>& x) {
+  return is_sorted(x.begin(), x.end(), abs_comp);
+}
+
 /*
 bool in_pos_vector(int x, const vector<int>& vec) {
   return binary_search(vec.begin(), vec.end(), x);

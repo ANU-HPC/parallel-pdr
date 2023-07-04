@@ -27,5 +27,8 @@ class Utils {
     static bool in(const unordered_set<int>& container, int element);
 
     static size_t hash(const vector<int>& hashee);
+
+    static bool abs_comp(const int a, const int b);
+    static bool is_abs_sorted(const vector<int>& x);
 };
 #endif
