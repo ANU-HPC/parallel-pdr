@@ -1,11 +1,12 @@
 #ifndef COMPRESSED_STATE_H
 #define COMPRESSED_STATE_H
 
+class Reason;
+
 #include <vector>
 
 #include "Utils.h"
 #include "Global.h"
-#include "Reason.h"
 #include "Log.h"
 
 using namespace std;

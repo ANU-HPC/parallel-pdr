@@ -56,6 +56,10 @@ bool Obligation::reduce_reason_add_successor_to_queue() const {
   return _reduce_reason_add_successor_to_queue;
 }
 
+Obligation Obligation::get_with_incremented_layer() const {
+  return Obligation(_compressed_state, _layer+1, _subproblem, _reduce_reason_add_successor_to_queue);
+}
+
 // MPI
 // TYPE, layer, subproblem, positive_props
 

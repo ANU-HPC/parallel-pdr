@@ -1,8 +1,9 @@
 #ifndef OBLIGATION_H
 #define OBLIGATION_H
 
+class Reason; // for circular header dependencies, header at the end
+
 #include "Compressed_State.h"
-#include "Reason.h"
 #include "Log.h"
 
 using namespace std;
@@ -24,6 +25,8 @@ class Obligation {
     int subproblem() const;
     Compressed_State compressed_state() const;
     bool reduce_reason_add_successor_to_queue() const;
+    
+    Obligation get_with_incremented_layer() const;
 
     void get_as_MPI_message(int* data, int start) const;
     int* get_as_MPI_message() const;
@@ -42,5 +45,7 @@ struct Obligation_Hash {
     return obligation.hash();
   }
 };
+
+#include "Reason.h"
 
 #endif

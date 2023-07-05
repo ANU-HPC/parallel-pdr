@@ -125,7 +125,7 @@ void Obligation_Processor::set_reason_from_solver(const Obligation& original_obl
     }
   }
 
-  _reason = Reason(set_to_abs_sorted_vector(running_reason), original_obligation.layer(), original_obligation.subproblem());
+  _reason = Reason(original_obligation, set_to_abs_sorted_vector(running_reason), original_obligation.layer(), original_obligation.subproblem());
 }
 
 int Obligation_Processor::get_solver_to_send_to(const Obligation& obl) {

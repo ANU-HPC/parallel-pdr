@@ -1,4 +1,5 @@
 #include "Compressed_State.h"
+#include "Reason.h"
 
 Compressed_State::Compressed_State() { }
 
