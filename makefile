@@ -1,17 +1,17 @@
 default:
 	$(MAKE) all -j16
-all: lingeling_then_pdr mad val fd h2-fd-preprocessor
+all: solver lingeling_then_pdr mad val fd h2-fd-preprocessor
 fd: FORCE
 	{ cd pddl-parser-fd/downward && python build.py release; }
 lingeling_then_pdr:
 	$(MAKE) lingeling -j16
-	$(MAKE) pdr -j16
+	$(MAKE) solver -j16
 test:
 	./tests/test.sh
 clean:
 	$(MAKE) -C madagascar clean
 	$(MAKE) -C extract clean
-	$(MAKE) -C pdr clean
+	$(MAKE) -C solver clean
 	$(MAKE) -C lingeling clean
 	./VAL/scripts/linux/clean.sh all release
 mad: FORCE
