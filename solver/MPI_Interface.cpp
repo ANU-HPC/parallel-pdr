@@ -78,6 +78,7 @@ bool MPI_Interface::message_waiting() {
   int completed_flag;
   const int error_code = MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, _main_communicator, &completed_flag, &_scratch_status);
   assert(error_code==0);
+  (void)error_code;
   return completed_flag;
 }
 

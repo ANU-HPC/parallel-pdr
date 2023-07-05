@@ -2,8 +2,8 @@ default:
 	$(MAKE) -j 16 solver
 
 MPICXX   = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
-#CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
-CXXFLAGS += -rdynamic -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
+CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
+#CXXFLAGS += -rdynamic -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=marshall.clifton@anu.edu.au
 LDFLAGS  = -lstdc++fs
 
 OBJS = main.o \

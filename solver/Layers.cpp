@@ -10,7 +10,7 @@ bool Layers::add_reason(const Reason& reason) {
     const int existing_layer = reference_to_existing_entry->layer();
 
     if (new_layer < existing_layer) {
-      LOG << "WARNING: Adding a reason with a lower layer than one that already exists" << endl;
+      //LOG << "WARNING: Adding a reason with a lower layer than one that already exists. Existing:" << reference_to_existing_entry->to_string() << " new " << reason.to_string() <<  endl;
       return false;
     }
 

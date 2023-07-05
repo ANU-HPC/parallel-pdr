@@ -42,8 +42,6 @@ cat pdr/options.h | grep \^\#define | grep -v OPTIONS_H | cut -d\  -f2-
 echo STOP_EXTRA_SETTINGS
 
 TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
-#TMP_DIR=`pwd`/tmp/fd
-#rm $TMP_DIR/*
 mkdir $TMP_DIR
 echo TMP_DIR: $TMP_DIR
 
@@ -52,10 +50,6 @@ echo problem: $PROBLEM
 echo extra_settings: $SET
 
 echo $DOMAIN $PROBLEM > $TMP_DIR/domain_problem
-
-export GLOG_v=0 # verbose glog logging at level 5 (0 is least verbose)
-export GLOG_logtostderr=true # otherwise all logging goes to /tmp/appname.hostname.username.log.INFO.date.pid
-
 
 if [ "$(cat /proc/sys/kernel/hostname)" = "goedel" ]
 then
@@ -254,10 +248,19 @@ else # not isolate_parallel
     if [ $DAGSTER -eq "1" ] # parallel
     then
         echo mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+
         mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        #mpirun -n $MPI_NODES valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        #mpirun -np $MPI_NODES xterm -e gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET
+
     else
         echo ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
         ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        #gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        #valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+
+
+
     fi
 fi
 echo CPP_TIME: $(awk "BEGIN {print ($(date +%s.%N)-$CPP_START_TIME)}")

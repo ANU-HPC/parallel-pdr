@@ -106,6 +106,7 @@ void Problem::read_extra_settings(string extra_settings_filename) {
   }
   */
   assert(seen == total_expected);
+  (void)total_expected;
 }
 
 void Problem::process_command_line_arguments(int argc, char **argv) {
@@ -131,6 +132,7 @@ void Problem::read_mapping(){
       vector<string> type_symbol_variable = split(line);
       string symbol = type_symbol_variable[1];
       int variable = stoi(type_symbol_variable[2]);
+      (void)variable;
       assert(variable == symbols.size());
       symbols.push_back(symbol);
     }

@@ -9,7 +9,8 @@ void Plan_Builder::register_success(const Success& success) {
   if (original_state == successor_state) {
     LOG << "WARNING: trying to register a loop in a plan, stopped" << endl;
   } else {
-    _tree[successor_state] = tuple<Compressed_Actions, Compressed_State>(actions, original_state);
+    // only add this way to get to a successor state if there is not already an older (so probably better) way TODO think more about the logic here, can this go wrong?
+    if (_tree.find(successor_state) == _tree.end()) _tree[successor_state] = tuple<Compressed_Actions, Compressed_State>(actions, original_state);
   }
 }
 
@@ -22,6 +23,9 @@ void Plan_Builder::write_plan(const Success& success) {
     const tuple<Compressed_Actions, Compressed_State>& actions_previous_state = _tree[successor_state];
     reverse_cronology_actions.push_back(get<0>(actions_previous_state));
     successor_state = get<1>(actions_previous_state);
+    if (reverse_cronology_actions.size() == 100000) {
+      LOG << "WARNING: 100,000 action steps and counting in plan, may be a fault" << endl;
+    }
   }
 
   // now have the sequence of actions executed, write them out

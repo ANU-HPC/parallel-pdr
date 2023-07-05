@@ -50,6 +50,7 @@ Reason Obligation_Processor::last_interactions_reason() {
 }
 
 void Obligation_Processor::set_success_from_solver(const Obligation& original_obligation, int solver_id) {
+  // TODO if not adding, don't bother creating a success. Works better when have a "solver idle" tag
   // TODO change when in macros etc... (there is a more complicated example in the original codebase), aux??
   // make it so the model is projected to the relevant subproblem propositions
   // Need to take in the model, and extract everything
@@ -106,6 +107,10 @@ vector<int> set_to_abs_sorted_vector(const set<int>& x) {
 
 void Obligation_Processor::set_reason_from_solver(const Obligation& original_obligation, int solver_id) {
   // So this is actually doing a process of strengthening - lit removal
+  if (!original_obligation.reduce_reason_add_successor_to_queue()) {
+    _reason = Reason(original_obligation, original_obligation.compressed_state().get_state(), original_obligation.layer(), original_obligation.subproblem());
+    return;
+  }
 
   set<int> running_reason = vector_to_set(_solvers[solver_id]->used_assumptions());
   const int subproblem = original_obligation.subproblem();

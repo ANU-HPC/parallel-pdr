@@ -12,7 +12,7 @@
 
 bool Strategies::run_default() {
   // TODO just for now...
-  Global::active_heuristics = set<int>({Heuristics::NONE});
+  Global::active_heuristics = set<int>({Heuristics::NONE, Heuristics::RANDOM});
 
   // set up everything we need
   Default_Queue queue;
@@ -35,6 +35,12 @@ bool Strategies::run_default() {
   // Create the initial state to create initial obligations
   Compressed_State initial_state = Compressed_State(Global::problem.initial_state, 0, true);
 
+  long long int get_results_iteration = 0;
+  long long int successes_count = 1;
+  long long int reasons_count = 1;
+  long long int reasons_count_iteration_checkpoint = 0;
+  long long int successes_count_iteration_checkpoint = 0;
+
   for(int k=1;; k++) {
     LOG << "starting layer k: " << k << endl;
     // Put the initial state in the queue
@@ -48,7 +54,12 @@ bool Strategies::run_default() {
       for (auto it=workers.begin(); it!=workers.end(); it++) {
         const int worker = *it;
         if (!queue.empty()) {
+          // just get as normal
           worker_interface.handle_obligation(queue.pop(Heuristics::NONE), worker);
+
+          // one in three workers get a random obligation
+          //if (worker%3==0) worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
+          //else             worker_interface.handle_obligation(queue.pop(Heuristics::NONE), worker);
         }
       }
 
@@ -56,6 +67,24 @@ bool Strategies::run_default() {
       worker_interface.process_inbox();
       vector<tuple<int, Success>>* worker_successes = worker_interface.get_returned_successes_buffer();
       vector<tuple<int, Reason>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
+
+      // stats on how busy the orchestrator is
+      get_results_iteration++;
+      reasons_count+=worker_reasons->size();
+      successes_count+=worker_successes->size();
+      const int interval = 10000;
+
+      if (successes_count%interval == 0) {
+        LOG << "periodic controller update: to get the last " << interval << " successes, it took " << get_results_iteration-successes_count_iteration_checkpoint << " check cycles " << endl;
+        successes_count_iteration_checkpoint = get_results_iteration;
+        successes_count++;
+      }
+
+      if (reasons_count%interval == 0) {
+        LOG << "periodic controller update: to get the last " << interval << " reasons, it took " << get_results_iteration-reasons_count_iteration_checkpoint << " check cycles " << endl;
+        reasons_count_iteration_checkpoint = get_results_iteration;
+        reasons_count++;
+      }
 
       // handle successes
       for (auto it=worker_successes->begin(); it!=worker_successes->end(); it++) {
@@ -101,8 +130,55 @@ bool Strategies::run_default() {
 
     // completed the k, lets do a convergance check and clause pushing
     for (int layer=1; layer<=k+1; layer++) {
+      auto reasons_to_push = layers.reasons_not_in_next_layer(layer-1);
+
+      // get all the "obligations"
+      vector<Obligation> push;
+      for (auto it=reasons_to_push->begin(); it!=reasons_to_push->end(); it++) {
+        const Reason& reason = *it;
+        push.push_back(Obligation(Compressed_State(reason.reason(), 0, false), layer, 0, false));
+      }
+
+      // send them all off
+      while (push.size()) {
+        worker_interface.process_inbox();
+        const set<int> workers = worker_interface.workers_wanting_work_snapshot();
+        for (auto it=workers.begin(); it!=workers.end(); it++) {
+          const int worker = *it; 
+          if (push.size()) {
+            const Obligation& obligation = *push.rbegin();
+            worker_interface.handle_obligation(obligation, worker);
+            push.pop_back();
+          }
+        }
+      }
+
+      // wait until all the work is completed
+      while (!worker_interface.all_workers_idle()) { 
+        worker_interface.process_inbox();
+      }
+
+      // get the results
+      vector<tuple<int, Success>>* worker_successes = worker_interface.get_returned_successes_buffer();
+      vector<tuple<int, Reason>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
+
+      // process the results
+      for (auto it=worker_reasons->begin(); it!=worker_reasons->end(); it++) {
+        worker_reason = *it; 
+        const Reason& reason = get<1>(worker_reason);
+
+        if (layers.add_reason(reason)) {
+          worker_interface.handle_reason_all_workers(reason);
+        } else LOG << "WARNING: look into this" << endl;
+      }
+
+      // manually clear these buffers
+      worker_reasons->clear();
+      worker_successes->clear();
+
+      // convergence check
       if (layers.same_as_previous(layer)) {
-        LOG << "converged as layer " << layer << " is apparently the same as the previous one" << endl;
+        LOG << "converged as layer " << layer << " is the same as the previous one" << endl;
         worker_interface.finalize();
         return false;
       }

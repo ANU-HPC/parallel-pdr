@@ -72,7 +72,8 @@ void Lingeling::load_DIMACS_Cnf(const char* fname) {
   int header_vc, header_cc;
   while((c=getc(ifp)) != EOF){ 
     if (isspace(c)) continue; else ungetc(c,ifp);
-    fgets(line, len, ifp);
+    const char* unused = fgets(line, len, ifp);
+    (void)unused;
     if (c=='p'){
       if(sscanf(line, "p cnf %d %d", &header_vc, &header_cc) == 2) break;
       else {
@@ -157,7 +158,8 @@ void Lingeling::load_DIMACS_Cnf(const char* fname) {
       }
     }
     // get a new line
-    fgets(line, len, ifp);
+    const char* unused = fgets(line, len, ifp);
+    (void)unused;
   }
   clauses[cc] = NULL;
   //cl[cc] = NULL; // TODO Makes some data structures wrong

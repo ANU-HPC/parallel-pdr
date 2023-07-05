@@ -1,3 +1,38 @@
+diabled:
+	echo everything moved and upgraded in directory solver 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # This makefile was taken from dagster mark.burgess@anu.edu.au 
 # for ipasir, swap lingeling.o for minisat.o and ipasir for lgl
 
