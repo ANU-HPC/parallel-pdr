@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 
+#include "Obligation.h"
 #include "MPI_Interface.h"
 #include "Utils.h"
 
@@ -13,22 +14,24 @@ class Reason {
   public:
     //Obligation(const vector<int>& state, const int layer, const int subproblem);
     Reason();
-    Reason(const vector<int>& reason, int layer, int subproblem);
+    Reason(const Obligation& originating_obligation, const vector<int>& reason, int layer, int subproblem);
     Reason(int* data, int start, int stop);
     bool operator==(const Reason& other) const;
     size_t hash() const;
     size_t hash_contextless() const;
     bool equal_contextless(const Reason& other_reason) const;
     string to_string() const;
+    Obligation comparison_excluded_originating_obligation() const;
+    vector<int> reason() const;
     int layer() const;
     int subproblem() const;
-    vector<int> reason() const;
     vector<int> nogood_clause() const;
     int* get_as_MPI_message() const;
     void get_as_MPI_message(int* data, int start) const;
     int MPI_message_size() const;
     int MPI_message_tag() const;
   private:
+    Obligation _comparison_excluded_originating_obligation; // messier than I would like, has where it came from for obligation rescheduling, but not to be used in other cases
     vector<int> _reason; // TODO should be a compressed state
     int _layer;
     int _subproblem;

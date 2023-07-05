@@ -27,7 +27,8 @@ bool Strategies::run_default() {
   // add the goal to the reasons object
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
     vector<int> bad_state = vector<int>({-*it});
-    Reason reason = Reason(bad_state, 0, 0);
+    Obligation empty_obligation = Obligation(Compressed_State(vector<int>{}, 0, false), 0,0,false);
+    Reason reason = Reason(empty_obligation, bad_state, 0, 0);
     layers.add_reason(reason);
   }
 
@@ -83,11 +84,14 @@ bool Strategies::run_default() {
 
         if (layers.add_reason(reason)) {
           queue.trim(reason, k);
-          //LOG << "Am sending out a reason" << endl;
           worker_interface.handle_reason_all_workers(reason);
         }
 
         // TODO obligation rescheduling
+        const Obligation& original_obligation = reason.comparison_excluded_originating_obligation();
+        if (Global::problem.obligation_rescheduling && original_obligation.layer() < k) {
+          queue.push(original_obligation.get_with_incremented_layer());
+        }
       }
 
       // manually clear these buffers
