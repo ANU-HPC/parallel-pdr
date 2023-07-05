@@ -6,10 +6,16 @@
 
 using namespace std;
 
-int MPI_RANK();
-string RANK_TEXT();
-string COLOUR_START(string filename);
-string COLOUR_END();
+class Log {
+  public:
+    static string RANK_TEXT();
+    static string COLOUR_START(string filename);
+    static string COLOUR_END();
+    static void inform_mpi_finalized();
+  private:
+    static bool _mpi_finalized;
+    static int MPI_RANK();
+};
 
 /*
 #define LOG_LEVEL 3
@@ -47,6 +53,6 @@ string COLOUR_END();
 #endif
 */
 
-#define LOG cout << COLOUR_START(__FILE__) << RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: " << COLOUR_END()
+#define LOG cout << Log::COLOUR_START(__FILE__) << Log::RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: " << Log::COLOUR_END()
 
 #endif

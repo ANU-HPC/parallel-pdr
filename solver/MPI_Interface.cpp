@@ -1,4 +1,5 @@
 #include "MPI_Interface.h"
+#include "Log.h"
 
 void MPI_Interface::setup() { // call this once universal
   MPI_Init(NULL, NULL);
@@ -86,4 +87,10 @@ int MPI_Interface::world_size() {
 
 int MPI_Interface::world_rank() {
   return _world_rank;
+}
+
+void MPI_Interface::barriered_finalize() {
+  MPI_Barrier(_main_communicator);
+  Log::inform_mpi_finalized();
+  MPI_Finalize();
 }

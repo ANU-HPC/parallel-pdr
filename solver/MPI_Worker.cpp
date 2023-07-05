@@ -25,7 +25,7 @@ void MPI_Worker::run() {
       Reason reason = Reason(data, 0, size);
       handle_reason(reason);
     } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_FINALIZE) {
-      MPI_Finalize();
+      Global::mpi_interface.barriered_finalize();
       return;
     } else {
       LOG << "ERROR: Unknown message tag: " << mpi_tag << endl;

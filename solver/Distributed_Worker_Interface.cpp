@@ -73,5 +73,6 @@ void Distributed_Worker_Interface::finalize() {
   for (int worker=1; worker<Global::mpi_interface.world_size(); worker++) {
     Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_FINALIZE, _empty_int_array, 0);
   }
-  MPI_Finalize();
+
+  Global::mpi_interface.barriered_finalize();
 }

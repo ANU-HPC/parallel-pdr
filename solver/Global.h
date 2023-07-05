@@ -1,9 +1,10 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include <mpi.h>
+
 #include "Problem.h"
 #include "MPI_Interface.h"
-#include <mpi.h>
 
 class Global {
   public:

@@ -7,6 +7,8 @@
 #include <tuple>
 #include <cassert>
 
+#include "Log.h"
+
 using namespace std;
 
 class MPI_Interface {
@@ -22,6 +24,8 @@ class MPI_Interface {
 
     int world_size();
     int world_rank();
+
+    void barriered_finalize();
 
     const static int MESSAGE_TAG_OBLIGATION         = 1;
     const static int MESSAGE_TAG_SUCCESS            = 2;
