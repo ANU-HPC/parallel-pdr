@@ -38,7 +38,7 @@ void Default_Queue::trim(const Reason& reason, int k) {
   if (push) single_layer_of_queue_to_push_to = &_layers[layer_to_push_to];
   else single_layer_of_queue_to_push_to = NULL;
     
-  for (int layer = 1; layer<reason_layer; layer++) {
+  for (int layer = 1; layer<=reason_layer; layer++) {
     _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to);
   }
 
