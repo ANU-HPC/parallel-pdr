@@ -63,6 +63,11 @@ void MPI_Interface::maybe_cleanup_isend_outbox() {
   } else _cleanup_isend_outbox_ticker--;
 }
 
+void MPI_Interface::isend_tag(int destination, int tag) {
+  int* empty_int_array = new int[0]; // TODO messy, but fits in with the request outbox flushing nicely
+  isend_then_delete_message(destination, tag, empty_int_array, 0);
+}
+
 void MPI_Interface::isend_then_delete_message(int destination, int tag, int* data, int size) {
   maybe_cleanup_isend_outbox();
   MPI_Request* request = new MPI_Request();

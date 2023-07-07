@@ -58,7 +58,7 @@ bool Strategies::run_default() {
           worker_interface.handle_obligation(queue.pop(Heuristics::NONE), worker);
 
           // one in three workers get a random obligation
-          //if (worker%3==0) worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
+          //if (worker%2==0) worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
           //else             worker_interface.handle_obligation(queue.pop(Heuristics::NONE), worker);
         }
       }

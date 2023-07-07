@@ -1,4 +1,5 @@
 #include "MPI_Worker.h"
+#include "MPI_Interface.h"
 
 MPI_Worker::MPI_Worker() {
   const int steps = 1;//((Global::mpi_interface.world_rank()-1) % Global::problem.max_macro_steps) + 1;
@@ -53,6 +54,8 @@ void MPI_Worker::handle_obligation(const Obligation& obl) {
     int* data = reason.get_as_MPI_message();
     Global::mpi_interface.isend_then_delete_message(0, MPI_Interface::MESSAGE_TAG_REASON, data, size);
   }
+
+  Global::mpi_interface.isend_tag(0, MPI_Interface::MESSAGE_TAG_IDLE);
 }
 
 void MPI_Worker::handle_reason(const Reason& reason) {

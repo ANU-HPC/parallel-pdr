@@ -29,6 +29,5 @@ class Distributed_Worker_Interface {
     set<int> _workers_wanting_work;
     vector<tuple<int, Reason>>* _returned_reasons_buffer = new vector<tuple<int,Reason>>();
     vector<tuple<int, Success>>* _returned_successes_buffer = new vector<tuple<int,Success>>();
-    int* _empty_int_array = new int[0];
 };
 #endif

@@ -21,6 +21,7 @@ class MPI_Interface {
     tuple<int,int,int*,int> recieve_message();
     void send_then_delete_message(int destination, int tag, int* data, int size);
     void isend_then_delete_message(int destination, int tag, int* data, int size);
+    void isend_tag(int destination, int tag);
 
     int world_size();
     int world_rank();
@@ -31,6 +32,8 @@ class MPI_Interface {
     const static int MESSAGE_TAG_SUCCESS            = 2;
     const static int MESSAGE_TAG_REASON             = 3;
     const static int MESSAGE_TAG_FINALIZE           = 4;
+    const static int MESSAGE_TAG_IDLE               = 5;
+
   private:
     void maybe_cleanup_isend_outbox();
     int _world_size;

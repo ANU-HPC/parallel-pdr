@@ -1,4 +1,5 @@
 #include "Distributed_Worker_Interface.h"
+#include "MPI_Interface.h"
 
 Distributed_Worker_Interface::Distributed_Worker_Interface() {
   for (int worker=1; worker<Global::mpi_interface.world_size(); worker++) {
@@ -51,13 +52,13 @@ void Distributed_Worker_Interface::process_inbox() {
     } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_REASON) {
       Reason reason = Reason(data, 0, size);
       _returned_reasons_buffer->push_back(tuple<int, Reason>(worker, reason));
+    } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_IDLE) {
+      assert(!Utils::in(_workers_wanting_work, worker));
+      _workers_wanting_work.insert(worker);
     } else {
       LOG << "ERROR: Unknown message tag: " << mpi_tag << endl;
       exit(1);
     }
-
-    assert(!Utils::in(_workers_wanting_work, worker));
-    _workers_wanting_work.insert(worker);
   }
 }
 
@@ -71,7 +72,7 @@ vector<tuple<int,Success>>* Distributed_Worker_Interface::get_returned_successes
 
 void Distributed_Worker_Interface::finalize() {
   for (int worker=1; worker<Global::mpi_interface.world_size(); worker++) {
-    Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_FINALIZE, _empty_int_array, 0);
+    Global::mpi_interface.isend_tag(worker, MPI_Interface::MESSAGE_TAG_FINALIZE);
   }
 
   Global::mpi_interface.barriered_finalize();

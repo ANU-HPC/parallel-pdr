@@ -25,6 +25,7 @@ bool Single_Layer_Of_Queue::push(const Obligation& obligation) {
 
   // just a check to make sure entries worked as it should (TODO remove when more confident)
   const int actual_slot = _entries.insert(queue_entry);
+  (void) actual_slot;
   assert(actual_slot == slot);
 
   return true;
