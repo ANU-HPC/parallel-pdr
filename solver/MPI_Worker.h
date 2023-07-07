@@ -18,11 +18,12 @@ using namespace std;
 
 class MPI_Worker {
   public:
+    MPI_Worker();
     void run();
   private:
     void handle_obligation(const Obligation& obl);
     void handle_reason(const Reason& reason);
-    Obligation_Processor _obligation_processor;
+    Obligation_Processor* _obligation_processor;
 };
 
 #endif

@@ -3,8 +3,6 @@
 Compressed_Actions::Compressed_Actions() { }
 
 Compressed_Actions::Compressed_Actions(const vector<int>& actions, int subproblem) {
-  assert(Utils::is_abs_sorted(actions));
-
   for (auto it=actions.begin(); it!=actions.end(); it++) {
     if ((*it)>0) _raw.push_back(*it);
   }

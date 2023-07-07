@@ -48,10 +48,10 @@ int Reason::subproblem() const {
   return _subproblem;
 }
 
-vector<int> Reason::nogood_clause() const {
+vector<int> Reason::timestep_zero_nogood_clause() const {
   vector<int> ret_val;
   for (auto it=_reason.begin(); it!=_reason.end(); it++) {
-    ret_val.push_back(Utils::tilde(-*it, 1)); 
+    ret_val.push_back(-*it); 
   }
   return ret_val;
 }

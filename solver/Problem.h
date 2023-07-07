@@ -11,6 +11,7 @@
 
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
+#include "Log.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ class Problem {
     bool obligation_rescheduling;
     bool use_ooc;
     bool isolate_subproblems;
-    bool max_macro_steps;
+    int max_macro_steps;
 
     vector<string> symbols;
 

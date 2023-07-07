@@ -19,7 +19,7 @@ using namespace std;
 class Obligation_Processor {
   public:
     // TODO constructor with setup
-    Obligation_Processor();
+    Obligation_Processor(int steps);
     void process_obligation(const Obligation& obl);
     void add_reason(const Reason& reason);
     bool last_interaction_was_a_success();
@@ -38,6 +38,7 @@ class Obligation_Processor {
     Reason _reason;
     vector<Lingeling*> _solvers;
     Lingeling* _base_solver = NULL;
+    int _steps;
 };
 
 #endif

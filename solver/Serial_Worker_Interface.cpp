@@ -1,4 +1,9 @@
 #include "Serial_Worker_Interface.h"
+#include "Obligation_Processor.h"
+
+Serial_Worker_Interface::Serial_Worker_Interface() {
+  _obligation_processor = new Obligation_Processor(1);
+}
 
 set<int> Serial_Worker_Interface::workers_wanting_work_snapshot() {
   return _sole_worker;
@@ -9,17 +14,17 @@ bool Serial_Worker_Interface::all_workers_idle() {
 }
 
 void Serial_Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
-  _obligation_processor.process_obligation(obl);
+  _obligation_processor->process_obligation(obl);
 
-  if (_obligation_processor.last_interaction_was_a_success()) {
-    _returned_successes_buffer->push_back(tuple<int, Success>(_SERIAL_WORKER_ID, _obligation_processor.last_interactions_success()));
+  if (_obligation_processor->last_interaction_was_a_success()) {
+    _returned_successes_buffer->push_back(tuple<int, Success>(_SERIAL_WORKER_ID, _obligation_processor->last_interactions_success()));
   } else {
-    _returned_reasons_buffer->push_back(tuple<int, Reason>(_SERIAL_WORKER_ID, _obligation_processor.last_interactions_reason()));
+    _returned_reasons_buffer->push_back(tuple<int, Reason>(_SERIAL_WORKER_ID, _obligation_processor->last_interactions_reason()));
   }
 }
 
 void Serial_Worker_Interface::handle_reason(const Reason& reason, int worker) {
-  _obligation_processor.add_reason(reason);
+  _obligation_processor->add_reason(reason);
 }
 
 void Serial_Worker_Interface::process_inbox() {

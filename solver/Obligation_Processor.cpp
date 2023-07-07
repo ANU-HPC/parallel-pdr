@@ -1,9 +1,8 @@
 #include "Obligation_Processor.h"
 #include "Utils.h"
 
-Obligation_Processor::Obligation_Processor() {
-  const int steps = 1;
-
+Obligation_Processor::Obligation_Processor(int steps) {
+  _steps = steps;
   // create base solver
   _base_solver = new Lingeling((Global::problem.tmp_dir + "/tmp_regular_" + to_string(steps) + ".cnf").c_str());
   _base_solver->solve(vector<int>());
@@ -14,7 +13,7 @@ Obligation_Processor::Obligation_Processor() {
   // initialize with goal TODO maybe it is better to do this manually by sending reasons?..
   ensure_solver_exist(0);
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
-    vector<int> clause = vector<int>({Utils::tilde(*it, 1)});
+    vector<int> clause = vector<int>({Utils::tilde(*it, _steps)});
     _solvers[0]->add_clause(clause);
   }
 }
@@ -31,7 +30,7 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
 void Obligation_Processor::add_reason(const Reason& reason) {
   const int solver_id = get_solver_to_send_to(reason);
   ensure_solver_exist(solver_id);
-  _solvers[solver_id]->add_clause(reason.nogood_clause());
+  _solvers[solver_id]->add_clause(Utils::tilde(reason.timestep_zero_nogood_clause(), _steps));
 }
 
 bool Obligation_Processor::last_interaction_was_a_success() {
@@ -65,15 +64,18 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
   vector<int> executed_actions;
   vector<int> positive_propositions;
 
-  // extract from the model
-  for (auto it=all_actions.begin(); it!=all_actions.end(); it++) {
-    const int model_var = model[*it-1];
-    assert(abs(model_var) == *it);
-    if (model_var>0) executed_actions.push_back(model_var);
+  // extract actions from model.
+  for (int step=0; step<_steps; step++) {
+    for (auto it=all_actions.begin(); it!=all_actions.end(); it++) {
+      const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,step)-1], -step);
+      assert(abs(model_var_tilded_to_timestep_zero) == *it);
+      if (model_var_tilded_to_timestep_zero>0) executed_actions.push_back(model_var_tilded_to_timestep_zero);
+    }
   }
 
+  // and propositions
   for (auto it=propositions.begin(); it!=propositions.end(); it++) {
-    const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,1)-1], -1);
+    const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,_steps)-1], -_steps);
     assert(abs(model_var_tilded_to_timestep_zero) == *it);
     if (model_var_tilded_to_timestep_zero>0) positive_propositions.push_back(model_var_tilded_to_timestep_zero);
   }

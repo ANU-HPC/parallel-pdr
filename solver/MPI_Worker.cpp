@@ -1,6 +1,10 @@
 #include "MPI_Worker.h"
 
-// maybe make it so mpi_interface is stored in here?
+MPI_Worker::MPI_Worker() {
+  const int steps = 1;//((Global::mpi_interface.world_rank()-1) % Global::problem.max_macro_steps) + 1;
+  LOG << "worker using steps: " << steps << endl;
+  _obligation_processor = new Obligation_Processor(steps);
+}
 
 void MPI_Worker::run() {
   // infinite loop handling messages
@@ -35,16 +39,16 @@ void MPI_Worker::run() {
 }
 
 void MPI_Worker::handle_obligation(const Obligation& obl) {
-  _obligation_processor.process_obligation(obl);
+  _obligation_processor->process_obligation(obl);
 
   // send back success or reason
-  if (_obligation_processor.last_interaction_was_a_success()) {
-    const Success& success = _obligation_processor.last_interactions_success();
+  if (_obligation_processor->last_interaction_was_a_success()) {
+    const Success& success = _obligation_processor->last_interactions_success();
     const int size = success.MPI_message_size();
     int* data = success.get_as_MPI_message();
     Global::mpi_interface.isend_then_delete_message(0, MPI_Interface::MESSAGE_TAG_SUCCESS, data, size);
   } else {
-    const Reason& reason = _obligation_processor.last_interactions_reason();
+    const Reason& reason = _obligation_processor->last_interactions_reason();
     const int size = reason.MPI_message_size();
     int* data = reason.get_as_MPI_message();
     Global::mpi_interface.isend_then_delete_message(0, MPI_Interface::MESSAGE_TAG_REASON, data, size);
@@ -52,5 +56,5 @@ void MPI_Worker::handle_obligation(const Obligation& obl) {
 }
 
 void MPI_Worker::handle_reason(const Reason& reason) {
-  _obligation_processor.add_reason(reason);
+  _obligation_processor->add_reason(reason);
 }
