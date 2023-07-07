@@ -1,5 +1,6 @@
 #include "Worker_Interface.h"
 #include "MPI_Interface.h"
+#include "Serial_Worker_Interface.h"
 
 Worker_Interface::Worker_Interface() {
   if (Global::problem.MPI_active) _distributed_worker_interface = new Distributed_Worker_Interface();
@@ -18,12 +19,18 @@ bool Worker_Interface::all_workers_idle() {
 
 void Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
   if (Global::problem.MPI_active) _distributed_worker_interface->handle_obligation(obl, worker);
-  else                            _serial_worker_interface->handle_obligation(obl, worker);
+  else {
+    assert (worker == 1);
+    _serial_worker_interface->handle_obligation(obl);
+  }
 }
 
 void Worker_Interface::handle_reason(const Reason& reason, int worker) {
   if (Global::problem.MPI_active) _distributed_worker_interface->handle_reason(reason, worker);
-  else                            _serial_worker_interface->handle_reason(reason, worker);
+  else {
+    assert (worker == 1);
+    _serial_worker_interface->handle_reason(reason);
+  }
 }
 
 void Worker_Interface::handle_reason_all_workers(const Reason& reason) {
@@ -32,12 +39,11 @@ void Worker_Interface::handle_reason_all_workers(const Reason& reason) {
       _distributed_worker_interface->handle_reason(reason, worker);
     }
   }
-  else _serial_worker_interface->handle_reason(reason, 1);
+  else _serial_worker_interface->handle_reason(reason);
 }
 
 void Worker_Interface::process_inbox() {
   if (Global::problem.MPI_active) _distributed_worker_interface->process_inbox();
-  else                            _serial_worker_interface->process_inbox();
 }
 
 vector<tuple<int, Reason>>* Worker_Interface::get_returned_reasons_buffer() {
@@ -52,5 +58,4 @@ vector<tuple<int, Success>>* Worker_Interface::get_returned_successes_buffer() {
 
 void Worker_Interface::finalize() {
   if (Global::problem.MPI_active) _distributed_worker_interface->finalize();
-  else                            _serial_worker_interface->finalize();
 }

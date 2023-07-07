@@ -13,7 +13,7 @@ bool Serial_Worker_Interface::all_workers_idle() {
   return true;
 }
 
-void Serial_Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
+void Serial_Worker_Interface::handle_obligation(const Obligation& obl) {
   _obligation_processor->process_obligation(obl);
 
   if (_obligation_processor->last_interaction_was_a_success()) {
@@ -23,12 +23,8 @@ void Serial_Worker_Interface::handle_obligation(const Obligation& obl, int worke
   }
 }
 
-void Serial_Worker_Interface::handle_reason(const Reason& reason, int worker) {
+void Serial_Worker_Interface::handle_reason(const Reason& reason) {
   _obligation_processor->add_reason(reason);
-}
-
-void Serial_Worker_Interface::process_inbox() {
-  // deliberately blank
 }
 
 vector<tuple<int, Reason>>* Serial_Worker_Interface::get_returned_reasons_buffer() {
@@ -37,8 +33,4 @@ vector<tuple<int, Reason>>* Serial_Worker_Interface::get_returned_reasons_buffer
 
 vector<tuple<int, Success>>* Serial_Worker_Interface::get_returned_successes_buffer() {
   return _returned_successes_buffer;
-}
-
-void Serial_Worker_Interface::finalize() {
-  // Deliberately blank
 }

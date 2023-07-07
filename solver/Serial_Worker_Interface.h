@@ -18,12 +18,10 @@ class Serial_Worker_Interface {
     Serial_Worker_Interface();
     set<int> workers_wanting_work_snapshot();
     bool all_workers_idle();
-    void handle_obligation(const Obligation& obl, int worker);
-    void handle_reason(const Reason& reason, int worker);
-    void process_inbox();
+    void handle_obligation(const Obligation& obl);
+    void handle_reason(const Reason& reason);
     vector<tuple<int,Reason>>* get_returned_reasons_buffer();
     vector<tuple<int,Success>>* get_returned_successes_buffer();
-    void finalize();
   private:
     const int _SERIAL_WORKER_ID = 1;
     const set<int> _sole_worker = set<int>({1});
