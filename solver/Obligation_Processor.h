@@ -29,16 +29,18 @@ class Obligation_Processor {
     void set_success_from_solver(const Obligation& original_obligation, int solver_id);
     void set_reason_from_solver(const Obligation& original_obligation, int solver_id);
 
-    int get_solver_to_send_to(const Obligation& obl);
-    int get_solver_to_send_to(const Reason& reason);
-    void ensure_solver_exist(int solver_id);
+    int get_solver_to_send_to(const Obligation& obl, int steps);
+    int get_solver_to_send_to(const Reason& reason, int steps);
+    void ensure_solver_exists_for_obligation_layer(int obligation_layer);
 
     bool _last_interaction_was_a_success;
     Success _success;
     Reason _reason;
-    vector<Lingeling*> _solvers;
-    Lingeling* _base_solver = NULL;
-    int _steps;
+
+    // the second index is the layer of the reasons, what to do with that is a bit of a different story
+    vector<vector<Lingeling*>> _obligation_layer_steps_to_solver;
+    vector<Lingeling*> _steps_to_base_solver;
+    int _max_steps;
 };
 
 #endif

@@ -1,8 +1,5 @@
 #include "Obligation.h"
 
-#include <string>
-#include <iostream>
-
 /*
 Obligation::Obligation(const vector<int>& state, const int layer, const int subproblem) {
   _state = state;
@@ -92,3 +89,5 @@ int Obligation::MPI_message_size() const {
 int Obligation::MPI_message_tag() const {
   return MPI_Interface::MESSAGE_TAG_OBLIGATION;
 }
+
+const Obligation Obligation::BLANK_OBLIGATION = Obligation(Compressed_State(vector<int>(), 0, false), 0, 0, false);

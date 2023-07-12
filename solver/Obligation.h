@@ -6,6 +6,9 @@ class Reason; // for circular header dependencies, header at the end
 #include "Compressed_State.h"
 #include "Log.h"
 
+#include <string>
+#include <iostream>
+
 using namespace std;
 
 class Obligation {
@@ -32,6 +35,8 @@ class Obligation {
     int* get_as_MPI_message() const;
     int MPI_message_size() const;
     int MPI_message_tag() const;
+
+    const static Obligation BLANK_OBLIGATION;
   private:
     Compressed_State _compressed_state;
     int _layer;
