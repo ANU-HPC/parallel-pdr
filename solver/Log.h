@@ -3,12 +3,16 @@
 
 #include <mpi.h>
 #include <string>
+#include <iomanip>
+#include <sstream>
+#include <ctime>
 
 using namespace std;
 
 class Log {
   public:
     static string RANK_TEXT();
+    static string TIME_TEXT();
     static string COLOUR_START(string filename);
     static string COLOUR_END();
     static void inform_mpi_finalized();
@@ -53,6 +57,6 @@ class Log {
 #endif
 */
 
-#define LOG cout << Log::COLOUR_START(__FILE__) << Log::RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: " << Log::COLOUR_END()
+#define LOG cout << Log::COLOUR_START(__FILE__) << Log::TIME_TEXT() << " :: " << Log::RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: " << Log::COLOUR_END()
 
 #endif

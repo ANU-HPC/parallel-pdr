@@ -6,7 +6,7 @@
 #include <vector>
 #include <tuple>
 #include <cassert>
-#inlcude <iostream>
+#include <iostream>
 
 #include "Log.h"
 
@@ -26,6 +26,8 @@ class MPI_Interface {
 
     int world_size();
     int world_rank();
+
+    void barrier();
 
     void barriered_finalize();
 

@@ -95,6 +95,12 @@ int MPI_Interface::world_rank() {
   return _world_rank;
 }
 
+void MPI_Interface::barrier() {
+  LOG << "entering barrier" << endl;
+  MPI_Barrier(_main_communicator);
+  LOG << "exited barrier" << endl;
+}
+
 void MPI_Interface::barriered_finalize() {
   MPI_Barrier(_main_communicator);
   Log::inform_mpi_finalized();

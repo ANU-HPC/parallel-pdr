@@ -118,8 +118,8 @@ bool Strategies::run_default() {
 
         // TODO obligation rescheduling
         const Obligation& original_obligation = reason.comparison_excluded_originating_obligation();
-        if (Global::problem.obligation_rescheduling && original_obligation.layer() < k) {
-          queue.push(original_obligation.get_with_incremented_layer());
+        if (Global::problem.obligation_rescheduling && (original_obligation.layer() < k)) {
+          queue.push(original_obligation.get_with_incremented_layer(1));
         }
       }
 

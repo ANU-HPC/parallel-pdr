@@ -29,7 +29,7 @@ class Obligation {
     Compressed_State compressed_state() const;
     bool reduce_reason_add_successor_to_queue() const;
     
-    Obligation get_with_incremented_layer() const;
+    Obligation get_with_incremented_layer(int amount) const;
 
     void get_as_MPI_message(int* data, int start) const;
     int* get_as_MPI_message() const;

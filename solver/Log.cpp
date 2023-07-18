@@ -41,6 +41,13 @@ string Log::COLOUR_END() {
   return "\033[0m";
 }
 
+string Log::TIME_TEXT() {
+  float time = ((float)clock())/((float)CLOCKS_PER_SEC);
+  std::stringstream stream;
+  stream << std::fixed << std::setprecision(2) << time;
+  return stream.str();
+}
+
 void Log::inform_mpi_finalized() {
   _mpi_finalized = true;
 }
