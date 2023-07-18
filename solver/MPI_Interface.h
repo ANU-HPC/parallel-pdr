@@ -6,6 +6,7 @@
 #include <vector>
 #include <tuple>
 #include <cassert>
+#inlcude <iostream>
 
 #include "Log.h"
 
