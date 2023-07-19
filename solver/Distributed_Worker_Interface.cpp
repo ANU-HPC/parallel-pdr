@@ -1,18 +1,12 @@
 #include "Distributed_Worker_Interface.h"
 #include "MPI_Interface.h"
 
-Distributed_Worker_Interface::Distributed_Worker_Interface() {
-  for (int worker=1; worker<Global::mpi_interface.world_size(); worker++) {
-    _workers_wanting_work.insert(worker);
-  }
-}
-
 set<int> Distributed_Worker_Interface::workers_wanting_work_snapshot() {
   return _workers_wanting_work;
 }
 
 bool Distributed_Worker_Interface::all_workers_idle() {
-  return _workers_wanting_work.size() == Global::mpi_interface.world_size()-1;
+  return _workers_wanting_work.size() == _workers_setup.size();
 }
 
 void Distributed_Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
@@ -43,6 +37,9 @@ void Distributed_Worker_Interface::process_inbox() {
   (void)data;
   (void)size;
 
+  // Just for testing, less efficient, but seperates the setup time from the running time. Also in MPI_Worker.cpp
+  //Global::mpi_interface.barrier();
+
   while (Global::mpi_interface.message_waiting()) {
     auto [worker, mpi_tag, data, size] = Global::mpi_interface.recieve_message();
 
@@ -55,6 +52,7 @@ void Distributed_Worker_Interface::process_inbox() {
     } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_IDLE) {
       assert(!Utils::in(_workers_wanting_work, worker));
       _workers_wanting_work.insert(worker);
+      _workers_setup.insert(worker); // TODO only the first time? have a seperate tag...
     } else {
       LOG << "ERROR: Unknown message tag: " << mpi_tag << endl;
       exit(1);

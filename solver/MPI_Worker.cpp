@@ -20,6 +20,14 @@ void MPI_Worker::run() {
   (void)data;
   (void)size;
 
+  // Just for testing, less efficient, but seperates the setup time from the running time. Also in Distributed_Worker_Interface.cpp
+  //Global::mpi_interface.barrier();
+
+  // tell orchestrator we are ready
+  Global::mpi_interface.isend_tag(0, MPI_Interface::MESSAGE_TAG_IDLE);
+
+  LOG << "Worker ready to receive work" << endl;
+
   while (true) {
     auto [_, mpi_tag, data, size] = Global::mpi_interface.recieve_message();
 
