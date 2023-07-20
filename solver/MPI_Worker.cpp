@@ -7,6 +7,20 @@ MPI_Worker::MPI_Worker() {
   _obligation_processor = new Obligation_Processor(steps);
 }
 
+void MPI_Worker::wait_for_then_finalize() {
+  for (int i=0;; i++) {
+    if (i<60) sleep(3);
+    else      sleep(120); // when just starting, give a lower sleep to stop conveniently for short runs
+
+    if (Global::mpi_interface.message_waiting()) {
+      const int mpi_tag = get<1>(Global::mpi_interface.recieve_message());
+      if (mpi_tag != MPI_Interface::MESSAGE_TAG_FINALIZE) LOG << "ERROR: gotten a non finalize message: " << mpi_tag << ", as a non real worker. Finalizing anyway" << endl;
+      Global::mpi_interface.barriered_finalize();
+      return;
+    }
+  }
+}
+
 void MPI_Worker::run() {
   // infinite loop handling messages
   int _; // don't care about where the message came from, should always be from the orchestrator

@@ -5,6 +5,7 @@
 #include <tuple>
 #include <stdlib.h>
 #include <stdio.h>
+#include "unistd.h"
 
 #include "MPI_Interface.h"
 #include "Global.h"
@@ -20,6 +21,7 @@ class MPI_Worker {
   public:
     MPI_Worker();
     void run();
+    static void wait_for_then_finalize();
   private:
     void handle_obligation(const Obligation& obl);
     void handle_reason(const Reason& reason);

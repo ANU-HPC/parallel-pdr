@@ -4,6 +4,7 @@
 
 #include <mpi.h>
 #include <vector>
+#include <set>
 #include <tuple>
 #include <cassert>
 #include <iostream>
@@ -36,6 +37,8 @@ class MPI_Interface {
     const static int MESSAGE_TAG_REASON             = 3;
     const static int MESSAGE_TAG_FINALIZE           = 4;
     const static int MESSAGE_TAG_IDLE               = 5;
+
+    set<int> ENABLED_WORKERS;
 
   private:
     void maybe_cleanup_isend_outbox();

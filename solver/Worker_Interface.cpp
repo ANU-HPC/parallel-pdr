@@ -1,6 +1,4 @@
 #include "Worker_Interface.h"
-#include "MPI_Interface.h"
-#include "Serial_Worker_Interface.h"
 
 Worker_Interface::Worker_Interface() {
   if (Global::problem.MPI_active) _distributed_worker_interface = new Distributed_Worker_Interface();
@@ -35,8 +33,8 @@ void Worker_Interface::handle_reason(const Reason& reason, int worker) {
 
 void Worker_Interface::handle_reason_all_workers(const Reason& reason) {
   if (Global::problem.MPI_active) {
-    for (int worker=1; worker<Global::mpi_interface.world_size(); worker++) {
-      _distributed_worker_interface->handle_reason(reason, worker);
+    for (auto it=Global::mpi_interface.ENABLED_WORKERS.begin(); it!=Global::mpi_interface.ENABLED_WORKERS.end(); it++) {
+      _distributed_worker_interface->handle_reason(reason, *it);
     }
   }
   else _serial_worker_interface->handle_reason(reason);

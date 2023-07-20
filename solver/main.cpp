@@ -1,7 +1,6 @@
 #include "main.h"
 
-#include "Default_Queue.h"
-
+/*
 void scrap() {
   Single_Layer_Of_Queue sl;
 
@@ -16,9 +15,6 @@ void scrap() {
   Shape* shape = new Rect();
 
   LOG << shape->get_area() << endl;
-
-
-
 
   vector<int> state1 = vector<int>({1,-2,3,4,-5});
   vector<int> actions = vector<int>({6,7,-8,9});
@@ -38,9 +34,8 @@ void scrap() {
 
   //cout << "data: " << Utils::to_string(data, size) << endl;
   Success recovered = Success(data, 0, size);
-
-
 }
+*/
 
 int main(int argc, char **argv) {
   // Parse in command line arguments, and problem specific attributes
@@ -50,8 +45,14 @@ int main(int argc, char **argv) {
   if (Global::problem.MPI_active) { 
     Global::mpi_interface.setup();
     if (Global::mpi_interface.is_worker()) {
-      MPI_Worker mpi_worker;
-      mpi_worker.run();
+      const int worker = Global::mpi_interface.world_rank();
+      if (Utils::in(Global::mpi_interface.ENABLED_WORKERS, worker)) {
+        MPI_Worker mpi_worker;
+        mpi_worker.run();
+      } else {
+        LOG << "Not using this worker" << endl;
+        MPI_Worker::wait_for_then_finalize();
+      }
       return 0;
     }
   }
@@ -62,18 +63,7 @@ int main(int argc, char **argv) {
   sat = Strategies::run_default();
 
   if (sat) LOG << "SAT" << endl;
-  else LOG << "UNSAT" << endl;
-
-  // every strategy has:
-  // a single worker interface
-  // reason or reasons
-  // queue or queues
-  // plan builder or plan builders??
-  // it gets messy so just let them each do it themself
-
-  // Create 
-  //cout << "Recovered!! " << recovered.to_string() << endl;
-  //cout << "AAA" << recovered.original_obligation().to_string();
+  else     LOG << "UNSAT" << endl;
 
   return 0;
 }

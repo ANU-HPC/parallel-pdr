@@ -1,5 +1,4 @@
 #include "MPI_Interface.h"
-#include "Log.h"
 
 void MPI_Interface::setup() { // call this once universal
   MPI_Init(NULL, NULL);
@@ -16,6 +15,11 @@ void MPI_Interface::setup() { // call this once universal
 
   // TODO what does this do?
   MPI_Comm_split(MPI_COMM_WORLD, 0, _world_rank, &_main_communicator);
+
+  // Where appropriate, make this a subset, specific for a machine/setup
+  for (int worker=1; worker<world_size(); worker++) {
+    ENABLED_WORKERS.insert(worker);
+  }
 }
 
 bool MPI_Interface::is_worker() {

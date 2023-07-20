@@ -29,5 +29,6 @@
 #include "Rect.h"
 #include "Single_Layer_Of_Queue.h"
 #include "Strategies.h"
+#include "Default_Queue.h"
 
 using namespace std;
