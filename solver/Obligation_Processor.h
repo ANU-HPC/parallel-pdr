@@ -26,19 +26,18 @@ class Obligation_Processor {
     Success last_interactions_success();
     Reason last_interactions_reason();
   private:
-    void set_success_from_solver(const Obligation& original_obligation, int solver_id);
-    void set_reason_from_solver(const Obligation& original_obligation, int solver_id);
+    void set_success_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps);
+    void set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps);
 
     int get_solver_to_send_to(const Obligation& obl, int steps);
     int get_solver_to_send_to(const Reason& reason, int steps);
-    void ensure_solver_exists_for_obligation_layer(int obligation_layer);
-
+    void ensure_solver_exists_for_end_reason_layer(int end_reasons_layer);
     bool _last_interaction_was_a_success;
     Success _success;
     Reason _reason;
 
     // the second index is the layer of the reasons, what to do with that is a bit of a different story
-    vector<vector<Lingeling*>> _obligation_layer_steps_to_solver;
+    vector<vector<Lingeling*>> _end_reasons_layer_to_steps_to_solver;
     vector<Lingeling*> _steps_to_base_solver;
     int _max_steps;
 };

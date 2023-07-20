@@ -14,9 +14,9 @@ Obligation_Processor::Obligation_Processor(int max_steps) {
   }
   
   // create obligation_layer 0 solvers (NULLs)
-  vector<Lingeling*> first_layer = vector<Lingeling*>(_max_steps+1);
-  for (int steps=0; steps<=_max_steps; steps++) first_layer[steps] = NULL;
-  _obligation_layer_steps_to_solver.push_back(first_layer);
+  //vector<Lingeling*> first_layer = vector<Lingeling*>(_max_steps+1);
+  //for (int steps=0; steps<=_max_steps; steps++) first_layer[steps] = NULL;
+  //_obligation_layer_steps_to_solver.push_back(first_layer);
 
   // initialize with goal TODO will break with subproblems
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
@@ -27,20 +27,19 @@ Obligation_Processor::Obligation_Processor(int max_steps) {
 
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
   const int steps = _max_steps; // TODO
-  const int obligation_layer = original_obligation.layer();
+  const int end_reasons_layer = original_obligation.layer()-1;
 
-  ensure_solver_exists_for_obligation_layer(obligation_layer);
-  _last_interaction_was_a_success = _obligation_layer_steps_to_solver[obligation_layer][steps]->solve(original_obligation.compressed_state().get_state());
+  ensure_solver_exists_for_end_reason_layer(end_reasons_layer);
+  _last_interaction_was_a_success = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][steps]->solve(original_obligation.compressed_state().get_state());
 
-  if (_last_interaction_was_a_success) set_success_from_solver(original_obligation, steps);
-  else                                 set_reason_from_solver(original_obligation, steps);
+  if (_last_interaction_was_a_success) set_success_from_solver(original_obligation, end_reasons_layer, steps);
+  else                                 set_reason_from_solver(original_obligation, end_reasons_layer, steps);
 }
 
 void Obligation_Processor::add_reason(const Reason& reason) {
   for (int steps=1; steps<=_max_steps; steps++) {
-    const int obligation_layer = get_solver_to_send_to(reason, steps);
-    ensure_solver_exists_for_obligation_layer(obligation_layer);
-    _obligation_layer_steps_to_solver[obligation_layer][steps]->add_clause(Utils::tilde(reason.timestep_zero_nogood_clause(), steps));
+    ensure_solver_exists_for_end_reason_layer(reason.layer());
+    _end_reasons_layer_to_steps_to_solver[reason.layer()][steps]->add_clause(Utils::tilde(reason.timestep_zero_nogood_clause(), steps));
   }
 }
 
@@ -58,13 +57,13 @@ Reason Obligation_Processor::last_interactions_reason() {
   return _reason;
 }
 
-void Obligation_Processor::set_success_from_solver(const Obligation& original_obligation, int steps) {
+void Obligation_Processor::set_success_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps) {
   // TODO if not adding, don't bother creating a success. Works better when have a "solver idle" tag
   // TODO change when in macros etc... (there is a more complicated example in the original codebase), aux??
   // make it so the model is projected to the relevant subproblem propositions
   // Need to take in the model, and extract everything
 
-  const vector<int>& model = _obligation_layer_steps_to_solver[original_obligation.layer()][steps]->get_model();
+  const vector<int>& model = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][steps]->get_model();
 
   const int subproblem = original_obligation.subproblem();
 
@@ -117,14 +116,14 @@ vector<int> set_to_abs_sorted_vector(const set<int>& x) {
   return as_vector;
 }
 
-void Obligation_Processor::set_reason_from_solver(const Obligation& original_obligation, int steps) {
+void Obligation_Processor::set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps) {
   // So this is actually doing a process of strengthening - lit removal
   if (!original_obligation.reduce_reason_add_successor_to_queue()) {
     _reason = Reason(original_obligation, original_obligation.compressed_state().get_state(), original_obligation.layer(), original_obligation.subproblem());
     return;
   }
 
-  Lingeling* solver = _obligation_layer_steps_to_solver[original_obligation.layer()][steps];
+  Lingeling* solver = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][steps];
 
   set<int> running_reason = vector_to_set(solver->used_assumptions());
   const int subproblem = original_obligation.subproblem();
@@ -147,18 +146,14 @@ void Obligation_Processor::set_reason_from_solver(const Obligation& original_obl
   _reason = Reason(original_obligation, set_to_abs_sorted_vector(running_reason), original_obligation.layer(), original_obligation.subproblem());
 }
 
-int Obligation_Processor::get_solver_to_send_to(const Reason& reason, int steps) {
-  return reason.layer()+1;
-}
-
-void Obligation_Processor::ensure_solver_exists_for_obligation_layer(int obligation_layer) {
-  assert (obligation_layer>0);
-  while (obligation_layer >= _obligation_layer_steps_to_solver.size()) {
+void Obligation_Processor::ensure_solver_exists_for_end_reason_layer(int end_reasons_layer) {
+  assert (end_reasons_layer>=0);
+  while (end_reasons_layer >= _end_reasons_layer_to_steps_to_solver.size()) {
     vector<Lingeling*> new_layer = vector<Lingeling*>(_max_steps+1);
     new_layer[0] = NULL;
     for (int steps=1; steps<=_max_steps; steps++) {
       new_layer[steps] = new Lingeling(_steps_to_base_solver[steps]);
     }
-    _obligation_layer_steps_to_solver.push_back(new_layer);
+    _end_reasons_layer_to_steps_to_solver.push_back(new_layer);
   }
 }
