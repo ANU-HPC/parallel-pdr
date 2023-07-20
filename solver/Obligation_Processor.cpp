@@ -26,6 +26,8 @@ Obligation_Processor::Obligation_Processor(int max_steps) {
 }
 
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
+  //const int steps = min(_max_steps, original_obligation.layer()); // TODO
+  //const int end_reasons_layer = original_obligation.layer()-steps;
   const int steps = _max_steps; // TODO
   const int end_reasons_layer = original_obligation.layer()-1;
 
@@ -90,13 +92,13 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
   }
 
   // construct the success object
-  const int next_layer = original_obligation.layer()-1;
+  //const int next_layer = original_obligation.layer()-1;
   const bool reduce_reason_add_successor_to_queue = original_obligation.reduce_reason_add_successor_to_queue();
 
   Compressed_Actions ca = Compressed_Actions(executed_actions, subproblem);
   Compressed_State cs = Compressed_State(positive_propositions, subproblem, true);
 
-  Obligation successor_obligation = Obligation(cs, next_layer, subproblem, reduce_reason_add_successor_to_queue);
+  Obligation successor_obligation = Obligation(cs, end_reasons_layer, subproblem, reduce_reason_add_successor_to_queue);
 
   _success = Success(original_obligation, ca, successor_obligation);
 }
