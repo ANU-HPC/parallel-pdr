@@ -31,6 +31,7 @@ class Problem {
     bool obligation_rescheduling;
     bool use_ooc;
     bool isolate_subproblems;
+    bool interleaved_layers; // For macros, instead of just reasons at the end, put them throughout
     int max_macro_steps;
 
     vector<string> symbols;

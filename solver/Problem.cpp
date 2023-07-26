@@ -52,7 +52,7 @@ bool Problem::zero_one_int_to_bool(int arg) {
 
 void Problem::read_extra_settings(string extra_settings_filename) {
   // read extra settings - the is mainly for testing, so new feastures can be quickly added and removed
-  const int total_expected = 12;
+  const int total_expected = 13;
   set<string> ignore_keys;
   ignore_keys.insert("activation_literals");
 
@@ -86,6 +86,8 @@ void Problem::read_extra_settings(string extra_settings_filename) {
       use_ooc = zero_one_int_to_bool(val_int);
     } else if (key == "isolate_subproblems") {
       isolate_subproblems = zero_one_int_to_bool(val_int);
+    } else if (key == "interleaved_layers") {
+      interleaved_layers = zero_one_int_to_bool(val_int);
     } else if (key == "max_macro_steps") {
       assert(val_int>0);
       max_macro_steps = val_int;
