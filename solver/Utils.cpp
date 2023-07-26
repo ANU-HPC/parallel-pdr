@@ -51,7 +51,10 @@ vector<int> Utils::inflate_only_true_to_all(const vector<int>& only_true, const 
 
 string Utils::to_string(vector<int> x) {
   // give by copy
-  string ret_val = "{";
+
+  string h = "[" + hash_string(Utils::hash(x)) + "]";
+
+  string ret_val = "{" + h;
   for (int i=0; i<x.size(); i++) {
     if (x[i] > 0) {
       ret_val += "  \033[38;5;10m";
@@ -123,6 +126,33 @@ size_t Utils::hash(const vector<int>& hashee) {
     offset = offset%16;
   }
   return ret_val + (ret_val<<32);
+}
+
+string Utils::hash_string(size_t hash) {
+  const int lower = 33;
+  const int upper = 126;
+  const int mod = upper-lower;
+
+  const int a = hash%mod+lower;
+  const int b = (hash/mod)%mod+lower;
+  const int c = (hash/(mod*mod))%mod+lower;
+  const int d = (hash/(mod*mod*mod))%mod+lower;
+  const int e = (hash/(mod*mod*mod*mod))%mod+lower;
+
+  const string a_str = string(1, a);
+  const string b_str = string(1, b);
+  const string c_str = string(1, c);
+  const string d_str = string(1, d);
+  const string e_str = string(1, e);
+
+  //string start = "\033[48;2;90;10;10;25m";
+
+  const string start = "\033[38;5;200;48;5;87m";
+
+  //string start = "\033[43;2;90;10;10;25m";
+  const string end = "\033[0m";
+
+  return start + a_str + b_str + c_str + d_str + e_str + end;
 }
 
 bool Utils::abs_comp(const int a, const int b) {
