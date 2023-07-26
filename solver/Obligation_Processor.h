@@ -29,6 +29,9 @@ class Obligation_Processor {
     void set_success_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps);
     void set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps);
 
+    void add_reason_interleaved_layers(const Reason& reason);
+    void add_reason_no_interleaved_layers(const Reason& reason);
+
     int get_solver_to_send_to(const Obligation& obl, int steps);
     int get_solver_to_send_to(const Reason& reason, int steps);
     void ensure_solver_exists_for_end_reason_layer(int end_reasons_layer);

@@ -1,6 +1,7 @@
 #include "Obligation_Processor.h"
 #include "Obligation.h"
 #include "Utils.h"
+#include <iterator>
 
 Obligation_Processor::Obligation_Processor(int max_steps) {
   _max_steps = max_steps;
@@ -12,11 +13,6 @@ Obligation_Processor::Obligation_Processor(int max_steps) {
     _steps_to_base_solver[steps] = new Lingeling((Global::problem.tmp_dir + "/tmp_regular_" + to_string(steps) + ".cnf").c_str());
     _steps_to_base_solver[steps]->solve(vector<int>());
   }
-  
-  // create obligation_layer 0 solvers (NULLs)
-  //vector<Lingeling*> first_layer = vector<Lingeling*>(_max_steps+1);
-  //for (int steps=0; steps<=_max_steps; steps++) first_layer[steps] = NULL;
-  //_obligation_layer_steps_to_solver.push_back(first_layer);
 
   // initialize with goal TODO will break with subproblems
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
@@ -25,23 +21,60 @@ Obligation_Processor::Obligation_Processor(int max_steps) {
   }
 }
 
+// TODO this is not a concrete thing, it is the current strategy
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
-  //const int steps = min(_max_steps, original_obligation.layer()); // TODO
-  //const int end_reasons_layer = original_obligation.layer()-steps;
-  const int steps = _max_steps; // TODO
-  const int end_reasons_layer = original_obligation.layer()-1;
+  const int starting_steps = min(_max_steps, original_obligation.layer());
 
-  ensure_solver_exists_for_end_reason_layer(end_reasons_layer);
-  _last_interaction_was_a_success = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][steps]->solve(original_obligation.compressed_state().get_state());
+  int steps = starting_steps;
+  int end_reasons_layer = -999;
+
+  while (true) {
+    end_reasons_layer = original_obligation.layer()-steps;
+
+    ensure_solver_exists_for_end_reason_layer(end_reasons_layer);
+
+    _last_interaction_was_a_success = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][steps]->solve(original_obligation.compressed_state().get_state());
+
+    if (_last_interaction_was_a_success) break; // if found a successor state, can proceed, otherwise try less steps
+    if (steps==1) break; // if at one step and unsat, fair to just get the reason from that
+    steps--;
+  }
 
   if (_last_interaction_was_a_success) set_success_from_solver(original_obligation, end_reasons_layer, steps);
   else                                 set_reason_from_solver(original_obligation, end_reasons_layer, steps);
 }
 
 void Obligation_Processor::add_reason(const Reason& reason) {
+  ensure_solver_exists_for_end_reason_layer(reason.layer());
+  if (Global::problem.interleaved_layers) add_reason_interleaved_layers(reason);
+  else                                    add_reason_no_interleaved_layers(reason);
+}
+
+void Obligation_Processor::add_reason_interleaved_layers(const Reason& reason) {
   for (int steps=1; steps<=_max_steps; steps++) {
-    ensure_solver_exists_for_end_reason_layer(reason.layer());
-    _end_reasons_layer_to_steps_to_solver[reason.layer()][steps]->add_clause(Utils::tilde(reason.timestep_zero_nogood_clause(), steps));
+    // consider this many steps
+    // first add this reason "where it is supposed to go"
+    // then in solvers with a end_reason_layer that is SMALLER, add this clause again, but tilded less steps. Example
+    // Reason layer 10, steps 2:
+    // add to end_reasons_layer:10, steps:2 tilded:2
+    // add to end_reasons_layer:9, steps:2 tilded:1
+
+    for (int distance_from_base=0; (distance_from_base<steps) && (reason.layer()-distance_from_base>=0) ; distance_from_base++) {
+      const int end_reason_layer = reason.layer()-distance_from_base; // >=0 from the loop condition
+      const int tilde = steps-distance_from_base;
+
+      for (int i=0; i<=end_reason_layer; i++) {
+        _end_reasons_layer_to_steps_to_solver[i][steps]->add_clause(Utils::tilde(reason.timestep_zero_nogood_clause(), tilde));
+      }
+    }
+  }
+}
+
+void Obligation_Processor::add_reason_no_interleaved_layers(const Reason& reason) {
+  for (int steps=1; steps<=_max_steps; steps++) {
+    for (int i=0; i<=reason.layer(); i++) {
+      _end_reasons_layer_to_steps_to_solver[i][steps]->add_clause(Utils::tilde(reason.timestep_zero_nogood_clause(), steps));
+    }
   }
 }
 
@@ -59,6 +92,7 @@ Reason Obligation_Processor::last_interactions_reason() {
   return _reason;
 }
 
+// TODO extract the intermediate states for interleaved layers
 void Obligation_Processor::set_success_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps) {
   // TODO if not adding, don't bother creating a success. Works better when have a "solver idle" tag
   // TODO change when in macros etc... (there is a more complicated example in the original codebase), aux??
@@ -92,7 +126,6 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
   }
 
   // construct the success object
-  //const int next_layer = original_obligation.layer()-1;
   const bool reduce_reason_add_successor_to_queue = original_obligation.reduce_reason_add_successor_to_queue();
 
   Compressed_Actions ca = Compressed_Actions(executed_actions, subproblem);
@@ -101,6 +134,10 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
   Obligation successor_obligation = Obligation(cs, end_reasons_layer, subproblem, reduce_reason_add_successor_to_queue);
 
   _success = Success(original_obligation, ca, successor_obligation);
+
+  if (successor_obligation.compressed_state() == original_obligation.compressed_state()) {
+    LOG << "Same, steps: " << steps << " end_reasons_layer" << end_reasons_layer << " success: " << _success.to_string() << endl;
+  }
 }
 
 // Conversions between - not ideal, I can't see a way to do it nicely
