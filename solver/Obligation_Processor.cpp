@@ -23,25 +23,36 @@ Obligation_Processor::Obligation_Processor(int max_steps) {
 
 // TODO this is not a concrete thing, it is the current strategy
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
-  const int starting_steps = min(_max_steps, original_obligation.layer());
+  // 3 cases:
+  // try step one, fail, should get a reason from that
+  // fail at step n, so n-1 worked.
+  // get all the way through, the last one succeeded, local_max_steps worked, 
+  const int local_max_steps = min(_max_steps, original_obligation.layer());
 
-  int steps = starting_steps;
-  int end_reasons_layer = -999;
-
-  while (true) {
-    end_reasons_layer = original_obligation.layer()-steps;
-
+  int checking_steps;
+  bool last_test_success;
+  for (checking_steps=1; checking_steps<=local_max_steps; checking_steps++) {
+    const int end_reasons_layer = original_obligation.layer()-checking_steps;
     ensure_solver_exists_for_end_reason_layer(end_reasons_layer);
-
-    _last_interaction_was_a_success = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][steps]->solve(original_obligation.compressed_state().get_state());
-
-    if (_last_interaction_was_a_success) break; // if found a successor state, can proceed, otherwise try less steps
-    if (steps==1) break; // if at one step and unsat, fair to just get the reason from that
-    steps--;
+    last_test_success = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][checking_steps]->solve(original_obligation.compressed_state().get_state());
+    if (!last_test_success) break; // gone too high, back off
   }
 
-  if (_last_interaction_was_a_success) set_success_from_solver(original_obligation, end_reasons_layer, steps);
-  else                                 set_reason_from_solver(original_obligation, end_reasons_layer, steps);
+  if ((checking_steps==1) && !last_test_success) {
+    // failed at the first one, find a suitable reason
+    const int reason_steps = checking_steps;
+    const int reason_end_reasons_layer = original_obligation.layer()-reason_steps;
+
+    _last_interaction_was_a_success = false;
+    set_reason_from_solver(original_obligation, reason_end_reasons_layer, reason_steps);
+  } else {
+    // got more than one, so we know this "checking_steps" is the first to fail
+    const int success_steps = checking_steps-1;
+    const int success_end_reasons_layer = original_obligation.layer()-success_steps;
+
+    _last_interaction_was_a_success = true;
+    set_success_from_solver(original_obligation, success_end_reasons_layer, success_steps);
+  }
 }
 
 void Obligation_Processor::add_reason(const Reason& reason) {
