@@ -2,6 +2,9 @@
 #!/bin/sh
 cd `dirname "$0"` # moves to the directory in which this script is held (root of dagparser)
 
+# To make MPI behave correctly
+export OMPI_MCA_btl=self,tcp
+
 red_text() { tput setaf 1; cat; tput sgr0; }
 green_text() { tput setaf 2; cat; tput sgr0; }
 
