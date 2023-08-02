@@ -12,7 +12,6 @@ using namespace std;
 
 class Reason {
   public:
-    //Obligation(const vector<int>& state, const int layer, const int subproblem);
     Reason();
     Reason(const Obligation& originating_obligation, const vector<int>& reason, int layer, int subproblem);
     Reason(int* data, int start, int stop);

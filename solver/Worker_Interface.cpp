@@ -23,7 +23,7 @@ void Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
   }
 }
 
-void Worker_Interface::handle_reason(const Reason& reason, int worker) {
+void Worker_Interface::handle_reason(const Reason_From_Orchestrator& reason, int worker) {
   if (Global::problem.MPI_active) _distributed_worker_interface->handle_reason(reason, worker);
   else {
     assert (worker == 1);
@@ -31,7 +31,7 @@ void Worker_Interface::handle_reason(const Reason& reason, int worker) {
   }
 }
 
-void Worker_Interface::handle_reason_all_workers(const Reason& reason) {
+void Worker_Interface::handle_reason_all_workers(const Reason_From_Orchestrator& reason) {
   if (Global::problem.MPI_active) {
     for (auto it=Global::mpi_interface.ENABLED_WORKERS.begin(); it!=Global::mpi_interface.ENABLED_WORKERS.end(); it++) {
       _distributed_worker_interface->handle_reason(reason, *it);
@@ -44,7 +44,7 @@ void Worker_Interface::process_inbox() {
   if (Global::problem.MPI_active) _distributed_worker_interface->process_inbox();
 }
 
-vector<tuple<int, Reason>>* Worker_Interface::get_returned_reasons_buffer() {
+vector<tuple<int, Reason_From_Worker>>* Worker_Interface::get_returned_reasons_buffer() {
   if (Global::problem.MPI_active) return _distributed_worker_interface->get_returned_reasons_buffer();
   else                            return _serial_worker_interface->get_returned_reasons_buffer();
 }

@@ -1,5 +1,4 @@
 #include "Distributed_Worker_Interface.h"
-#include "MPI_Interface.h"
 
 set<int> Distributed_Worker_Interface::workers_wanting_work_snapshot() {
   return _workers_wanting_work;
@@ -19,10 +18,10 @@ void Distributed_Worker_Interface::handle_obligation(const Obligation& obl, int 
   _workers_wanting_work.erase(worker);
 }
 
-void Distributed_Worker_Interface::handle_reason(const Reason& reason, int worker) {
+void Distributed_Worker_Interface::handle_reason(const Reason_From_Orchestrator& reason, int worker) {
   int size = reason.MPI_message_size();
   int* data = reason.get_as_MPI_message();
-  Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_REASON, data, size);
+  Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_REASON_FROM_ORCHESTRATOR, data, size);
 }
 
 void Distributed_Worker_Interface::process_inbox() {
@@ -46,9 +45,9 @@ void Distributed_Worker_Interface::process_inbox() {
     if (mpi_tag == MPI_Interface::MESSAGE_TAG_SUCCESS) {
       Success success = Success(data, 0, size);
       _returned_successes_buffer->push_back(tuple<int, Success>(worker, success));
-    } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_REASON) {
-      Reason reason = Reason(data, 0, size);
-      _returned_reasons_buffer->push_back(tuple<int, Reason>(worker, reason));
+    } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_REASON_FROM_WORKER) {
+      Reason_From_Worker reason = Reason_From_Worker(data, 0, size);
+      _returned_reasons_buffer->push_back(tuple<int, Reason_From_Worker>(worker, reason));
     } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_IDLE) {
       assert(!Utils::in(_workers_wanting_work, worker));
       _workers_wanting_work.insert(worker);
@@ -60,7 +59,7 @@ void Distributed_Worker_Interface::process_inbox() {
   }
 }
 
-vector<tuple<int,Reason>>* Distributed_Worker_Interface::get_returned_reasons_buffer() {
+vector<tuple<int,Reason_From_Worker>>* Distributed_Worker_Interface::get_returned_reasons_buffer() {
   return _returned_reasons_buffer;
 }
 

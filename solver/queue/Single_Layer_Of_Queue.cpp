@@ -60,7 +60,7 @@ Obligation Single_Layer_Of_Queue::remove_obligation_at_slot(int slot) {
   return queue_entry.obligation();
 }
 
-int Single_Layer_Of_Queue::trim(const Reason& reason, Single_Layer_Of_Queue* other_to_push_to) {
+int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to) {
   // return the number of deleted elements, if not pushed to alternate layer
   int num_removed = 0;
 

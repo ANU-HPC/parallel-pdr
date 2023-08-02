@@ -1,5 +1,4 @@
 #include "Default_Queue.h"
-#include "Single_Layer_Of_Queue.h"
 
 Default_Queue::Default_Queue() { }
 
@@ -26,7 +25,7 @@ Obligation Default_Queue::pop(int heuristic) {
   return ret_val;
 }
 
-void Default_Queue::trim(const Reason& reason, int k) {
+void Default_Queue::trim(const Contextless_Reason& reason, int k) {
   // if not at the k, then can push to one above the reason, if at k, then just drop them TODO maybe should just keep them for next time
   make_layer_exist(k); // presumably will exist by this point
 

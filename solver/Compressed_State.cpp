@@ -1,5 +1,5 @@
 #include "Compressed_State.h"
-#include "Reason.h"
+#include "Contextless_Reason.h" // to manage a circular dependency
 
 Compressed_State::Compressed_State() { }
 
@@ -50,7 +50,7 @@ size_t Compressed_State::hash() const {
   return Utils::hash(_raw) ^ _subproblem;
 }
 
-bool Compressed_State::trimmed_by_reason(const Reason& reason) {
+bool Compressed_State::trimmed_by_reason(const Contextless_Reason& reason) {
   if (!_guaranteed_full) {
     LOG << "ERROR trying to trim on partial state, not set up for this" << endl;
     exit(1);

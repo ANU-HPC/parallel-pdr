@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Obligation.h"
-#include "Reason.h"
+#include "Contextless_Reason.h"
 #include "Single_Layer_Of_Queue.h"
 
 using namespace std;
@@ -16,7 +16,7 @@ class Default_Queue {
     Obligation pop(int heuristic);
     bool empty();
     int size();
-    void trim(const Reason& reason, int obligation_rescheduling_upper_layer);
+    void trim(const Contextless_Reason& reason, int obligation_rescheduling_upper_layer);
   private:
     void update_lowest_layer_with_content();
     vector<Single_Layer_Of_Queue> _layers; // have one for 0 even though it will always be empty, just for math simplicity

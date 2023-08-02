@@ -1,7 +1,7 @@
 #ifndef COMPRESSED_STATE_H
 #define COMPRESSED_STATE_H
 
-class Reason;
+class Contextless_Reason;
 
 #include <vector>
 
@@ -21,7 +21,7 @@ class Compressed_State {
     bool operator==(const Compressed_State& other) const;
     size_t hash() const;
 
-    bool trimmed_by_reason(const Reason& reason);
+    bool trimmed_by_reason(const Contextless_Reason& reason);
 
     vector<int> get_state() const;
 

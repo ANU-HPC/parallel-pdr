@@ -33,7 +33,7 @@ size_t Obligation::hash() const {
   return _compressed_state.hash() ^ (_layer<<4) ^ (_subproblem<<8) ^ _reduce_reason_add_successor_to_queue;
 }
 
-bool Obligation::trimmed_by_reason(const Reason& reason) {
+bool Obligation::trimmed_by_reason(const Contextless_Reason& reason) {
   return _compressed_state.trimmed_by_reason(reason);
 }
 

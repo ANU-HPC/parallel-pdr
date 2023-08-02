@@ -15,7 +15,9 @@ OBJS = main.o \
 	   Compressed_State.o \
 	   Compressed_Actions.o \
 	   Success.o \
-	   Reason.o \
+	   Contextless_Reason.o \
+	   Reason_From_Orchestrator.o \
+	   Reason_From_Worker.o \
 	   MPI_Worker.o \
 	   Obligation_Processor.o \
 	   Lingeling.o \
@@ -44,7 +46,9 @@ HEADERS	= main.h \
 		  Compressed_State.h \
 		  Compressed_Actions.h \
 		  Success.h \
-		  Reason.h \
+		  Contextless_Reason.o \
+		  Reason_From_Orchestrator.o \
+		  Reason_From_Worker.o \
 		  MPI_Worker.h \
 		  Obligation_Processor.h \
 		  Lingeling.h \

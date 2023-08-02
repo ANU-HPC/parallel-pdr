@@ -32,11 +32,12 @@ class MPI_Interface {
 
     void barriered_finalize();
 
-    const static int MESSAGE_TAG_OBLIGATION         = 1;
-    const static int MESSAGE_TAG_SUCCESS            = 2;
-    const static int MESSAGE_TAG_REASON             = 3;
-    const static int MESSAGE_TAG_FINALIZE           = 4;
-    const static int MESSAGE_TAG_IDLE               = 5;
+    const static int MESSAGE_TAG_OBLIGATION                     = 1;
+    const static int MESSAGE_TAG_SUCCESS                        = 2;
+    const static int MESSAGE_TAG_REASON_FROM_WORKER             = 3;
+    const static int MESSAGE_TAG_REASON_FROM_ORCHESTRATOR       = 4;
+    const static int MESSAGE_TAG_FINALIZE                       = 5;
+    const static int MESSAGE_TAG_IDLE                           = 6;
 
     set<int> ENABLED_WORKERS;
 

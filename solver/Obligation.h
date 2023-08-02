@@ -1,7 +1,7 @@
 #ifndef OBLIGATION_H
 #define OBLIGATION_H
 
-class Reason; // for circular header dependencies, header at the end
+class Contextless_Reason; // for circular header dependencies, header at the end
 
 #include "Compressed_State.h"
 #include "Log.h"
@@ -22,7 +22,7 @@ class Obligation {
     bool operator==(const Obligation& other) const;
     size_t hash() const;
 
-    bool trimmed_by_reason(const Reason& reason);
+    bool trimmed_by_reason(const Contextless_Reason& reason);
 
     int layer() const;
     int subproblem() const;
@@ -51,6 +51,6 @@ struct Obligation_Hash {
   }
 };
 
-#include "Reason.h"
+#include "Contextless_Reason.h"
 
 #endif

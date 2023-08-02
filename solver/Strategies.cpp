@@ -1,14 +1,6 @@
 #include "Strategies.h"
-
-#include "Compressed_State.h"
-#include "Global.h"
-#include "Layers.h"
-#include "Obligation.h"
-#include "Worker_Interface.h"
-#include "Plan_Builder.h"
-#include "queue/Default_Queue.h"
-#include "Default_Queue.h"
-#include "queue/Heuristics.h"
+#include "Contextless_Reason.h"
+#include "Reason_From_Orchestrator.h"
 
 bool Strategies::run_default() {
   // TODO just for now...
@@ -22,13 +14,12 @@ bool Strategies::run_default() {
 
   // tmp unpackers
   tuple<int, Success> worker_success;
-  tuple<int, Reason> worker_reason;
+  tuple<int, Reason_From_Worker> worker_reason;
 
   // add the goal to the reasons object
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
     vector<int> bad_state = vector<int>({-*it});
-    Obligation empty_obligation = Obligation(Compressed_State(vector<int>{}, 0, false), 0,0,false);
-    Reason reason = Reason(empty_obligation, bad_state, 0, 0);
+    Contextless_Reason reason = Contextless_Reason(bad_state, 0, 0);
     layers.add_reason(reason);
   }
 
@@ -66,7 +57,7 @@ bool Strategies::run_default() {
       // get the results from the worker_interface
       worker_interface.process_inbox();
       vector<tuple<int, Success>>* worker_successes = worker_interface.get_returned_successes_buffer();
-      vector<tuple<int, Reason>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
+      vector<tuple<int, Reason_From_Worker>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
 
       // stats on how busy the orchestrator is
       get_results_iteration++;
@@ -109,15 +100,17 @@ bool Strategies::run_default() {
       // handle reasons
       for (auto it=worker_reasons->begin(); it!=worker_reasons->end(); it++) {
         worker_reason = *it; 
-        const Reason& reason = get<1>(worker_reason);
+        const Reason_From_Worker& reason_from_worker = get<1>(worker_reason);
+        const Contextless_Reason& reason = reason_from_worker.contextless_reason();
 
-        if (layers.add_reason(reason)) {
+        const int layers_to_add_to = layers.add_reason(reason);
+
+        if (layers_to_add_to) {
           queue.trim(reason, k);
-          worker_interface.handle_reason_all_workers(reason);
+          worker_interface.handle_reason_all_workers(Reason_From_Orchestrator(reason, reason.layer()-layers_to_add_to+1));
         }
 
-        // TODO obligation rescheduling
-        const Obligation& original_obligation = reason.comparison_excluded_originating_obligation();
+        const Obligation& original_obligation = reason_from_worker.originating_obligation();
         if (Global::problem.obligation_rescheduling && (original_obligation.layer() < k)) {
           queue.push(original_obligation.get_with_incremented_layer(1));
         }
@@ -135,7 +128,7 @@ bool Strategies::run_default() {
       // get all the "obligations"
       vector<Obligation> push;
       for (auto it=reasons_to_push->begin(); it!=reasons_to_push->end(); it++) {
-        const Reason& reason = *it;
+        const Contextless_Reason& reason = *it;
         push.push_back(Obligation(Compressed_State(reason.reason(), 0, false), layer, 0, false));
       }
 
@@ -160,15 +153,17 @@ bool Strategies::run_default() {
 
       // get the results
       vector<tuple<int, Success>>* worker_successes = worker_interface.get_returned_successes_buffer();
-      vector<tuple<int, Reason>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
+      vector<tuple<int, Reason_From_Worker>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
 
       // process the results
       for (auto it=worker_reasons->begin(); it!=worker_reasons->end(); it++) {
         worker_reason = *it; 
-        const Reason& reason = get<1>(worker_reason);
+        const Reason_From_Worker& reason_from_worker = get<1>(worker_reason);
+        const Contextless_Reason& reason = reason_from_worker.contextless_reason();
 
         if (layers.add_reason(reason)) {
-          worker_interface.handle_reason_all_workers(reason);
+          const Reason_From_Orchestrator reason_from_orchestrator = Reason_From_Orchestrator(reason, reason.layer());
+          worker_interface.handle_reason_all_workers(reason_from_orchestrator);
         } else LOG << "WARNING: look into this" << endl;
       }
 

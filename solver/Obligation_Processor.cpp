@@ -1,5 +1,7 @@
 #include "Obligation_Processor.h"
+#include "Contextless_Reason.h"
 #include "Obligation.h"
+#include "Reason_From_Orchestrator.h"
 #include "Utils.h"
 #include <iterator>
 
@@ -16,7 +18,7 @@ Obligation_Processor::Obligation_Processor(int max_steps) {
 
   // initialize with goal TODO will break with subproblems
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
-    Reason goal_condition_reason = Reason(Obligation::BLANK_OBLIGATION, vector<int>({-*it}), 0, 0);
+    Reason_From_Orchestrator goal_condition_reason = Reason_From_Orchestrator(Contextless_Reason(vector<int>({-*it}), 0, 0), 0);
     add_reason(goal_condition_reason);
   }
 }
@@ -55,13 +57,13 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
   }
 }
 
-void Obligation_Processor::add_reason(const Reason& reason) {
-  ensure_solver_exists_for_end_reason_layer(reason.layer());
+void Obligation_Processor::add_reason(const Reason_From_Orchestrator& reason) {
+  ensure_solver_exists_for_end_reason_layer(reason.contextless_reason().layer());
   if (Global::problem.interleaved_layers) add_reason_interleaved_layers(reason);
   else                                    add_reason_no_interleaved_layers(reason);
 }
 
-void Obligation_Processor::add_reason_interleaved_layers(const Reason& reason) {
+void Obligation_Processor::add_reason_interleaved_layers(const Reason_From_Orchestrator& reason) {
   for (int steps=1; steps<=_max_steps; steps++) {
     // consider this many steps
     // first add this reason "where it is supposed to go"
@@ -70,21 +72,22 @@ void Obligation_Processor::add_reason_interleaved_layers(const Reason& reason) {
     // add to end_reasons_layer:10, steps:2 tilded:2
     // add to end_reasons_layer:9, steps:2 tilded:1
 
-    for (int distance_from_base=0; (distance_from_base<steps) && (reason.layer()-distance_from_base>=0) ; distance_from_base++) {
-      const int end_reason_layer = reason.layer()-distance_from_base; // >=0 from the loop condition
+    for (int distance_from_base=0; (distance_from_base<steps) && (reason.contextless_reason().layer()-distance_from_base>=0) ; distance_from_base++) {
+      const int end_reason_layer = reason.contextless_reason().layer()-distance_from_base; // >=0 from the loop condition
+      const int start_reason_layer = max(0,reason.add_from_layer()-distance_from_base);
       const int tilde = steps-distance_from_base;
 
-      for (int i=0; i<=end_reason_layer; i++) {
-        _end_reasons_layer_to_steps_to_solver[i][steps]->add_clause(Utils::tilde(reason.timestep_zero_nogood_clause(), tilde));
+      for (int i=start_reason_layer; i<=end_reason_layer; i++) {
+        _end_reasons_layer_to_steps_to_solver[i][steps]->add_clause(Utils::tilde(reason.contextless_reason().timestep_zero_nogood_clause(), tilde));
       }
     }
   }
 }
 
-void Obligation_Processor::add_reason_no_interleaved_layers(const Reason& reason) {
+void Obligation_Processor::add_reason_no_interleaved_layers(const Reason_From_Orchestrator& reason) {
   for (int steps=1; steps<=_max_steps; steps++) {
-    for (int i=0; i<=reason.layer(); i++) {
-      _end_reasons_layer_to_steps_to_solver[i][steps]->add_clause(Utils::tilde(reason.timestep_zero_nogood_clause(), steps));
+    for (int i=reason.add_from_layer(); i<=reason.contextless_reason().layer(); i++) {
+      _end_reasons_layer_to_steps_to_solver[i][steps]->add_clause(Utils::tilde(reason.contextless_reason().timestep_zero_nogood_clause(), steps));
     }
   }
 }
@@ -98,7 +101,7 @@ Success Obligation_Processor::last_interactions_success() {
   return _success;
 }
 
-Reason Obligation_Processor::last_interactions_reason() {
+Reason_From_Worker Obligation_Processor::last_interactions_reason() {
   assert(!_last_interaction_was_a_success);
   return _reason;
 }
@@ -169,7 +172,9 @@ vector<int> set_to_abs_sorted_vector(const set<int>& x) {
 void Obligation_Processor::set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps) {
   // So this is actually doing a process of strengthening - lit removal
   if (!original_obligation.reduce_reason_add_successor_to_queue()) {
-    _reason = Reason(original_obligation, original_obligation.compressed_state().get_state(), original_obligation.layer(), original_obligation.subproblem());
+    _reason = Reason_From_Worker( 
+      Contextless_Reason(original_obligation.compressed_state().get_state(), original_obligation.layer(), original_obligation.subproblem()),
+      original_obligation);
     return;
   }
 
@@ -193,7 +198,9 @@ void Obligation_Processor::set_reason_from_solver(const Obligation& original_obl
     }
   }
 
-  _reason = Reason(original_obligation, set_to_abs_sorted_vector(running_reason), original_obligation.layer(), original_obligation.subproblem());
+  _reason = Reason_From_Worker(
+      Contextless_Reason(set_to_abs_sorted_vector(running_reason), original_obligation.layer(), original_obligation.subproblem()),
+      original_obligation);
 }
 
 void Obligation_Processor::ensure_solver_exists_for_end_reason_layer(int end_reasons_layer) {

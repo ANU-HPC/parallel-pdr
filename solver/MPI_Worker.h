@@ -11,7 +11,8 @@
 #include "Global.h"
 #include "Obligation.h"
 #include "Obligation_Processor.h"
-#include "Reason.h"
+#include "Reason_From_Orchestrator.h"
+#include "Reason_From_Worker.h"
 #include "Success.h"
 #include "Log.h"
 
@@ -24,7 +25,7 @@ class MPI_Worker {
     static void wait_for_then_finalize();
   private:
     void handle_obligation(const Obligation& obl);
-    void handle_reason(const Reason& reason);
+    void handle_reason(const Reason_From_Orchestrator& reason);
     Obligation_Processor* _obligation_processor;
 };
 
