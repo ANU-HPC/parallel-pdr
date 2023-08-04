@@ -30,6 +30,7 @@ OBJS = main.o \
 	   Layers.o \
 	   Plan_Builder.o \
 	   Strategies.o \
+	   Stats.o \
 	   queue/Heuristics.o \
 	   queue/Single_Layer_Of_Queue.o \
 	   queue/Queue_Reference.o \
@@ -61,6 +62,7 @@ HEADERS	= main.h \
 		  Layers.h \
 		  Plan_Builder.h \
 		  Strategies.h \
+		  Stats.h \
 		  queue/Heuristics.h \
 		  queue/Single_Layer_Of_Queue.h \
 		  queue/Queue_Reference.h \

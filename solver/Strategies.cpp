@@ -46,7 +46,7 @@ bool Strategies::run_default() {
         const int worker = *it;
         if (!queue.empty()) {
           // just get as normal
-          worker_interface.handle_obligation(queue.pop(Heuristics::NONE), worker);
+          worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
 
           // one in three workers get a random obligation
           //if (worker%2==0) worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
@@ -78,22 +78,27 @@ bool Strategies::run_default() {
       }
 
       // handle successes
-      for (auto it=worker_successes->begin(); it!=worker_successes->end(); it++) {
-        worker_success = *it;
+      for (auto ita=worker_successes->begin(); ita!=worker_successes->end(); ita++) {
+        worker_success = *ita;
         const Success& success = get<1>(worker_success);
         plan_builder.register_success(success);
 
         assert(success.original_obligation().reduce_reason_add_successor_to_queue());
-        assert(success.successor_obligation().reduce_reason_add_successor_to_queue());
 
         queue.push(success.original_obligation());
-        queue.push(success.successor_obligation());
 
-        // check if found a plan
-        if (success.successor_obligation().layer() == 0) {
-          plan_builder.write_plan(success);
-          worker_interface.finalize();
-          return true;
+        const vector<Obligation>& successor_obligations = success.successor_obligations();
+        for (auto itb=successor_obligations.begin(); itb!=successor_obligations.end(); itb++) {
+          const Obligation& successor_obligation = *itb;
+          queue.push(successor_obligation);
+          assert(successor_obligation.reduce_reason_add_successor_to_queue());
+
+          // check if found a plan
+          if (successor_obligation.layer() == 0) {
+            plan_builder.write_plan(success);
+            worker_interface.finalize();
+            return true;
+          }
         }
       }
 

@@ -4,26 +4,38 @@
 
 Success::Success() { }
 
-Success::Success(Obligation original_obligation, Compressed_Actions actions, Obligation successor_obligation) {
+Success::Success(Obligation original_obligation, vector<Compressed_Actions> actions, vector<Obligation> successor_obligations) {
   _original_obligation = original_obligation;
   _actions = actions;
-  _successor_obligation = successor_obligation;
+  _successor_obligations = successor_obligations;
 }
 
 string Success::to_string() const {
-  return "{Success, original: " + _original_obligation.to_string() + " actions: " + _actions.to_string() + " successor: " + _successor_obligation.to_string() + "}";
+  string ret_val = "{Success, original: " + _original_obligation.to_string() + " actions: (" + std::to_string(_actions.size()) + ") ";
+  
+  for (auto it=_actions.begin(); it!=_actions.end(); it++) {
+    ret_val += it->to_string() + ", "; 
+  }
+
+  ret_val += "successors: (" + std::to_string(_successor_obligations.size()) + ") ";
+
+  for (auto it=_successor_obligations.begin(); it!=_successor_obligations.end(); it++) {
+    ret_val += it->to_string() + ", "; 
+  }
+  ret_val += "}";
+  return ret_val;
 }
 
 Obligation Success::original_obligation() const {
   return _original_obligation;
 }
 
-Compressed_Actions Success::actions() const {
+vector<Compressed_Actions> Success::actions() const {
   return _actions;
 }
 
-Obligation Success::successor_obligation() const {
-  return _successor_obligation;
+vector<Obligation> Success::successor_obligations() const {
+  return _successor_obligations;
 }
 
 Success::Success(int* data, int start, int stop) {
@@ -37,16 +49,16 @@ Success::Success(int* data, int start, int stop) {
 
   _original_obligation = Obligation(data, start+3, stop_a);
 
-  _actions = Compressed_Actions(data, stop_a, stop_b);
-  _successor_obligation = Obligation(data, stop_b, stop_c);
+  _actions = Compressed_Actions::vector_compressed_actions(data, stop_a, stop_b);
+  _successor_obligations = Obligation::vector_obligation(data, stop_b, stop_c);
 }
 
 int* Success::get_as_MPI_message() const {
   int* data = new int[MPI_message_size()];
 
   const int a = _original_obligation.MPI_message_size();
-  const int b = _actions.MPI_message_size();
-  const int c = _successor_obligation.MPI_message_size();
+  const int b = Compressed_Actions::vector_MPI_message_size(_actions);
+  const int c = Obligation::vector_MPI_message_size(_successor_obligations);
 
   const int start_a = 3;
   const int start_b = 3+a;
@@ -57,16 +69,16 @@ int* Success::get_as_MPI_message() const {
   data[2] = c;
 
   _original_obligation.get_as_MPI_message(data, start_a);
-  _actions.get_as_MPI_message(data, start_b);
-  _successor_obligation.get_as_MPI_message(data, start_c);
+  Compressed_Actions::vector_get_as_MPI_message(_actions, data, start_b);
+  Obligation::vector_get_as_MPI_message(_successor_obligations, data, start_c);
 
   return data;
 }
 
 int Success::MPI_message_size() const {
   const int a = _original_obligation.MPI_message_size();
-  const int b = _actions.MPI_message_size();
-  const int c = _successor_obligation.MPI_message_size();
+  const int b = Compressed_Actions::vector_MPI_message_size(_actions);
+  const int c = Obligation::vector_MPI_message_size(_successor_obligations);
 
   return 3+a+b+c;
 }

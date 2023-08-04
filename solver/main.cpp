@@ -65,6 +65,8 @@ int main(int argc, char **argv) {
   if (sat) LOG << "SAT" << endl;
   else     LOG << "UNSAT" << endl;
 
+  Global::stats.print();
+
   return 0;
 }
 

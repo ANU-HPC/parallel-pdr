@@ -25,6 +25,7 @@ Obligation_Processor::Obligation_Processor(int max_steps) {
 
 // TODO this is not a concrete thing, it is the current strategy
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
+  Global::stats.count("process_obligation");
   // 3 cases:
   // try step one, fail, should get a reason from that
   // fail at step n, so n-1 worked.
@@ -37,16 +38,18 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
     const int end_reasons_layer = original_obligation.layer()-checking_steps;
     ensure_solver_exists_for_end_reason_layer(end_reasons_layer);
     last_test_success = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][checking_steps]->solve(original_obligation.compressed_state().get_state());
+    Global::stats.count("steps " + std::to_string(checking_steps) + " sat? " + std::to_string(last_test_success));
     if (!last_test_success) break; // gone too high, back off
   }
 
   if ((checking_steps==1) && !last_test_success) {
     // failed at the first one, find a suitable reason
-    const int reason_steps = checking_steps;
+    const int reason_steps = 1;
     const int reason_end_reasons_layer = original_obligation.layer()-reason_steps;
 
     _last_interaction_was_a_success = false;
     set_reason_from_solver(original_obligation, reason_end_reasons_layer, reason_steps);
+    Global::stats.count("process_obligation::false");
   } else {
     // got more than one, so we know this "checking_steps" is the first to fail
     const int success_steps = checking_steps-1;
@@ -54,6 +57,7 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
 
     _last_interaction_was_a_success = true;
     set_success_from_solver(original_obligation, success_end_reasons_layer, success_steps);
+    Global::stats.count("process_obligation::true");
   }
 }
 
@@ -108,48 +112,65 @@ Reason_From_Worker Obligation_Processor::last_interactions_reason() {
 
 // TODO extract the intermediate states for interleaved layers
 void Obligation_Processor::set_success_from_solver(const Obligation& original_obligation, int end_reasons_layer, int steps) {
-  // TODO if not adding, don't bother creating a success. Works better when have a "solver idle" tag
-  // TODO change when in macros etc... (there is a more complicated example in the original codebase), aux??
+  // NOTE trying to make this work for different kinds of multi step, a little messy but better than having 2 whole functions
   // make it so the model is projected to the relevant subproblem propositions
   // Need to take in the model, and extract everything
+
+  // check if need to bother extracting
+  if (!original_obligation.reduce_reason_add_successor_to_queue()) {
+    _success = Success(original_obligation, vector<Compressed_Actions>(), vector<Obligation>());
+    return;
+  }
+
+  const bool multi_layer_extraction = Global::problem.interleaved_layers;
+  if (multi_layer_extraction) assert(original_obligation.layer() - steps == end_reasons_layer); // using as expected
 
   const vector<int>& model = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][steps]->get_model();
 
   const int subproblem = original_obligation.subproblem();
 
   const vector<int>& all_actions = Global::problem.subproblem_to_actions[subproblem];
-  const vector<int>& propositions = Global::problem.subproblem_to_propositions[subproblem];
+  const vector<int>& all_propositions = Global::problem.subproblem_to_propositions[subproblem];
 
-  vector<int> executed_actions;
-  vector<int> positive_propositions;
+  vector<Compressed_Actions> actions;
+  vector<Obligation> successor_obligations;
 
   // extract actions from model.
+  vector<int> action_vars;
   for (int step=0; step<steps; step++) {
     for (auto it=all_actions.begin(); it!=all_actions.end(); it++) {
       const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,step)-1], -step);
       assert(abs(model_var_tilded_to_timestep_zero) == *it);
-      if (model_var_tilded_to_timestep_zero>0) executed_actions.push_back(model_var_tilded_to_timestep_zero);
+      if (model_var_tilded_to_timestep_zero>0) action_vars.push_back(model_var_tilded_to_timestep_zero);
+    }
+    if (multi_layer_extraction) {
+      actions.push_back(Compressed_Actions(action_vars, subproblem));
+      action_vars.clear();
     }
   }
+  if (!multi_layer_extraction) actions.push_back(Compressed_Actions(action_vars, subproblem));
 
-  // and propositions
-  for (auto it=propositions.begin(); it!=propositions.end(); it++) {
-    const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,steps)-1], -steps);
-    assert(abs(model_var_tilded_to_timestep_zero) == *it);
-    if (model_var_tilded_to_timestep_zero>0) positive_propositions.push_back(model_var_tilded_to_timestep_zero);
+  // and propositions.
+  const int steps_to_start_from = multi_layer_extraction ? 1 : steps;
+  for (int step=1; step<=steps; step++) {
+    vector<int> state_vars;
+    for (auto it=all_propositions.begin(); it!=all_propositions.end(); it++) {
+      const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,step)-1], -step);
+      assert(abs(model_var_tilded_to_timestep_zero) == *it);
+      if (model_var_tilded_to_timestep_zero>0) state_vars.push_back(model_var_tilded_to_timestep_zero);
+    }
+
+    const int layer = multi_layer_extraction ? original_obligation.layer()-step : end_reasons_layer;
+    successor_obligations.push_back(Obligation(
+          Compressed_State(state_vars, subproblem, true),
+          layer,
+          subproblem,
+          true));
   }
 
-  // construct the success object
-  const bool reduce_reason_add_successor_to_queue = original_obligation.reduce_reason_add_successor_to_queue();
+  _success = Success(original_obligation, actions, successor_obligations);
 
-  Compressed_Actions ca = Compressed_Actions(executed_actions, subproblem);
-  Compressed_State cs = Compressed_State(positive_propositions, subproblem, true);
-
-  Obligation successor_obligation = Obligation(cs, end_reasons_layer, subproblem, reduce_reason_add_successor_to_queue);
-
-  _success = Success(original_obligation, ca, successor_obligation);
-
-  if (successor_obligation.compressed_state() == original_obligation.compressed_state()) {
+  if (successor_obligations.rbegin()->compressed_state() == original_obligation.compressed_state()) {
     LOG << "Same, steps: " << steps << " end_reasons_layer" << end_reasons_layer << " success: " << _success.to_string() << endl;
   }
 }

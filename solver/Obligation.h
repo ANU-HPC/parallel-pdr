@@ -36,6 +36,11 @@ class Obligation {
     int MPI_message_size() const;
     int MPI_message_tag() const;
 
+    // special function to handle a vector of obligations, this should be done better with polymorphism, then having a function on vector<MPI_SENDABLE>
+    static vector<Obligation> vector_obligation(int* data, int start, int stop);
+    static void vector_get_as_MPI_message(vector<Obligation> obligations, int* data, int start);
+    static int vector_MPI_message_size(vector<Obligation> obligations);
+
     const static Obligation BLANK_OBLIGATION;
   private:
     Compressed_State _compressed_state;

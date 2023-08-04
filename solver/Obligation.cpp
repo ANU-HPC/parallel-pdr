@@ -90,4 +90,35 @@ int Obligation::MPI_message_tag() const {
   return MPI_Interface::MESSAGE_TAG_OBLIGATION;
 }
 
+vector<Obligation> Obligation::vector_obligation(int* data, int start, int stop) {
+  vector<Obligation> ret_val;
+  const int num_obligations = data[start];
+  int read_from = start+1;
+  for (int i=0; i<num_obligations; i++) {
+    const int mpi_size = data[read_from];
+    ret_val.push_back(Obligation(data, read_from+1, read_from+1+mpi_size));
+    read_from += 1 + mpi_size;
+  }
+  return ret_val;
+}
+
+void Obligation::vector_get_as_MPI_message(vector<Obligation> obligations, int* data, int start) {
+  data[start] = obligations.size();
+  int write_from = start+1;
+  for (auto it=obligations.begin(); it!=obligations.end(); it++) {
+    const int mpi_size = it->MPI_message_size();
+    data[write_from] = mpi_size;
+    it->get_as_MPI_message(data, write_from+1);
+    write_from += 1 + mpi_size;
+  }
+}
+
+int Obligation::vector_MPI_message_size(vector<Obligation> obligations) {
+  int size = 1;
+  for (auto it=obligations.begin(); it!=obligations.end(); it++) {
+    size += it->MPI_message_size() + 1; 
+  }
+  return size;
+}
+
 const Obligation Obligation::BLANK_OBLIGATION = Obligation(Compressed_State(vector<int>(), 0, false), 0, 0, false);

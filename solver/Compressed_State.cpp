@@ -35,6 +35,7 @@ Compressed_State::Compressed_State(int* data, int start, int stop) {
 bool Compressed_State::operator==(const Compressed_State& other) const {
   if (!_guaranteed_full) {
     LOG << "ERROR not set up to compare partial states" << endl;
+    assert(0);
     exit(1);
   }
 
@@ -44,6 +45,7 @@ bool Compressed_State::operator==(const Compressed_State& other) const {
 size_t Compressed_State::hash() const {
   if (!_guaranteed_full) {
     LOG << "ERROR not set up to hash partial states" << endl;
+    assert(0);
     exit(1);
   }
 
@@ -53,6 +55,7 @@ size_t Compressed_State::hash() const {
 bool Compressed_State::trimmed_by_reason(const Contextless_Reason& reason) {
   if (!_guaranteed_full) {
     LOG << "ERROR trying to trim on partial state, not set up for this" << endl;
+    assert(0);
     exit(1);
   }
 
