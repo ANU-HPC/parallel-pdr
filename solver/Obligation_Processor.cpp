@@ -32,13 +32,18 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
   // get all the way through, the last one succeeded, local_max_steps worked, 
   const int local_max_steps = min(_max_steps, original_obligation.layer());
 
+  Global::stats.count("local_max_steps " + std::to_string(local_max_steps));
+
   int checking_steps;
   bool last_test_success;
   for (checking_steps=1; checking_steps<=local_max_steps; checking_steps++) {
     const int end_reasons_layer = original_obligation.layer()-checking_steps;
     ensure_solver_exists_for_end_reason_layer(end_reasons_layer);
     last_test_success = _end_reasons_layer_to_steps_to_solver[end_reasons_layer][checking_steps]->solve(original_obligation.compressed_state().get_state());
-    Global::stats.count("steps " + std::to_string(checking_steps) + " sat? " + std::to_string(last_test_success));
+    Global::stats.count(
+        "steps " + std::to_string(checking_steps) + 
+        " layer: " + std::to_string(original_obligation.layer()) + 
+        " sat? " + std::to_string(last_test_success));
     if (!last_test_success) break; // gone too high, back off
   }
 

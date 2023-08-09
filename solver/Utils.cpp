@@ -68,6 +68,25 @@ string Utils::to_string(vector<int> x) {
   return ret_val + " }";
 }
 
+string Utils::to_string(set<int> x) {
+  // give by copy
+
+  string ret_val = "{ ";
+
+  for (auto it=x.begin(); it!=x.end(); it++) {
+    const int element = *it; 
+    if (element > 0) {
+      ret_val += "  \033[38;5;10m";
+      ret_val += std::to_string(element);
+    } else {
+      ret_val += " \033[38;5;9m";
+      ret_val += std::to_string(element);
+    }
+    ret_val += "\033[0m";
+  }
+  return ret_val + " }";
+}
+
 string Utils::to_string(int* data, int size) {
   string ret_val = "";
   for (int i=0; i<size; i++) {

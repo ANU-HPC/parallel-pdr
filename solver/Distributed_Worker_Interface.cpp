@@ -1,5 +1,10 @@
 #include "Distributed_Worker_Interface.h"
 
+Distributed_Worker_Interface::Distributed_Worker_Interface() {
+  // Just for testing, less efficient, but seperates the setup time from the running time. Also in MPI_Worker.cpp
+  //Global::mpi_interface.barrier();
+}
+
 set<int> Distributed_Worker_Interface::workers_wanting_work_snapshot() {
   return _workers_wanting_work;
 }
@@ -35,9 +40,6 @@ void Distributed_Worker_Interface::process_inbox() {
   (void)mpi_tag;
   (void)data;
   (void)size;
-
-  // Just for testing, less efficient, but seperates the setup time from the running time. Also in MPI_Worker.cpp
-  //Global::mpi_interface.barrier();
 
   while (Global::mpi_interface.message_waiting()) {
     auto [worker, mpi_tag, data, size] = Global::mpi_interface.recieve_message();

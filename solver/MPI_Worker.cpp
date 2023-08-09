@@ -52,6 +52,7 @@ void MPI_Worker::run() {
       Reason_From_Orchestrator reason = Reason_From_Orchestrator(data, 0, size);
       handle_reason(reason);
     } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_FINALIZE) {
+      //usleep(500*Global::mpi_interface.world_rank());
       Global::stats.print();
       Global::mpi_interface.barriered_finalize();
       return;

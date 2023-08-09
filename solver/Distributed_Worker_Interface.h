@@ -17,6 +17,7 @@ using namespace std;
 
 class Distributed_Worker_Interface {
   public:
+    Distributed_Worker_Interface();
     set<int> workers_wanting_work_snapshot();
     bool all_workers_idle();
     void handle_obligation(const Obligation& obl, int worker);

@@ -14,6 +14,7 @@ class Utils {
   public:
     static vector<int> inflate_only_true_to_all(const vector<int>& only_true, const vector<int>& all);
     static string to_string(vector<int> x);
+    static string to_string(set<int> x);
     static string to_string(int* data, int size);
 
     static void get_as_MPI_message(int* data, int start, vector<int> x);
