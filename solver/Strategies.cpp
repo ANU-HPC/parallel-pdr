@@ -35,7 +35,7 @@ bool Strategies::run_default() {
   for(int k=1;; k++) {
     LOG << "starting layer k: " << k << endl;
     // Put the initial state in the queue
-    Obligation initial_obligation = Obligation(initial_state, k, 0, true);
+    Obligation initial_obligation = Obligation(initial_state, k, 0, 0, true);
     queue.push(initial_obligation);
 
     // Process it
@@ -117,7 +117,7 @@ bool Strategies::run_default() {
 
         const Obligation& original_obligation = reason_from_worker.originating_obligation();
         if (Global::problem.obligation_rescheduling && (original_obligation.layer() < k)) {
-          queue.push(original_obligation.get_with_incremented_layer(1));
+          if (original_obligation.or_level() < 12) queue.push(original_obligation.get_with_incremented_layer_and_or_level(1, 1));
         }
       }
 
@@ -134,7 +134,7 @@ bool Strategies::run_default() {
       vector<Obligation> push;
       for (auto it=reasons_to_push->begin(); it!=reasons_to_push->end(); it++) {
         const Contextless_Reason& reason = *it;
-        push.push_back(Obligation(Compressed_State(reason.reason(), 0, false), layer, 0, false));
+        push.push_back(Obligation(Compressed_State(reason.reason(), 0, false), layer, 0, 0, false));
       }
 
       // send them all off

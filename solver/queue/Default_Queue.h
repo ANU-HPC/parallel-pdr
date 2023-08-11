@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "Global.h"
 #include "Obligation.h"
 #include "Contextless_Reason.h"
 #include "Single_Layer_Of_Queue.h"

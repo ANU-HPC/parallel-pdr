@@ -32,6 +32,28 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
   // get all the way through, the last one succeeded, local_max_steps worked, 
   const int local_max_steps = min(_max_steps, original_obligation.layer());
 
+
+
+
+  /*
+  const int end_reasons_layer = original_obligation.layer()-local_max_steps;
+  _last_interaction_was_a_success =_end_reasons_layer_to_steps_to_solver[end_reasons_layer][local_max_steps]->solve(original_obligation.compressed_state().get_state());
+  if (_last_interaction_was_a_success) set_success_from_solver(original_obligation, end_reasons_layer, local_max_steps);
+  else                                 set_reason_from_solver(original_obligation, end_reasons_layer, local_max_steps);
+
+  Global::stats.count(
+      "steps " + std::to_string(local_max_steps) + 
+      " layer: " + std::to_string(original_obligation.layer()) + 
+      " sat? " + std::to_string(_last_interaction_was_a_success));
+  return;
+  */
+
+
+
+
+
+
+
   Global::stats.count("local_max_steps " + std::to_string(local_max_steps));
 
   int checking_steps;
@@ -170,6 +192,7 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
           Compressed_State(state_vars, subproblem, true),
           layer,
           subproblem,
+          0, // fresh state
           true));
   }
 
