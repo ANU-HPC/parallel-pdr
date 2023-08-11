@@ -1,5 +1,6 @@
 #include "Distributed_Worker_Interface.h"
 
+
 Distributed_Worker_Interface::Distributed_Worker_Interface() {
   // Just for testing, less efficient, but seperates the setup time from the running time. Also in MPI_Worker.cpp
   //Global::mpi_interface.barrier();
