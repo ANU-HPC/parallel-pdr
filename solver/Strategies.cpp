@@ -2,6 +2,47 @@
 #include "Contextless_Reason.h"
 #include "Reason_From_Orchestrator.h"
 
+long long int Strategies::get_results_iteration = 0;
+long long int Strategies::successes_count = 1;
+long long int Strategies::reasons_count = 1;
+long long int Strategies::reasons_count_iteration_checkpoint = 0;
+long long int Strategies::successes_count_iteration_checkpoint = 0;
+
+int Strategies::one_worker_results = 0;
+int Strategies::more_than_one_worker_results = 0;
+
+void Strategies::manage_per_inbox_check_periodic_stats(int reasons_size, int successes_size) {
+  // stats on how busy the orchestrator is
+  get_results_iteration++;
+  reasons_count += reasons_size;
+  successes_count += successes_size;
+  const int interval = 10000;
+
+  if (successes_count%interval == 0) {
+    LOG << "periodic controller update: to get the last " << interval << " successes, it took " << get_results_iteration-successes_count_iteration_checkpoint << " check cycles " << endl;
+    successes_count_iteration_checkpoint = get_results_iteration;
+    successes_count++;
+  }
+
+  if (reasons_count%interval == 0) {
+    LOG << "periodic controller update: to get the last " << interval << " reasons, it took " << get_results_iteration-reasons_count_iteration_checkpoint << " check cycles " << endl;
+    reasons_count_iteration_checkpoint = get_results_iteration;
+    reasons_count++;
+  }
+
+  const int results = reasons_size + successes_size;
+  if (results == 1) {
+    one_worker_results++;
+    if (one_worker_results == interval) {
+      LOG << "periodic controller update: in getting the last " << interval << " return values from the worker with only one result, on " << more_than_one_worker_results << " occasions there was more than one result" << endl;
+      one_worker_results = 0;
+      more_than_one_worker_results = 0;
+    }
+  } else if (results > 1) {
+    more_than_one_worker_results++;
+  }
+}
+
 bool Strategies::run_default() {
   // TODO just for now...
   Global::active_heuristics = set<int>({Heuristics::NONE, Heuristics::RANDOM});
@@ -25,12 +66,6 @@ bool Strategies::run_default() {
 
   // Create the initial state to create initial obligations
   Compressed_State initial_state = Compressed_State(Global::problem.initial_state, 0, true);
-
-  long long int get_results_iteration = 0;
-  long long int successes_count = 1;
-  long long int reasons_count = 1;
-  long long int reasons_count_iteration_checkpoint = 0;
-  long long int successes_count_iteration_checkpoint = 0;
 
   for(int k=1;; k++) {
     LOG << "starting layer k: " << k << endl;
@@ -59,23 +94,8 @@ bool Strategies::run_default() {
       vector<tuple<int, Success>>* worker_successes = worker_interface.get_returned_successes_buffer();
       vector<tuple<int, Reason_From_Worker>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
 
-      // stats on how busy the orchestrator is
-      get_results_iteration++;
-      reasons_count+=worker_reasons->size();
-      successes_count+=worker_successes->size();
-      const int interval = 10000;
-
-      if (successes_count%interval == 0) {
-        LOG << "periodic controller update: to get the last " << interval << " successes, it took " << get_results_iteration-successes_count_iteration_checkpoint << " check cycles " << endl;
-        successes_count_iteration_checkpoint = get_results_iteration;
-        successes_count++;
-      }
-
-      if (reasons_count%interval == 0) {
-        LOG << "periodic controller update: to get the last " << interval << " reasons, it took " << get_results_iteration-reasons_count_iteration_checkpoint << " check cycles " << endl;
-        reasons_count_iteration_checkpoint = get_results_iteration;
-        reasons_count++;
-      }
+      // some periodic stats reporting
+      manage_per_inbox_check_periodic_stats(worker_successes->size(), worker_reasons->size());
 
       // handle successes
       for (auto ita=worker_successes->begin(); ita!=worker_successes->end(); ita++) {

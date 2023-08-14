@@ -25,6 +25,17 @@ using namespace std;
 class Strategies {
   public:
     static bool run_default();
+  private:
+    static void manage_per_inbox_check_periodic_stats(int reasons_size, int successes_size);
+
+    static long long int get_results_iteration;
+    static long long int successes_count;
+    static long long int reasons_count;
+    static long long int reasons_count_iteration_checkpoint;
+    static long long int successes_count_iteration_checkpoint;
+
+    static int one_worker_results;
+    static int more_than_one_worker_results;
 };
 
 #endif
