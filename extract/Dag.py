@@ -4,7 +4,6 @@ from copy import deepcopy,copy
 import json
 import time
 import os
-from import_option import import_option
 #from ranges import RangeSet
 #from RangeSet import RangeSet
 RangeSet = set
@@ -14,8 +13,10 @@ DECOMPOSITION_COLLATING_NODE = "decomposition collating node"
 INJECT_STATE = "inject state"
 CONSOLIDATING_NODE_PREFIX = "consolidating node of: "
 NODE_NONEXISTENT = -2
-ALLOW_HEURISTIC_H_ADD = import_option("ALLOW_HEURISTIC_H_ADD")
-USE_FD_PARSER = import_option("USE_FD_PARSER")
+
+# TODO refine this when needed
+ALLOW_HEURISTIC_H_ADD = False
+USE_FD_PARSER = False
 
 def isSpecialNode(x):
     if x == DECOMPOSITION_COLLATING_NODE: return True

@@ -2,8 +2,9 @@ import sys
 import time
 from RunBash import runBash
 from Problem import Problem, extraSettings
-from import_option import import_option
-USE_FD_PARSER = import_option("USE_FD_PARSER")
+
+# TODO refine this when needed
+USE_FD_PARSER = False
 
 def parseError():
     print("planner usage:")

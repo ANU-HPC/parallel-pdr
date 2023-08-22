@@ -2,7 +2,6 @@
 #from Lingeling import Lingeling
 import os
 from RunBash import runBash
-from import_option import import_option
 from itertools import combinations 
 
 import sys
@@ -10,8 +9,6 @@ sys.setrecursionlimit(10000)
 
 # lingeling dagster
 from Dag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_NODE_PREFIX, TRADITIONAL_DAGSTER
-USE_FD_PARSER = import_option("USE_FD_PARSER")
-
 # for use with traditional dagster for report
 #from SoleDag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_NODE_PREFIX 
 
