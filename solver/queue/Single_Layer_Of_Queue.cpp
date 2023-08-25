@@ -60,7 +60,7 @@ Obligation Single_Layer_Of_Queue::remove_obligation_at_slot(int slot) {
   return queue_entry.obligation();
 }
 
-int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to) {
+int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment) { // TODO settle on the layer_increment, remove eventually maybe
   // return the number of deleted elements, if not pushed to alternate layer
   int num_removed = 0;
 
@@ -83,9 +83,9 @@ int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_O
     const int slot = *it;
     Obligation obligation = remove_obligation_at_slot(slot);
     if (pushing) {
-      const bool successful_push_up = other_to_push_to->push(obligation);
+      const bool successful_push_up = other_to_push_to->push(obligation.get_with_incremented_layer_and_or_level(layer_increment, layer_increment));
       assert(successful_push_up); // unsure if this is actually bad... may be triggered by a change later on
-      if (!successful_push_up) num_removed--;
+      // TODO review this? if (!successful_push_up) num_removed--;
     } else num_removed++;
   }
 

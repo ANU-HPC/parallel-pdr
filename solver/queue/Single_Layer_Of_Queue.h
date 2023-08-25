@@ -28,7 +28,7 @@ class Single_Layer_Of_Queue {
     Obligation pop(int heuristic);
     int size();
     bool empty();
-    int trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to);
+    int trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment);
   private:
     Obligation remove_obligation_at_slot(int slot);
     unordered_set<Obligation, Obligation_Hash> _all_obligations;

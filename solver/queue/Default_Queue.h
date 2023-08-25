@@ -18,6 +18,8 @@ class Default_Queue {
     bool empty();
     int size();
     void trim(const Contextless_Reason& reason, int obligation_rescheduling_upper_layer);
+    int lowest_layer_with_content();
+    void print_sizes();
   private:
     void update_lowest_layer_with_content();
     vector<Single_Layer_Of_Queue> _layers; // have one for 0 even though it will always be empty, just for math simplicity

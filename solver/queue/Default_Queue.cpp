@@ -19,6 +19,7 @@ Obligation Default_Queue::pop(int heuristic) {
   assert(!_layers[_lowest_layer_with_content].empty());
 
   const Obligation& ret_val = _layers[_lowest_layer_with_content].pop(heuristic);
+  assert(ret_val.layer() == _lowest_layer_with_content);
   _size--;
 
   update_lowest_layer_with_content();
@@ -40,7 +41,8 @@ void Default_Queue::trim(const Contextless_Reason& reason, int k) {
   else single_layer_of_queue_to_push_to = NULL;
     
   for (int layer = 1; layer<=reason_layer; layer++) {
-    _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to);
+    const int layer_increment = layer_to_push_to - layer;
+    _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to, layer_increment);
   }
 
   update_lowest_layer_with_content();
@@ -67,6 +69,12 @@ void Default_Queue::update_lowest_layer_with_content() {
   }
 }
 
+void Default_Queue::print_sizes() {
+  for (int layer=0; layer<_layers.size(); layer++) {
+    LOG << "layer " << layer << " has size " << _layers[layer].size() << endl;
+  }
+}
+
 void Default_Queue::make_layer_exist(int layer) {
   assert(layer>=0);
   while (_layers.size() <= layer) _layers.push_back(Single_Layer_Of_Queue());
@@ -78,4 +86,8 @@ bool Default_Queue::empty() {
 
 int Default_Queue::size() {
   return _size;
+}
+
+int Default_Queue::lowest_layer_with_content() {
+  return _lowest_layer_with_content;
 }

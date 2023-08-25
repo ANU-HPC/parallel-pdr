@@ -137,7 +137,7 @@ bool Strategies::run_default() {
 
         const Obligation& original_obligation = reason_from_worker.originating_obligation();
         if (Global::problem.obligation_rescheduling && (original_obligation.layer() < k)) {
-          if (original_obligation.or_level() < 12) queue.push(original_obligation.get_with_incremented_layer_and_or_level(1, 1));
+          queue.push(original_obligation.get_with_incremented_layer_and_or_level(1, 1));
         }
       }
 
