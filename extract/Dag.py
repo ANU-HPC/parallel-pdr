@@ -1,7 +1,7 @@
 try:
     import networkx as nx
 except ImportError:
-    import basic_networkx
+    import basic_networkx as nx
     print("\n\n WARNING: cannot find networkx, may have issues\n\n")
 
 #import matplotlib.pyplot as plt
