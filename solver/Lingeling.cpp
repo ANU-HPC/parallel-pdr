@@ -28,7 +28,8 @@ Lingeling::Lingeling(const char* fname) {
   FILE *ifp;
   ifp = fopen(fname, "r");
   if (ifp == 0) {
-    cerr << "Parsing Error";
+    string s = fname;
+    LOG << "Parsing Error, trying to open: " << s << endl;
     exit(1);
   }
 

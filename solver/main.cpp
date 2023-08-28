@@ -1,4 +1,5 @@
 #include "main.h"
+#include "Global.h"
 
 /*
 void scrap() {
@@ -65,6 +66,7 @@ int main(int argc, char **argv) {
   if (sat) LOG << "SAT" << endl;
   else     LOG << "UNSAT" << endl;
 
+  usleep(Global::mpi_interface.world_rank()*10000);
   Global::stats.print();
 
   return 0;

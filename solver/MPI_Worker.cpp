@@ -1,7 +1,9 @@
 #include "MPI_Worker.h"
 
 MPI_Worker::MPI_Worker() {
-  const int steps = ((Global::mpi_interface.world_rank()-1) % Global::problem.max_macro_steps) + 1;
+  const int rank = Global::mpi_interface.world_rank();
+  const int steps = Utils::worker_to_steps(rank);
+
   Global::stats.count("steps",steps);
   LOG << "worker using steps: " << steps << endl;
   _obligation_processor = new Obligation_Processor(steps);
@@ -52,7 +54,7 @@ void MPI_Worker::run() {
       Reason_From_Orchestrator reason = Reason_From_Orchestrator(data, 0, size);
       handle_reason(reason);
     } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_FINALIZE) {
-      //usleep(500*Global::mpi_interface.world_rank());
+      usleep(Global::mpi_interface.world_rank()*10000);
       Global::stats.print();
       Global::mpi_interface.barriered_finalize();
       return;

@@ -16,6 +16,8 @@ extern "C" {
 #include <ctype.h>
 #include <algorithm>
 #include <unistd.h>
+#include <string>
+#include "Log.h"
 
 using namespace std;
 
