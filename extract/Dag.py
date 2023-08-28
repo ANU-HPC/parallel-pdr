@@ -1,4 +1,9 @@
-import networkx as nx
+try:
+    import networkx as nx
+except ImportError:
+    import basic_networkx
+    print("\n\n WARNING: cannot find networkx, may have issues\n\n")
+
 #import matplotlib.pyplot as plt
 from copy import deepcopy,copy
 import json

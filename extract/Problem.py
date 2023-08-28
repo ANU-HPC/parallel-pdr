@@ -12,8 +12,12 @@ from Dag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_N
 # for use with traditional dagster for report
 #from SoleDag import Dag, DECOMPOSITION_COLLATING_NODE, INJECT_STATE, CONSOLIDATING_NODE_PREFIX 
 
+try:
+    import networkx as nx
+except ImportError:
+    import basic_networkx
+    print("\n\n WARNING: cannot find networkx, may have issues\n\n")
 
-import networkx as nx
 #import matplotlib.pyplot as plt
 import time
 #from ranges import RangeSet, Range
