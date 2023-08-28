@@ -70,7 +70,7 @@ bool Strategies::run_default() {
   for(int k=1;; k++) {
     LOG << "starting layer k: " << k << endl;
     // Put the initial state in the queue
-    Obligation initial_obligation = Obligation(initial_state, k, 0, 0, true);
+    Obligation initial_obligation = Obligation(initial_state, k, 0, 0, 0, true);
     queue.push(initial_obligation);
 
     // Process it
@@ -80,12 +80,10 @@ bool Strategies::run_default() {
       for (auto it=workers.begin(); it!=workers.end(); it++) {
         const int worker = *it;
         if (!queue.empty()) {
-          // just get as normal
-          worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
+          // special requirement, if the queue does not have something available, don't bother here
+          if (Utils::worker_to_steps(worker)>queue.lowest_layer_with_content()) continue;
 
-          // one in three workers get a random obligation
-          //if (worker%2==0) worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
-          //else             worker_interface.handle_obligation(queue.pop(Heuristics::NONE), worker);
+          worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
         }
       }
 
@@ -137,7 +135,10 @@ bool Strategies::run_default() {
 
         const Obligation& original_obligation = reason_from_worker.originating_obligation();
         if (Global::problem.obligation_rescheduling && (original_obligation.layer() < k)) {
-          queue.push(original_obligation.get_with_incremented_layer_and_or_level(1, 1));
+          // going to OR?
+          const bool dont_or = (original_obligation.or_count() + 1 > MAX_OR_COUNT) || (original_obligation.layer() == original_obligation.or_originating_layer());
+
+          if (!dont_or) queue.push(original_obligation.get_with_incremented_layer_and_or_count(1, 1));
         }
       }
 
@@ -154,7 +155,7 @@ bool Strategies::run_default() {
       vector<Obligation> push;
       for (auto it=reasons_to_push->begin(); it!=reasons_to_push->end(); it++) {
         const Contextless_Reason& reason = *it;
-        push.push_back(Obligation(Compressed_State(reason.reason(), 0, false), layer, 0, 0, false));
+        push.push_back(Obligation(Compressed_State(reason.reason(), 0, false), layer, 0, 0, 0, false));
       }
 
       // send them all off
@@ -163,6 +164,9 @@ bool Strategies::run_default() {
         const set<int> workers = worker_interface.workers_wanting_work_snapshot();
         for (auto it=workers.begin(); it!=workers.end(); it++) {
           const int worker = *it; 
+
+          if (Utils::worker_to_steps(worker) != 1) continue;
+
           if (push.size()) {
             const Obligation& obligation = *push.rbegin();
             worker_interface.handle_obligation(obligation, worker);

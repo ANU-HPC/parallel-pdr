@@ -1,6 +1,8 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#define MAX_OR_COUNT 4
+
 #include <mpi.h>
 
 #include "Problem.h"

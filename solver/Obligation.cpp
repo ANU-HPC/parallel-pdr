@@ -10,11 +10,12 @@ Obligation::Obligation(const vector<int>& state, const int layer, const int subp
 
 Obligation::Obligation() { }
 
-Obligation::Obligation(const Compressed_State& compressed_state, int layer, int subproblem, int or_level, bool reduce_reason_add_successor_to_queue) {
+Obligation::Obligation(const Compressed_State& compressed_state, int layer, int subproblem, int or_originating_layer, int or_count, bool reduce_reason_add_successor_to_queue) {
   _compressed_state = compressed_state;
   _layer = layer;
   _subproblem = subproblem;
-  _or_level = or_level;
+  _or_originating_layer = or_originating_layer;
+  _or_count = or_count;
   _reduce_reason_add_successor_to_queue = reduce_reason_add_successor_to_queue;
 }
 
@@ -27,12 +28,13 @@ bool Obligation::operator==(const Obligation& other) const {
     (other.compressed_state() == _compressed_state) & 
     (other.layer() == _layer) & 
     (other.subproblem() & _subproblem) & 
-    (other.or_level() & _or_level) & 
+    (other.or_originating_layer() & _or_originating_layer) & 
+    (other.or_count() & _or_count) & 
     (other.reduce_reason_add_successor_to_queue() == _reduce_reason_add_successor_to_queue);
 }
 
 size_t Obligation::hash() const {
-  return _compressed_state.hash() ^ (_layer<<4) ^ (_subproblem<<8) ^ (_or_level<<12) ^ _reduce_reason_add_successor_to_queue;
+  return _compressed_state.hash() ^ (_layer<<4) ^ (_subproblem<<8) ^ (_or_originating_layer<<12) ^ (_or_count<<16) ^ _reduce_reason_add_successor_to_queue;
 }
 
 bool Obligation::trimmed_by_reason(const Contextless_Reason& reason) {
@@ -47,8 +49,13 @@ int Obligation::subproblem() const {
   return _subproblem;
 }
 
-int Obligation::or_level() const {
-  return _or_level;
+
+int Obligation::or_originating_layer() const {
+  return _or_originating_layer;
+}
+
+int Obligation::or_count() const {
+  return _or_count;
 }
 
 Compressed_State Obligation::compressed_state() const {
@@ -59,8 +66,8 @@ bool Obligation::reduce_reason_add_successor_to_queue() const {
   return _reduce_reason_add_successor_to_queue;
 }
 
-Obligation Obligation::get_with_incremented_layer_and_or_level(int layer_amount, int or_level_amount) const {
-  return Obligation(_compressed_state, _layer+layer_amount, _subproblem, _or_level+or_level_amount, _reduce_reason_add_successor_to_queue);
+Obligation Obligation::get_with_incremented_layer_and_or_count(int layer_amount, int or_count_amount) const {
+  return Obligation(_compressed_state, _layer+layer_amount, _subproblem, _or_originating_layer, _or_count+or_count_amount, _reduce_reason_add_successor_to_queue);
 }
 
 // MPI
@@ -69,19 +76,21 @@ Obligation Obligation::get_with_incremented_layer_and_or_level(int layer_amount,
 void Obligation::get_as_MPI_message(int* data, int start) const {
   data[start+0] = _layer;
   data[start+1] = _subproblem;
-  data[start+2] = _or_level;
-  data[start+3] = _reduce_reason_add_successor_to_queue ? 1 : 0;
+  data[start+2] = _or_originating_layer;
+  data[start+3] = _or_count;
+  data[start+4] = _reduce_reason_add_successor_to_queue ? 1 : 0;
 
-  _compressed_state.get_as_MPI_message(data, start+4);
+  _compressed_state.get_as_MPI_message(data, start+5);
 }
 
 Obligation::Obligation(int* data, int start, int stop) {
-  _layer = data[start];
+  _layer = data[start+0];
   _subproblem = data[start+1];
-  _or_level = data[start+2];
-  _reduce_reason_add_successor_to_queue = data[start+3]==1 ? true : false;
+  _or_originating_layer = data[start+2];
+  _or_count = data[start+3];
+  _reduce_reason_add_successor_to_queue = data[start+4]==1 ? true : false;
 
-  _compressed_state = Compressed_State(data, start+4, stop);
+  _compressed_state = Compressed_State(data, start+5, stop);
 }
 
 int* Obligation::get_as_MPI_message() const {
@@ -91,7 +100,7 @@ int* Obligation::get_as_MPI_message() const {
 }
 
 int Obligation::MPI_message_size() const {
-  return 4 + _compressed_state.MPI_message_size();
+  return 5 + _compressed_state.MPI_message_size();
 }
 
 int Obligation::MPI_message_tag() const {
@@ -128,5 +137,3 @@ int Obligation::vector_MPI_message_size(vector<Obligation> obligations) {
   }
   return size;
 }
-
-const Obligation Obligation::BLANK_OBLIGATION = Obligation(Compressed_State(vector<int>(), 0, false), 0, 0, 0, false);

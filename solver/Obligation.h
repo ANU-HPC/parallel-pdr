@@ -15,7 +15,7 @@ class Obligation {
   public:
     //Obligation(const vector<int>& state, const int layer, const int subproblem);
     Obligation();
-    Obligation(const Compressed_State& compressed_state, int layer, int subproblem, int _or_level, bool reduce_reason_add_successor_to_queue);
+    Obligation(const Compressed_State& compressed_state, int layer, int subproblem, int or_originating_layer, int or_count, bool reduce_reason_add_successor_to_queue);
     Obligation(int* data, int start, int stop);
     string to_string() const;
 
@@ -26,11 +26,12 @@ class Obligation {
 
     int layer() const;
     int subproblem() const;
-    int or_level() const;
+    int or_originating_layer() const;
+    int or_count() const;
     Compressed_State compressed_state() const;
     bool reduce_reason_add_successor_to_queue() const;
     
-    Obligation get_with_incremented_layer_and_or_level(int layer_amount, int or_level_amount) const;
+    Obligation get_with_incremented_layer_and_or_count(int layer_amount, int or_count_amount) const;
 
     void get_as_MPI_message(int* data, int start) const;
     int* get_as_MPI_message() const;
@@ -41,13 +42,12 @@ class Obligation {
     static vector<Obligation> vector_obligation(int* data, int start, int stop);
     static void vector_get_as_MPI_message(vector<Obligation> obligations, int* data, int start);
     static int vector_MPI_message_size(vector<Obligation> obligations);
-
-    const static Obligation BLANK_OBLIGATION;
   private:
     Compressed_State _compressed_state;
     int _layer;
     int _subproblem;
-    int _or_level;
+    int _or_originating_layer;
+    int _or_count;
     bool _reduce_reason_add_successor_to_queue;
 };
 

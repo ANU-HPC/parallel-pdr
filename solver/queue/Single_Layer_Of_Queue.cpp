@@ -83,7 +83,23 @@ int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_O
     const int slot = *it;
     Obligation obligation = remove_obligation_at_slot(slot);
     if (pushing) {
-      const bool successful_push_up = other_to_push_to->push(obligation.get_with_incremented_layer_and_or_level(layer_increment, layer_increment));
+      // TODO for this branch, don't push beyond where it started
+      // so work out if should push this one
+
+      if (obligation.layer() + layer_increment > obligation.or_originating_layer()) {
+        // would OR to before it started
+        num_removed++;
+        continue;
+      }
+
+      assert(layer_increment == 1); // because of the above check
+
+      if (obligation.or_count() + layer_increment > MAX_OR_COUNT) {
+        num_removed++;
+        continue;
+      }
+
+      const bool successful_push_up = other_to_push_to->push(obligation.get_with_incremented_layer_and_or_count(layer_increment, layer_increment));
       assert(successful_push_up); // unsure if this is actually bad... may be triggered by a change later on
       // TODO review this? if (!successful_push_up) num_removed--;
     } else num_removed++;

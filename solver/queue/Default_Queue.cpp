@@ -3,7 +3,7 @@
 Default_Queue::Default_Queue() { }
 
 void Default_Queue::push(const Obligation& obligation) {
-  Global::stats.count("pushing to queue obligation with or_level: " + std::to_string(obligation.or_level()));
+  Global::stats.count("pushing to queue obligation with or_count: " + std::to_string(obligation.or_count()));
 
   const int layer = obligation.layer();
   make_layer_exist(layer);
