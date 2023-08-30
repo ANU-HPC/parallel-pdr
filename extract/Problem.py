@@ -2949,7 +2949,7 @@ class Problem:
         clauses.extend(usedT)
         endT = len(clauses)
         clauses.extend(U)
-        clauses.extend([tildeClauseOne(clause, totalPerTimestep) for clause in U])
+        #clauses.extend([tildeClauseOne(clause, totalPerTimestep) for clause in U])
         endU = len(clauses)
         clauses.extend(I)
         endI = len(clauses)

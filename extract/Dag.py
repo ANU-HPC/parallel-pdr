@@ -494,7 +494,23 @@ class Dag:
                     self.problem.cnfDimacsStringF(clausesToWrite, cnfFile2)
             '''
 
+        
+
         if not USE_FD_PARSER:
+            # Write the universal clauses separately to the transition clauses
+            assert self.problem.numAux == 0
+
+            with open(self.problem.tmpDir + "/tmp_transition.cnf", 'w') as transition:
+                clauses = [self.problem.clauses[CR] for CR in self.problem.TCRss[0]]
+                transition.write("p cnf " + str(self.problem.totalPerTimestep*2) + " " + str(len(clauses)) + "\n")
+                self.problem.cnfDimacsStringF(clauses, transition)
+
+            with open(self.problem.tmpDir + "/tmp_invariants.cnf", 'w') as invariants:
+                clauses = [self.problem.clauses[CR] for CR in self.problem.UCRss[0]]
+                invariants.write("p cnf " + str(self.problem.totalPerTimestep) + " " + str(len(clauses)) + "\n")
+                self.problem.cnfDimacsStringF(clauses, invariants)
+
+            '''
             clausesToWrite = []
             for steps in range(1,self.problem.max_macro_steps+1):
                 clausesToWrite.extend([self.problem.tildeClause(self.problem.clauses[CR],steps-1) for CR in self.problem.TCRss[0]])
@@ -506,6 +522,7 @@ class Dag:
                     cnfFile2.write("p cnf " + str(numVariables) + " " + str(numClauses) + "\n")
                     self.problem.cnfDimacsStringF(clausesToWrite, cnfFile2)
             os.system("cp " + self.problem.tmpDir + "/tmp_regular_1.cnf " + self.problem.tmpDir + "/tmp_regular.cnf") # Make a copy for dagster, before dagster has been given option
+            '''
 
         '''
         TRAD

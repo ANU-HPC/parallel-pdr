@@ -18,6 +18,7 @@ extern "C" {
 #include <unistd.h>
 #include <string>
 #include "Log.h"
+#include "Utils.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ class Lingeling {
     Lingeling(const char* fname);
     ~Lingeling();
     Lingeling clone();
+    void load_with_planning_problem(string directory, int timesteps, int total_per_timestep);
     void flush_cache();
     void add_clause(const vector<int>& inClause);
     void add_clauses(const vector<vector<int>>& inClauses);
@@ -39,6 +41,7 @@ class Lingeling {
     void set_important(const vector<int>& variables);
 
   private:
+    void load_with_copies(const char* fname, int iterations, int offsets_each_time);
     void load_DIMACS_Cnf(const char* fname);
     vector<int> last_assumptions;
     vector<int> last_unmentioned_assumptions;

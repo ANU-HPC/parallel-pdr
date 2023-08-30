@@ -14,7 +14,8 @@ Obligation_Processor::Obligation_Processor(int layer_steps) {
   assert(Global::problem.interleaved_layers);
 
   // create base solver
-  _base_solver = new Lingeling((Global::problem.tmp_dir + "/tmp_regular_" + to_string(_total_sub_steps-1) + ".cnf").c_str());
+  _base_solver = new Lingeling();
+  _base_solver->load_with_planning_problem(Global::problem.tmp_dir, _total_sub_steps, Global::problem.total_per_timestep); 
   _base_solver->solve(vector<int>());
 
   // initialize with goal TODO will break with subproblems
