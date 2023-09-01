@@ -36,6 +36,7 @@ class Problem {
 
     vector<string> symbols;
 
+    vector<int> worker_to_transitions;
 
     int total_per_timestep;
     int num_aux;

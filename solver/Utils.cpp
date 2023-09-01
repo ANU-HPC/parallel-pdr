@@ -18,26 +18,7 @@
 using namespace std;
 
 int Utils::worker_to_steps(int worker) {
-  return 1;
-
-
-
-
-  if (worker == 1) return 1;
-  return 2;
-
-  //if (worker == 1) return 1;
-  //if (worker == 2) return 2;
-
-
-  if (worker <= 2) return 1;
-  if (worker == 3) return 2;
-  if (worker == 4) return 3;
-  //return 2;
-
-  // return ((worker-1) % Global::problem.max_macro_steps) + 1;
-
-  return -111111;
+  return Global::problem.worker_to_transitions[worker];
 }
 
 vector<int> Utils::inflate_only_true_to_all(const vector<int>& only_true, const vector<int>& all) {

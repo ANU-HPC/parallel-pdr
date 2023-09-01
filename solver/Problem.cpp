@@ -52,25 +52,24 @@ bool Problem::zero_one_int_to_bool(int arg) {
 
 void Problem::read_extra_settings(string extra_settings_filename) {
   // read extra settings - the is mainly for testing, so new feastures can be quickly added and removed
-  const int total_expected = 13;
+  const int total_expected = 14;
   set<string> ignore_keys;
   ignore_keys.insert("activation_literals");
 
   // note ignoring keys that do matter, but they are given by a different channel for now
   ignore_keys.insert("decomposed");
   ignore_keys.insert("report_plan");
-  ignore_keys.insert("dagster");
-  ignore_keys.insert("mpi_nodes");
   ignore_keys.insert("backwards");
 
   string line;
   ifstream extra_settings_file(extra_settings_filename);
   assert(extra_settings_file.is_open());
   int seen = 0;
+  int mpi_nodes;
+  bool dagster;
   while (getline(extra_settings_file, line)) {
     seen++;
     vector<string> key_val = split(line);
-    assert(key_val.size() == 2);
     const string key = key_val[0];
     const string val = key_val[1];
     const int val_int = stoi(val);
@@ -80,6 +79,10 @@ void Problem::read_extra_settings(string extra_settings_filename) {
       project_last = zero_one_int_to_bool(val_int);
     } else if (key == "complete_nonfinal") {
       complete_nonfinal = zero_one_int_to_bool(val_int);
+    } else if (key == "dagster") {
+      dagster = zero_one_int_to_bool(val_int);
+    } else if (key == "mpi_nodes") {
+      mpi_nodes = val_int;
     } else if (key == "obligation_rescheduling") {
       obligation_rescheduling = zero_one_int_to_bool(val_int);
     } else if (key == "use_ooc") {
@@ -91,12 +94,28 @@ void Problem::read_extra_settings(string extra_settings_filename) {
     } else if (key == "max_macro_steps") {
       assert(val_int>0);
       max_macro_steps = val_int;
+    } else if (key == "transitions_to_num_workers") {
+      // parse all values
+      int cumulative_transitions = 0;
+      worker_to_transitions.push_back(-1);
+      for (int num_transitions=1; num_transitions<key_val.size(); num_transitions++) {
+        const int num_workers = stoi(key_val[num_transitions]);
+        for (int i=0; i<num_workers; i++) {
+          worker_to_transitions.push_back(num_transitions);
+        }
+      }
     } else {
       cout << "ERROR setting: " << key << endl;
       assert(0);
     }
   }
   extra_settings_file.close();
+
+  if (dagster && (worker_to_transitions.size() != mpi_nodes)) {
+    LOG << "ERROR: mpi_nodes != transitions_to_num_workers sum" << endl;
+    exit(0);
+  }
+
   if (complete_nonfinal && project_last) {
     assert(0); // Can't handle projecting AND complete nonfinal - will try do them together, and not do it well
   }
