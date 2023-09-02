@@ -69,6 +69,8 @@ int main(int argc, char **argv) {
   usleep(Global::mpi_interface.world_rank()*10000);
   Global::stats.print();
 
+  if (Global::problem.evaluation_mode) Global::mpi_interface.abort();
+
   return 0;
 }
 

@@ -110,3 +110,7 @@ void MPI_Interface::barriered_finalize() {
   Log::inform_mpi_finalized();
   MPI_Finalize();
 }
+
+void MPI_Interface::abort() {
+  MPI_Abort(_main_communicator, 0);
+}

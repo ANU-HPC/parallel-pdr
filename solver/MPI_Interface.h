@@ -32,6 +32,8 @@ class MPI_Interface {
 
     void barriered_finalize();
 
+    void abort();
+
     const static int MESSAGE_TAG_OBLIGATION                     = 1;
     const static int MESSAGE_TAG_SUCCESS                        = 2;
     const static int MESSAGE_TAG_REASON_FROM_WORKER             = 3;

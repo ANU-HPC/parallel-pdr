@@ -2,6 +2,8 @@
 #!/bin/sh
 cd `dirname "$0"` # moves to the directory in which this script is held (root of dagparser)
 
+START_TIME=`date +%s`
+
 # To make MPI behave correctly
 export OMPI_MCA_btl=self,tcp
 
@@ -47,6 +49,7 @@ echo STOP_EXTRA_SETTINGS
 TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
 mkdir $TMP_DIR
 echo TMP_DIR: $TMP_DIR
+
 
 echo domain: $DOMAIN
 echo problem: $PROBLEM
@@ -167,9 +170,9 @@ then
         do
             if [ $DAGSTER -eq "1" ] # parallel
             then
-                mpirun -n $MPI_NODES ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2>&1 > $TMP_DIR/isolate_subproblems_log_$subproblem &
+                mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME $subproblem 2>&1 > $TMP_DIR/isolate_subproblems_log_$subproblem &
             else
-                echo timeout -s2 $ISOLATE_SUBPROBLEM_SIMULATED_REMAINING_TIME ./pdrDagster $REPORT_PLAN $DAGSTER $TMP_DIR $SET $subproblem 2\>\&1 \> $TMP_DIR/isolate_subproblems_log_$subproblem >> $TMP_DIR/isolate_subproblems_todo_iteration_$ISOLATE_ITERATION
+                echo timeout -s2 $ISOLATE_SUBPROBLEM_SIMULATED_REMAINING_TIME ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME $subproblem 2\>\&1 \> $TMP_DIR/isolate_subproblems_log_$subproblem >> $TMP_DIR/isolate_subproblems_todo_iteration_$ISOLATE_ITERATION
             fi
         done
 
@@ -250,17 +253,17 @@ then
 else # not isolate_parallel
     if [ $DAGSTER -eq "1" ] # parallel
     then
-        echo mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        echo mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
 
-        mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
-        #mpirun -n $MPI_NODES valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
-        #mpirun -np $MPI_NODES xterm -e gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET
+        mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        #mpirun -n $MPI_NODES valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        #mpirun -np $MPI_NODES xterm -e gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME
 
     else
-        echo ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
-        ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
-        #gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
-        #valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET 2>&1
+        echo ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        #gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        #valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
 
 
 

@@ -1,6 +1,7 @@
 #include "Strategies.h"
 #include "Contextless_Reason.h"
 #include "Reason_From_Orchestrator.h"
+#include <chrono>
 
 long long int Strategies::get_results_iteration = 0;
 long long int Strategies::successes_count = 1;
@@ -44,6 +45,8 @@ void Strategies::manage_per_inbox_check_periodic_stats(int reasons_size, int suc
 }
 
 bool Strategies::run_default() {
+  uint64_t already_displayed_elapsed_time = 0;
+
   // TODO just for now...
   Global::active_heuristics = set<int>({Heuristics::NONE, Heuristics::RANDOM});
 
@@ -75,6 +78,16 @@ bool Strategies::run_default() {
 
     // Process it
     while (!queue.empty() || !worker_interface.all_workers_idle()) {
+      // first consider printing the elapsed time, so stdout shows how much time has elapsed
+      if (Global::problem.evaluation_mode) {
+        uint64_t epoch_time = chrono::duration_cast<chrono::seconds>(chrono::system_clock::now().time_since_epoch()).count();
+        uint64_t elapsed_time = epoch_time - Global::problem.start_epoch_time;
+        if (elapsed_time > already_displayed_elapsed_time) {
+          already_displayed_elapsed_time = elapsed_time;
+          cout << "TOTAL_RUNNING_TIME(s): " << elapsed_time << endl;
+        }
+      }
+
       // add some more work
       const set<int> workers = worker_interface.workers_wanting_work_snapshot();
       for (auto it=workers.begin(); it!=workers.end(); it++) {
@@ -114,7 +127,7 @@ bool Strategies::run_default() {
           // check if found a plan
           if (successor_obligation.layer() == 0) {
             plan_builder.write_plan(success);
-            worker_interface.finalize();
+            if (!Global::problem.evaluation_mode) worker_interface.finalize();
             return true;
           }
         }
@@ -203,7 +216,7 @@ bool Strategies::run_default() {
       // convergence check
       if (layers.same_as_previous(layer)) {
         LOG << "converged as layer " << layer << " is the same as the previous one" << endl;
-        worker_interface.finalize();
+        if (!Global::problem.evaluation_mode) worker_interface.finalize();
         return false;
       }
     }

@@ -27,8 +27,8 @@ RangeSet = set
 LAYERS_TO_WRITE = 1
 
 def extraSettings(filename):
-    ignoreKeys = ["obligation_rescheduling", "project_last", "complete_nonfinal", "decomposed", "report_plan", "dagster", "mpi_nodes", "interleaved_layers", "interleaved_layers", "transitions_to_num_workers"]
-    expectedNum = 14
+    ignoreKeys = ["obligation_rescheduling", "project_last", "complete_nonfinal", "decomposed", "report_plan", "dagster", "mpi_nodes", "interleaved_layers", "interleaved_layers", "transitions_to_num_workers", "evaluation_mode"]
+    expectedNum = 15
     with open(filename) as f:
         seenOptions = set()
         for line in [x.rstrip() for x in f.readlines() if len(x.rstrip())]:

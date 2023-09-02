@@ -33,6 +33,8 @@ class Problem {
     bool isolate_subproblems;
     bool interleaved_layers; // For macros, instead of just reasons at the end, put them throughout
     int max_macro_steps;
+    bool evaluation_mode;
+    int start_epoch_time;
 
     vector<string> symbols;
 

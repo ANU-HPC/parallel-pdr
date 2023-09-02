@@ -12,3 +12,4 @@ backwards 0
 max_macro_steps 1
 interleaved_layers 1
 transitions_to_num_workers 4
+evaluation_mode 0

@@ -52,7 +52,7 @@ bool Problem::zero_one_int_to_bool(int arg) {
 
 void Problem::read_extra_settings(string extra_settings_filename) {
   // read extra settings - the is mainly for testing, so new feastures can be quickly added and removed
-  const int total_expected = 14;
+  const int total_expected = 15;
   set<string> ignore_keys;
   ignore_keys.insert("activation_literals");
 
@@ -104,6 +104,8 @@ void Problem::read_extra_settings(string extra_settings_filename) {
           worker_to_transitions.push_back(num_transitions);
         }
       }
+    } else if (key == "evaluation_mode") {
+      evaluation_mode = zero_one_int_to_bool(val_int);
     } else {
       cout << "ERROR setting: " << key << endl;
       assert(0);
@@ -136,11 +138,14 @@ void Problem::process_command_line_arguments(int argc, char **argv) {
   const string parallel_string = string(argv[2]);
   tmp_dir = string(argv[3]);
   const string extra_settings_filename = argv[4];
+  const string start_epoch_time_string = argv[5];
+  start_epoch_time = stoi(start_epoch_time_string);
 
   read_extra_settings(string(extra_settings_filename));
 
   generate_plan = parse_zero_one_string(report_string);
   MPI_active = parse_zero_one_string(parallel_string);
+  // TODO argv[6] will be the subproblem
 }
 
 void Problem::read_mapping(){
