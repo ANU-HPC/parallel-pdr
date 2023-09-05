@@ -498,16 +498,16 @@ class Dag:
 
         if not USE_FD_PARSER:
             # Write the universal clauses separately to the transition clauses
-            assert self.problem.numAux == 0
-
             with open(self.problem.tmpDir + "/tmp_transition.cnf", 'w') as transition:
                 clauses = [self.problem.clauses[CR] for CR in self.problem.TCRss[0]]
-                transition.write("p cnf " + str(self.problem.totalPerTimestep*2) + " " + str(len(clauses)) + "\n")
+                max_var = max([max([abs(lit) for lit in clause]) for clause in clauses])
+                transition.write("p cnf " + str(max_var) + " " + str(len(clauses)) + "\n")
                 self.problem.cnfDimacsStringF(clauses, transition)
 
             with open(self.problem.tmpDir + "/tmp_invariants.cnf", 'w') as invariants:
                 clauses = [self.problem.clauses[CR] for CR in self.problem.UCRss[0]]
-                invariants.write("p cnf " + str(self.problem.totalPerTimestep) + " " + str(len(clauses)) + "\n")
+                max_var = max([max([abs(lit) for lit in clause]) for clause in clauses])
+                invariants.write("p cnf " + str(max_var) + " " + str(len(clauses)) + "\n")
                 self.problem.cnfDimacsStringF(clauses, invariants)
 
             '''
