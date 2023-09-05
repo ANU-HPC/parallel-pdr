@@ -42,6 +42,8 @@ int main(int argc, char **argv) {
   // Parse in command line arguments, and problem specific attributes
   Global::problem = Problem(argc, argv);
 
+  Log::inform_colours_active(!Global::problem.evaluation_mode);
+
   // Setup MPI
   if (Global::problem.MPI_active) { 
     Global::mpi_interface.setup();

@@ -16,7 +16,9 @@ class Log {
     static string COLOUR_START(string filename);
     static string COLOUR_END();
     static void inform_mpi_finalized();
+    static void inform_colours_active(bool active);
   private:
+    static bool _colours_active;
     static bool _mpi_finalized;
     static int MPI_RANK();
 };

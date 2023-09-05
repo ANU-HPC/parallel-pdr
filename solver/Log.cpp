@@ -2,6 +2,8 @@
 
 bool Log::_mpi_finalized = false;
 
+bool Log::_colours_active = false;
+
 int Log::MPI_RANK() {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -20,6 +22,8 @@ string Log::RANK_TEXT() {
 }
 
 string Log::COLOUR_START(string filename) {
+  if (!_colours_active) return "";
+
   int hash = std::hash<std::string>{}(filename);
 
   int red = 30+abs(hash%150);
@@ -38,6 +42,7 @@ string Log::COLOUR_START(string filename) {
 }
 
 string Log::COLOUR_END() {
+  if (!_colours_active) return "";
   return "\033[0m";
 }
 
@@ -50,4 +55,8 @@ string Log::TIME_TEXT() {
 
 void Log::inform_mpi_finalized() {
   _mpi_finalized = true;
+}
+
+void Log::inform_colours_active(bool active) {
+  _colours_active = active;
 }
