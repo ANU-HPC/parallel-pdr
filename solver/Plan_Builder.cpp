@@ -12,8 +12,8 @@ void Plan_Builder::register_success(const Success& success) {
     const Compressed_Actions& step_actions = actions[successor_id];
 
     if (prev_state == next_state) {
-      LOG << "WARNING: trying to register a loop in a plan, stopped" << endl;
-      LOG << "success object: " << success.to_string() << endl;
+      if (!Global::problem.evaluation_mode) LOG << "WARNING: trying to register a loop in a plan, stopped" << endl;
+      if (!Global::problem.evaluation_mode) LOG << "success object: " << success.to_string() << endl;
     } else {
       // only add this way to get to a successor state if there is not already an older (so probably better) way TODO think more about the logic here, can this go wrong?
       if (_tree.find(next_state) == _tree.end()) _tree[next_state] = tuple<Compressed_Actions, Compressed_State>(step_actions, prev_state);

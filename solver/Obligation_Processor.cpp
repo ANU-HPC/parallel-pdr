@@ -206,7 +206,7 @@ void Obligation_Processor::set_success_from_solver(const Obligation& original_ob
   _success = Success(original_obligation, actions, successor_obligations);
 
   if (successor_obligations.rbegin()->compressed_state() == original_obligation.compressed_state()) {
-    LOG << "Same, layer_steps: " << _layer_steps << " end_reasons_layer" << end_reasons_layer << " success: " << _success.to_string() << endl;
+    if (!Global::problem.evaluation_mode) LOG << "Same, layer_steps: " << _layer_steps << " end_reasons_layer" << end_reasons_layer << " success: " << _success.to_string() << endl;
   }
 }
 
