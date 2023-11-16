@@ -1,0 +1,26 @@
+
+2010-2023 (C) Jussi Rintanen
+
+
+Compilation:
+   make
+
+The command line for the executables consist of a number of options and
+the names of input file names. With an empty command line you get the list
+of options together with information on the default configuration.
+
+
+Relevant variables:
+
+   nOfActions       number of ground actions (indices 0..nOfActions-1)
+   nOfAtoms         number of state variables (indices 0..nOfAtoms-1)
+
+Relevant data structures:
+   grounded actions:   typedef struct _action { ... } action;  in operators.h
+   grounded formulas:  typedef _fma { ...} fma;   in operators.h
+   grounded effects:   typedef _eff { ...} eff;   in operators.h
+
+Example of how to use these: printaction(i)  in operators.c
+
+Relevant functions:
+   printatomi(i)    output name of atom i to stdout
