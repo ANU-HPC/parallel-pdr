@@ -34,9 +34,6 @@ pfronten: lex.yy.c Makefile $(PARSERC) $(OBJ) $(HDR)
 %.o: %.c Makefile $(HDR)
 	$(CC) $(CFLAGS) $(AMD64FLAGS) -c $<
 
-#%.o: %.cpp Makefile $(HDR)
-	#$(CC) $(CFLAGS) $(AMD64FLAGS) -c $<
-
 $(PARSERC): parser.y
 	$(PARSERGENERATOR) -d parser.y
 
