@@ -8,7 +8,7 @@ typedef enum { patom, natom, conj, disj, TRUE, FALSE } fmatype;
 typedef struct _fma {
   fmatype t;
   union {
-    int a;
+    int a; // atom, used directly if not a more complicated formula
     struct _fmalist0 { struct _fma *hd; struct _fmalist0 *tl; } *juncts;
   };
 } fma;

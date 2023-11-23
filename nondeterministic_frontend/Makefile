@@ -25,11 +25,17 @@ LINKFLAGS = $(ARCH) -static
 OBJ = $(PARSER).tab.o main.o asyntax.o lex.yy.o tables.o operators.o invariants.o intsets.o cleanup.o ground.o oneofs.o
 HDR = asyntax.h cleanup.h intsets.h invariants.h main.h oneofs.h operators.h tables.h
 
-all: pfronten
+all: cpp_bridge
 
+cpp_bridge: lex.yy.c Makefile $(PARSERC) $(OBJ) $(HDR)
+	# build the cpp part
+	gcc -c cpp_main.cpp -o cpp_main.o
 
-pfronten: lex.yy.c Makefile $(PARSERC) $(OBJ) $(HDR)
-	$(CC) $(LINKFLAGS) $(LINKFEATURES) $(INSTRUMENT) $(OBJ) -o $(EXECUTABLE)
+	# link
+	g++ $(LINKFLAGS) $(LINKFEATURES) $(INSTRUMENT) cpp_main.o $(OBJ) -std=c++17 -o $(EXECUTABLE)
+
+#pfronten: lex.yy.c Makefile $(PARSERC) $(OBJ) $(HDR)
+	#$(CC) $(LINKFLAGS) $(LINKFEATURES) $(INSTRUMENT) $(OBJ) -o $(EXECUTABLE)
 
 %.o: %.c Makefile $(HDR)
 	$(CC) $(CFLAGS) $(AMD64FLAGS) -c $<

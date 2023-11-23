@@ -1,6 +1,8 @@
 
 /*  2010-2023 (C) Jussi Rintanen  */
 
+int frontend_entry(int argc,char **argv);
+
 extern int flagShowInput;
 extern int flagRestartInterval;
 extern int flagRestartScheme;

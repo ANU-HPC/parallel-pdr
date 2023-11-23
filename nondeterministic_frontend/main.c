@@ -132,7 +132,9 @@ int numer(char c) {
   return (c >= '0' && c <= '9');
 }
 
-int main(int argc,char **argv) {
+void export();
+
+int frontend_entry(int argc,char **argv) {
   int i,j;
 
   nOfInputFiles = 0;
@@ -313,6 +315,8 @@ int main(int argc,char **argv) {
   TIMEpreprocess = time10ms();
 
   /* ********** INSERT PLANNER CALL HERE! *********** */
+  printf("INSERT PLANNER CALL HERE!\n\n");
+  export();
 
   printf("total time %.2f preprocess %.2f \n",
 	 time2real(time10ms() - TIMEstart),
@@ -321,4 +325,14 @@ int main(int argc,char **argv) {
   givememorystatistics();
 
  return 0;
+}
+
+// addition by Ava Clifton
+void export() {
+    // export CNF and relevant information
+    // First calculate the maximum number of subactions
+    printaction(1);
+    printf("\n");
+    printatomi(5);
+    printf("\n");
 }
