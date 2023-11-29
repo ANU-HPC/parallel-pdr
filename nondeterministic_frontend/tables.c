@@ -292,6 +292,33 @@ int printatomi(int i) {
   return len;
 }
 
+int fprintatomi(FILE* file, int i) {
+  int len;
+  intlist *a = atomtable[i];
+
+  assert(i >= 0);
+  assert(i < nOfAtoms);
+
+  if(a == NULL) {
+    fprintf(stderr,"INTERNAL ERROR: symbol table 1244\n");
+    assert(1==0);
+  }
+  fprintf(file, "%s(",symbol(a->hd));
+  len = 1+strlen(symbol(a->hd));
+  a = a->tl;
+  while(a != NULL) {
+#ifdef ASSERTS
+    assert(a->hd >= 0);
+#endif
+    fprintf(file, "%s",symbol(a->hd));
+    len += strlen(symbol(a->hd));
+    if(a->tl != NULL) { fprintf(file, ","); len += 1; }
+    a = a->tl;
+  }
+  fprintf(file, ")"); len += 1;
+  return len;
+}
+
 void renameatomtable(int nOfAtoms,int *mapping) {
   int i;
   for(i=0;i<nOfAtoms;i++) {

@@ -1,3 +1,4 @@
+#include <stdio.h>
 
 /* 2010 (C) Jussi Rintanen  */
 
@@ -35,5 +36,7 @@ int atomindex(atom,int *);
 int bvalue(int,int *);
 
 int printatomi(int i);	/* Print an atom and return its length in chars. */
+
+int fprintatomi(FILE* file, int i);	/* Write an atom to a file and return its length in chars. */
 
 void renameatomtable(int,int *); /* Rename atoms by using a mapping. */
