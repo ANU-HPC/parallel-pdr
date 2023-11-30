@@ -1,6 +1,6 @@
 #HPCRUN_EVENT_LIST=CPUTIME@0.1
 #!/bin/sh
-cd `dirname "$0"` # moves to the directory in which this script is held (root of dagparser)
+cd `dirname "$0"` # moves to the directory in which this script is held (root of parallel-pdr)
 
 START_TIME=`date +%s`
 
@@ -35,6 +35,7 @@ isolate_subproblems=`grep isolate_subproblems $SET | grep 1 | wc -l`
 backwards=`grep backwards $SET | grep 1 | wc -l`
 USE_FD_HEURISTIC=`cat pdr/options.h | grep "#define USE_FD_HEURISTIC 1" | wc -l`
 USE_FD_PARSER=`cat pdr/options.h | grep "#define USE_FD_PARSER 1" | wc -l`
+NONDETERMINISTIC=`grep nondeterministic $SET | awk '{print $2}'`
 
 DAGPARSER_ROOT=`dirname "$0"` 
 echo `readlink -f $DAGPARSER_ROOT/run.sh` $@
@@ -49,7 +50,6 @@ echo STOP_EXTRA_SETTINGS
 TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
 mkdir $TMP_DIR
 echo TMP_DIR: $TMP_DIR
-
 
 echo domain: $DOMAIN
 echo problem: $PROBLEM
@@ -90,38 +90,44 @@ then
     cd $base
 fi
 
-cd extract
-
-PYTHON_START_TIME=$(date +%s.%N)
-$USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR -f 1 # used when using FD to test heuristics > $TMP_DIR/madagascar_output
-MAIN_PYTHON_EXIT_CODE=$?
-
-if [ $isolate_subproblems -eq "1" ]
+if [$NONDETERMINISTIC -eq "1"]
+    # use the modified direct madagascar parser
+    ./nondeterministic_frontend/pfronten $DOMAIN $PROBLEM -l $TMP_DIR
 then
-    PYTHON_TIME_NUMBER="_0"
-else
-    PYTHON_TIME_NUMBER=
-fi
+    # use the python wrapper extractor
+    cd extract
 
-echo PYTHON_TIME$PYTHON_TIME_NUMBER: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
+    PYTHON_START_TIME=$(date +%s.%N)
+    $USED_PYTHON main.py -d $DECOMPOSED -s 2 -e $SET $DOMAIN $PROBLEM $TMP_DIR -f 1 # used when using FD to test heuristics > $TMP_DIR/madagascar_output
+    MAIN_PYTHON_EXIT_CODE=$?
 
-if [ $MAIN_PYTHON_EXIT_CODE -ne "0" ]
-then 
-    exit 0 
-fi
+    if [ $isolate_subproblems -eq "1" ]
+    then
+        PYTHON_TIME_NUMBER="_0"
+    else
+        PYTHON_TIME_NUMBER=
+    fi
 
-# If using heuristic values from FD, set up for that
-if [ $USE_FD_HEURISTIC -eq "1" ]
-then 
-    cd ..
-    base=$(pwd)
-    cd $TMP_DIR
-    python3 ../../../exploring_systems/comp4550-project/downward/fast-downward.py --keep-sas-file $DOMAIN $PROBLEM --satprune 0 --search "lazy_greedy([lmcut(),hmax(),pdb(),cpdbs(),cegar()], bound=1)" > /dev/null
-    cd ../..
-    python fd/set_up_fd_heuristic.py $TMP_DIR
-    mkdir fd/cached_heuristics
-    mkdir fd/cached_heuristics/$(python fd/hash_domain_problem.py $DOMAIN $PROBLEM)
-    cd pdr
+    echo PYTHON_TIME$PYTHON_TIME_NUMBER: $(awk "BEGIN {print ($(date +%s.%N)-$PYTHON_START_TIME)}")
+
+    if [ $MAIN_PYTHON_EXIT_CODE -ne "0" ]
+    then 
+        exit 0 
+    fi
+
+    # If using heuristic values from FD, set up for that
+    if [ $USE_FD_HEURISTIC -eq "1" ]
+    then 
+        cd ..
+        base=$(pwd)
+        cd $TMP_DIR
+        python3 ../../../exploring_systems/comp4550-project/downward/fast-downward.py --keep-sas-file $DOMAIN $PROBLEM --satprune 0 --search "lazy_greedy([lmcut(),hmax(),pdb(),cpdbs(),cegar()], bound=1)" > /dev/null
+        cd ../..
+        python fd/set_up_fd_heuristic.py $TMP_DIR
+        mkdir fd/cached_heuristics
+        mkdir fd/cached_heuristics/$(python fd/hash_domain_problem.py $DOMAIN $PROBLEM)
+        cd pdr
+    fi
 fi
 
 cd ../solver
@@ -254,7 +260,6 @@ else # not isolate_parallel
     if [ $DAGSTER -eq "1" ] # parallel
     then
         echo mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
-
         mpirun -n $MPI_NODES ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
         #mpirun -n $MPI_NODES valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
         #mpirun -np $MPI_NODES xterm -e gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME
@@ -264,9 +269,6 @@ else # not isolate_parallel
         ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
         #gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
         #valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
-
-
-
     fi
 fi
 echo CPP_TIME: $(awk "BEGIN {print ($(date +%s.%N)-$CPP_START_TIME)}")

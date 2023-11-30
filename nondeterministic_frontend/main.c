@@ -321,7 +321,6 @@ int frontend_entry(int argc,char **argv) {
   TIMEpreprocess = time10ms();
 
   /* ********** INSERT PLANNER CALL HERE! *********** */
-  printf("INSERT PLANNER CALL HERE!\n\n");
   export();
 
   printf("total time %.2f preprocess %.2f \n",
@@ -349,13 +348,15 @@ int maxNumEffects = 0;
 int nextFreeAuxCnfVar;
 char cnfFileName[4096];
 char mappingFileName[4096];
+char jsonFileName[4096];
 FILE* cnfFile;
 FILE* mappingFile;
+FILE* jsonFile;
 
-int actionToCnfVar(int action) { return action + nOfAtoms + 1; }
+int actionToCnfVar(int action) { return action + 1; }
 // possibleEffectNum start at 0
-int atomToEffCnfVar(int atom, int possibleEffectNum) { return (nOfAtoms + nOfActions) * (possibleEffectNum+1) + atom + 1; }
-int atomToCnfVar(int atom) { return atom + 1; }
+int atomToEffCnfVar(int atom, int possibleEffectNum) { return (nOfAtoms + nOfActions) * (possibleEffectNum+1) + nOfActions + atom + 1; }
+int atomToCnfVar(int atom) { return nOfActions + atom + 1; }
 
 void writeActionImpliesPreconditionClauses();
 void writeActionImpliesEffectClauses();
@@ -364,6 +365,8 @@ void writeInvariantClauses();
 void writeFrameAxiomClauses();
 
 void writeMapping();
+
+void writeExtraJson();
 
 // export CNF and relevant information
 void export() {
@@ -377,11 +380,15 @@ void export() {
     strcpy(mappingFileName + strlen(mappingFileName), "/tmp_mapping.cnf");
     mappingFile = fopen(mappingFileName, "w");
 
+    // open the extra information json file
+    strcpy(jsonFileName, tmpDir);
+    strcpy(jsonFileName + strlen(jsonFileName), "/tmp_dagster_info.json");
+    jsonFile = fopen(jsonFileName, "w");
+
     // calculate the maximum number of effects
     for (int i=0; i<nOfActions; i++) {
         if (actions[i].nOfEffects>maxNumEffects) maxNumEffects = actions[i].nOfEffects;
     }
-
     printf("maximum number of effects of any action: %d\n", maxNumEffects);
 
     // work out where to put the aux variables
@@ -402,6 +409,9 @@ void export() {
 
     // write mapping
     writeMapping();
+
+    // write extra json
+    writeExtraJson();
 
     fclose(cnfFile);
     fclose(mappingFile);
@@ -641,15 +651,103 @@ void writeFrameAxiomClauses() {
 }
 
 void writeMapping() {
-    for (int atom=0; atom<nOfAtoms; atom++) {
-        fprintf(mappingFile, "proposition ");
-        fprintatomi(mappingFile, atom);
-        fprintf(mappingFile, " %d\n", atom+1);
-    }
-
     for (int action=0; action<nOfActions; action++) {
         fprintf(mappingFile, "action ");
         fprintactionname(mappingFile, action);
-        fprintf(mappingFile, " %d\n", nOfAtoms + action + 1);
+        fprintf(mappingFile, " %d\n", action + 1);
     }
+
+    for (int atom=0; atom<nOfAtoms; atom++) {
+        fprintf(mappingFile, "proposition ");
+        fprintatomi(mappingFile, atom);
+        fprintf(mappingFile, " %d\n", nOfActions + atom+1);
+    }
+}
+
+/*
+
+{
+  "total_per_timestep": 17083,
+  "num_aux": 0,
+  "action_min": 1,
+  "action_max": 14760,
+  "initial_state": [
+    -14761,
+    -14762,
+    -14763,
+    -14764,
+    ...
+    -14765,
+    -14766,
+    -14767,
+    -14768,
+    -17080,
+    -17081,
+    -17082,
+    -17083
+  ],
+  "goal_condition": [
+    14802,
+    15149,
+    16505,
+    16616,
+    16737
+  ],
+  */
+void writeExtraJsonGoalHelper(fmalist* formulaList) {
+    if (formulaList == NULL) return;
+
+    fma* lit = formulaList->hd;
+    if      (lit->t == patom) fprintf(jsonFile, "    %d", atomToCnfVar(lit->a)); 
+    else if (lit->t == natom) fprintf(jsonFile, "    %d", -atomToCnfVar(lit->a)); 
+    else {
+        printf("ERROR: goal conjuncts are not literals\n");
+        exit(1);
+    }
+
+
+    if (formulaList->tl != NULL) fprintf(jsonFile, ",");
+    fprintf(jsonFile, "\n");
+
+    writeExtraJsonGoalHelper(formulaList->tl);
+}
+
+void writeExtraJson() {
+    fprintf(jsonFile, "{\n");
+
+    fprintf(jsonFile, "  \"max_num_effects\": %d,\n", maxNumEffects);
+    fprintf(jsonFile, "  \"total_per_timestep\": %d,\n", nOfActions + nOfAtoms);
+    fprintf(jsonFile, "  \"action_min\": %d,\n", 1);
+    fprintf(jsonFile, "  \"action_max\": %d,\n", nOfActions + 1);
+
+    // initial state
+    fprintf(jsonFile, "  \"initial_state\": [\n");
+    for (int atom=0; atom<nOfAtoms; atom++) {
+        int pos = initialstate[atom];
+        if (pos) fprintf(jsonFile, "    %d", atomToCnfVar(atom));
+        else     fprintf(jsonFile, "    %d", -atomToCnfVar(atom));
+        if (atom != nOfAtoms-1) fprintf(jsonFile, ",");
+        fprintf(jsonFile, "\n");
+    }
+    fprintf(jsonFile, "  ],\n");
+
+    // goal
+    fprintf(jsonFile, "  \"goal_condition\": [\n");
+    switch(goal->t) {
+        case patom: 
+            fprintf(jsonFile, "    %d\n", atomToCnfVar(goal->a));
+            break;
+        case natom: 
+            fprintf(jsonFile, "    %d\n", -atomToCnfVar(goal->a));
+            break;
+        case conj:
+            writeExtraJsonGoalHelper(goal->juncts);
+            break;
+        default:
+            printf("ERROR: don't know how to handle goal\n");
+            exit(1);
+    }
+    fprintf(jsonFile, "  ]\n");
+
+    fprintf(jsonFile, "}\n");
 }
