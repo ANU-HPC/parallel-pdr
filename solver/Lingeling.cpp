@@ -59,13 +59,20 @@ Lingeling Lingeling::clone() {
   return Lingeling();
 }
 
-void Lingeling::load_with_planning_problem(string directory, int timesteps, int total_per_timestep) {
+void Lingeling::load_deterministic_planning_problem(string directory, int timesteps, int total_per_timestep) {
   // Transition
   load_with_copies((directory + "/tmp_transition.cnf").c_str(), timesteps-1, total_per_timestep); 
   
   // Invariants
   load_with_copies((directory + "/tmp_invariants.cnf").c_str(), timesteps, total_per_timestep); 
 }
+
+
+void Lingeling::load_nondeterministic_planning_problem(string directory) {
+  // Transition
+  load_with_copies((directory + "/tmp_transition.cnf").c_str(), 1, -99999999); 
+}
+
 
 void Lingeling::load_with_copies(const char* fname, int iterations, int offsets_each_time) {
   // taken from Tinisat
@@ -170,7 +177,8 @@ void Lingeling::load_with_copies(const char* fname, int iterations, int offsets_
         for (auto it=clause_to_add.begin(); it!=clause_to_add.end(); it++) {
           const int base_lit = *it;
           if (base_lit != 0) {
-            const int tilded_lit = Utils::tilde(base_lit,iteration);
+            assert(0); 
+            const int tilded_lit = Utils::tilde(base_lit,iteration*offsets_each_time);
             lgladd(solver, tilded_lit);
             lglfreeze(solver, tilded_lit);
           } else {

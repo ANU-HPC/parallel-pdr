@@ -90,10 +90,11 @@ then
     cd $base
 fi
 
-if [$NONDETERMINISTIC -eq "1"]
+if [ $NONDETERMINISTIC -eq "1" ]
+then
     # use the modified direct madagascar parser
     ./nondeterministic_frontend/pfronten $DOMAIN $PROBLEM -l $TMP_DIR
-then
+else
     # use the python wrapper extractor
     cd extract
 
@@ -128,9 +129,11 @@ then
         mkdir fd/cached_heuristics/$(python fd/hash_domain_problem.py $DOMAIN $PROBLEM)
         cd pdr
     fi
+    cd ..
 fi
 
-cd ../solver
+cd solver
+
 CPP_START_TIME=$(date +%s.%N)
 if [ $isolate_subproblems -eq "1" ]
 then
@@ -266,8 +269,8 @@ else # not isolate_parallel
 
     else
         echo ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
-        ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
-        #gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        #./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
         #valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
     fi
 fi

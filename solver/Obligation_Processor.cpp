@@ -1,6 +1,7 @@
 #include "Obligation_Processor.h"
 #include "Compressed_Actions.h"
 #include "Contextless_Reason.h"
+#include "Global.h"
 #include "Obligation.h"
 #include "Reason_From_Orchestrator.h"
 #include "Utils.h"
@@ -15,7 +16,9 @@ Obligation_Processor::Obligation_Processor(int layer_steps) {
 
   // create base solver
   _base_solver = new Lingeling();
-  _base_solver->load_with_planning_problem(Global::problem.tmp_dir, _total_sub_steps, Global::problem.total_per_timestep); 
+  if (Global::problem.nondet) _base_solver->load_nondeterministic_planning_problem(Global::problem.tmp_dir); 
+  else                        _base_solver->load_deterministic_planning_problem(Global::problem.tmp_dir, _total_sub_steps, Global::problem.total_per_timestep); 
+
   _base_solver->solve(vector<int>());
 
   // initialize with goal TODO will break with subproblems

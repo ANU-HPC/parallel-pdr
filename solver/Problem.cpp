@@ -52,7 +52,7 @@ bool Problem::zero_one_int_to_bool(int arg) {
 
 void Problem::read_extra_settings(string extra_settings_filename) {
   // read extra settings - the is mainly for testing, so new feastures can be quickly added and removed
-  const int total_expected = 15;
+  const int total_expected = 16;
   set<string> ignore_keys;
   ignore_keys.insert("activation_literals");
 
@@ -81,6 +81,8 @@ void Problem::read_extra_settings(string extra_settings_filename) {
       complete_nonfinal = zero_one_int_to_bool(val_int);
     } else if (key == "dagster") {
       dagster = zero_one_int_to_bool(val_int);
+    } else if (key == "nondeterministic") {
+      nondet = zero_one_int_to_bool(val_int);
     } else if (key == "mpi_nodes") {
       mpi_nodes = val_int;
     } else if (key == "obligation_rescheduling") {
@@ -120,6 +122,10 @@ void Problem::read_extra_settings(string extra_settings_filename) {
 
   if (complete_nonfinal && project_last) {
     assert(0); // Can't handle projecting AND complete nonfinal - will try do them together, and not do it well
+  }
+
+  if (nondet) {
+    assert(max_macro_steps==1);
   }
 
   /*
@@ -188,51 +194,40 @@ Problem::Problem(int argc, char **argv) {
   }
 
   assert(document.IsObject()); 
-
   assert(document.HasMember("total_per_timestep"));
-  assert(document.HasMember("num_aux"));
   assert(document.HasMember("action_min"));
   assert(document.HasMember("action_max"));
   assert(document.HasMember("initial_state"));
   assert(document.HasMember("goal_condition"));
-  //assert(document.HasMember("decomposition_root_nodes"));
-  //assert(document.HasMember("num_decomposition_nodes"));
-  assert(document.HasMember("dagster_num_layers_supported"));
-  //assert(document.HasMember("collating_node"));
-  assert(document.HasMember("num_subproblems"));
-  //assert(document.HasMember("decomposition_node_to_nogood_propositions"));
-  //assert(document.HasMember("decomposition_node_to_local_propositions"));
-  assert(document.HasMember("subproblem_to_propositions"));
-  assert(document.HasMember("subproblem_to_isolate_goal"));
+
+  if (!nondet) {
+    assert(document.HasMember("num_aux"));
+    assert(document.HasMember("dagster_num_layers_supported"));
+    assert(document.HasMember("num_subproblems"));
+    assert(document.HasMember("subproblem_to_propositions"));
+    assert(document.HasMember("subproblem_to_isolate_goal"));
 
 #if ALLOW_HEURISTIC_H_ADD
-  assert(document.HasMember("action_to_preconditions"));
-  assert(document.HasMember("action_to_effects_strips"));
-  assert(document.HasMember("action_literals_to_extra_positive_effects"));
+    assert(document.HasMember("action_to_preconditions"));
+    assert(document.HasMember("action_to_effects_strips"));
+    assert(document.HasMember("action_literals_to_extra_positive_effects"));
 #endif
 
-  assert(document["total_per_timestep"].IsNumber());
-  assert(document["num_aux"].IsNumber());
-  assert(document["action_min"].IsNumber());
-  assert(document["action_max"].IsNumber());
-  //assert(document["num_decomposition_nodes"].IsNumber());
-  assert(document["dagster_num_layers_supported"].IsNumber());
-  //assert(document["collating_node"].IsNumber());
-  assert(document["num_subproblems"].IsNumber());
+    assert(document["total_per_timestep"].IsNumber());
+    assert(document["num_aux"].IsNumber());
+    assert(document["action_min"].IsNumber());
+    assert(document["action_max"].IsNumber());
+    assert(document["dagster_num_layers_supported"].IsNumber());
+    assert(document["num_subproblems"].IsNumber());
+  }
 
   total_per_timestep = document["total_per_timestep"].GetInt();
-  num_aux = document["num_aux"].GetInt();
   int action_min = document["action_min"].GetInt();
   int action_max = document["action_max"].GetInt();
   for (int i=action_min; i<=action_max; i++) {
     actions.push_back(i);
     actions_set.insert(i);
   }
-
-  //num_decomposition_nodes = document["num_decomposition_nodes"].GetInt();
-  dagster_num_layers_supported = document["dagster_num_layers_supported"].GetInt();
-  //collating_node = document["collating_node"].GetInt();
-  num_subproblems = document["num_subproblems"].GetInt();
 
   const Value& initial_state_array = document["initial_state"];
   assert(initial_state_array.IsArray());
@@ -243,6 +238,29 @@ Problem::Problem(int argc, char **argv) {
   assert(goal_condition_array.IsArray());
   for (SizeType i = 0; i < goal_condition_array.Size(); i++)
     goal_condition.push_back(goal_condition_array[i].GetInt());
+
+  if (nondet) {
+    subproblem_to_propositions[0] = vector<int>();
+    
+    for (auto it=initial_state.begin(); it!=initial_state.end(); it++) {
+      subproblem_to_propositions[0].push_back(abs(*it)); 
+    }
+
+    num_aux = 0;
+    num_subproblems = 1;
+    cout << "Finished loading in nondeterministic problem!" << endl;
+    return;
+  }
+
+  // deterministic part:
+
+  num_aux = document["num_aux"].GetInt();
+
+  //num_decomposition_nodes = document["num_decomposition_nodes"].GetInt();
+  dagster_num_layers_supported = document["dagster_num_layers_supported"].GetInt();
+  //collating_node = document["collating_node"].GetInt();
+  num_subproblems = document["num_subproblems"].GetInt();
+
 
   const Value& base_scc_node_to_propositions_object = document["base_scc_node_to_propositions"]; 
   assert(base_scc_node_to_propositions_object.IsObject());
