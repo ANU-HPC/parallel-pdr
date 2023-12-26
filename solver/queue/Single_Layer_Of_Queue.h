@@ -29,11 +29,13 @@ class Single_Layer_Of_Queue {
     int size();
     bool empty();
     int trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment);
+    int remove_state(const Compressed_State& state);
   private:
     Obligation remove_obligation_at_slot(int slot);
     unordered_set<Obligation, Obligation_Hash> _all_obligations;
     Queue_Entry_Container _entries;
     vector<set<Queue_Reference*, Queue_Reference_Pointer_Compare>> _heuristic_to_references = vector<set<Queue_Reference*, Queue_Reference_Pointer_Compare>>(Heuristics::NUM_HEURISTICS);
+    unordered_map<Compressed_State, int, Compressed_State_Hash> _state_to_slot;
 };
 
 #endif

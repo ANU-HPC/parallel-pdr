@@ -27,6 +27,7 @@ using namespace std;
 class Strategies {
   public:
     static bool run_default();
+    static bool run_nondeterministic();
   private:
     static void manage_per_inbox_check_periodic_stats(int reasons_size, int successes_size);
 
@@ -38,6 +39,8 @@ class Strategies {
 
     static int one_worker_results;
     static int more_than_one_worker_results;
+
+    static uint64_t already_displayed_elapsed_time;
 };
 
 #endif

@@ -31,6 +31,8 @@ OBJS = main.o \
 	   Plan_Builder.o \
 	   Strategies.o \
 	   Stats.o \
+	   nondeterminism/ND_Manager.o \
+	   nondeterminism/Goal_States_Graph.o \
 	   queue/Heuristics.o \
 	   queue/Single_Layer_Of_Queue.o \
 	   queue/Queue_Reference.o \
@@ -63,6 +65,8 @@ HEADERS	= main.h \
 		  Plan_Builder.h \
 		  Strategies.h \
 		  Stats.h \
+		  nondeterminism/ND_Manager.h \
+		  nondeterminism/Goal_States_Graph.h \
 		  queue/Heuristics.h \
 		  queue/Single_Layer_Of_Queue.h \
 		  queue/Queue_Reference.h \

@@ -37,4 +37,12 @@ class Utils {
     static bool abs_comp(const int a, const int b);
     static bool is_abs_sorted(const vector<int>& x);
 };
+
+struct Int_Pair_Hash {
+  std::size_t operator () (pair<int, int> const &pair) const
+  {
+    return hash<int>{}(pair.first + (pair.second << 16));
+  }
+};
+
 #endif

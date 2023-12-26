@@ -2,6 +2,14 @@
 
 Single_Layer_Of_Queue::Single_Layer_Of_Queue() { }
 
+int Single_Layer_Of_Queue::remove_state(const Compressed_State& state) {
+  if (_state_to_slot.find(state) == _state_to_slot.end()) return 0;
+  const int slot = _state_to_slot[state];
+  const Obligation obligation = remove_obligation_at_slot(slot);
+  _all_obligations.erase(obligation);
+  return 1;
+}
+
 bool Single_Layer_Of_Queue::push(const Obligation& obligation) {
   // first check it is not already in here
   if (_all_obligations.find(obligation) != _all_obligations.end()) return false;
@@ -27,6 +35,8 @@ bool Single_Layer_Of_Queue::push(const Obligation& obligation) {
   const int actual_slot = _entries.insert(queue_entry);
   (void) actual_slot;
   assert(actual_slot == slot);
+
+  _state_to_slot[obligation.compressed_state()] = slot;
 
   return true;
 }
@@ -57,7 +67,11 @@ Obligation Single_Layer_Of_Queue::remove_obligation_at_slot(int slot) {
     delete queue_reference;
   }
 
-  return queue_entry.obligation();
+  const Obligation& obligation = queue_entry.obligation();
+
+  _state_to_slot.erase(obligation.compressed_state());
+
+  return obligation;
 }
 
 int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment) { // TODO settle on the layer_increment, remove eventually maybe

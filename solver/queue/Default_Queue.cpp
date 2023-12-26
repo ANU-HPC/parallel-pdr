@@ -2,7 +2,20 @@
 
 Default_Queue::Default_Queue() { }
 
+void Default_Queue::remove_and_ban_state(const Compressed_State state) {
+  _banned_states.insert(state);
+
+  int removed = 0;
+  for (int layer=0; layer<=_lowest_layer_with_content; layer++) {
+    removed += _layers[layer].remove_state(state);
+  }
+
+  assert(removed <= 1);
+}
+
 void Default_Queue::push(const Obligation& obligation) {
+  if (_banned_states.find(obligation.compressed_state()) != _banned_states.end()) return;
+
   Global::stats.count("pushing to queue obligation with or_count: " + std::to_string(obligation.or_count()));
 
   const int layer = obligation.layer();
