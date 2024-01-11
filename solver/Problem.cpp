@@ -82,7 +82,7 @@ void Problem::read_extra_settings(string extra_settings_filename) {
     } else if (key == "dagster") {
       dagster = zero_one_int_to_bool(val_int);
     } else if (key == "nondeterministic") {
-      nondet = zero_one_int_to_bool(val_int);
+      nondeterministic = zero_one_int_to_bool(val_int);
     } else if (key == "mpi_nodes") {
       mpi_nodes = val_int;
     } else if (key == "obligation_rescheduling") {
@@ -124,7 +124,7 @@ void Problem::read_extra_settings(string extra_settings_filename) {
     assert(0); // Can't handle projecting AND complete nonfinal - will try do them together, and not do it well
   }
 
-  if (nondet) {
+  if (nondeterministic) {
     assert(max_macro_steps==1);
   }
 
@@ -172,7 +172,7 @@ void Problem::read_mapping(){
   }
 }
 
-Problem::Problem() {}
+Problem::Problem() { }
 
 Problem::Problem(int argc, char **argv) {
   process_command_line_arguments(argc, argv);
@@ -200,7 +200,7 @@ Problem::Problem(int argc, char **argv) {
   assert(document.HasMember("initial_state"));
   assert(document.HasMember("goal_condition"));
 
-  if (!nondet) {
+  if (!nondeterministic) {
     assert(document.HasMember("num_aux"));
     assert(document.HasMember("dagster_num_layers_supported"));
     assert(document.HasMember("num_subproblems"));
@@ -239,7 +239,7 @@ Problem::Problem(int argc, char **argv) {
   for (SizeType i = 0; i < goal_condition_array.Size(); i++)
     goal_condition.push_back(goal_condition_array[i].GetInt());
 
-  if (nondet) {
+  if (nondeterministic) {
     subproblem_to_propositions[0] = vector<int>();
     
     for (auto it=initial_state.begin(); it!=initial_state.end(); it++) {
@@ -249,6 +249,33 @@ Problem::Problem(int argc, char **argv) {
     num_aux = 0;
     num_subproblems = 1;
     cout << "Finished loading in nondeterministic problem!" << endl;
+
+    action_to_num_outcomes = vector<int>(action_max-action_min+1);
+
+    const Value& action_to_num_outcomes_object = document["action_to_num_outcomes"]; 
+    assert(action_to_num_outcomes_object.IsObject());
+    for (Value::ConstMemberIterator ita = action_to_num_outcomes_object.MemberBegin(); ita != action_to_num_outcomes_object.MemberEnd(); ita++) {
+      int action = stoi(ita->name.GetString());
+      int num_outcomes = ita->value.GetInt();
+      max_num_outcomes = max(max_num_outcomes, num_outcomes);
+      action_to_num_outcomes[action] = num_outcomes;
+    }
+
+
+    if (!obligation_rescheduling) {
+      cout << "ERROR! must have OR when nondeterministic (non-OR is not supported, but possible)" << endl;
+      exit(1);
+    }
+
+    if (interleaved_layers) {
+      cout << "ERROR interleaved_layers" << endl;
+      exit(1);
+    }
+
+    if (max_macro_steps != 1) {
+      cout << "ERROR max_macro_steps != 1" << endl;
+      exit(1);
+    }
     return;
   }
 

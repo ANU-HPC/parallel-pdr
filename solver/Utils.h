@@ -16,6 +16,9 @@ class Utils {
     static int worker_to_steps(int worker);
 
     static vector<int> inflate_only_true_to_all(const vector<int>& only_true, const vector<int>& all);
+    static string to_symbols_string(int x);
+    static string to_symbols_string(vector<int> x);
+    static string to_symbols_string(set<int> x);
     static string to_string(vector<int> x);
     static string to_string(set<int> x);
     static string to_string(int* data, int size);

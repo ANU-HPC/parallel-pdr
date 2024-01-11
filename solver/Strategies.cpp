@@ -101,7 +101,6 @@ bool Strategies::run_default() {
         if (!queue.empty()) {
           // special requirement, if the queue does not have something available, don't bother here
           if (Utils::worker_to_steps(worker)>queue.lowest_layer_with_content()) continue;
-
           worker_interface.handle_obligation(queue.pop(Heuristics::RANDOM), worker);
         }
       }
@@ -292,15 +291,26 @@ bool Strategies::run_nondeterministic() {
 
         vector<int> outcome_ids;
 
+        //LOG << "got back success: " << success.to_string() << endl;
+        //LOG << "From state: " << success.original_obligation().compressed_state().to_string() << endl;
+        assert(success.actions().size()==1);
+        assert(success.actions()[0].get_actions().size()==1);
+        //LOG << "With action: " << Global::problem.symbols[success.actions()[0].get_actions()[0]] << endl;
+
+        set<int> new_goal_reaching_states;
+
         const vector<Obligation>& successor_obligations = success.successor_obligations();
         for (auto itb=successor_obligations.begin(); itb!=successor_obligations.end(); itb++) {
           const Obligation& successor_obligation = *itb;
           queue.push(successor_obligation);
           assert(successor_obligation.reduce_reason_add_successor_to_queue());
 
+          LOG << "Outcome: " << successor_obligation.compressed_state().to_string() << endl;
+
           // check if obligation is a goal state
           if (successor_obligation.layer() == 0) {
-            goal_states_graph.register_goal_state(nd_manager.state_to_state_id(successor_obligation.compressed_state()));
+            const set<int> extra_new_goal_reaching_states = goal_states_graph.register_goal_state(nd_manager.state_to_state_id(successor_obligation.compressed_state()));
+            new_goal_reaching_states.insert(extra_new_goal_reaching_states.begin(), extra_new_goal_reaching_states.end());
           }
 
           outcome_ids.push_back(nd_manager.state_to_state_id(successor_obligation.compressed_state()));
@@ -311,10 +321,12 @@ bool Strategies::run_nondeterministic() {
         assert(success.actions().size()==1); // only one action should have been executed
         assert(success.actions()[0].get_actions().size()==1); // only one action should have been executed
 
-        set<int> new_goal_reaching_states = goal_states_graph.register_state_action_to_outcome_states(
+        const set<int> extra_new_goal_reaching_states = goal_states_graph.register_state_action_to_outcome_states(
             nd_manager.state_to_state_id(success.original_obligation().compressed_state()),
             success.actions()[0].get_actions()[0],
             outcome_ids);
+
+        new_goal_reaching_states.insert(extra_new_goal_reaching_states.begin(), extra_new_goal_reaching_states.end());
 
         if (new_goal_reaching_states.find(nd_manager.initial_state_id()) != new_goal_reaching_states.end()) {
           // a plan exists!
@@ -325,6 +337,7 @@ bool Strategies::run_nondeterministic() {
           // remove these from the queue
           for (auto it=new_goal_reaching_states.begin(); it!=new_goal_reaching_states.end(); it++) {
             const int state_id = *it; 
+            LOG << "about to trim from the queue the state: " << nd_manager.state_id_to_state(state_id).to_string() << endl;
             queue.remove_and_ban_state(nd_manager.state_id_to_state(state_id));
           }
         }
@@ -335,6 +348,7 @@ bool Strategies::run_nondeterministic() {
         worker_reason = *it; 
         const Reason_From_Worker& reason_from_worker = get<1>(worker_reason);
         const Contextless_Reason& reason = reason_from_worker.contextless_reason();
+        LOG << "got back reason: " << reason_from_worker.to_string() << endl;
 
         const int layers_to_add_to = layers.add_reason(reason);
 
@@ -361,6 +375,8 @@ bool Strategies::run_nondeterministic() {
     for (int layer=1; layer<=k+1; layer++) {
       auto reasons_to_push = layers.reasons_not_in_next_layer(layer-1);
 
+      LOG << "Clause pushing turned off in nondeterminism for now" << endl;
+      /*
       // get all the "obligations"
       vector<Obligation> push;
       for (auto it=reasons_to_push->begin(); it!=reasons_to_push->end(); it++) {
@@ -409,6 +425,7 @@ bool Strategies::run_nondeterministic() {
       // manually clear these buffers
       worker_reasons->clear();
       worker_successes->clear();
+      */
 
       // convergence check
       if (layers.same_as_previous(layer)) {

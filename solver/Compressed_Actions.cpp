@@ -18,7 +18,7 @@ Compressed_Actions::Compressed_Actions(int* data, int start, int stop) {
 }
 
 string Compressed_Actions::to_string() const {
-  return Utils::to_string(_raw);
+  return Utils::to_symbols_string(_raw);
 }
 
 vector<int> Compressed_Actions::get_actions() const {

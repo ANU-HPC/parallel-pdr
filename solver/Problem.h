@@ -34,12 +34,15 @@ class Problem {
     bool interleaved_layers; // For macros, instead of just reasons at the end, put them throughout
     int max_macro_steps;
     bool evaluation_mode;
-    bool nondet;
+    bool nondeterministic;
     int start_epoch_time;
 
     vector<string> symbols;
 
     vector<int> worker_to_transitions;
+
+    vector<int> action_to_num_outcomes;
+    int max_num_outcomes = -1;
 
     int total_per_timestep;
     int num_aux;

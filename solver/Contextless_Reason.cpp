@@ -11,7 +11,7 @@ Contextless_Reason::Contextless_Reason(const vector<int>& reason, int layer, int
 }
 
 string Contextless_Reason::to_string() const {
-  return "{ Contextless_Reason, L:" + std::to_string(_layer) + " S:" + std::to_string(_subproblem) + " " + Utils::to_string(_reason)  + " }";
+  return "{ Contextless_Reason, L:" + std::to_string(_layer) + " S:" + std::to_string(_subproblem) + " " + Utils::to_symbols_string(_reason)  + " }";
 }
 
 bool Contextless_Reason::operator==(const Contextless_Reason& other) const {

@@ -53,6 +53,68 @@ vector<int> Utils::inflate_only_true_to_all(const vector<int>& only_true, const 
   return result;
 }
 
+string repeat(string s, int times) {
+  if (times == 0) return "";
+  else return s + repeat(s, times-1);
+}
+
+string Utils::to_symbols_string(int x) {
+  const string pos = x>0 ? "" : "-";
+  const int timestep = (abs(x)-1)/Global::problem.total_per_timestep;
+  const int x_in_timestep = ((abs(x)-1)%Global::problem.total_per_timestep)+1;
+
+  if (Global::problem.nondeterministic) {
+    if (timestep > Global::problem.max_num_outcomes) {
+      return pos + "AUX" + std::to_string(x_in_timestep);
+    } else {
+
+      if (in(Global::problem.actions_set, x_in_timestep) && timestep != 0) {
+        return pos + "UA";
+      } else {
+        return pos + repeat("*", timestep) + Global::problem.symbols[x_in_timestep];
+      }
+    }
+  }
+}
+
+string Utils::to_symbols_string(vector<int> x) {
+  // give by copy
+
+  string h = "[" + hash_string(Utils::hash(x)) + "]";
+
+  string ret_val = "{" + h;
+  for (int i=0; i<x.size(); i++) {
+    if (x[i] > 0) {
+      ret_val += "  \033[38;5;10m";
+      ret_val += to_symbols_string(x[i]);
+    } else {
+      ret_val += " \033[38;5;9m";
+      ret_val += to_symbols_string(x[i]);
+    }
+    ret_val += "\033[0m";
+  }
+  return ret_val + " }";
+}
+
+string Utils::to_symbols_string(set<int> x) {
+  // give by copy
+
+  string ret_val = "{ ";
+
+  for (auto it=x.begin(); it!=x.end(); it++) {
+    const int element = *it; 
+    if (element > 0) {
+      ret_val += "  \033[38;5;10m";
+      ret_val += to_symbols_string(element);
+    } else {
+      ret_val += " \033[38;5;9m";
+      ret_val += to_symbols_string(element);
+    }
+    ret_val += "\033[0m";
+  }
+  return ret_val + " }";
+}
+
 string Utils::to_string(vector<int> x) {
   // give by copy
 

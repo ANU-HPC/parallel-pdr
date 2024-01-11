@@ -1,5 +1,6 @@
 #include "main.h"
 #include "Global.h"
+#include "Strategies.h"
 
 /*
 void scrap() {
@@ -63,7 +64,8 @@ int main(int argc, char **argv) {
   bool sat;
 
   // pass control to a specific strategy
-  sat = Strategies::run_default();
+  if (Global::problem.nondeterministic) sat = Strategies::run_nondeterministic();
+  else                                  sat = Strategies::run_default();
 
   if (sat) LOG << "SAT" << endl;
   else     LOG << "UNSAT" << endl;

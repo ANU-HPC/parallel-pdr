@@ -10,6 +10,8 @@ set<int> Goal_States_Graph::register_goal_state(const int state) {
 
   set<int> ret_val;
 
+  ret_val.insert(state);
+
   for (auto it=state_to_producing_state_action_pairs[state].begin(); it!=state_to_producing_state_action_pairs[state].end(); it++) {
     const pair<int, int>& state_action = *it;
     const int parent_state = state_action.first;

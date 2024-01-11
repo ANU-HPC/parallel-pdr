@@ -24,7 +24,8 @@ void Serial_Worker_Interface::handle_obligation(const Obligation& obl) {
 }
 
 void Serial_Worker_Interface::handle_reason(const Reason_From_Orchestrator& reason) {
-  _obligation_processor->add_reason(reason);
+  if (Global::problem.nondeterministic) _obligation_processor->add_reason_nondeterministic(reason);
+  else                                  _obligation_processor->add_reason_deterministic(reason);
 }
 
 vector<tuple<int, Reason_From_Worker>>* Serial_Worker_Interface::get_returned_reasons_buffer() {

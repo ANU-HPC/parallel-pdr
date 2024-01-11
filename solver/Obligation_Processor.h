@@ -21,14 +21,16 @@ class Obligation_Processor {
     Obligation_Processor(int layer_steps);
 
     void process_obligation(const Obligation& obl);
-    void add_reason(const Reason_From_Orchestrator& reason);
+    void add_reason_deterministic(const Reason_From_Orchestrator& reason);
+    void add_reason_nondeterministic(const Reason_From_Orchestrator& reason);
 
     bool last_interaction_was_a_success();
     Success last_interactions_success();
     Reason_From_Worker last_interactions_reason();
   private:
     // calculate results from the solver
-    void set_success_from_solver(const Obligation& original_obligation, int end_reasons_layer);
+    void set_success_from_solver_nondeterministic(const Obligation& original_obligation, int end_reasons_layer);
+    void set_success_from_solver_deterministic(const Obligation& original_obligation, int end_reasons_layer);
     void set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer);
 
     // add reasons to solver

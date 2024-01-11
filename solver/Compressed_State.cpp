@@ -117,5 +117,5 @@ int Compressed_State::MPI_message_size() const {
 }
 
 string Compressed_State::to_string() const {
-  return Utils::to_string(_raw);
+  return "{CS, full:" + std::to_string(_guaranteed_full) + " " + Utils::to_symbols_string(_raw) + "}";
 }

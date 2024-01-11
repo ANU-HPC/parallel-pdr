@@ -177,7 +177,7 @@ void Lingeling::load_with_copies(const char* fname, int iterations, int offsets_
         for (auto it=clause_to_add.begin(); it!=clause_to_add.end(); it++) {
           const int base_lit = *it;
           if (base_lit != 0) {
-            assert(0); 
+            //assert(0); 
             const int tilded_lit = Utils::tilde(base_lit,iteration*offsets_each_time);
             lgladd(solver, tilded_lit);
             lglfreeze(solver, tilded_lit);
@@ -234,6 +234,7 @@ void Lingeling::add_clause(const vector<int>& inClause) {
 
 void Lingeling::add_clauses(const vector<vector<int>>& inClauses) {
   for (int j=0; j<inClauses.size(); j++){
+    LOG << "adding clause: " << Utils::to_string(inClauses[j]) << endl;
     for (int i=0; i<inClauses[j].size(); i++) {
       lgladd(solver, inClauses[j][i]);
       lglfreeze(solver, inClauses[j][i]);

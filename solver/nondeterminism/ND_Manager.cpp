@@ -6,6 +6,7 @@ ND_Manager::ND_Manager(const Compressed_State& initial_state) {
 
 // converting to/from id
 Compressed_State ND_Manager::state_id_to_state(int state_id) {
+  assert (state_id_to_state_map.find(state_id) != state_id_to_state_map.end());
   return state_id_to_state_map[state_id];
 }
 
@@ -14,6 +15,7 @@ int ND_Manager::state_to_state_id(const Compressed_State& state) {
   if (position == state_to_state_id_map.end()) {
     int state_id = state_to_state_id_map.size();
     state_to_state_id_map[state] = state_id;
+    state_id_to_state_map[state_id] = state;
     return state_id;
   } else {
     return position->second;

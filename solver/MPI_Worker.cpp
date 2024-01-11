@@ -85,5 +85,6 @@ void MPI_Worker::handle_obligation(const Obligation& obl) {
 }
 
 void MPI_Worker::handle_reason(const Reason_From_Orchestrator& reason) {
-  _obligation_processor->add_reason(reason);
+  if (Global::problem.nondeterministic) _obligation_processor->add_reason_nondeterministic(reason);
+  else                                  _obligation_processor->add_reason_deterministic(reason);
 }

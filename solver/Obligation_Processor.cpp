@@ -12,44 +12,68 @@ Obligation_Processor::Obligation_Processor(int layer_steps) {
   _sub_steps_per_internal_layer_step = MAX_OR_COUNT+1;
   _total_sub_steps = _sub_steps_per_internal_layer_step * (_layer_steps-1) + 2;
 
-  assert(Global::problem.interleaved_layers);
+  //assert(Global::problem.interleaved_layers);
 
   // create base solver
   _base_solver = new Lingeling();
-  if (Global::problem.nondet) _base_solver->load_nondeterministic_planning_problem(Global::problem.tmp_dir); 
-  else                        _base_solver->load_deterministic_planning_problem(Global::problem.tmp_dir, _total_sub_steps, Global::problem.total_per_timestep); 
+  if (Global::problem.nondeterministic) _base_solver->load_nondeterministic_planning_problem(Global::problem.tmp_dir); 
+  else                                  _base_solver->load_deterministic_planning_problem(Global::problem.tmp_dir, _total_sub_steps, Global::problem.total_per_timestep); 
 
   _base_solver->solve(vector<int>());
 
   // initialize with goal TODO will break with subproblems
   for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
     Reason_From_Orchestrator goal_condition_reason = Reason_From_Orchestrator(Contextless_Reason(vector<int>({-*it}), 0, 0), 0);
-    add_reason(goal_condition_reason);
+    if (Global::problem.nondeterministic) add_reason_nondeterministic(goal_condition_reason);
+    else                                  add_reason_deterministic(goal_condition_reason);
   }
 }
 
 // TODO this is not a concrete thing, it is the current strategy
 void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
-  //LOG << "process obligation" << endl;
+  LOG << "process obligation " << original_obligation.to_string() << endl;
   Global::stats.count("process_obligation");
 
   const int end_reasons_layer = original_obligation.layer()-_layer_steps;
   if (end_reasons_layer<0) {
     LOG << "ERROR: Worker with " << _layer_steps << " given an obligation with layer " << original_obligation.layer() << "      " << original_obligation.layer() << " " << _layer_steps << endl;
+    assert(0);
     exit(1);
   }
 
   _last_interaction_was_a_success =_end_reasons_layer_to_solver[end_reasons_layer]->solve(original_obligation.compressed_state().get_state());
-  if (_last_interaction_was_a_success) set_success_from_solver(original_obligation, end_reasons_layer);
-  else                                 set_reason_from_solver(original_obligation, end_reasons_layer);
+  if (_last_interaction_was_a_success) {
+    if (Global::problem.nondeterministic) set_success_from_solver_nondeterministic(original_obligation, end_reasons_layer);
+    else                                  set_success_from_solver_deterministic(original_obligation, end_reasons_layer);
+   } else                                 set_reason_from_solver(original_obligation, end_reasons_layer);
 
   Global::stats.count(
       "layer: " + std::to_string(original_obligation.layer()) + 
       " sat? " + std::to_string(_last_interaction_was_a_success));
   return;
+  LOG << "success? " << _last_interaction_was_a_success << endl;
 }
 
-void Obligation_Processor::add_reason(const Reason_From_Orchestrator& reason) {
+void Obligation_Processor::add_reason_nondeterministic(const Reason_From_Orchestrator& reason) {
+  const Contextless_Reason& contextless_reason = reason.contextless_reason();
+  LOG << contextless_reason.to_string() << endl;
+  const vector<int>& timestep_zero_nogood_clause = contextless_reason.timestep_zero_nogood_clause();
+
+
+  ensure_solver_exists_for_end_reason_layer(contextless_reason.layer());
+
+  // loop over all the solvers
+  for (int layer_to_add_to=contextless_reason.layer(); layer_to_add_to>=0; layer_to_add_to--) {
+
+    // loop over all the alternate outcomes
+    for (int outcome_id=1; outcome_id<=Global::problem.max_num_outcomes; outcome_id++) {
+      const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, outcome_id);
+      _end_reasons_layer_to_solver[layer_to_add_to]->add_clause(clause_to_add);
+    }
+  }
+}
+
+void Obligation_Processor::add_reason_deterministic(const Reason_From_Orchestrator& reason) {
   const Contextless_Reason& contextless_reason = reason.contextless_reason();
   const vector<int>& timestep_zero_nogood_clause = contextless_reason.timestep_zero_nogood_clause();
 
@@ -145,8 +169,69 @@ Reason_From_Worker Obligation_Processor::last_interactions_reason() {
   return _reason;
 }
 
+void Obligation_Processor::set_success_from_solver_nondeterministic(const Obligation& original_obligation, int end_reasons_layer) {
+  // check if need to bother extracting
+  if (!original_obligation.reduce_reason_add_successor_to_queue()) {
+    _success = Success(original_obligation, vector<Compressed_Actions>(), vector<Obligation>()); // TODO make it not even be able to retrieve it?
+    return;
+  }
+
+  const vector<int>& model = _end_reasons_layer_to_solver[end_reasons_layer]->get_model();
+
+  const int subproblem = original_obligation.subproblem();
+
+  const vector<int>& all_actions = Global::problem.actions;
+  const vector<int>& all_propositions = Global::problem.subproblem_to_propositions[subproblem];
+
+  vector<Obligation> successor_obligations;
+
+  // extract actions
+  int action= -1;
+  for (auto it=all_actions.begin(); it!=all_actions.end(); it++) {
+    LOG << "asking if action has been executed: " << *it << endl;
+    const int model_var_tilded_to_timestep_zero = model[*it-1];
+    assert(abs(model_var_tilded_to_timestep_zero) == *it);
+    if (model_var_tilded_to_timestep_zero>0) {
+      action = model_var_tilded_to_timestep_zero;
+      LOG << "found action to be: " << action << endl;
+      break;
+    }
+  }
+
+  LOG << "model gotten back " <<  Utils::to_symbols_string(model) << endl;
+  assert (action != -1); // an action must have been executed?
+
+  LOG << "action has N outcomes: " << Utils::to_symbols_string(action) << " " << Global::problem.action_to_num_outcomes[action] << endl;
+
+  // extract outcomes
+  for (int outcome_id=1; outcome_id <= Global::problem.action_to_num_outcomes[action]; outcome_id++) {
+    vector<int> state_vars;
+    for (auto it=all_propositions.begin(); it!=all_propositions.end(); it++) {
+      const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,outcome_id)-1], -outcome_id);
+      assert(abs(model_var_tilded_to_timestep_zero) == *it);
+      if (model_var_tilded_to_timestep_zero>0) state_vars.push_back(model_var_tilded_to_timestep_zero);
+    }
+
+    const int successor_obligation_or_count = (original_obligation.layer() == original_obligation.or_originating_layer()) ? original_obligation.or_count() : 0;
+    const int layer = original_obligation.layer()-1;
+    successor_obligations.push_back(Obligation(
+          Compressed_State(state_vars, subproblem, true),
+          layer,
+          subproblem,
+          original_obligation.or_originating_layer(),
+          successor_obligation_or_count,
+          true));
+  }
+
+  vector<Compressed_Actions> actions = vector<Compressed_Actions>({Compressed_Actions(vector<int>(1, action), 0)});
+
+  _success = Success(original_obligation, actions, successor_obligations);
+
+  LOG << _success.to_string() << endl;
+}
+
 // TODO extract the intermediate states for interleaved layers
-void Obligation_Processor::set_success_from_solver(const Obligation& original_obligation, int end_reasons_layer) {
+void Obligation_Processor::set_success_from_solver_deterministic(const Obligation& original_obligation, int end_reasons_layer) {
   // this should unify old macros, old interleaved and this new combination
   // make it so the model is projected to the relevant subproblem propositions
   // Need to take in the model, and extract everything
@@ -230,6 +315,7 @@ vector<int> set_to_abs_sorted_vector(const set<int>& x) {
 
 void Obligation_Processor::set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer) {
   // So this is actually doing a process of strengthening - lit removal
+  LOG << "finding a reason for the failed obligation: " << original_obligation.to_string() << endl;
   if (!original_obligation.reduce_reason_add_successor_to_queue()) {
     _reason = Reason_From_Worker( 
       Contextless_Reason(original_obligation.compressed_state().get_state(), original_obligation.layer(), original_obligation.subproblem()),
@@ -256,6 +342,8 @@ void Obligation_Processor::set_reason_from_solver(const Obligation& original_obl
       running_reason = vector_to_set(solver->used_assumptions()); // use the used_assumptions as the new running reason
     }
   }
+
+  assert (running_reason.size() != 0);
 
   _reason = Reason_From_Worker(
       Contextless_Reason(set_to_abs_sorted_vector(running_reason), original_obligation.layer(), original_obligation.subproblem()),
