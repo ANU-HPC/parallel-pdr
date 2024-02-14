@@ -122,12 +122,32 @@ string Utils::to_string(vector<int> x) {
 
   string ret_val = "{" + h;
   for (int i=0; i<x.size(); i++) {
-    if (x[i] > 0) {
+    if (x[i] >= 0) {
       ret_val += "  \033[38;5;10m";
       ret_val += std::to_string(x[i]);
     } else {
       ret_val += " \033[38;5;9m";
       ret_val += std::to_string(x[i]);
+    }
+    ret_val += "\033[0m";
+  }
+  return ret_val + " }";
+}
+
+
+string Utils::to_string(unordered_set<int> x) {
+  // give by copy
+
+  string ret_val = "{ ";
+
+  for (auto it=x.begin(); it!=x.end(); it++) {
+    const int element = *it; 
+    if (element >= 0) {
+      ret_val += "  \033[38;5;10m";
+      ret_val += std::to_string(element);
+    } else {
+      ret_val += " \033[38;5;9m";
+      ret_val += std::to_string(element);
     }
     ret_val += "\033[0m";
   }
@@ -141,7 +161,7 @@ string Utils::to_string(set<int> x) {
 
   for (auto it=x.begin(); it!=x.end(); it++) {
     const int element = *it; 
-    if (element > 0) {
+    if (element >= 0) {
       ret_val += "  \033[38;5;10m";
       ret_val += std::to_string(element);
     } else {

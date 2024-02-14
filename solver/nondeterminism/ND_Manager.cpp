@@ -16,6 +16,7 @@ int ND_Manager::state_to_state_id(const Compressed_State& state) {
     int state_id = state_to_state_id_map.size();
     state_to_state_id_map[state] = state_id;
     state_id_to_state_map[state_id] = state;
+    LOG << "just registered a new state id: " << state_id << " " << state.to_string() << endl;
     return state_id;
   } else {
     return position->second;

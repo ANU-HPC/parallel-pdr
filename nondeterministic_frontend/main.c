@@ -750,7 +750,7 @@ void writeExtraJson() {
     fprintf(jsonFile, "  \"max_num_effects\": %d,\n", maxNumEffects);
     fprintf(jsonFile, "  \"total_per_timestep\": %d,\n", nOfActions + nOfAtoms);
     fprintf(jsonFile, "  \"action_min\": %d,\n", 1);
-    fprintf(jsonFile, "  \"action_max\": %d,\n", nOfActions + 1);
+    fprintf(jsonFile, "  \"action_max\": %d,\n", nOfActions);
 
     // initial state
     fprintf(jsonFile, "  \"initial_state\": [\n");

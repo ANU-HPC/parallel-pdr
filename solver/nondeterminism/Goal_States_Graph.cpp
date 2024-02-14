@@ -1,13 +1,20 @@
 #include "Goal_States_Graph.h"
+#include <unordered_map>
 
 Goal_States_Graph::Goal_States_Graph() {
 
 }
 
 // returns state ids of newly goal reaching states
-set<int> Goal_States_Graph::register_goal_state(const int state) {
-  goal_reaching_state_id_to_reaching_action[state] = -1;
+unordered_set<int> Goal_States_Graph::register_goal_state(const int state) {
+  _goal_state_to_actions[state] = unordered_set<int>(); // empty as already a goal state
+  unordered_set<int> ret_val = find_newly_goal_reaching_states();
+  LOG << "ret_val: " << Utils::to_string(ret_val) << endl;
+  return ret_val;
 
+  // TODO maybe do this simple one which could often work as well
+
+  /*
   set<int> ret_val;
 
   ret_val.insert(state);
@@ -17,14 +24,20 @@ set<int> Goal_States_Graph::register_goal_state(const int state) {
     const int parent_state = state_action.first;
     const int parent_action = state_action.second;
 
-    find_newly_goal_reaching_states(&ret_val, parent_state, parent_action);
+    LOG << "TODO" << endl;
+    //find_newly_goal_reaching_states(&ret_val, parent_state, parent_action);
   }
 
   return ret_val;
+  */
 }
 
 // returns state ids of newly goal reaching states
-set<int> Goal_States_Graph::register_state_action_to_outcome_states(const int original_state, const int action, const vector<int>& successor_states) {
+unordered_set<int> Goal_States_Graph::register_state_action_to_outcome_states(const int original_state, const int action, const vector<int>& successor_states) {
+  _graph.add(original_state, action, successor_states);
+  return find_newly_goal_reaching_states();
+
+  /*
   const pair<int, int> state_action = pair<int, int>(original_state, action);
 
   state_to_actions[original_state].insert(action);
@@ -38,10 +51,24 @@ set<int> Goal_States_Graph::register_state_action_to_outcome_states(const int or
 
   // find out if if this is now a goal states
   set<int> ret_val;
-  find_newly_goal_reaching_states(&ret_val, original_state, action);
+  LOG << "todo" << endl;
+  //find_newly_goal_reaching_states(&ret_val, original_state, action);
   return ret_val;
+  */
 }
 
+unordered_set<int> Goal_States_Graph::find_newly_goal_reaching_states() {
+  // do the whole scc iterate and refine thing
+  // TODO for now don't refine by states we know can't reach the goal, and states we know won't be affected by the change
+  
+  for (auto x:_goal_state_to_actions) {
+    LOG << "goal state " << x.first << endl;
+  }
+
+  return _graph.scc_refinement_find_newly_goal_reaching_states(&_goal_state_to_actions);
+}
+
+/*
 void Goal_States_Graph::find_newly_goal_reaching_states(set<int>* newly_goal_reaching_states, int state, int action) {
   if (goal_reaching_state_id_to_reaching_action.find(state) != goal_reaching_state_id_to_reaching_action.end()) {
     // state is already a goal, stop
@@ -73,3 +100,4 @@ void Goal_States_Graph::find_newly_goal_reaching_states(set<int>* newly_goal_rea
     find_newly_goal_reaching_states(newly_goal_reaching_states, parent_state, parent_action);
   }
 }
+*/

@@ -228,6 +228,26 @@ bool Strategies::run_default() {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 bool Strategies::run_nondeterministic() {
   // TODO just for now...
   Global::active_heuristics = set<int>({Heuristics::NONE, Heuristics::RANDOM});
@@ -309,8 +329,10 @@ bool Strategies::run_nondeterministic() {
 
           // check if obligation is a goal state
           if (successor_obligation.layer() == 0) {
-            const set<int> extra_new_goal_reaching_states = goal_states_graph.register_goal_state(nd_manager.state_to_state_id(successor_obligation.compressed_state()));
-            new_goal_reaching_states.insert(extra_new_goal_reaching_states.begin(), extra_new_goal_reaching_states.end());
+            LOG << "registering goal state: " << nd_manager.state_to_state_id(successor_obligation.compressed_state()) << endl;
+            const unordered_set<int> extra_new_goal_reaching_states = goal_states_graph.register_goal_state(nd_manager.state_to_state_id(successor_obligation.compressed_state()));
+            new_goal_reaching_states.insert(extra_new_goal_reaching_states.begin(), extra_new_goal_reaching_states.end()); // the extra ones implied by it
+            new_goal_reaching_states.insert(nd_manager.state_to_state_id(successor_obligation.compressed_state())); // the goal state itself
           }
 
           outcome_ids.push_back(nd_manager.state_to_state_id(successor_obligation.compressed_state()));
@@ -321,7 +343,8 @@ bool Strategies::run_nondeterministic() {
         assert(success.actions().size()==1); // only one action should have been executed
         assert(success.actions()[0].get_actions().size()==1); // only one action should have been executed
 
-        const set<int> extra_new_goal_reaching_states = goal_states_graph.register_state_action_to_outcome_states(
+        LOG << "registering an arc" << endl;
+        const unordered_set<int> extra_new_goal_reaching_states = goal_states_graph.register_state_action_to_outcome_states(
             nd_manager.state_to_state_id(success.original_obligation().compressed_state()),
             success.actions()[0].get_actions()[0],
             outcome_ids);
