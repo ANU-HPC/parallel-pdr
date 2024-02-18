@@ -572,7 +572,7 @@ void writeOnlyOneAOPerActionClauses() {
     for (int action=0; action<nOfActions; action++) {
         for (int effectNum1=0; effectNum1<actions[action].nOfEffects-1; effectNum1++) {
             int AO1 = actionOutcomeToAO(action, effectNum1);
-            for (int effectNum2=0; effectNum2<actions[action].nOfEffects; effectNum2++) {
+            for (int effectNum2=effectNum1+1; effectNum2<actions[action].nOfEffects; effectNum2++) {
                 int AO2 = actionOutcomeToAO(action, effectNum2);
                 fprintf(cnfFile,"%d %d 0\n", -AOToCnfVar(AO1), -AOToCnfVar(AO2));
                 numClauses++;
