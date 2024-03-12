@@ -353,8 +353,8 @@ FILE* mappingFile;
 FILE* jsonFile;
 int nOfAOs;
 
-int AOToCnfVar(int AO) { return AO + 1; }
-int actionToCnfVar(int action) { return (nOfAtoms + nOfAOs) + action + 1; }
+int AOToCnfVar(int AO) { return (nOfAtoms + nOfAOs) + AO + 1; }
+int actionToCnfVar(int action) { return action + 1; }
 int atomTimestepToCnfVar(int atom, int timestep) { return nOfAOs*(timestep+1) + nOfAtoms*timestep + atom + 1; }
 
 int numClauses = 0;
@@ -362,7 +362,6 @@ void writeActionImpliesPreconditionClauses();
 void writeAOImpliesEffectClauses();
 
 void writeAOImpliesActionClauses();
-
 
 void writeOnlyOneActionClauses();
 void writeOnlyOneAOPerActionClauses();
@@ -737,15 +736,16 @@ void writeFrameAxiomClauses() {
 
 void writeMapping() {
     for (int action=0; action<nOfActions; action++) {
-        for (int effectNum=0; effectNum<actions[action].nOfEffects; effectNum++) {
-            int AO = actionOutcomeToAO(action, effectNum);
-
-            fprintf(mappingFile, "action ");
-            fprintactionname(mappingFile, action);
-            fprintf(mappingFile, "___OUTCOME___%d", effectNum);
-            fprintf(mappingFile, " %d\n", AOToCnfVar(AO));
-        }
+        fprintf(mappingFile, "action ");
+        fprintactionname(mappingFile, action);
+        fprintf(mappingFile, " %d\n", actionToCnfVar(action));
     }
+
+    // filler
+    for (int filler=nOfActions+1; filler<nOfAOs+1; filler++) {
+        fprintf(mappingFile, "filler EMPTY %d\n", filler);
+    }
+
 
     for (int atom=0; atom<nOfAtoms; atom++) {
         fprintf(mappingFile, "proposition ");
@@ -754,10 +754,17 @@ void writeMapping() {
     }
 
     for (int action=0; action<nOfActions; action++) {
-        fprintf(mappingFile, "pure_action ");
-        fprintactionname(mappingFile, action);
-        fprintf(mappingFile, " %d\n", actionToCnfVar(action));
+        for (int effectNum=0; effectNum<actions[action].nOfEffects; effectNum++) {
+            int AO = actionOutcomeToAO(action, effectNum);
+
+            fprintf(mappingFile, "outcome ");
+            fprintactionname(mappingFile, action);
+            fprintf(mappingFile, "___OUTCOME___%d", effectNum);
+            fprintf(mappingFile, " %d\n", AOToCnfVar(AO) - (nOfAOs + nOfAtoms));
+        }
     }
+
+
 }
 
 
@@ -809,9 +816,10 @@ void writeExtraJson() {
     fprintf(jsonFile, "{\n");
 
     fprintf(jsonFile, "  \"max_num_effects\": %d,\n", maxNumEffects);
-    fprintf(jsonFile, "  \"total_per_timestep\": %d,\n", nOfActions + nOfAtoms);
+    fprintf(jsonFile, "  \"total_per_timestep\": %d,\n", nOfAOs + nOfAtoms);
     fprintf(jsonFile, "  \"action_min\": %d,\n", 1);
     fprintf(jsonFile, "  \"action_max\": %d,\n", nOfActions);
+    fprintf(jsonFile, "  \"num_aos\": %d,\n", nOfAOs);
 
     // initial state
     fprintf(jsonFile, "  \"initial_state\": [\n");
@@ -836,11 +844,11 @@ void writeExtraJson() {
     // action to ao
     fprintf(jsonFile, "  \"action_to_aos\": {\n");
     for (int action=0; action<nOfActions; action++) {
-        fprintf(jsonFile, "    \"%d\": [", action);
+        fprintf(jsonFile, "    \"%d\": [", action + 1);
         for (int possibleEffectNum=0; possibleEffectNum<actions[action].nOfEffects; possibleEffectNum++) {
             int AO = actionOutcomeToAO(action, possibleEffectNum);
-            if (possibleEffectNum == actions[action].nOfEffects-1) fprintf(jsonFile, "%d", AO);
-            else                                                   fprintf(jsonFile, "%d, ", AO);
+            if (possibleEffectNum == actions[action].nOfEffects-1) fprintf(jsonFile, "%d", AO + 1);
+            else                                                   fprintf(jsonFile, "%d, ", AO + 1);
 
         }
         if (action == nOfActions-1) fprintf(jsonFile, "]\n");
@@ -854,7 +862,7 @@ void writeExtraJson() {
         for (int possibleEffectNum=0; possibleEffectNum<actions[action].nOfEffects; possibleEffectNum++) {
             eff* effect = actions[action].effects[possibleEffectNum];
             int AO = actionOutcomeToAO(action, possibleEffectNum);
-            fprintf(jsonFile, "    \"%d\": [", AO);
+            fprintf(jsonFile, "    \"%d\": [", AO + 1);
             writeExtraJsonEffectsHelper(1, AO, effect);
             if (AO == nOfAOs-1) fprintf(jsonFile, "]\n");
             else                fprintf(jsonFile, "],\n");
