@@ -10,7 +10,6 @@ void Default_Queue::remove_and_ban_state(const Compressed_State state) {
     removed += _layers[layer].remove_state(state);
   }
 
-
   assert(removed <= 1);
   _size -= removed;
 

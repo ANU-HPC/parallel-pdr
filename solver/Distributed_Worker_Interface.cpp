@@ -14,12 +14,16 @@ bool Distributed_Worker_Interface::all_workers_idle() {
   return _workers_wanting_work.size() == _workers_setup.size();
 }
 
-void Distributed_Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
+void Distributed_Worker_Interface::handle_obligation(const Obligation& obl, bool open_children, int worker) {
   assert(Utils::in(_workers_wanting_work, worker));
 
-  int size = obl.MPI_message_size();
-  int* data = obl.get_as_MPI_message();
-  Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_OBLIGATION, data, size);
+  int size = obl.MPI_message_size()+1;
+  int data[size];
+
+  data[0] = open_children ? 1 : 0;
+  obl.get_as_MPI_message(data, 1);
+
+  Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_OPEN_CHILDREN_OBLIGATION, data, size);
 
   _workers_wanting_work.erase(worker);
 }

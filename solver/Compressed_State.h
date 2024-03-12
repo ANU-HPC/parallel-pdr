@@ -21,6 +21,8 @@ class Compressed_State {
     bool operator==(const Compressed_State& other) const;
     size_t hash() const;
 
+    Compressed_State apply_effect(const vector<int>& effect);
+
     bool trimmed_by_reason(const Contextless_Reason& reason);
 
     vector<int> get_state() const;

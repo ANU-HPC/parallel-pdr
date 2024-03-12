@@ -13,6 +13,8 @@
 #include <iterator>
 #include <algorithm>
 
+#include "Global.h"
+#include "Problem.h"
 #include "Utils.h"
 
 using namespace std;
@@ -63,19 +65,35 @@ string Utils::to_symbols_string(int x) {
   const int timestep = (abs(x)-1)/Global::problem.total_per_timestep;
   const int x_in_timestep = ((abs(x)-1)%Global::problem.total_per_timestep)+1;
 
-  if (Global::problem.nondeterministic) {
-    if (timestep > Global::problem.max_num_outcomes) {
-      return pos + "AUX" + std::to_string(x_in_timestep);
-    } else {
+  const vector<int>& all_propositions = Global::problem.subproblem_to_propositions[0];
 
-      if (in(Global::problem.actions_set, x_in_timestep) && timestep != 0) {
-        return pos + "UA";
-      } else {
+  if (Global::problem.nondeterministic) {
+    if (timestep <= 1) {
+      if (Utils::slow_in(all_propositions, x_in_timestep)) {
+        // prop
         return pos + repeat("*", timestep) + Global::problem.symbols[x_in_timestep];
+      } else {
+        if (timestep==0) {
+          // action - may not be a real one
+          if (Global::problem.actions_set.find(x_in_timestep) != Global::problem.actions_set.end()) {
+            // is a real action
+            return pos + Global::problem.symbols[x_in_timestep];
+          } else {
+            // is an unused action slot
+            return pos + "UA";
+          }
+        } else {
+          // outcome
+          return pos + Global::problem.outcome_symbols[x_in_timestep];
+        }
       }
+    } else {
+      // AUX
+      return pos + "AUX" + std::to_string(x_in_timestep);
     }
   }
 }
+
 
 string Utils::to_symbols_string(vector<int> x) {
   // give by copy
@@ -86,10 +104,12 @@ string Utils::to_symbols_string(vector<int> x) {
   for (int i=0; i<x.size(); i++) {
     if (x[i] > 0) {
       ret_val += "  \033[38;5;10m";
-      ret_val += to_symbols_string(x[i]);
+      ret_val += "[" + std::to_string(x[i]) + ":";
+      ret_val += to_symbols_string(x[i]) + "]";
     } else {
       ret_val += " \033[38;5;9m";
-      ret_val += to_symbols_string(x[i]);
+      ret_val += "[" + std::to_string(x[i]) + ":";
+      ret_val += to_symbols_string(x[i]) + "]";
     }
     ret_val += "\033[0m";
   }
@@ -105,10 +125,12 @@ string Utils::to_symbols_string(set<int> x) {
     const int element = *it; 
     if (element > 0) {
       ret_val += "  \033[38;5;10m";
-      ret_val += to_symbols_string(element);
+      ret_val += "[" + std::to_string(element) + ":";
+      ret_val += to_symbols_string(element) + "]";
     } else {
       ret_val += " \033[38;5;9m";
-      ret_val += to_symbols_string(element);
+      ret_val += "[" + std::to_string(element) + ":";
+      ret_val += to_symbols_string(element) + "]";
     }
     ret_val += "\033[0m";
   }
@@ -219,6 +241,13 @@ bool Utils::in(const set<int>& container, int element) {
 
 bool Utils::in(const unordered_set<int>& container, int element) {
   return container.find(element) != container.end();
+}
+
+bool Utils::slow_in(const vector<int>& container, int element) {
+  for (auto it=container.begin(); it!=container.end(); it++) {
+    if (*it == element) return true; 
+  }
+  return false;
 }
 
 size_t Utils::hash(const vector<int>& hashee) {

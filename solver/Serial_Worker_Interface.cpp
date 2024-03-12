@@ -13,7 +13,7 @@ bool Serial_Worker_Interface::all_workers_idle() {
   return true;
 }
 
-void Serial_Worker_Interface::handle_obligation(const Obligation& obl) {
+void Serial_Worker_Interface::handle_obligation(const Obligation& obl, bool open_children) {
   _obligation_processor->process_obligation(obl);
 
   if (_obligation_processor->last_interaction_was_a_success()) {

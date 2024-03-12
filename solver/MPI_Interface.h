@@ -40,6 +40,7 @@ class MPI_Interface {
     const static int MESSAGE_TAG_REASON_FROM_ORCHESTRATOR       = 4;
     const static int MESSAGE_TAG_FINALIZE                       = 5;
     const static int MESSAGE_TAG_IDLE                           = 6;
+    const static int MESSAGE_TAG_OPEN_CHILDREN_OBLIGATION       = 7;
 
     set<int> ENABLED_WORKERS;
 

@@ -19,7 +19,7 @@ class Serial_Worker_Interface {
     Serial_Worker_Interface();
     set<int> workers_wanting_work_snapshot();
     bool all_workers_idle();
-    void handle_obligation(const Obligation& obl);
+    void handle_obligation(const Obligation& obl, bool open_children);
     void handle_reason(const Reason_From_Orchestrator& reason);
     vector<tuple<int,Reason_From_Worker>>* get_returned_reasons_buffer();
     vector<tuple<int,Success>>* get_returned_successes_buffer();

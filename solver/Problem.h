@@ -38,6 +38,7 @@ class Problem {
     int start_epoch_time;
 
     vector<string> symbols;
+    vector<string> outcome_symbols;
 
     vector<int> worker_to_transitions;
 
@@ -70,6 +71,9 @@ class Problem {
     map<int, vector<int>> action_to_effects_strips;
     map<int, vector<int>> corresponding_to_er;
     map<int, vector<int>> er_to_corresponding;
+    map<int, vector<int>> ao_to_effects;
+    map<int, vector<int>> action_to_aos;
+    vector<int> ao_to_action;
 
     //map<int, vector<vector<int>>> subproblem_to_only_one_strips_cliques;
     bool parse_zero_one_string(string arg);

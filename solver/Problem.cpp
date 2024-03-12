@@ -1,4 +1,5 @@
 #include "Problem.h"
+#include "Utils.h"
 //#include "options.h"
 //#include "prettyprint.hpp"
 
@@ -160,13 +161,20 @@ void Problem::read_mapping(){
   if (mapping_file.is_open())
   {
     symbols.push_back("NONE");
+    outcome_symbols.push_back("NONE");
     while (getline(mapping_file, line)) {
       vector<string> type_symbol_variable = split(line);
+      string type = type_symbol_variable[0];
       string symbol = type_symbol_variable[1];
       int variable = stoi(type_symbol_variable[2]);
       (void)variable;
-      assert(variable == symbols.size());
-      symbols.push_back(symbol);
+      if (type == "outcome") {
+        assert(variable == outcome_symbols.size());
+        outcome_symbols.push_back(symbol);
+      } else {
+        assert(variable == symbols.size());
+        symbols.push_back(symbol);
+      }
     }
     mapping_file.close();
   }
@@ -224,6 +232,7 @@ Problem::Problem(int argc, char **argv) {
   total_per_timestep = document["total_per_timestep"].GetInt();
   int action_min = document["action_min"].GetInt();
   int action_max = document["action_max"].GetInt();
+  int num_aos = document["num_aos"].GetInt();
   for (int i=action_min; i<=action_max; i++) {
     actions.push_back(i);
     actions_set.insert(i);
@@ -248,7 +257,6 @@ Problem::Problem(int argc, char **argv) {
 
     num_aux = 0;
     num_subproblems = 1;
-    cout << "Finished loading in nondeterministic problem!" << endl;
 
     action_to_num_outcomes = vector<int>(action_max-action_min+1);
 
@@ -261,6 +269,37 @@ Problem::Problem(int argc, char **argv) {
       action_to_num_outcomes[action] = num_outcomes;
     }
 
+    const Value& ao_to_effects_object = document["ao_to_effects"]; 
+    assert(ao_to_effects_object.IsObject());
+    for (Value::ConstMemberIterator ita = ao_to_effects_object.MemberBegin(); ita != ao_to_effects_object.MemberEnd(); ita++) {
+      int ao = stoi(ita->name.GetString());
+      vector<int> effects;
+      assert(ita->value.IsArray());
+      const Value& effects_array = ita->value;
+      for (int i = 0; i < effects_array.Size(); i++) {
+        effects.push_back(effects_array[i].GetInt());
+      }
+      sort(effects.begin(), effects.end(), Utils::abs_comp);
+      ao_to_effects[ao] = effects;
+    }
+
+    ao_to_action = vector<int>(num_aos);
+
+    const Value& action_to_aos_object = document["action_to_aos"]; 
+    assert(action_to_aos_object.IsObject());
+    for (Value::ConstMemberIterator ita = action_to_aos_object.MemberBegin(); ita != action_to_aos_object.MemberEnd(); ita++) {
+      int action = stoi(ita->name.GetString());
+      vector<int> aos;
+      assert(ita->value.IsArray());
+      const Value& aos_array = ita->value;
+      for (int i = 0; i < aos_array.Size(); i++) {
+        const int ao = aos_array[i].GetInt();
+        aos.push_back(ao);
+        ao_to_action[ao] = action;
+      }
+      sort(aos.begin(), aos.end(), Utils::abs_comp);
+      action_to_aos[action] = aos;
+    }
 
     if (!obligation_rescheduling) {
       cout << "ERROR! must have OR when nondeterministic (non-OR is not supported, but possible)" << endl;
@@ -276,6 +315,9 @@ Problem::Problem(int argc, char **argv) {
       cout << "ERROR max_macro_steps != 1" << endl;
       exit(1);
     }
+
+    cout << "Finished loading in nondeterministic problem!" << endl;
+
     return;
   }
 

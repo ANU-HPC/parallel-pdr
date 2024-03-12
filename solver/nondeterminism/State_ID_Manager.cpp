@@ -1,16 +1,14 @@
-#include "ND_Manager.h"
+#include "State_ID_Manager.h"
 
-ND_Manager::ND_Manager(const Compressed_State& initial_state) {
-  initial_state_id_value = state_to_state_id(initial_state);
-}
+State_ID_Manager::State_ID_Manager() { }
 
 // converting to/from id
-Compressed_State ND_Manager::state_id_to_state(int state_id) {
+Compressed_State State_ID_Manager::state_id_to_state(int state_id) {
   assert (state_id_to_state_map.find(state_id) != state_id_to_state_map.end());
   return state_id_to_state_map[state_id];
 }
 
-int ND_Manager::state_to_state_id(const Compressed_State& state) {
+int State_ID_Manager::state_to_state_id(const Compressed_State& state) {
   auto position = state_to_state_id_map.find(state);
   if (position == state_to_state_id_map.end()) {
     int state_id = state_to_state_id_map.size();
@@ -23,7 +21,11 @@ int ND_Manager::state_to_state_id(const Compressed_State& state) {
   }
 }
 
-int ND_Manager::initial_state_id() {
+void State_ID_Manager::set_initial_state(const Compressed_State& state) {
+  initial_state_id_value = state_to_state_id(initial_state);
+}
+
+int State_ID_Manager::initial_state_id() {
   return initial_state_id_value;
 }
 

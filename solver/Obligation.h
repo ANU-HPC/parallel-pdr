@@ -30,8 +30,10 @@ class Obligation {
     int or_count() const;
     Compressed_State compressed_state() const;
     bool reduce_reason_add_successor_to_queue() const;
+    vector<int> banned_actions() const;
     
     Obligation get_with_incremented_layer_and_or_count(int layer_amount, int or_count_amount) const;
+    Obligation get_with_additional_banned_action(int extra_banned_action) const;
 
     void get_as_MPI_message(int* data, int start) const;
     int* get_as_MPI_message() const;
@@ -49,6 +51,7 @@ class Obligation {
     int _or_originating_layer;
     int _or_count;
     bool _reduce_reason_add_successor_to_queue;
+    vector<int> _banned_actions;
 };
 
 struct Obligation_Hash {

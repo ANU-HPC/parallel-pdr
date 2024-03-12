@@ -33,6 +33,7 @@ class Utils {
 
     static bool in(const set<int>& container, int element);
     static bool in(const unordered_set<int>& container, int element);
+    static bool slow_in(const vector<int>& container, int element);
 
     static size_t hash(const vector<int>& hashee);
 

@@ -8,6 +8,7 @@
 #include "Problem.h"
 #include "MPI_Interface.h"
 #include "Stats.h"
+#include "nondeterminism/State_ID_Manager.h"
 
 class Global {
   public:
@@ -15,6 +16,7 @@ class Global {
     static Problem problem;
     static MPI_Interface mpi_interface;
     static Stats stats;
+    static State_ID_Manager state_id_manager;
 };
 
 #endif

@@ -15,11 +15,11 @@ bool Worker_Interface::all_workers_idle() {
   else                            return _serial_worker_interface->all_workers_idle();
 }
 
-void Worker_Interface::handle_obligation(const Obligation& obl, int worker) {
-  if (Global::problem.MPI_active) _distributed_worker_interface->handle_obligation(obl, worker);
+void Worker_Interface::handle_obligation(const Obligation& obl, bool open_children, int worker) {
+  if (Global::problem.MPI_active) _distributed_worker_interface->handle_obligation(obl, open_children, worker);
   else {
     assert (worker == 1);
-    _serial_worker_interface->handle_obligation(obl);
+    _serial_worker_interface->handle_obligation(obl, open_children);
   }
 }
 

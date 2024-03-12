@@ -20,7 +20,7 @@ class Worker_Interface {
     Worker_Interface();
     set<int> workers_wanting_work_snapshot();
     bool all_workers_idle();
-    void handle_obligation(const Obligation& obl, int worker);
+    void handle_obligation(const Obligation& obl, bool open_children, int worker);
     void handle_reason(const Reason_From_Orchestrator& reason, int worker);
     void handle_reason_all_workers(const Reason_From_Orchestrator& reason);
     void process_inbox();

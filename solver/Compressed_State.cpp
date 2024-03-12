@@ -52,6 +52,27 @@ size_t Compressed_State::hash() const {
   return Utils::hash(_raw) ^ _subproblem;
 }
 
+Compressed_State Compressed_State::apply_effect(const vector<int>& effect) {
+  // take a vector of lits
+  if (!_guaranteed_full) {
+    LOG << "ERROR not set up to apply effect to partial states" << endl;
+    assert(0);
+    exit(1);
+  }
+
+  // TODO not efficient - revise if a problem
+  set<int> pos_vars = set<int>(_raw.begin(), _raw.end());
+
+  for (auto it=effect.begin(); it!=effect.end(); it++) {
+    const int lit = *it; 
+    if (lit>0) pos_vars.insert(lit);
+    else pos_vars.erase(-lit); // TODO may throw error
+  }
+
+  vector<int> pos_vars_vector = vector<int>(pos_vars.begin(), pos_vars.end());
+  return Compressed_State(pos_vars_vector, 0, true);
+}
+
 bool Compressed_State::trimmed_by_reason(const Contextless_Reason& reason) {
   if (!_guaranteed_full) {
     LOG << "ERROR trying to trim on partial state, not set up for this" << endl;

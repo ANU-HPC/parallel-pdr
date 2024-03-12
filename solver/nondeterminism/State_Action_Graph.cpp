@@ -200,6 +200,7 @@ vector<unordered_set<int>*> SCC_Iteration_Helper::run() {
 }
 
 void SCC_Iteration_Helper::strong_connect(vector<unordered_set<int>*>* sccs, const int state) {
+  LOG << "called strong connect on state: " << state << endl;
   _state_to_index[state] = _index;
   _state_to_lowlink[state] = _index;
   _index++;

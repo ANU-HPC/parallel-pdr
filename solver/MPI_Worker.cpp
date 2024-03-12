@@ -47,9 +47,10 @@ void MPI_Worker::run() {
   while (true) {
     auto [_, mpi_tag, data, size] = Global::mpi_interface.recieve_message();
 
-    if (mpi_tag == MPI_Interface::MESSAGE_TAG_OBLIGATION) {
-      Obligation obl = Obligation(data, 0, size);
-      handle_obligation(obl);
+    if (mpi_tag == MPI_Interface::MESSAGE_TAG_OPEN_CHILDREN_OBLIGATION) {
+      bool open_children = data[0] == 1;
+      Obligation obl = Obligation(data, 1, size);
+      handle_obligation(obl, open_children);
     } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_REASON_FROM_ORCHESTRATOR) {
       Reason_From_Orchestrator reason = Reason_From_Orchestrator(data, 0, size);
       handle_reason(reason);
@@ -65,8 +66,8 @@ void MPI_Worker::run() {
   }
 }
 
-void MPI_Worker::handle_obligation(const Obligation& obl) {
-  _obligation_processor->process_obligation(obl);
+void MPI_Worker::handle_obligation(const Obligation& obl, bool open_children) {
+  _obligation_processor->process_obligation(obl, open_children);
 
   // send back success or reason
   if (_obligation_processor->last_interaction_was_a_success()) {

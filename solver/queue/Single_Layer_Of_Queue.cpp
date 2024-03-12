@@ -6,14 +6,13 @@ int Single_Layer_Of_Queue::remove_state(const Compressed_State& state) {
   if (_state_to_slot.find(state) == _state_to_slot.end()) return 0;
   const int slot = _state_to_slot[state];
   const Obligation obligation = remove_obligation_at_slot(slot);
-  _all_obligations.erase(obligation);
   return 1;
 }
 
 bool Single_Layer_Of_Queue::push(const Obligation& obligation) {
   // first check it is not already in here
-  if (_all_obligations.find(obligation) != _all_obligations.end()) return false;
-  _all_obligations.insert(obligation);
+  const Compressed_State& state = obligation.state();
+  if (_state_to_slot.find(state) == _state_to_slot.end()) return false;
 
   // to add, so make the entry
   Queue_Entry queue_entry = Queue_Entry(obligation);
@@ -50,8 +49,6 @@ Obligation Single_Layer_Of_Queue::pop(int heuristic) {
   // then the slot, and remove and return it
   Obligation ret_val = remove_obligation_at_slot(queue_reference->slot());
 
-  // remove from global set
-  _all_obligations.erase(ret_val);
   return ret_val;
 }
 

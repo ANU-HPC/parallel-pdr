@@ -1,5 +1,5 @@
-#ifndef ND_MANAGER_H
-#define ND_MANAGER_H
+#ifndef STATE_ID_MANGER_H
+#define STATE_ID_MANGER_H
 
 using namespace std;
 
@@ -16,14 +16,15 @@ using namespace std;
 
 // state -> actions applied in the tree
 // (state, action) -> 
-class ND_Manager {
+class State_ID_Manager {
   public:
-    ND_Manager(const Compressed_State& initial_state);
+    State_ID_Manager();
 
     // converting to/from id
     Compressed_State state_id_to_state(int state_id);
     int state_to_state_id(const Compressed_State& state);
 
+    void set_initial_state(const Compressed_State& state);
     int initial_state_id();
 
     // TODO for now don't do this trimming
