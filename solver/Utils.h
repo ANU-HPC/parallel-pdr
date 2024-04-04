@@ -23,6 +23,7 @@ class Utils {
     static string to_string(set<int> x);
     static string to_string(unordered_set<int> x);
     static string to_string(int* data, int size);
+    static string to_string(int* data, int start, int stop);
 
     static void get_as_MPI_message(int* data, int start, vector<int> x);
     static int MPI_message_size(vector<int> x);

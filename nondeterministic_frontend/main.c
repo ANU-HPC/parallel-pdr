@@ -335,10 +335,13 @@ int frontend_entry(int argc,char **argv) {
 // addition by Ava Clifton
 
 // lay out the cnf variables similarly to as before:
-// timestep 0 AOs
-// timestep 0 propositions
-// timestep 0 actions (just as helpers), then have space until...
-// timestep 1 proposition
+// |AO|   timestep 0 actions, then have blank space
+// |prop| timestep 0 propositions
+// |AO|   timestep 0 AOs
+// |prop| timestep 1 proposition
+// |AO| blank
+// |prop| outcomes n
+// n times...
 // then at the end have all the auxiliary variables
 
 const int DISJUNCTIVE_AUX_VARS = 1024; // arbitrary
@@ -353,9 +356,15 @@ FILE* mappingFile;
 FILE* jsonFile;
 int nOfAOs;
 
-int AOToCnfVar(int AO) { return (nOfAtoms + nOfAOs) + AO + 1; }
 int actionToCnfVar(int action) { return action + 1; }
-int atomTimestepToCnfVar(int atom, int timestep) { return nOfAOs*(timestep+1) + nOfAtoms*timestep + atom + 1; }
+int AOToCnfVar(int AO) { return (nOfAtoms + nOfAOs) + AO + 1; }
+
+int atomTimeSlotToCnfVar(int atom, int slot) { return nOfAOs + (nOfAOs + nOfAtoms)*slot + atom + 1; }
+int atomExistingStateToCnfVar(int atom) { return atomTimeSlotToCnfVar(atom, 0); }
+int atomChosenOutcomeToCnfVar(int atom) { return atomTimeSlotToCnfVar(atom, 1); }
+int atomEveryOutcomeToCnfVar(int atom, int effectNum) { return atomTimeSlotToCnfVar(atom, 2 + effectNum); }
+
+void setMaxNumEffects();
 
 int numClauses = 0;
 void writeActionImpliesPreconditionClauses();
@@ -369,7 +378,11 @@ void writeOnlyOneAOPerActionClauses();
 void writeActionImpliesAtLeastOneAOClauses();
 
 void writeInvariantClauses();
-void writeFrameAxiomClauses();
+void writeChosenOutcomeFrameAxiomClauses();
+
+void writeEveryOutcomeFrameAxiomClauses();
+void writeActionImpliesEveryOutcomeEffectClauses();
+
 
 void writeMapping();
 void writeExtraJson();
@@ -396,10 +409,14 @@ void export() {
     
     computeAOMapping();
 
+    setMaxNumEffects();
+
     // work out where to put the aux variables (as per the scheme above)
-    nextFreeAuxCnfVar = (nOfAOs + nOfAtoms)*2 + 1;
+    nextFreeAuxCnfVar = (nOfAOs + nOfAtoms)*(maxNumEffects+2) + 1;
     
     fprintf(cnfFile, "c starting nextFreeAuxCnfVar: %d\n", nextFreeAuxCnfVar);
+
+    fprintf(cnfFile, "c maxNumEffects: %d\n", maxNumEffects);
 
     // write each part of the cnf
 
@@ -426,8 +443,14 @@ void export() {
     fprintf(cnfFile, "c invariants\n");
     writeInvariantClauses();
 
-    fprintf(cnfFile, "c frame axioms\n");
-    writeFrameAxiomClauses();
+    fprintf(cnfFile, "c AO frame axioms\n");
+    writeChosenOutcomeFrameAxiomClauses();
+
+    fprintf(cnfFile, "c Every outcome frame axioms\n");
+    writeEveryOutcomeFrameAxiomClauses();
+
+    fprintf(cnfFile, "c Action implies every outcome effect\n");
+    writeActionImpliesEveryOutcomeEffectClauses();
 
     fprintf(cnfFile, "p cnf %d %d", nextFreeAuxCnfVar-1, numClauses);
 
@@ -445,6 +468,13 @@ int getNextAux() {
     const int aux = nextFreeAuxCnfVar;
     nextFreeAuxCnfVar++;
     return aux;
+}
+
+void setMaxNumEffects() {
+    for (int action=0; action<nOfActions; action++) {
+        int numEffects = actions[action].nOfEffects;
+        if (numEffects > maxNumEffects) maxNumEffects = numEffects;
+    }
 }
 
 void computeAOMapping() {
@@ -504,11 +534,11 @@ void writeCnfVarImpliesFormulaClauses(int triggerCnfVariable, fma* formula) {
     // don't need to worry about timesteps, all in the initial timestep
     switch(formula->t) {
         case patom: 
-            fprintf(cnfFile, "%d %d 0\n", -triggerCnfVariable, atomTimestepToCnfVar(formula->a, 0));
+            fprintf(cnfFile, "%d %d 0\n", -triggerCnfVariable, atomExistingStateToCnfVar(formula->a));
             numClauses++;
             break;
         case natom: 
-            fprintf(cnfFile, "%d %d 0\n", -triggerCnfVariable, -atomTimestepToCnfVar(formula->a, 0));
+            fprintf(cnfFile, "%d %d 0\n", -triggerCnfVariable, -atomExistingStateToCnfVar(formula->a));
             numClauses++;
             break;
         case conj:
@@ -602,7 +632,7 @@ void writeAOImpliesEffectClausesHelper(int AO, eff* effect) {
         //printf("%d %d 0\n", -actionToCnfVar(action), sign * atomToEffCnfVar(atom, possibleEffectNum));
 
         //fprintf(cnfFile,"    c %d %d,  base: %d, possibleEffectNum: %d 0\n", -actionToCnfVar(action), sign * atomToEffCnfVar(atom, possibleEffectNum), atomToCnfVar(atom), possibleEffectNum);
-        fprintf(cnfFile,"%d %d 0\n", -AOToCnfVar(AO), sign * atomTimestepToCnfVar(atom, 1));
+        fprintf(cnfFile,"%d %d 0\n", -AOToCnfVar(AO), sign * atomChosenOutcomeToCnfVar(atom));
         numClauses++;
         effectList = effectList + 1;
     }
@@ -624,8 +654,8 @@ void writeAOImpliesEffectClauses() {
 
 void writeInvariantClauses() {
     for (int baseAtom=0; baseAtom<nOfAtoms; baseAtom++) {
-        for (int timestep=0; timestep<2; timestep++) { // a bit hacky...
-            int baseVar = atomTimestepToCnfVar(baseAtom, timestep);
+        for (int slot=0; slot<2+maxNumEffects; slot++) {
+            int baseVar = atomTimeSlotToCnfVar(baseAtom, slot);
 
             int i;
 
@@ -635,7 +665,7 @@ void writeInvariantClauses() {
             while(iITnext(&i)) {
                 int otherSign = (i&1) ? -1 : 1;
                 int otherAtom = feVAR(i);
-                int otherVar = atomTimestepToCnfVar(otherAtom, timestep);
+                int otherVar = atomTimeSlotToCnfVar(otherAtom, slot);
                 //fprintf(cnfFile, "    c baseAtom:%d phase:%d\n", baseAtom, phase);
                 fprintf(cnfFile, "%d %d 0\n", baseVar, otherSign * otherVar);
                 numClauses++;
@@ -647,7 +677,7 @@ void writeInvariantClauses() {
             while(iITnext(&i)) {
                 int otherSign = (i&1) ? -1 : 1;
                 int otherAtom = feVAR(i);
-                int otherVar = atomTimestepToCnfVar(otherAtom, timestep);
+                int otherVar = atomTimeSlotToCnfVar(otherAtom, slot);
                 //fprintf(cnfFile, "    c baseAtom:%d phase:%d\n", baseAtom, phase);
                 fprintf(cnfFile, "%d %d 0\n", -baseVar, otherSign * otherVar);
                 numClauses++;
@@ -656,7 +686,7 @@ void writeInvariantClauses() {
     }
 }
 
-void writeFrameAxiomClauses() {
+void writeChosenOutcomeFrameAxiomClauses() {
     // different from normal for each effect, there may be some effect "slots" that are unused by some actions, for these ones we want to just ignore them, so include them here as a justification for the successor state being unconstrained (as opposed to turning off the layer clauses, for instance)
 
     //int* actionHasNOrLessOutcomesAuxVar = int[maxNumEffects+1];
@@ -701,8 +731,8 @@ void writeFrameAxiomClauses() {
 
     // write out to clauses
     for (int atom=0; atom<nOfAtoms; atom++) {
-        int startingAtomVar = atomTimestepToCnfVar(atom, 0);
-        int endAtomVar      = atomTimestepToCnfVar(atom, 1);
+        int startingAtomVar = atomExistingStateToCnfVar(atom);
+        int endAtomVar      = atomChosenOutcomeToCnfVar(atom);
 
         // positive
         fprintf(cnfFile, "%d %d ", startingAtomVar, -endAtomVar);
@@ -724,6 +754,129 @@ void writeFrameAxiomClauses() {
     }
 }
 
+void writeEveryOutcomeFrameAxiomClauses() {
+    // different from normal for each effect, there may be some effect "slots" that are unused by some actions, for these ones we want to just ignore them, so include them here as a justification for the successor state being unconstrained (as opposed to turning off the layer clauses, for instance)
+
+    /*
+    int* actionHasNOrLessOutcomesAuxVar = int[maxNumEffects+1];
+    for (int i
+    */
+
+    for (int effectNum=0; effectNum<maxNumEffects; effectNum++) {
+        // create reverse dictionary from atoms to what can flip them
+        int atomToActionsWhichFlipNegative[nOfAtoms][nOfActions];
+        int atomToActionsWhichFlipNegativeCount[nOfAtoms];
+        int atomToActionsWhichFlipPositive[nOfAtoms][nOfActions];
+        int atomToActionsWhichFlipPositiveCount[nOfAtoms];
+
+        // initialize to 0
+        memset(atomToActionsWhichFlipPositiveCount, 0, nOfAtoms * sizeof(int)); 
+        memset(atomToActionsWhichFlipNegativeCount, 0, nOfAtoms * sizeof(int)); 
+
+        for (int action=0; action<nOfActions; action++) {
+            // TODO make this better, have an auxiliary variable for "the executed action only has N effects", then when that is executed use it as justification for the frame axiom instead
+
+            // first see if this slot is in use for this action
+            if (effectNum >= actions[action].nOfEffects) {
+                // not in use for this action, so this is a justification to flip
+                for (int atom=0; atom<nOfAtoms; atom++) {
+                    int nextPositiveSlot = atomToActionsWhichFlipPositiveCount[atom];
+                    atomToActionsWhichFlipPositive[atom][nextPositiveSlot] = action;
+                    atomToActionsWhichFlipPositiveCount[atom]++;
+
+                    int nextNegativeSlot = atomToActionsWhichFlipNegativeCount[atom];
+                    atomToActionsWhichFlipNegative[atom][nextNegativeSlot] = action;
+                    atomToActionsWhichFlipNegativeCount[atom]++;
+                }
+            } else {
+                // this effect slot is in use for this action, so add to the relevant frame axioms all actions (of this effect)
+                eff* effect = actions[action].effects[effectNum];
+                int* effectList = effect->effectlits;
+
+                while (*effectList != -1) {
+                    int positive = ((*effectList)&1) ? 0 : 1;
+                    int atom = feVAR(*effectList);
+
+                    if (positive) {
+                        int nextPositiveSlot = atomToActionsWhichFlipPositiveCount[atom];
+                        atomToActionsWhichFlipPositive[atom][nextPositiveSlot] = action;
+                        atomToActionsWhichFlipPositiveCount[atom]++;
+                    } else {
+                        int nextNegativeSlot = atomToActionsWhichFlipNegativeCount[atom];
+                        atomToActionsWhichFlipNegative[atom][nextNegativeSlot] = action;
+                        atomToActionsWhichFlipNegativeCount[atom]++;
+                    }
+
+                    effectList = effectList + 1;
+                }
+            }
+        }
+
+        // write out to clauses
+        for (int atom=0; atom<nOfAtoms; atom++) {
+            int startingAtomVar = atomExistingStateToCnfVar(atom);
+            int endAtomVar = atomEveryOutcomeToCnfVar(atom, effectNum);
+
+            // positive
+            fprintf(cnfFile, "%d %d ", startingAtomVar, -endAtomVar);
+            for (int i=0; i<atomToActionsWhichFlipPositiveCount[atom]; i++) {
+                int action = atomToActionsWhichFlipPositive[atom][i];
+                fprintf(cnfFile, "%d ", actionToCnfVar(action));
+            }
+            fprintf(cnfFile, "0\n");
+            numClauses++;
+
+            // negative
+            fprintf(cnfFile, "%d %d ", -startingAtomVar, endAtomVar);
+            for (int i=0; i<atomToActionsWhichFlipNegativeCount[atom]; i++) {
+                int action = atomToActionsWhichFlipNegative[atom][i];
+                fprintf(cnfFile, "%d ", actionToCnfVar(action));
+            }
+            fprintf(cnfFile, "0\n");
+            numClauses++;
+        }
+    }
+}
+
+void writeActionImpliesEveryOutcomeEffectClausesHelper(int action, eff* effect, int possibleEffectNum) {
+    if (effect == NULL) return;
+
+    //fprintf(cnfFile, "start new writeActionImpliesEffectClausesHelper\n");
+    //printf("start new writeActionImpliesEffectClausesHelper");
+
+    // first check the effect has no conditions, for now ban conditional effects
+    fma* condition = effect->condition;
+    if (condition->t != TRUE) {
+        printf("ERROR, conditional effects are unsupported\n");
+        exit(1);
+    }
+
+    // write action implies each effect var 
+    int* effectList = effect->effectlits;
+    while (*effectList != -1) {
+        int sign = ((*effectList)&1) ? -1 : 1;
+        int atom = feVAR(*effectList);
+
+        //printf("    c %d %d,  base: %d, possibleEffectNum: %d 0\n", -actionToCnfVar(action), sign * atomToEffCnfVar(atom, possibleEffectNum), atomToCnfVar(atom), possibleEffectNum);
+        //printf("%d %d 0\n", -actionToCnfVar(action), sign * atomToEffCnfVar(atom, possibleEffectNum));
+
+        //fprintf(cnfFile,"    c %d %d,  base: %d, possibleEffectNum: %d 0\n", -actionToCnfVar(action), sign * atomToEffCnfVar(atom, possibleEffectNum), atomToCnfVar(atom), possibleEffectNum);
+        fprintf(cnfFile,"%d %d 0\n", -actionToCnfVar(action), sign * atomEveryOutcomeToCnfVar(atom, possibleEffectNum));
+        numClauses++;
+        effectList = effectList + 1;
+    }
+
+    writeActionImpliesEveryOutcomeEffectClausesHelper(action, effect->tl, possibleEffectNum);
+}
+
+void writeActionImpliesEveryOutcomeEffectClauses() {
+    for (int action=0; action<nOfActions; action++) {
+        for (int possibleEffectNum=0; possibleEffectNum<actions[action].nOfEffects; possibleEffectNum++) {
+            eff* effect = actions[action].effects[possibleEffectNum];
+            writeActionImpliesEveryOutcomeEffectClausesHelper(action, effect, possibleEffectNum);
+        }
+    }
+}
 
 
 
@@ -746,11 +899,10 @@ void writeMapping() {
         fprintf(mappingFile, "filler EMPTY %d\n", filler);
     }
 
-
     for (int atom=0; atom<nOfAtoms; atom++) {
         fprintf(mappingFile, "proposition ");
         fprintatomi(mappingFile, atom);
-        fprintf(mappingFile, " %d\n", atomTimestepToCnfVar(atom, 0));
+        fprintf(mappingFile, " %d\n", atomExistingStateToCnfVar(atom));
     }
 
     for (int action=0; action<nOfActions; action++) {
@@ -763,10 +915,7 @@ void writeMapping() {
             fprintf(mappingFile, " %d\n", AOToCnfVar(AO) - (nOfAOs + nOfAtoms));
         }
     }
-
-
 }
-
 
 void writeExtraJsonEffectsHelper(int firstCall, int AO, eff* effect) {
     if (effect == NULL) return;
@@ -783,8 +932,8 @@ void writeExtraJsonEffectsHelper(int firstCall, int AO, eff* effect) {
         int sign = ((*effectList)&1) ? -1 : 1;
         int atom = feVAR(*effectList);
 
-        if (firstCall) fprintf(jsonFile, "%d", sign * atomTimestepToCnfVar(atom, 0));
-        else           fprintf(jsonFile, ", %d", sign * atomTimestepToCnfVar(atom, 0));
+        if (firstCall) fprintf(jsonFile, "%d", sign * atomExistingStateToCnfVar(atom));
+        else           fprintf(jsonFile, ", %d", sign * atomExistingStateToCnfVar(atom));
 
         firstCall = 0;
 
@@ -799,8 +948,8 @@ void writeExtraJsonGoalHelper(fmalist* formulaList) {
     if (formulaList == NULL) return;
 
     fma* lit = formulaList->hd;
-    if      (lit->t == patom) fprintf(jsonFile, "    %d", atomTimestepToCnfVar(lit->a, 0)); 
-    else if (lit->t == natom) fprintf(jsonFile, "    %d", -atomTimestepToCnfVar(lit->a, 0)); 
+    if      (lit->t == patom) fprintf(jsonFile, "    %d",  atomExistingStateToCnfVar(lit->a)); 
+    else if (lit->t == natom) fprintf(jsonFile, "    %d", -atomExistingStateToCnfVar(lit->a)); 
     else {
         printf("ERROR: goal conjuncts are not literals\n");
         exit(1);
@@ -825,8 +974,8 @@ void writeExtraJson() {
     fprintf(jsonFile, "  \"initial_state\": [\n");
     for (int atom=0; atom<nOfAtoms; atom++) {
         int pos = initialstate[atom];
-        if (pos) fprintf(jsonFile, "    %d", atomTimestepToCnfVar(atom, 0));
-        else     fprintf(jsonFile, "    %d", -atomTimestepToCnfVar(atom, 0));
+        if (pos) fprintf(jsonFile, "    %d", atomExistingStateToCnfVar(atom));
+        else     fprintf(jsonFile, "    %d", -atomExistingStateToCnfVar(atom));
         if (atom != nOfAtoms-1) fprintf(jsonFile, ",");
         fprintf(jsonFile, "\n");
     }
@@ -874,10 +1023,10 @@ void writeExtraJson() {
     fprintf(jsonFile, "  \"goal_condition\": [\n");
     switch(goal->t) {
         case patom: 
-            fprintf(jsonFile, "    %d\n", atomTimestepToCnfVar(goal->a, 0));
+            fprintf(jsonFile, "    %d\n", atomExistingStateToCnfVar(goal->a));
             break;
         case natom: 
-            fprintf(jsonFile, "    %d\n", -atomTimestepToCnfVar(goal->a, 0));
+            fprintf(jsonFile, "    %d\n", -atomExistingStateToCnfVar(goal->a));
             break;
         case conj:
             writeExtraJsonGoalHelper(goal->juncts);

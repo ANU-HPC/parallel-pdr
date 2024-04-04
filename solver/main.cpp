@@ -64,8 +64,7 @@ int main(int argc, char **argv) {
   bool sat;
 
   // pass control to a specific strategy
-  if (Global::problem.nondeterministic) sat = Strategies::run_nondeterministic();
-  else                                  sat = Strategies::run_default();
+  sat = Strategies::run_default();
 
   if (sat) LOG << "SAT" << endl;
   else     LOG << "UNSAT" << endl;

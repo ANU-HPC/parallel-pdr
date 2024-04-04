@@ -1,19 +1,17 @@
 #include "State_ID_Manager.h"
 
-State_ID_Manager::State_ID_Manager() { }
-
 // converting to/from id
 Compressed_State State_ID_Manager::state_id_to_state(int state_id) {
-  assert (state_id_to_state_map.find(state_id) != state_id_to_state_map.end());
-  return state_id_to_state_map[state_id];
+  assert (_state_id_to_state_map.find(state_id) != _state_id_to_state_map.end());
+  return _state_id_to_state_map[state_id];
 }
 
 int State_ID_Manager::state_to_state_id(const Compressed_State& state) {
-  auto position = state_to_state_id_map.find(state);
-  if (position == state_to_state_id_map.end()) {
-    int state_id = state_to_state_id_map.size();
-    state_to_state_id_map[state] = state_id;
-    state_id_to_state_map[state_id] = state;
+  auto position = _state_to_state_id_map.find(state);
+  if (position == _state_to_state_id_map.end()) {
+    int state_id = _state_to_state_id_map.size();
+    _state_to_state_id_map[state] = state_id;
+    _state_id_to_state_map[state_id] = state;
     LOG << "just registered a new state id: " << state_id << " " << state.to_string() << endl;
     return state_id;
   } else {
@@ -22,12 +20,16 @@ int State_ID_Manager::state_to_state_id(const Compressed_State& state) {
 }
 
 void State_ID_Manager::set_initial_state(const Compressed_State& state) {
-  initial_state_id_value = state_to_state_id(initial_state);
+  _initial_state_id = state_to_state_id(state);
 }
 
 int State_ID_Manager::initial_state_id() {
-  return initial_state_id_value;
+  return _initial_state_id;
 }
+
+int State_ID_Manager::_initial_state_id;
+unordered_map<int, Compressed_State> State_ID_Manager::_state_id_to_state_map;
+unordered_map<Compressed_State, int, Compressed_State_Hash> State_ID_Manager::_state_to_state_id_map;
 
 
 /*

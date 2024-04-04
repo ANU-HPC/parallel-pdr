@@ -11,8 +11,8 @@ int Single_Layer_Of_Queue::remove_state(const Compressed_State& state) {
 
 bool Single_Layer_Of_Queue::push(const Obligation& obligation) {
   // first check it is not already in here
-  const Compressed_State& state = obligation.state();
-  if (_state_to_slot.find(state) == _state_to_slot.end()) return false;
+  const Compressed_State& state = obligation.compressed_state();
+  if (_state_to_slot.find(state) != _state_to_slot.end()) return false;
 
   // to add, so make the entry
   Queue_Entry queue_entry = Queue_Entry(obligation);
@@ -71,6 +71,44 @@ Obligation Single_Layer_Of_Queue::remove_obligation_at_slot(int slot) {
   return obligation;
 }
 
+/*
+// same as below, but updates the information in the open state graph
+int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment, Layer_State_Action_Graph* graph) { // TODO settle on the layer_increment, remove eventually maybe
+  // return the number of deleted elements, if not pushed to alternate layer
+  int num_removed = 0;
+
+  // grab A used heuristic (it doesn't matter which one, we will just go through all the obligations)
+  const int heuristic = *Global::active_heuristics.begin();
+  const bool pushing = other_to_push_to != NULL;
+
+  // go through all references noting the slots to remove from (then remove them after so we are not editing the set we are iterating over)
+  vector<int> slots_to_remove;
+  for (auto it=_heuristic_to_references[heuristic].begin(); it!=_heuristic_to_references[heuristic].end(); it++) {
+    Queue_Reference* queue_reference = *it; 
+    const int slot = queue_reference->slot();
+    Queue_Entry* queue_entry = _entries.peek(slot);
+    if (queue_entry->obligation().trimmed_by_reason(reason)) {
+      slots_to_remove.push_back(slot);
+    }
+  }
+
+  // actually remove them
+  for (auto it=slots_to_remove.begin(); it!=slots_to_remove.end(); it++) {
+    const int slot = *it;
+    Obligation obligation = remove_obligation_at_slot(slot);
+
+    TODO; // actually reflect these changes in the graph
+
+    if (pushing) {
+      const bool successful_push_up = other_to_push_to->push(obligation.get_with_incremented_layer_and_or_count(layer_increment, layer_increment));
+      assert(successful_push_up); // unsure if this is actually bad... may be triggered by a change later on
+    } else num_removed++;
+  }
+
+  return num_removed;
+}
+*/
+
 int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment) { // TODO settle on the layer_increment, remove eventually maybe
   // return the number of deleted elements, if not pushed to alternate layer
   int num_removed = 0;
@@ -90,29 +128,13 @@ int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_O
     }
   }
 
+  // actually remove them
   for (auto it=slots_to_remove.begin(); it!=slots_to_remove.end(); it++) {
     const int slot = *it;
     Obligation obligation = remove_obligation_at_slot(slot);
     if (pushing) {
-      // TODO for this branch, don't push beyond where it started
-      // so work out if should push this one
-
-      if (obligation.layer() + layer_increment > obligation.or_originating_layer()) {
-        // would OR to before it started
-        num_removed++;
-        continue;
-      }
-
-      assert(layer_increment == 1); // because of the above check
-
-      if (obligation.or_count() + layer_increment > MAX_OR_COUNT) {
-        num_removed++;
-        continue;
-      }
-
-      const bool successful_push_up = other_to_push_to->push(obligation.get_with_incremented_layer_and_or_count(layer_increment, layer_increment));
+      const bool successful_push_up = other_to_push_to->push(obligation.get_with_incremented_layer(layer_increment));
       assert(successful_push_up); // unsure if this is actually bad... may be triggered by a change later on
-      // TODO review this? if (!successful_push_up) num_removed--;
     } else num_removed++;
   }
 

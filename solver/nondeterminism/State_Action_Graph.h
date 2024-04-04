@@ -10,39 +10,37 @@ using namespace std;
 #include <set>
 
 #include "Utils.h"
+#include "Success.h"
+
+// NOTES
+// Any lone (no in OR out arcs) state is removed
+// Internally, dictionaries have all applicapple things - i.e. - if there is a state in the graph with ingoing but no outgoing arcs, it will be in all the dictionaries
 
 class State_Action_Graph {
   public:
-    State_Action_Graph();
-    State_Action_Graph(const State_Action_Graph& existing);
+    // constructors
+    State_Action_Graph(); // plain
+    State_Action_Graph(const State_Action_Graph& existing); // copy
 
-    // add info
-    void add(const int original_state, const int action, const vector<int>& successor_states);
-
+    // edits
+    void add(const Success& success);
     void remove_state(const int state);
     void remove_state_action_arcs(const pair<int, int>& state_action);
 
-    unordered_set<int> scc_refinement_find_newly_goal_reaching_states(unordered_map<int, unordered_set<int>>* existing_goal_reaching_states);
+    void print();
 
-    // retrieve info
-    unordered_set<int> state_to_actions(int state);
-    unordered_set<int> state_action_pair_to_outcomes(const pair<int,int>& state_action);
-    unordered_set<pair<int, int>, Int_Pair_Hash> state_to_producing_state_action_pairs(int state);
-
-    // down the graph
     unordered_map<int, unordered_set<int>> _state_to_actions;
-  private:
-    unordered_map<pair<int,int>, unordered_set<int>, Int_Pair_Hash> _state_action_pair_to_outcomes;
-
-    // up the graph
     unordered_map<int, unordered_set<pair<int, int>, Int_Pair_Hash>> _state_to_producing_state_action_pairs;
 
+    // retrieve info
+    unordered_set<int> state_action_pair_to_outcomes(const pair<int,int>& state_action);
+  protected:
+    // graph traversal
+    unordered_map<pair<int,int>, unordered_set<int>, Int_Pair_Hash> _state_action_pair_to_outcomes;
+
+    // some helpers
     void erase_state_if_lone(int state);
-
-    unordered_set<int> scc_iteration_non_goal_reaching_states(const unordered_map<int, unordered_set<int>>& goal_state_to_actions);
-
     bool consistency_check();
 };
-
 
 #endif

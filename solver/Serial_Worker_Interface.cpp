@@ -14,7 +14,7 @@ bool Serial_Worker_Interface::all_workers_idle() {
 }
 
 void Serial_Worker_Interface::handle_obligation(const Obligation& obl, bool open_children) {
-  _obligation_processor->process_obligation(obl);
+  _obligation_processor->process_obligation(obl, open_children);
 
   if (_obligation_processor->last_interaction_was_a_success()) {
     _returned_successes_buffer->push_back(tuple<int, Success>(_SERIAL_WORKER_ID, _obligation_processor->last_interactions_success()));

@@ -21,6 +21,12 @@ Compressed_State::Compressed_State(const vector<int>& state, int subproblem, boo
   } else {
     _raw = state;
   }
+
+  assign_id(this);
+}
+
+void Compressed_State::assign_id(Compressed_State* state) {
+  _id =state_to_state_id(*state);
 }
 
 Compressed_State::Compressed_State(int* data, int start, int stop) {
@@ -30,6 +36,8 @@ Compressed_State::Compressed_State(int* data, int start, int stop) {
   for (int i=start+2; i<stop; i++) {
     _raw.push_back(data[i]);
   }
+
+  assign_id(this);
 }
 
 bool Compressed_State::operator==(const Compressed_State& other) const {
@@ -51,6 +59,41 @@ size_t Compressed_State::hash() const {
 
   return Utils::hash(_raw) ^ _subproblem;
 }
+
+int Compressed_State::id() const {
+  assert(_id != DEFAULT_ID);
+  return _id;
+}
+
+Compressed_State Compressed_State::state_id_to_state(int state_id) {
+  assert (_state_id_to_state_map.find(state_id) != _state_id_to_state_map.end());
+  return _state_id_to_state_map[state_id];
+}
+
+int Compressed_State::state_to_state_id(const Compressed_State& state) {
+  auto position = _state_to_state_id_map.find(state);
+  if (position == _state_to_state_id_map.end()) {
+    int state_id = _state_to_state_id_map.size();
+    _state_to_state_id_map[state] = state_id;
+    _state_id_to_state_map[state_id] = state;
+    LOG << "just registered a new state id: " << state_id << " " << state.to_string() << endl;
+    return state_id;
+  } else {
+    return position->second;
+  }
+}
+
+void Compressed_State::set_initial_state(const Compressed_State& state) {
+  _initial_state_id = state_to_state_id(state);
+}
+
+int Compressed_State::initial_state_id() {
+  return _initial_state_id;
+}
+
+int Compressed_State::_initial_state_id;
+unordered_map<int, Compressed_State> Compressed_State::_state_id_to_state_map;
+unordered_map<Compressed_State, int, Compressed_State_Hash> Compressed_State::_state_to_state_id_map;
 
 Compressed_State Compressed_State::apply_effect(const vector<int>& effect) {
   // take a vector of lits
@@ -138,5 +181,7 @@ int Compressed_State::MPI_message_size() const {
 }
 
 string Compressed_State::to_string() const {
-  return "{CS, full:" + std::to_string(_guaranteed_full) + " " + Utils::to_symbols_string(_raw) + "}";
+  return "{CS, full:" + std::to_string(_guaranteed_full) + 
+    " ID:" + std::to_string(_id) + 
+    " " + Utils::to_symbols_string(_raw) + "}";
 }

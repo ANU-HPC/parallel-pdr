@@ -68,6 +68,39 @@ string Utils::to_symbols_string(int x) {
   const vector<int>& all_propositions = Global::problem.subproblem_to_propositions[0];
 
   if (Global::problem.nondeterministic) {
+    if (timestep > Global::problem.max_num_outcomes+2) {
+      // AUX
+      return pos + "AUX" + std::to_string(x);
+    }
+
+    if (Utils::slow_in(all_propositions, x_in_timestep)) {
+      // prop
+      return pos + repeat("*", timestep) + Global::problem.symbols[x_in_timestep];
+    } else {
+      // may be an action, AO, or unused
+      if (timestep == 0) {
+        // action or filler
+        if (Global::problem.actions_set.find(x_in_timestep) != Global::problem.actions_set.end()) {
+          // is a real action
+          return pos + Global::problem.symbols[x_in_timestep];
+        } else {
+          // is an unused action slot
+          return pos + "UA";
+        }
+      } else if (timestep == 1) {
+        // AO
+        return pos + Global::problem.outcome_symbols[x_in_timestep];
+      } else {
+        // unused
+        return pos + "UA";
+      }
+    }
+  } else {
+    // deterministic
+  }
+}
+
+/*
     if (timestep <= 1) {
       if (Utils::slow_in(all_propositions, x_in_timestep)) {
         // prop
@@ -91,9 +124,7 @@ string Utils::to_symbols_string(int x) {
       // AUX
       return pos + "AUX" + std::to_string(x_in_timestep);
     }
-  }
-}
-
+*/
 
 string Utils::to_symbols_string(vector<int> x) {
   // give by copy
@@ -196,8 +227,12 @@ string Utils::to_string(set<int> x) {
 }
 
 string Utils::to_string(int* data, int size) {
+  return to_string(data, 0, size);
+}
+
+string Utils::to_string(int* data, int start, int stop) {
   string ret_val = "";
-  for (int i=0; i<size; i++) {
+  for (int i=start; i<stop; i++) {
     ret_val += std::to_string(data[i]) + " ";
   }
   return ret_val;

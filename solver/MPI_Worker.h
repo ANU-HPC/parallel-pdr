@@ -24,7 +24,7 @@ class MPI_Worker {
     void run();
     static void wait_for_then_finalize();
   private:
-    void handle_obligation(const Obligation& obl);
+    void handle_obligation(const Obligation& obl, bool open_children);
     void handle_reason(const Reason_From_Orchestrator& reason);
     Obligation_Processor* _obligation_processor;
 };

@@ -15,7 +15,7 @@ class Obligation {
   public:
     //Obligation(const vector<int>& state, const int layer, const int subproblem);
     Obligation();
-    Obligation(const Compressed_State& compressed_state, int layer, int subproblem, int or_originating_layer, int or_count, bool reduce_reason_add_successor_to_queue);
+    Obligation(const Compressed_State& compressed_state, int layer, int subproblem, bool reduce_reason_add_successor_to_queue, const vector<int>& banned_actions);
     Obligation(int* data, int start, int stop);
     string to_string() const;
 
@@ -26,13 +26,11 @@ class Obligation {
 
     int layer() const;
     int subproblem() const;
-    int or_originating_layer() const;
-    int or_count() const;
     Compressed_State compressed_state() const;
     bool reduce_reason_add_successor_to_queue() const;
     vector<int> banned_actions() const;
     
-    Obligation get_with_incremented_layer_and_or_count(int layer_amount, int or_count_amount) const;
+    Obligation get_with_incremented_layer(int layer_amount) const;
     Obligation get_with_additional_banned_action(int extra_banned_action) const;
 
     void get_as_MPI_message(int* data, int start) const;
@@ -48,8 +46,6 @@ class Obligation {
     Compressed_State _compressed_state;
     int _layer;
     int _subproblem;
-    int _or_originating_layer;
-    int _or_count;
     bool _reduce_reason_add_successor_to_queue;
     vector<int> _banned_actions;
 };

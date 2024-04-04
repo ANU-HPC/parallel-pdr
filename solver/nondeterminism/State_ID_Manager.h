@@ -11,6 +11,7 @@ using namespace std;
 #include <set>
 
 #include "Compressed_State.h"
+//#include "Compressed_State.h"
 
 // one tree is full of states and actions, mapping the execution of PDR
 
@@ -18,14 +19,12 @@ using namespace std;
 // (state, action) -> 
 class State_ID_Manager {
   public:
-    State_ID_Manager();
-
     // converting to/from id
-    Compressed_State state_id_to_state(int state_id);
-    int state_to_state_id(const Compressed_State& state);
+    static Compressed_State state_id_to_state(int state_id);
+    static int state_to_state_id(const Compressed_State& state);
 
-    void set_initial_state(const Compressed_State& state);
-    int initial_state_id();
+    static void set_initial_state(const Compressed_State& state);
+    static int initial_state_id();
 
     // TODO for now don't do this trimming
     /*
@@ -47,12 +46,14 @@ class State_ID_Manager {
 
     //void write_solution(); // or something
 
+
+
   private:
-    int initial_state_id_value;
+    static int _initial_state_id;
 
     // converting to/from id
-    unordered_map<int, Compressed_State> state_id_to_state_map;
-    unordered_map<Compressed_State, int, Compressed_State_Hash> state_to_state_id_map;
+    static unordered_map<int, Compressed_State> _state_id_to_state_map;
+    static unordered_map<Compressed_State, int, Compressed_State_Hash> _state_to_state_id_map;
 
     /*
     // down the tree

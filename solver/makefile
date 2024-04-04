@@ -32,8 +32,9 @@ OBJS = main.o \
 	   Strategies.o \
 	   Stats.o \
 	   nondeterminism/State_ID_Manager.o \
+	   nondeterminism/SCC_Generator.o \
+	   nondeterminism/Goal_Reachability_Manager.o \
 	   nondeterminism/State_Action_Graph.o \
-	   nondeterminism/Goal_States_Graph.o \
 	   queue/Heuristics.o \
 	   queue/Single_Layer_Of_Queue.o \
 	   queue/Queue_Reference.o \
@@ -67,8 +68,9 @@ HEADERS	= main.h \
 		  Strategies.h \
 		  Stats.h \
 		  nondeterminism/State_ID_Manager.h \
+		  nondeterminism/SCC_Generator.h \
+		  nondeterminism/Goal_Reachability_Manager.h \
 		  nondeterminism/State_Action_Graph.h \
-		  nondeterminism/Goal_States_Graph.h \
 		  queue/Heuristics.h \
 		  queue/Single_Layer_Of_Queue.h \
 		  queue/Queue_Reference.h \
@@ -87,10 +89,10 @@ LDFLAGS += -L../lingeling \
 		   -llgl \
 
 solver: $(OBJS) 
-	$(MPICXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) -L. -llgl $(LDFLAGS) -o parallel-pdr
+	@$(MPICXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) -L. -llgl $(LDFLAGS) -o parallel-pdr
 
 %.o: %.cpp %.h $(HEADERS) makefile
-	$(MPICXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
+	@$(MPICXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
 
 clean:
-	-rm parallel-pdr *.o ./parallel/*.o ./queue/*.o
+	-rm parallel-pdr *.o ./parallel/*.o ./queue/*.o ./nondeterminism/*.o

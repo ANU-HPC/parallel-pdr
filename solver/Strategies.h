@@ -27,7 +27,7 @@ using namespace std;
 class Strategies {
   public:
     static bool run_default();
-    static bool run_nondeterministic();
+    //static bool run_nondeterministic();
   private:
     static void manage_per_inbox_check_periodic_stats(int reasons_size, int successes_size);
 

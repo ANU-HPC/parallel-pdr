@@ -35,6 +35,8 @@ class Single_Layer_Of_Queue {
     Queue_Entry_Container _entries;
     vector<set<Queue_Reference*, Queue_Reference_Pointer_Compare>> _heuristic_to_references = vector<set<Queue_Reference*, Queue_Reference_Pointer_Compare>>(Heuristics::NUM_HEURISTICS);
     unordered_map<Compressed_State, int, Compressed_State_Hash> _state_to_slot;
+    //unordered_map<int, int> state_id_to_slot;
+    //unordered_map<int, int> state_id_to_slot;
 };
 
 #endif

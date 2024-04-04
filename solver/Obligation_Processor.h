@@ -13,6 +13,7 @@
 #include "Lingeling.h"
 #include "Compressed_Actions.h"
 #include "Compressed_State.h"
+#include "nondeterminism/State_ID_Manager.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ class Obligation_Processor {
   public:
     Obligation_Processor(int layer_steps);
 
-    void process_obligation(const Obligation& obl);
+    void process_obligation(const Obligation& obl, const bool open_children);
     void add_reason_deterministic(const Reason_From_Orchestrator& reason);
     void add_reason_nondeterministic(const Reason_From_Orchestrator& reason);
 
@@ -29,7 +30,8 @@ class Obligation_Processor {
     Reason_From_Worker last_interactions_reason();
   private:
     // calculate results from the solver
-    void set_success_from_solver_nondeterministic(const Obligation& original_obligation, int end_reasons_layer);
+    // void set_success_open_children_unsat(const Obligation& original_obligation);
+    int set_success_from_solver_nondeterministic(const Obligation& original_obligation, int end_reasons_layer);
     void set_success_from_solver_deterministic(const Obligation& original_obligation, int end_reasons_layer);
     void set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer);
 
@@ -51,6 +53,7 @@ class Obligation_Processor {
     int _total_sub_steps;
     int _sub_steps_per_internal_layer_step;
     int _layer_steps;
+    int _largest_constrained_layer = 0;
 };
 
 #endif

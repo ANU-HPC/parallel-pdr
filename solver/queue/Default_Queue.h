@@ -15,7 +15,7 @@ using namespace std;
 class Default_Queue {
   public:
     Default_Queue();
-    void remove_and_ban_state(const Compressed_State state);
+    void remove_and_ban_states_as_goal_reaching(const Compressed_State state);
     void push(const Obligation& obligation);
     Obligation pop(int heuristic);
     bool empty();
