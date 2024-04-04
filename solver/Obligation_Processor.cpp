@@ -3,6 +3,7 @@
 #include "Compressed_State.h"
 #include "Contextless_Reason.h"
 #include "Global.h"
+#include "Lingeling.h"
 #include "Obligation.h"
 #include "Reason_From_Orchestrator.h"
 #include "Utils.h"
@@ -47,7 +48,7 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
 
   assert(original_obligation.banned_actions().size() == 0);
 
-  LOG << "solving with assumptions: " << Utils::to_string(original_obligation.compressed_state().get_state()) << endl;
+  //LOG << "solving with assumptions: " << Utils::to_string(original_obligation.compressed_state().get_state()) << endl;
 
   _last_interaction_was_a_success =_end_reasons_layer_to_solver[end_reasons_layer]->solve(original_obligation.compressed_state().get_state());
 
@@ -107,6 +108,8 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
   */
 }
 
+// TODO don't need to constrain layer 0, always logically the same
+
 void Obligation_Processor::add_reason_nondeterministic(const Reason_From_Orchestrator& reason) {
   const Contextless_Reason& contextless_reason = reason.contextless_reason();
   //_largest_constrained_layer = max(_largest_constrained_layer, contextless_reason.layer());
@@ -119,7 +122,7 @@ void Obligation_Processor::add_reason_nondeterministic(const Reason_From_Orchest
   // first add to solvers constraining the chosen outcome
   for (int layer_to_add_to=contextless_reason.layer(); layer_to_add_to>=0; layer_to_add_to--) {
     const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, 1);
-    LOG << "adding actual clause to solver " << layer_to_add_to << " : " << Utils::to_string(clause_to_add) << endl;
+    //LOG << "adding actual clause to solver " << layer_to_add_to << " : " << Utils::to_string(clause_to_add) << endl;
     _end_reasons_layer_to_solver[layer_to_add_to]->add_clause(clause_to_add);
   }
 
@@ -128,9 +131,14 @@ void Obligation_Processor::add_reason_nondeterministic(const Reason_From_Orchest
     const int end_layer_of_solver_to_add_to = layer_to_add_to-1;
     for (int outcome=0; outcome<Global::problem.max_num_outcomes; outcome++) {
       const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, 2 + outcome);
-      LOG << "adding actual clause to solver " << end_layer_of_solver_to_add_to << " : " << Utils::to_string(clause_to_add) << endl;
+      //LOG << "adding actual clause to solver " << end_layer_of_solver_to_add_to << " : " << Utils::to_string(clause_to_add) << endl;
       _end_reasons_layer_to_solver[end_layer_of_solver_to_add_to]->add_clause(clause_to_add);
     }
+  }
+
+  // then to the separate consistency check ones
+  for (int layer_to_add_to=contextless_reason.layer(); layer_to_add_to>0; layer_to_add_to--) {
+    _layer_to_consistency_solver[layer_to_add_to]->add_clause(timestep_zero_nogood_clause);
   }
 }
 
@@ -261,7 +269,7 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
 
   vector<Obligation> successor_obligations;
 
-  LOG << "model gotten back: " <<  Utils::to_symbols_string(model) << endl;
+  //LOG << "model gotten back: " <<  Utils::to_symbols_string(model) << endl;
 
   // extract action
   int action= -1;
@@ -284,7 +292,6 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
     const int possible_AO = i+1;
     const int model_index = possible_AO-1+Global::problem.total_per_timestep; //Utils::tilde(possible_AO-1, 1); // in timestep 1
     const int model_var_tilded_to_timestep_zero = Utils::tilde(model[model_index], -1);
-    LOG << possible_AO << " " << model_var_tilded_to_timestep_zero << endl;
     assert(possible_AO == abs(model_var_tilded_to_timestep_zero));
     if (model_var_tilded_to_timestep_zero > 0) {
       AO = model_var_tilded_to_timestep_zero;
@@ -314,8 +321,11 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
     const vector<int>& effects = Global::problem.ao_to_effects[ao];
     Compressed_State successor_state = original_obligation.compressed_state().apply_effect(effects);
 
-    int layer = original_obligation.layer();
-    if (outcome == num_outcome) layer--;
+    int known_satisfying_layer;
+    if (outcome == num_outcome) known_satisfying_layer = original_obligation.layer()-1;
+    else                        known_satisfying_layer = original_obligation.layer();
+
+    const int layer = get_lowest_satisfying_layer(successor_state, known_satisfying_layer);
 
     successor_obligations.push_back(Obligation(successor_state, layer, 0, true, vector<int>()));
   }
@@ -500,5 +510,30 @@ void Obligation_Processor::ensure_solver_exists_for_end_reason_layer(int end_rea
   assert (end_reasons_layer>=0);
   while (end_reasons_layer >= _end_reasons_layer_to_solver.size()) {
     _end_reasons_layer_to_solver.push_back(new Lingeling(_base_solver));
+
+    if (_layer_to_consistency_solver.size() == 0) _layer_to_consistency_solver.push_back(NULL);
+    else                                          _layer_to_consistency_solver.push_back(new Lingeling());
   }
+}
+
+int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer) {
+  LOG << "asking is goal? " << state.to_string() << state.is_goal() << endl;
+
+  if (state.is_goal()) return 0;
+
+  // binary search
+  int lower_bound = 0;
+  int upper_bound = upper_known_satisfying_layer;
+
+  while (upper_bound != lower_bound + 1) {
+    // test the middle
+    int middle = (upper_bound+lower_bound)/2;
+    bool valid_at_middle = _layer_to_consistency_solver[middle]->solve(state.get_state());
+
+    // update bounds
+    if (valid_at_middle) upper_bound = middle;
+    else                 lower_bound = middle;
+  }
+
+  return upper_bound;
 }

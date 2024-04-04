@@ -11,7 +11,6 @@ vector<unordered_set<int>*> SCC_Generator::run() {
     //LOG << "considering state when creating SCCs" << state << endl;
     if (_state_to_index.find(state) == _state_to_index.end()) {
       //LOG << "considering new state (and corresponding SCC): " << state << endl;
-      LOG << "A" << endl;
       strong_connect(&sccs, state);
     }
   }
@@ -19,8 +18,6 @@ vector<unordered_set<int>*> SCC_Generator::run() {
 }
 
 void SCC_Generator::strong_connect(vector<unordered_set<int>*>* sccs, const int state) {
-  LOG << "called strong connect on state: " << state << endl;
-  LOG << _state_to_index.size() << endl;
   _state_to_index[state] = _index;
   _state_to_lowlink[state] = _index;
   _index++;
@@ -29,12 +26,10 @@ void SCC_Generator::strong_connect(vector<unordered_set<int>*>* sccs, const int 
 
   for (const auto action:_base_graph->_state_to_actions[state]) {
     for (auto outcome:_base_graph->state_action_pair_to_outcomes(pair<int, int>(state, action))) {
-
       if (_state_to_index.find(state) == _state_to_index.end()) {
-        LOG << "B" << endl;
         strong_connect(sccs, outcome);
         _state_to_lowlink[state] = min(_state_to_lowlink[state], _state_to_lowlink[outcome]);
-      } else if (_unordered_stack.find(state) == _unordered_stack.end()) {
+      } else if (_unordered_stack.find(state) != _unordered_stack.end()) {
         _state_to_lowlink[state] = min(_state_to_lowlink[state], _state_to_index[outcome]);
       }
     }

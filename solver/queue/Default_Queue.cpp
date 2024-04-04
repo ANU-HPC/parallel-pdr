@@ -19,7 +19,7 @@ void Default_Queue::remove_and_ban_states_as_goal_reaching(const Compressed_Stat
 void Default_Queue::push(const Obligation& obligation) {
   if (_banned_states.find(obligation.compressed_state()) != _banned_states.end()) return;
 
-  LOG << "not already banned: " << obligation.to_string() << endl;
+  //LOG << "not already banned: " << obligation.to_string() << endl;
 
   const int layer = obligation.layer();
   make_layer_exist(layer);
@@ -27,7 +27,7 @@ void Default_Queue::push(const Obligation& obligation) {
   if (_layers[layer].push(obligation)) {
     _size++;
     _lowest_layer_with_content = min(_lowest_layer_with_content, layer);
-    LOG << "could add to single layer" << endl;
+    //LOG << "could add to single layer" << endl;
   } else LOG << "not added" << endl;
 
 }

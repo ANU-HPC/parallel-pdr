@@ -297,6 +297,29 @@ size_t Utils::hash(const vector<int>& hashee) {
   return ret_val + (ret_val<<32);
 }
 
+string hash_string_helper_begin(int x) {
+  int hash = x + 10*x + 22*x + 333*x + 4444*x + 55555*x + 666666*x + 7777777*x + 88888888*x;
+
+  int red = 30+abs(hash%150);
+  int green = 30+abs((hash/1000)%150);
+	int blue = 30+abs((hash/1000000)%150);
+
+  string r = std::to_string(red);
+  string g = std::to_string(green);
+  string b = std::to_string(blue);
+
+  if (r.length() == 2) r = "0" + r;
+  if (g.length() == 2) g = "0" + g;
+  if (b.length() == 2) b = "0" + b;
+
+	return "\033[48;2;" + r + ";" + g + ";" + b + ";25m";
+}
+
+string hash_string_helper_end() {
+  return "\033[0m";
+}
+
+
 string Utils::hash_string(size_t hash) {
   const int lower = 33;
   const int upper = 126;
@@ -308,11 +331,11 @@ string Utils::hash_string(size_t hash) {
   const int d = (hash/(mod*mod*mod))%mod+lower;
   const int e = (hash/(mod*mod*mod*mod))%mod+lower;
 
-  const string a_str = string(1, a);
-  const string b_str = string(1, b);
-  const string c_str = string(1, c);
-  const string d_str = string(1, d);
-  const string e_str = string(1, e);
+  const string a_str = hash_string_helper_begin(a) + string(1, a) + hash_string_helper_end();
+  const string b_str = hash_string_helper_begin(b) + string(1, b) + hash_string_helper_end();
+  const string c_str = hash_string_helper_begin(c) + string(1, c) + hash_string_helper_end();
+  const string d_str = hash_string_helper_begin(d) + string(1, d) + hash_string_helper_end();
+  const string e_str = hash_string_helper_begin(e) + string(1, e) + hash_string_helper_end();
 
   //string start = "\033[48;2;90;10;10;25m";
 

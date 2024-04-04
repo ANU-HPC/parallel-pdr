@@ -24,6 +24,9 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
 
   // we have the SCCs, now to work out which are goal SCCs directly, and which do and don't lead to a goal
 
+  // TODO stop right here if there are no goals in the sccs
+
+
   // first work out which are goals directly
   unordered_set<int> goal_sccs;
   for (int scc_num=0; scc_num<sccs.size(); scc_num++) {
@@ -67,7 +70,7 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
 
   // do a search through the SCC graph labelling everything that can reach the goal as a goal state
   set<int> frontier = set<int>(goal_sccs.begin(), goal_sccs.end());
-  LOG << "start frontier " << Utils::to_string(frontier) << endl;
+  //LOG << "start frontier " << Utils::to_string(frontier) << endl;
   //set<int> seen; // TODO don't double up (just for efficiency)
   while(frontier.size()) {
     const int goal_scc = *frontier.rbegin();
@@ -75,11 +78,13 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
 
     //LOG << "from scc: " << goal_scc << " back to: " << Utils::to_string(scc_to_sccs_that_go_to_it[goal_scc]) << endl;
 
+    LOG << goal_scc << " is reached by " << Utils::to_string(scc_to_sccs_that_go_to_it[goal_scc]) << endl;
+
     frontier.insert(scc_to_sccs_that_go_to_it[goal_scc].begin(), scc_to_sccs_that_go_to_it[goal_scc].end());
     goal_sccs.insert(scc_to_sccs_that_go_to_it[goal_scc].begin(), scc_to_sccs_that_go_to_it[goal_scc].end());
   }
 
-  LOG << "end of the backwards SCC search, the resulting goal SCCS: " << Utils::to_string(goal_sccs) << endl;
+  //LOG << "end of the backwards SCC search, the resulting goal SCCS: " << Utils::to_string(goal_sccs) << endl;
 
   // we want to work out which states and actions lead to a non-goal-reaching sink ("bad" sink)
   // first work out the states which cannot reach the goal no matter what:
@@ -112,11 +117,11 @@ unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() 
   
   // iteratively refine this graph
   while (true) {
-    LOG << "starting iteration with graph:" << endl;
-    iterative_graph.print();
+    //LOG << "starting iteration with graph:" << endl;
+    //iterative_graph.print();
     unordered_set<int> states_to_remove = scc_iteration_non_goal_reaching_states(&iterative_graph);
     if (states_to_remove.size()) {
-      LOG << "got back to remove states: " << Utils::to_string(states_to_remove) << endl;
+      //LOG << "got back to remove states: " << Utils::to_string(states_to_remove) << endl;
       for (auto state:states_to_remove) {
         iterative_graph.remove_state(state); // implicitly also removes all its arcs
       }

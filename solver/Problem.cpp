@@ -245,8 +245,12 @@ Problem::Problem(int argc, char **argv) {
 
   const Value& goal_condition_array = document["goal_condition"];
   assert(goal_condition_array.IsArray());
-  for (SizeType i = 0; i < goal_condition_array.Size(); i++)
-    goal_condition.push_back(goal_condition_array[i].GetInt());
+  for (SizeType i = 0; i < goal_condition_array.Size(); i++) {
+    const int goal_condition_int = goal_condition_array[i].GetInt();
+    goal_condition.push_back(goal_condition_int);
+    goal_condition_set.insert(goal_condition_int);
+    if (goal_condition_int > 0) goal_condition_num_pos_lits++;
+  }
 
   if (nondeterministic) {
     subproblem_to_propositions[0] = vector<int>();
@@ -278,6 +282,8 @@ Problem::Problem(int argc, char **argv) {
       const Value& effects_array = ita->value;
       for (int i = 0; i < effects_array.Size(); i++) {
         effects.push_back(effects_array[i].GetInt());
+        //int x = effects.size();
+        //LOG << "" << endl;
       }
       sort(effects.begin(), effects.end(), Utils::abs_comp);
       ao_to_effects[ao] = effects;
@@ -296,6 +302,7 @@ Problem::Problem(int argc, char **argv) {
         const int ao = aos_array[i].GetInt();
         aos.push_back(ao);
         ao_to_action[ao] = action;
+        LOG << ao_to_action.size() << endl;
       }
       sort(aos.begin(), aos.end(), Utils::abs_comp);
       action_to_aos[action] = aos;

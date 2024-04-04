@@ -29,6 +29,8 @@ class Compressed_State {
 
     bool trimmed_by_reason(const Contextless_Reason& reason);
 
+    bool is_goal() const;
+
     vector<int> get_state() const;
 
     void get_as_MPI_message(int* data, int start) const;

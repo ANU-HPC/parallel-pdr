@@ -1,6 +1,6 @@
 #include "State_Action_Graph.h"
 
-State_Action_Graph::State_Action_Graph() { }
+State_Action_Graph::State_Action_Graph() { LOG << "TODO have a node list for scc generator" << endl; }
 
 State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
   for (const auto& it:existing._state_to_actions) {

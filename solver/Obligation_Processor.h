@@ -50,6 +50,10 @@ class Obligation_Processor {
     vector<Lingeling*> _end_reasons_layer_to_solver;
     Lingeling* _base_solver;
 
+    // nondeterminism - to see what layers outcomes should be at
+    int get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer);
+    vector<Lingeling*> _layer_to_consistency_solver;
+
     int _total_sub_steps;
     int _sub_steps_per_internal_layer_step;
     int _layer_steps;

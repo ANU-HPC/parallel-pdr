@@ -41,6 +41,9 @@ tuple<int,int,int*,int> MPI_Interface::recieve_message() {
 }
 
 void MPI_Interface::maybe_cleanup_isend_outbox() {
+  LOG << "TODO skipping as causing memory issues" << endl;
+  return;
+
   if (_cleanup_isend_outbox_ticker==0) {
     _cleanup_isend_outbox_ticker = CLEANUP_ISEND_OUTBOX_TICKER_COUNT;
 

@@ -7,6 +7,7 @@
 #include <set>
 #include <algorithm>
 #include <map>
+#include <unordered_set>
 #include <iostream>
 
 #include "rapidjson/document.h"
@@ -54,6 +55,8 @@ class Problem {
 
     vector<int> initial_state;
     vector<int> goal_condition;
+    unordered_set<int> goal_condition_set;
+    int goal_condition_num_pos_lits = 0;
     vector<pair<vector<int>,vector<int>>> action_literals_to_extra_positive_effects; // a vector of pairs, each pair has 2 int vectors. The first is a set of conditions to be met, the second is the propositions that become true (adl when A B form)
     map<int, vector<int>> dag_node_to_nogood_propositions;
     map<int, map<int, int>> subproblem_layer_to_root_dag_node;

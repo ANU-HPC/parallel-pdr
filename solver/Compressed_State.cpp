@@ -76,7 +76,7 @@ int Compressed_State::state_to_state_id(const Compressed_State& state) {
     int state_id = _state_to_state_id_map.size();
     _state_to_state_id_map[state] = state_id;
     _state_id_to_state_map[state_id] = state;
-    LOG << "just registered a new state id: " << state_id << " " << state.to_string() << endl;
+    //LOG << "just registered a new state id: " << state_id << " " << state.to_string() << endl;
     return state_id;
   } else {
     return position->second;
@@ -160,6 +160,35 @@ bool Compressed_State::trimmed_by_reason(const Contextless_Reason& reason) {
       else reason_current++;
     }
   }
+}
+
+bool Compressed_State::is_goal() const {
+  if (!_guaranteed_full) {
+    LOG << "ERROR not set up to hash partial states" << endl;
+    assert(0);
+    exit(1);
+  }
+
+  // need to check if inconsistent with the goal condition
+  // inconsistent when positive (mentioned) in the state, and negative in the goal condition
+  // OR
+  // mentioned in the goal condition, and missed in the state (for efficiency, see how many positive lits are in the goal condition, and make sure they are all checked off as being in the state)
+
+  int unaccounted_for_goal_positive_lits = Global::problem.goal_condition_num_pos_lits;
+  for (int pos_in_state : _raw) {
+    assert(pos_in_state>0);
+    if (Utils::in(Global::problem.goal_condition_set, pos_in_state)) {
+      unaccounted_for_goal_positive_lits--;
+    } else if (Utils::in(Global::problem.goal_condition_set, -pos_in_state)) {
+      LOG << "returning false as " << -pos_in_state << " is in " << Utils::to_string(Global::problem.goal_condition_set) << endl;
+      return false;
+    }
+    // if neither, then it is not mentioned, so no issues
+  }
+  // if there are positive goal lits not seen in the state, then they are implicitly false in the state => problem
+  // otherwise the state is consistent
+  LOG << "unaccounted_for_goal_positive_lits: " << unaccounted_for_goal_positive_lits  << endl;
+  return unaccounted_for_goal_positive_lits == 0;
 }
 
 vector<int> Compressed_State::get_state() const {

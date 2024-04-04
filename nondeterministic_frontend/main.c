@@ -693,9 +693,17 @@ void writeChosenOutcomeFrameAxiomClauses() {
     //for (int i
 
     // create reverse dictionary from atoms to what can flip them
-    int atomToAOsWhichFlipNegative[nOfAtoms][nOfActions];
+    printf("%d %d\n", nOfAtoms, nOfActions);
+
+    // done with malloc to put on heap, stop some memory propblems
+    //int atomToAOsWhichFlipPositive[nOfAtoms][nOfActions];
+    //int atomToAOsWhichFlipNegative[nOfAtoms][nOfActions];
+    int* atomToAOsWhichFlipNegative = malloc(sizeof(int) * nOfAtoms * nOfAOs);
+    int* atomToAOsWhichFlipPositive = malloc(sizeof(int) * nOfAtoms * nOfAOs);
+
+
+
     int atomToAOsWhichFlipNegativeCount[nOfAtoms];
-    int atomToAOsWhichFlipPositive[nOfAtoms][nOfActions];
     int atomToAOsWhichFlipPositiveCount[nOfAtoms];
 
     // initialize to 0
@@ -716,11 +724,17 @@ void writeChosenOutcomeFrameAxiomClauses() {
 
                 if (positive) {
                     int nextPositiveSlot = atomToAOsWhichFlipPositiveCount[atom];
-                    atomToAOsWhichFlipPositive[atom][nextPositiveSlot] = AO;
+
+                    //atomToAOsWhichFlipPositive[atom][nextPositiveSlot] = AO;
+                    atomToAOsWhichFlipPositive[atom*nOfAOs + nextPositiveSlot] = AO;
+
                     atomToAOsWhichFlipPositiveCount[atom]++;
                 } else {
                     int nextNegativeSlot = atomToAOsWhichFlipNegativeCount[atom];
-                    atomToAOsWhichFlipNegative[atom][nextNegativeSlot] = AO;
+
+                    //atomToAOsWhichFlipNegative[atom][nextNegativeSlot] = AO;
+                    atomToAOsWhichFlipNegative[atom*nOfAOs + nextNegativeSlot] = AO;
+
                     atomToAOsWhichFlipNegativeCount[atom]++;
                 }
 
@@ -737,7 +751,10 @@ void writeChosenOutcomeFrameAxiomClauses() {
         // positive
         fprintf(cnfFile, "%d %d ", startingAtomVar, -endAtomVar);
         for (int i=0; i<atomToAOsWhichFlipPositiveCount[atom]; i++) {
-            int AO = atomToAOsWhichFlipPositive[atom][i];
+
+            //int AO = atomToAOsWhichFlipPositive[atom][i];
+            int AO = atomToAOsWhichFlipPositive[atom*nOfAOs + i];
+
             fprintf(cnfFile, "%d ", AOToCnfVar(AO));
         }
         fprintf(cnfFile, "0\n");
@@ -746,8 +763,11 @@ void writeChosenOutcomeFrameAxiomClauses() {
         // negative
         fprintf(cnfFile, "%d %d ", -startingAtomVar, endAtomVar);
         for (int i=0; i<atomToAOsWhichFlipNegativeCount[atom]; i++) {
-            int AO = atomToAOsWhichFlipNegative[atom][i];
-            fprintf(cnfFile, "%d ", actionToCnfVar(AO));
+
+            //int AO = atomToAOsWhichFlipNegative[atom][i];
+            int AO = atomToAOsWhichFlipNegative[atom * nOfAOs + i];
+
+            fprintf(cnfFile, "%d ", AOToCnfVar(AO));
         }
         fprintf(cnfFile, "0\n");
         numClauses++;
@@ -764,9 +784,15 @@ void writeEveryOutcomeFrameAxiomClauses() {
 
     for (int effectNum=0; effectNum<maxNumEffects; effectNum++) {
         // create reverse dictionary from atoms to what can flip them
-        int atomToActionsWhichFlipNegative[nOfAtoms][nOfActions];
+
+
+        // done with malloc to put on heap, stop some memory propblems
+        //int atomToActionsWhichFlipNegative[nOfAtoms][nOfActions];
+        //int atomToActionsWhichFlipPositive[nOfAtoms][nOfActions];
+        int* atomToActionsWhichFlipNegative = malloc(sizeof(int) * nOfAtoms * nOfActions);
+        int* atomToActionsWhichFlipPositive = malloc(sizeof(int) * nOfAtoms * nOfActions);
+
         int atomToActionsWhichFlipNegativeCount[nOfAtoms];
-        int atomToActionsWhichFlipPositive[nOfAtoms][nOfActions];
         int atomToActionsWhichFlipPositiveCount[nOfAtoms];
 
         // initialize to 0
@@ -781,11 +807,17 @@ void writeEveryOutcomeFrameAxiomClauses() {
                 // not in use for this action, so this is a justification to flip
                 for (int atom=0; atom<nOfAtoms; atom++) {
                     int nextPositiveSlot = atomToActionsWhichFlipPositiveCount[atom];
-                    atomToActionsWhichFlipPositive[atom][nextPositiveSlot] = action;
+
+                    //atomToActionsWhichFlipPositive[atom][nextPositiveSlot] = action;
+                    atomToActionsWhichFlipPositive[atom * nOfActions + nextPositiveSlot] = action;
+
                     atomToActionsWhichFlipPositiveCount[atom]++;
 
                     int nextNegativeSlot = atomToActionsWhichFlipNegativeCount[atom];
-                    atomToActionsWhichFlipNegative[atom][nextNegativeSlot] = action;
+
+                    //atomToActionsWhichFlipNegative[atom][nextNegativeSlot] = action;
+                    atomToActionsWhichFlipNegative[atom * nOfActions + nextNegativeSlot] = action;
+
                     atomToActionsWhichFlipNegativeCount[atom]++;
                 }
             } else {
@@ -799,11 +831,17 @@ void writeEveryOutcomeFrameAxiomClauses() {
 
                     if (positive) {
                         int nextPositiveSlot = atomToActionsWhichFlipPositiveCount[atom];
-                        atomToActionsWhichFlipPositive[atom][nextPositiveSlot] = action;
+
+                        //atomToActionsWhichFlipPositive[atom][nextPositiveSlot] = action;
+                        atomToActionsWhichFlipPositive[atom*nOfActions + nextPositiveSlot] = action;
+
                         atomToActionsWhichFlipPositiveCount[atom]++;
                     } else {
                         int nextNegativeSlot = atomToActionsWhichFlipNegativeCount[atom];
-                        atomToActionsWhichFlipNegative[atom][nextNegativeSlot] = action;
+
+                        //atomToActionsWhichFlipNegative[atom][nextNegativeSlot] = action;
+                        atomToActionsWhichFlipNegative[atom*nOfActions + nextNegativeSlot] = action;
+
                         atomToActionsWhichFlipNegativeCount[atom]++;
                     }
 
@@ -820,7 +858,8 @@ void writeEveryOutcomeFrameAxiomClauses() {
             // positive
             fprintf(cnfFile, "%d %d ", startingAtomVar, -endAtomVar);
             for (int i=0; i<atomToActionsWhichFlipPositiveCount[atom]; i++) {
-                int action = atomToActionsWhichFlipPositive[atom][i];
+                //int action = atomToActionsWhichFlipPositive[atom][i];
+                int action = atomToActionsWhichFlipPositive[atom * nOfActions + i];
                 fprintf(cnfFile, "%d ", actionToCnfVar(action));
             }
             fprintf(cnfFile, "0\n");
@@ -829,7 +868,8 @@ void writeEveryOutcomeFrameAxiomClauses() {
             // negative
             fprintf(cnfFile, "%d %d ", -startingAtomVar, endAtomVar);
             for (int i=0; i<atomToActionsWhichFlipNegativeCount[atom]; i++) {
-                int action = atomToActionsWhichFlipNegative[atom][i];
+                //int action = atomToActionsWhichFlipNegative[atom][i];
+                int action = atomToActionsWhichFlipNegative[atom * nOfActions + i];
                 fprintf(cnfFile, "%d ", actionToCnfVar(action));
             }
             fprintf(cnfFile, "0\n");
@@ -1032,7 +1072,7 @@ void writeExtraJson() {
             writeExtraJsonGoalHelper(goal->juncts);
             break;
         default:
-            printf("ERROR: don't know how to handle goal\n");
+            printf("ERROR: don't know how to handle goal %d\n", goal->t);
             exit(1);
     }
     fprintf(jsonFile, "  ]\n");

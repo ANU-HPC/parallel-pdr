@@ -523,6 +523,7 @@ bool Strategies::run_default() {
 
   for(int k=1;; k++) {
     LOG << "starting layer k: " << k << endl;
+    layers.print();
     // Put the initial state in the queue
     Obligation initial_obligation = Obligation(initial_state, k, 0, true, vector<int>());
     queue.push(initial_obligation);
