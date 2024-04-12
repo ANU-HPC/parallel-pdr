@@ -502,7 +502,7 @@ bool Strategies::run_default() {
   Layers layers;
   Worker_Interface worker_interface;
   Goal_Reachability_Manager goal_reachability_manager; // only for nondeterminism
-  Plan_Builder plan_builder; // only for deterministic
+  Plan_Builder deterministic_plan_builder; // only for deterministic
 
   // tmp unpackers
   tuple<int, Success> worker_success;
@@ -519,11 +519,19 @@ bool Strategies::run_default() {
   Compressed_State initial_state = Compressed_State(Global::problem.initial_state, 0, true);
   Compressed_State::set_initial_state(initial_state);
 
+  // check if trivially satisfied
+  if (initial_state.is_goal()) {
+    LOG << "trivially SAT" << endl;
+    if (!Global::problem.evaluation_mode) worker_interface.finalize();
+    return true;
+  }
+
   LOG << "initial state: " << initial_state.to_string() << endl;
 
   for(int k=1;; k++) {
+    worker_interface.reset_nondeterministic_solvers_for_new_k(k);
     LOG << "starting layer k: " << k << endl;
-    layers.print();
+
     // Put the initial state in the queue
     Obligation initial_obligation = Obligation(initial_state, k, 0, true, vector<int>());
     queue.push(initial_obligation);
@@ -532,6 +540,8 @@ bool Strategies::run_default() {
 
     // Process it
     while (!queue.empty() || !worker_interface.all_workers_idle()) {
+      LOG << "starting another check" << endl;
+      goal_reachability_manager.print();
       if (Global::problem.evaluation_mode) print_elapsed_time();
 
       // add some more work
@@ -564,7 +574,7 @@ bool Strategies::run_default() {
 
         assert(success.original_obligation().reduce_reason_add_successor_to_queue());
 
-        if (!Global::problem.nondeterministic) plan_builder.register_success(success);
+        if (!Global::problem.nondeterministic) deterministic_plan_builder.register_success(success);
 
         queue.push(success.original_obligation());
 
@@ -592,7 +602,7 @@ bool Strategies::run_default() {
               new_goal_reaching_states.insert(successor_obligation.compressed_state().id()); 
 
             } else {
-              plan_builder.write_plan(success);
+              deterministic_plan_builder.write_plan(success);
               if (!Global::problem.evaluation_mode) worker_interface.finalize();
               return true;
             }
@@ -627,7 +637,7 @@ bool Strategies::run_default() {
             for (auto it=new_goal_reaching_states.begin(); it!=new_goal_reaching_states.end(); it++) {
               const int state_id = *it; 
               const Compressed_State& new_goal_reaching_state = Compressed_State::state_id_to_state(state_id);
-                LOG << "about to trim from the queue the state (as goal reaching): " << new_goal_reaching_state.to_string() << endl;
+              LOG << "about to trim from the queue the state (as goal reaching): " << new_goal_reaching_state.to_string() << endl;
               queue.remove_and_ban_states_as_goal_reaching(new_goal_reaching_state);
             }
           }
@@ -717,7 +727,10 @@ bool Strategies::run_default() {
 
       */
       // convergence check
+
+      // !Global::problem.nondeterministic && 
       if (layers.same_as_previous(layer)) {
+        //layers.print();
         LOG << "converged as layer " << layer << " is the same as the previous one" << endl;
         if (!Global::problem.evaluation_mode) worker_interface.finalize();
         return false;

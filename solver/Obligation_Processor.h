@@ -28,6 +28,8 @@ class Obligation_Processor {
     bool last_interaction_was_a_success();
     Success last_interactions_success();
     Reason_From_Worker last_interactions_reason();
+
+    void reset_nondeterministic_solvers_for_new_k(int k);
   private:
     // calculate results from the solver
     // void set_success_open_children_unsat(const Obligation& original_obligation);
@@ -52,12 +54,19 @@ class Obligation_Processor {
 
     // nondeterminism - to see what layers outcomes should be at
     int get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer);
+
     vector<Lingeling*> _layer_to_consistency_solver;
 
     int _total_sub_steps;
     int _sub_steps_per_internal_layer_step;
     int _layer_steps;
     int _largest_constrained_layer = 0;
+
+    int _iteration = 0;
+
+    // nondeterministic chosen
+    vector<vector<vector<int>>> end_layer_to_chosen_outcome_added_clauses;
+    int _k = 0;
 };
 
 #endif

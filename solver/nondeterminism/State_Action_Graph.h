@@ -23,11 +23,11 @@ class State_Action_Graph {
     State_Action_Graph(const State_Action_Graph& existing); // copy
 
     // edits
-    void add(const Success& success);
+    bool add(const Success& success);
     void remove_state(const int state);
     void remove_state_action_arcs(const pair<int, int>& state_action);
 
-    void print();
+    void print(const unordered_map<int, unordered_set<int>>& _goal_state_to_actions);
 
     unordered_map<int, unordered_set<int>> _state_to_actions;
     unordered_map<int, unordered_set<pair<int, int>, Int_Pair_Hash>> _state_to_producing_state_action_pairs;

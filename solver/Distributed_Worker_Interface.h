@@ -23,6 +23,7 @@ class Distributed_Worker_Interface {
     bool all_workers_idle();
     void handle_obligation(const Obligation& obl, bool open_children, int worker);
     void handle_reason(const Reason_From_Orchestrator& reason, int worker);
+    void reset_nondeterministic_solvers_for_new_k(int k, int worker);
     void process_inbox();
     vector<tuple<int,Reason_From_Worker>>* get_returned_reasons_buffer();
     vector<tuple<int,Success>>* get_returned_successes_buffer();

@@ -41,6 +41,7 @@ class MPI_Interface {
     const static int MESSAGE_TAG_FINALIZE                       = 5;
     const static int MESSAGE_TAG_IDLE                           = 6;
     const static int MESSAGE_TAG_OPEN_CHILDREN_OBLIGATION       = 7;
+    const static int MESSAGE_TAG_RESET_SOLVERS_FOR_NEW_K        = 8;
 
     set<int> ENABLED_WORKERS;
 

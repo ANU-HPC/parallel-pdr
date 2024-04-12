@@ -1,4 +1,5 @@
 #include "Distributed_Worker_Interface.h"
+#include "MPI_Interface.h"
 
 
 Distributed_Worker_Interface::Distributed_Worker_Interface() {
@@ -32,6 +33,12 @@ void Distributed_Worker_Interface::handle_reason(const Reason_From_Orchestrator&
   int size = reason.MPI_message_size();
   int* data = reason.get_as_MPI_message();
   Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_REASON_FROM_ORCHESTRATOR, data, size);
+}
+
+void Distributed_Worker_Interface::reset_nondeterministic_solvers_for_new_k(int k, int worker) {
+  int size = 1;
+  int data[1] = { k };
+  Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_RESET_SOLVERS_FOR_NEW_K, data, size);
 }
 
 void Distributed_Worker_Interface::process_inbox() {

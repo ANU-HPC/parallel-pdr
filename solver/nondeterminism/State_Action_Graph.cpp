@@ -24,7 +24,7 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
   assert(consistency_check());
 }
 
-void State_Action_Graph::add(const Success& success) {
+bool State_Action_Graph::add(const Success& success) {
   assert(consistency_check());
 
   // get all as numbers
@@ -41,7 +41,13 @@ void State_Action_Graph::add(const Success& success) {
 
   _state_to_producing_state_action_pairs[original_state_id].size(); // make it exist even if empty
 
-  if (_state_action_pair_to_outcomes.find(state_action) != _state_action_pair_to_outcomes.end()) LOG << "adding a state_action already registered" << endl;
+  bool ret_val;
+  if (_state_action_pair_to_outcomes.find(state_action) == _state_action_pair_to_outcomes.end()) {
+    ret_val = true;
+  } else {
+    ret_val = false;
+    LOG << "adding a state_action already registered" << endl;
+  }
 
   _state_to_actions[original_state_id].insert(action);
   _state_action_pair_to_outcomes[state_action] = unordered_set<int>(successor_state_ids.begin(), successor_state_ids.end());
@@ -51,6 +57,8 @@ void State_Action_Graph::add(const Success& success) {
   }
 
   assert(consistency_check());
+
+  return ret_val;
 }
 
 void State_Action_Graph::remove_state(const int state) {
@@ -234,12 +242,22 @@ void State_Action_Graph::erase_state_if_lone(int state) {
   } 
 }
 
-void State_Action_Graph::print() {
-  for (auto x:_state_action_pair_to_outcomes) {
-    auto state_action_pair = x.first;
-    auto outcomes = x.second;
+void State_Action_Graph::print(const unordered_map<int, unordered_set<int>>& goal_state_to_actions) {
+  LOG << "print:" << endl;
+  for (auto state_actions:_state_to_actions) {
+    auto state = state_actions.first;
+    auto actions = state_actions.second;
 
-    cout << "STATE: " << state_action_pair.first << "\tACTION: " << state_action_pair.second << " OUTCOMES:" << Utils::to_string(outcomes) << endl;
+    string goal_string_A = (goal_state_to_actions.find(state) == goal_state_to_actions.end()) ? "     " : "GOAL ";
+
+    cout << goal_string_A << "STATE: " << Compressed_State::state_id_to_state(state).to_string() << endl;
+    for (auto action:actions) {
+      cout << "       ACTION: " << Utils::to_symbols_string(action) << endl;
+      pair<int, int> state_action_pair = pair<int, int>(state, action);
+      for (auto outcome:_state_action_pair_to_outcomes[state_action_pair]) {
+        string goal_string_B = (goal_state_to_actions.find(outcome) == goal_state_to_actions.end()) ? "     " : "GOAL ";
+        cout << goal_string_B << "    OUTCOME: " << Compressed_State::state_id_to_state(outcome).to_string() << endl;
+      }
+    }
   }
 }
-  

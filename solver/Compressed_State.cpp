@@ -1,7 +1,9 @@
 #include "Compressed_State.h"
 #include "Contextless_Reason.h" // to manage a circular dependency
 
-Compressed_State::Compressed_State() { }
+Compressed_State::Compressed_State() {
+  _id = -2;
+}
 
 // TODO make this nicer?
 Compressed_State::Compressed_State(const vector<int>& state, int subproblem, bool guaranteed_full) {
@@ -25,10 +27,6 @@ Compressed_State::Compressed_State(const vector<int>& state, int subproblem, boo
   assign_id(this);
 }
 
-void Compressed_State::assign_id(Compressed_State* state) {
-  _id =state_to_state_id(*state);
-}
-
 Compressed_State::Compressed_State(int* data, int start, int stop) {
   _subproblem = data[start];
   _guaranteed_full = data[start+1]==1 ? true : false;
@@ -38,6 +36,17 @@ Compressed_State::Compressed_State(int* data, int start, int stop) {
   }
 
   assign_id(this);
+}
+
+// not the most elegant - I doubt this will be expensive
+void Compressed_State::assign_id(Compressed_State* state) {
+  if (_state_to_state_id_map.find(*state) == _state_to_state_id_map.end()) {
+    _id = _state_to_state_id_map.size(); // can predict the behaviour
+    int new_id = state_to_state_id(*state);
+    assert(new_id == _id);
+  } else {
+    _id = state_to_state_id(*state);
+  }
 }
 
 bool Compressed_State::operator==(const Compressed_State& other) const {
@@ -164,7 +173,7 @@ bool Compressed_State::trimmed_by_reason(const Contextless_Reason& reason) {
 
 bool Compressed_State::is_goal() const {
   if (!_guaranteed_full) {
-    LOG << "ERROR not set up to hash partial states" << endl;
+    LOG << "ERROR not set up to handle partial states" << endl;
     assert(0);
     exit(1);
   }
@@ -210,7 +219,7 @@ int Compressed_State::MPI_message_size() const {
 }
 
 string Compressed_State::to_string() const {
-  return "{CS, full:" + std::to_string(_guaranteed_full) + 
-    " ID:" + std::to_string(_id) + 
+  //return "{CS, full:" + std::to_string(_guaranteed_full) + 
+  return "{CS ID:" + std::to_string(_id) + 
     " " + Utils::to_symbols_string(_raw) + "}";
 }

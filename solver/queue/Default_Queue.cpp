@@ -17,6 +17,8 @@ void Default_Queue::remove_and_ban_states_as_goal_reaching(const Compressed_Stat
 }
 
 void Default_Queue::push(const Obligation& obligation) {
+  if (_banned_states.find(obligation.compressed_state()) != _banned_states.end()) LOG << "not adding as banned: " << obligation.to_string() << endl;
+
   if (_banned_states.find(obligation.compressed_state()) != _banned_states.end()) return;
 
   //LOG << "not already banned: " << obligation.to_string() << endl;

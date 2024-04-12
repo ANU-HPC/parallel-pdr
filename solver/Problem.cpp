@@ -262,7 +262,7 @@ Problem::Problem(int argc, char **argv) {
     num_aux = 0;
     num_subproblems = 1;
 
-    action_to_num_outcomes = vector<int>(action_max-action_min+1);
+    action_to_num_outcomes = vector<int>(action_max-action_min+2);
 
     const Value& action_to_num_outcomes_object = document["action_to_num_outcomes"]; 
     assert(action_to_num_outcomes_object.IsObject());
@@ -270,6 +270,7 @@ Problem::Problem(int argc, char **argv) {
       int action = stoi(ita->name.GetString());
       int num_outcomes = ita->value.GetInt();
       max_num_outcomes = max(max_num_outcomes, num_outcomes);
+      //LOG << action << " " << action_to_num_outcomes.size() << " " << action_min << " " << action_max << endl;
       action_to_num_outcomes[action] = num_outcomes;
     }
 
@@ -281,7 +282,9 @@ Problem::Problem(int argc, char **argv) {
       assert(ita->value.IsArray());
       const Value& effects_array = ita->value;
       for (int i = 0; i < effects_array.Size(); i++) {
-        effects.push_back(effects_array[i].GetInt());
+        const int effect = effects_array[i].GetInt();
+        //LOG << effect << " " << effects.size() << endl;
+        effects.push_back(effect);
         //int x = effects.size();
         //LOG << "" << endl;
       }
@@ -289,7 +292,7 @@ Problem::Problem(int argc, char **argv) {
       ao_to_effects[ao] = effects;
     }
 
-    ao_to_action = vector<int>(num_aos);
+    ao_to_action = vector<int>(num_aos+1);
 
     const Value& action_to_aos_object = document["action_to_aos"]; 
     assert(action_to_aos_object.IsObject());
@@ -301,8 +304,9 @@ Problem::Problem(int argc, char **argv) {
       for (int i = 0; i < aos_array.Size(); i++) {
         const int ao = aos_array[i].GetInt();
         aos.push_back(ao);
+        //LOG << "assigning AO/total " << ao << " " << num_aos << endl;
         ao_to_action[ao] = action;
-        LOG << ao_to_action.size() << endl;
+        //LOG << ao_to_action.size() << endl;
       }
       sort(aos.begin(), aos.end(), Utils::abs_comp);
       action_to_aos[action] = aos;

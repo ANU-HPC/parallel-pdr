@@ -22,12 +22,17 @@ class Goal_Reachability_Manager {
     //Goal_Reachability_Manager();
     unordered_set<int> register_pure_goal_return_new_goal_states(const Compressed_State& state);
     unordered_set<int> register_success_return_new_goal_states(const Success& success); 
+
+    void print();
+    bool no_change_since_last_check();
   private:
     unordered_set<int> scc_iteration_non_goal_reaching_states(State_Action_Graph* iterative_graph);
     unordered_set<int> find_newly_goal_reaching_states(); // The wider context just needs to know what states to trim from the queue TODO make this more refined than a big overall search
 
     unordered_map<int, unordered_set<int>> _goal_state_to_actions; // actions needed to progress towards the goal
     State_Action_Graph _graph;
+
+    bool _no_change_since_last_check = false;
 };
 
 #endif

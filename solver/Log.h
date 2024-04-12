@@ -59,6 +59,7 @@ class Log {
 #endif
 */
 
-#define LOG cout << Log::COLOUR_START(__FILE__) << Log::TIME_TEXT() << " :: " << Log::RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: " << Log::COLOUR_END()
+//#define LOG cout << Log::COLOUR_START(__FILE__) << Log::TIME_TEXT() << " :: " << Log::RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: " << Log::COLOUR_END()
+#define LOG cout << Log::COLOUR_START(__FILE__) << Log::TIME_TEXT() << " :: " << Log::RANK_TEXT() << __FILE__ << ":" << __LINE__ << " :: " << __FUNCTION__ << " :: " << Log::COLOUR_END()
 
 #endif

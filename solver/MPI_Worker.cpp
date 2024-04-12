@@ -59,6 +59,9 @@ void MPI_Worker::run() {
       Global::stats.print();
       Global::mpi_interface.barriered_finalize();
       return;
+    } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_RESET_SOLVERS_FOR_NEW_K) {
+      int new_k = data[0];
+      _obligation_processor->reset_nondeterministic_solvers_for_new_k(new_k);
     } else {
       LOG << "ERROR: Unknown message tag: " << mpi_tag << endl;
       exit(1);

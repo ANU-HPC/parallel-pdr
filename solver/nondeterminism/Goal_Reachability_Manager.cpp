@@ -1,12 +1,17 @@
 #include "Goal_Reachability_Manager.h"
 
+// TODO if no state has reached the goal, don't even bother working out what can reach the goal as we know it is nothing
+
 unordered_set<int> Goal_Reachability_Manager::register_pure_goal_return_new_goal_states(const Compressed_State& state) {
+  LOG << "here" << endl;
   _goal_state_to_actions[state.id()] = unordered_set<int>(); // empty as already a goal state
   return find_newly_goal_reaching_states();
 }
 
 unordered_set<int> Goal_Reachability_Manager::register_success_return_new_goal_states(const Success& success) {
-  _graph.add(success);
+  LOG << "here" << endl;
+  bool change = _graph.add(success);
+  if (change) _no_change_since_last_check = false;
   return find_newly_goal_reaching_states();
 }
 
@@ -116,10 +121,14 @@ unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() 
   State_Action_Graph iterative_graph = State_Action_Graph(_graph);
   
   // iteratively refine this graph
+  LOG << "starting... " << endl;
   while (true) {
     //LOG << "starting iteration with graph:" << endl;
     //iterative_graph.print();
     unordered_set<int> states_to_remove = scc_iteration_non_goal_reaching_states(&iterative_graph);
+
+    LOG << "to remove as cannot reach the goal: " << Utils::to_string(states_to_remove) << endl;
+
     if (states_to_remove.size()) {
       //LOG << "got back to remove states: " << Utils::to_string(states_to_remove) << endl;
       for (auto state:states_to_remove) {
@@ -142,5 +151,17 @@ unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() 
     }
   }
 
+  LOG << "found newly reaching goal states: " << Utils::to_string(newly_goal_reaching_states) << endl;
+
   return newly_goal_reaching_states;
+}
+
+void Goal_Reachability_Manager::print() {
+  _graph.print(_goal_state_to_actions);
+}
+
+bool Goal_Reachability_Manager::no_change_since_last_check() {
+  bool ret_val = _no_change_since_last_check;
+  _no_change_since_last_check = true;
+  return ret_val;
 }
