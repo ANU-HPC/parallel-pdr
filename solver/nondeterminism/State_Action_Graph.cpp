@@ -35,7 +35,7 @@ bool State_Action_Graph::add(const Success& success) {
     successor_state_ids.insert(successor_obligation.compressed_state().id());
   }
 
-  LOG << "adding: " << success.to_string() << endl;
+  //LOG << "adding: " << success.to_string() << endl;
 
   const pair<int, int> state_action = pair<int, int>(original_state_id, action);
 
@@ -240,6 +240,10 @@ void State_Action_Graph::erase_state_if_lone(int state) {
     _state_to_actions.erase(state);
     _state_to_producing_state_action_pairs.erase(state);
   } 
+}
+
+int State_Action_Graph::approx_num_nodes() {
+  return _state_to_actions.size();
 }
 
 void State_Action_Graph::print(const unordered_map<int, unordered_set<int>>& goal_state_to_actions) {

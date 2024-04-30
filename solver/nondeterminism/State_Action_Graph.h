@@ -27,6 +27,7 @@ class State_Action_Graph {
     void remove_state(const int state);
     void remove_state_action_arcs(const pair<int, int>& state_action);
 
+    int approx_num_nodes();
     void print(const unordered_map<int, unordered_set<int>>& _goal_state_to_actions);
 
     unordered_map<int, unordered_set<int>> _state_to_actions;

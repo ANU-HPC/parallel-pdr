@@ -40,6 +40,11 @@ Compressed_State::Compressed_State(int* data, int start, int stop) {
 
 // not the most elegant - I doubt this will be expensive
 void Compressed_State::assign_id(Compressed_State* state) {
+  if (!_guaranteed_full) {
+    _id = -999;
+    return;
+  }
+
   if (_state_to_state_id_map.find(*state) == _state_to_state_id_map.end()) {
     _id = _state_to_state_id_map.size(); // can predict the behaviour
     int new_id = state_to_state_id(*state);
@@ -189,14 +194,14 @@ bool Compressed_State::is_goal() const {
     if (Utils::in(Global::problem.goal_condition_set, pos_in_state)) {
       unaccounted_for_goal_positive_lits--;
     } else if (Utils::in(Global::problem.goal_condition_set, -pos_in_state)) {
-      LOG << "returning false as " << -pos_in_state << " is in " << Utils::to_string(Global::problem.goal_condition_set) << endl;
+      //LOG << "returning false as " << -pos_in_state << " is in " << Utils::to_string(Global::problem.goal_condition_set) << endl;
       return false;
     }
     // if neither, then it is not mentioned, so no issues
   }
   // if there are positive goal lits not seen in the state, then they are implicitly false in the state => problem
   // otherwise the state is consistent
-  LOG << "unaccounted_for_goal_positive_lits: " << unaccounted_for_goal_positive_lits  << endl;
+  //LOG << "unaccounted_for_goal_positive_lits: " << unaccounted_for_goal_positive_lits  << endl;
   return unaccounted_for_goal_positive_lits == 0;
 }
 

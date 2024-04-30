@@ -234,7 +234,7 @@ void Lingeling::add_clause(const vector<int>& inClause) {
 
 void Lingeling::add_clauses(const vector<vector<int>>& inClauses) {
   for (int j=0; j<inClauses.size(); j++){
-    LOG << "adding clause: " << Utils::to_string(inClauses[j]) << endl;
+    //LOG << "adding clause: " << Utils::to_string(inClauses[j]) << endl;
     for (int i=0; i<inClauses[j].size(); i++) {
       lgladd(solver, inClauses[j][i]);
       lglfreeze(solver, inClauses[j][i]);

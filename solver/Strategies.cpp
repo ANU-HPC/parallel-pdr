@@ -529,19 +529,17 @@ bool Strategies::run_default() {
   LOG << "initial state: " << initial_state.to_string() << endl;
 
   for(int k=1;; k++) {
-    worker_interface.reset_nondeterministic_solvers_for_new_k(k);
+    LOG << "TODO, work out when to reset" << endl;
+    //worker_interface.reset_nondeterministic_solvers_for_new_k(k);
     LOG << "starting layer k: " << k << endl;
 
     // Put the initial state in the queue
     Obligation initial_obligation = Obligation(initial_state, k, 0, true, vector<int>());
     queue.push(initial_obligation);
 
-    LOG << queue.size() << endl;
 
     // Process it
     while (!queue.empty() || !worker_interface.all_workers_idle()) {
-      LOG << "starting another check" << endl;
-      goal_reachability_manager.print();
       if (Global::problem.evaluation_mode) print_elapsed_time();
 
       // add some more work
@@ -570,7 +568,7 @@ bool Strategies::run_default() {
         worker_success = *ita;
         const Success& success = get<1>(worker_success);
 
-        LOG << "got back success: " << success.to_string() << endl;
+        //LOG << "got back success: " << success.to_string() << endl;
 
         assert(success.original_obligation().reduce_reason_add_successor_to_queue());
 
@@ -614,7 +612,7 @@ bool Strategies::run_default() {
           assert(success.actions().size()==1); // only one action should have been executed
           assert(success.actions()[0].get_actions().size()==1); // only one action should have been executed
 
-          LOG << "registering an arc" << endl;
+          //LOG << "registering an arc" << endl;
           const unordered_set<int> extra = goal_reachability_manager.register_success_return_new_goal_states(success);
 
           /*state_action_to_outcome_states(
@@ -650,7 +648,7 @@ bool Strategies::run_default() {
         const Reason_From_Worker& reason_from_worker = get<1>(worker_reason);
         const Contextless_Reason& reason = reason_from_worker.contextless_reason();
 
-        LOG << "got back reason: " << reason.to_string() << endl;
+        //LOG << "got back reason: " << reason.to_string() << endl;
 
         const int layers_to_add_to = layers.add_reason(reason);
 
@@ -670,6 +668,11 @@ bool Strategies::run_default() {
       worker_successes->clear();
     }
 
+    LOG << "before pushing" << endl;
+    layers.print();
+
+    worker_interface.reset_nondeterministic_solvers_for_new_k(k+1);
+
     // completed the k, lets do a convergance check and clause pushing
     for (int layer=1; layer<=k+1; layer++) {
       LOG << "Clause pushing turned off in nondeterminism for now" << endl;
@@ -680,7 +683,7 @@ bool Strategies::run_default() {
       vector<Obligation> push;
       for (auto it=reasons_to_push->begin(); it!=reasons_to_push->end(); it++) {
         const Contextless_Reason& reason = *it;
-        push.push_back(Obligation(Compressed_State(reason.reason(), 0, false), layer, 0, false));
+        push.push_back(Obligation(Compressed_State(reason.reason(), 0, false), layer, 0, false, vector<int>()));
       }
 
       // send them all off
@@ -694,7 +697,7 @@ bool Strategies::run_default() {
 
           if (push.size()) {
             const Obligation& obligation = *push.rbegin();
-            worker_interface.handle_obligation(obligation, worker);
+            worker_interface.handle_obligation(obligation, false, worker);
             push.pop_back();
           }
         }
@@ -725,8 +728,11 @@ bool Strategies::run_default() {
       worker_reasons->clear();
       worker_successes->clear();
 
-      */
       // convergence check
+
+      LOG << "after pushing" << endl;
+      layers.print();
+      */
 
       // !Global::problem.nondeterministic && 
       if (layers.same_as_previous(layer)) {
