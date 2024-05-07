@@ -20,7 +20,7 @@ class Default_Queue {
     Obligation pop(int heuristic);
     bool empty();
     int size();
-    void trim(const Contextless_Reason& reason, int obligation_rescheduling_upper_layer);
+    undordered_set<int> trim(const Contextless_Reason& reason, int obligation_rescheduling_upper_layer);
     int lowest_layer_with_content();
     void print_sizes();
   private:

@@ -17,9 +17,10 @@ void Default_Queue::remove_and_ban_states_as_goal_reaching(const Compressed_Stat
 }
 
 void Default_Queue::push(const Obligation& obligation) {
-  if (_banned_states.find(obligation.compressed_state()) != _banned_states.end()) LOG << "not adding as banned: " << obligation.to_string() << endl;
-
-  if (_banned_states.find(obligation.compressed_state()) != _banned_states.end()) return;
+  if (_banned_states.find(obligation.compressed_state()) != _banned_states.end()) {
+    LOG << "not adding as banned: " << obligation.to_string() << endl;
+    return;
+  }
 
   //LOG << "not already banned: " << obligation.to_string() << endl;
 
@@ -71,8 +72,11 @@ void Default_Queue::trim(const Contextless_Reason& reason, int k, Layer_State_Ac
 }
 */
 
-void Default_Queue::trim(const Contextless_Reason& reason, int k) {
+// For this, work out which states where moved/deleted, then add all these to a set, return the set
+unordered_set<int> Default_Queue::trim(const Contextless_Reason& reason, int k) {
   // if the reason is below k, then can push to one above the reason, if at k, then just drop them TODO maybe should just keep them for next time
+  unordered_set<int> moved_state_ids;
+
   make_layer_exist(k); // presumably will exist by this point
 
   const int reason_layer = reason.layer();
@@ -85,7 +89,7 @@ void Default_Queue::trim(const Contextless_Reason& reason, int k) {
     
   for (int layer = 1; layer<=reason_layer; layer++) {
     const int layer_increment = layer_to_push_to - layer;
-    _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to, layer_increment);
+    _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to, layer_increment, &moved_state_ids);
   }
 
   update_lowest_layer_with_content();

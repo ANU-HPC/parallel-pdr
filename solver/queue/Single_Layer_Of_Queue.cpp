@@ -109,7 +109,8 @@ int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_O
 }
 */
 
-int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment) { // TODO settle on the layer_increment, remove eventually maybe
+int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment, unordered_set<int>* moved_state_ids) {
+  // TODO settle on the layer_increment, remove eventually maybe
   // return the number of deleted elements, if not pushed to alternate layer
   int num_removed = 0;
 
@@ -132,6 +133,7 @@ int Single_Layer_Of_Queue::trim(const Contextless_Reason& reason, Single_Layer_O
   for (auto it=slots_to_remove.begin(); it!=slots_to_remove.end(); it++) {
     const int slot = *it;
     Obligation obligation = remove_obligation_at_slot(slot);
+    moved_state_ids.insert(obligation.compressed_state.id());
     if (pushing) {
       const bool successful_push_up = other_to_push_to->push(obligation.get_with_incremented_layer(layer_increment));
       assert(successful_push_up); // unsure if this is actually bad... may be triggered by a change later on
