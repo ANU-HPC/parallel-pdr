@@ -93,6 +93,8 @@ unordered_set<int> Default_Queue::trim(const Contextless_Reason& reason, int k) 
   }
 
   update_lowest_layer_with_content();
+
+  return moved_state_ids;
 }
 
 void Default_Queue::print_sizes() {

@@ -653,7 +653,7 @@ bool Strategies::run_default() {
         const int layers_to_add_to = layers.add_reason(reason);
 
         if (layers_to_add_to) {
-          queue.trim(reason, k); // TODO trim only the newly constrained layers, don't need to check the others
+          unordered_set<int> moved_states = queue.trim(reason, k); // TODO trim only the newly constrained layers, don't need to check the others
           worker_interface.handle_reason_all_workers(Reason_From_Orchestrator(reason, reason.layer()-layers_to_add_to+1));
         }
 

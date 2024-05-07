@@ -2,6 +2,7 @@
 #define DEFAULT_QUEUE_H
 
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "Global.h"
@@ -20,7 +21,7 @@ class Default_Queue {
     Obligation pop(int heuristic);
     bool empty();
     int size();
-    undordered_set<int> trim(const Contextless_Reason& reason, int obligation_rescheduling_upper_layer);
+    unordered_set<int> trim(const Contextless_Reason& reason, int obligation_rescheduling_upper_layer);
     int lowest_layer_with_content();
     void print_sizes();
   private:
