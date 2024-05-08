@@ -29,7 +29,7 @@ class Lingeling {
     Lingeling(const char* fname);
     ~Lingeling();
     Lingeling clone();
-    void load_deterministic_planning_problem(string directory, int timesteps, int total_per_timestep);
+    void load_deterministic_planning_problem(string directory, int timesteps);
     void load_nondeterministic_planning_problem(string directory);
     void flush_cache();
     void add_clause(const vector<int>& inClause);
@@ -42,7 +42,7 @@ class Lingeling {
     void set_important(const vector<int>& variables);
 
   private:
-    void load_with_copies(const char* fname, int iterations, int offsets_each_time);
+    void load_with_copies(const char* fname, int iterations);
     void load_DIMACS_Cnf(const char* fname);
     vector<int> last_assumptions;
     vector<int> last_unmentioned_assumptions;

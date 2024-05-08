@@ -59,22 +59,22 @@ Lingeling Lingeling::clone() {
   return Lingeling();
 }
 
-void Lingeling::load_deterministic_planning_problem(string directory, int timesteps, int total_per_timestep) {
+void Lingeling::load_deterministic_planning_problem(string directory, int timesteps) {
   // Transition
-  load_with_copies((directory + "/tmp_transition.cnf").c_str(), timesteps-1, total_per_timestep); 
+  load_with_copies((directory + "/tmp_transition.cnf").c_str(), timesteps-1); 
   
   // Invariants
-  load_with_copies((directory + "/tmp_invariants.cnf").c_str(), timesteps, total_per_timestep); 
+  load_with_copies((directory + "/tmp_invariants.cnf").c_str(), timesteps); 
 }
 
 
 void Lingeling::load_nondeterministic_planning_problem(string directory) {
   // Transition
-  load_with_copies((directory + "/tmp_transition.cnf").c_str(), 1, -99999999); 
+  load_with_copies((directory + "/tmp_transition.cnf").c_str(), 1); 
 }
 
 
-void Lingeling::load_with_copies(const char* fname, int iterations, int offsets_each_time) {
+void Lingeling::load_with_copies(const char* fname, int iterations) {
   // taken from Tinisat
   vector<int> clause_to_add; // EDIT
 
@@ -177,8 +177,7 @@ void Lingeling::load_with_copies(const char* fname, int iterations, int offsets_
         for (auto it=clause_to_add.begin(); it!=clause_to_add.end(); it++) {
           const int base_lit = *it;
           if (base_lit != 0) {
-            //assert(0); 
-            const int tilded_lit = Utils::tilde(base_lit,iteration*offsets_each_time);
+            const int tilded_lit = Utils::tilde(base_lit,iteration);
             lgladd(solver, tilded_lit);
             lglfreeze(solver, tilded_lit);
           } else {
@@ -234,7 +233,6 @@ void Lingeling::add_clause(const vector<int>& inClause) {
 
 void Lingeling::add_clauses(const vector<vector<int>>& inClauses) {
   for (int j=0; j<inClauses.size(); j++){
-    //LOG << "adding clause: " << Utils::to_string(inClauses[j]) << endl;
     for (int i=0; i<inClauses[j].size(); i++) {
       lgladd(solver, inClauses[j][i]);
       lglfreeze(solver, inClauses[j][i]);

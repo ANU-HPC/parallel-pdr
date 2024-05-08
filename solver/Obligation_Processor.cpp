@@ -19,7 +19,7 @@ Obligation_Processor::Obligation_Processor(int layer_steps) {
   // create base solver
   _base_solver = new Lingeling();
   if (Global::problem.nondeterministic) _base_solver->load_nondeterministic_planning_problem(Global::problem.tmp_dir); 
-  else                                  _base_solver->load_deterministic_planning_problem(Global::problem.tmp_dir, _total_sub_steps, Global::problem.total_per_timestep); 
+  else                                  _base_solver->load_deterministic_planning_problem(Global::problem.tmp_dir, _total_sub_steps); 
 
   _base_solver->solve(vector<int>());
 
