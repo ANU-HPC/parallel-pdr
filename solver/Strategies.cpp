@@ -537,7 +537,6 @@ bool Strategies::run_default() {
     Obligation initial_obligation = Obligation(initial_state, k, 0, true, vector<int>());
     queue.push(initial_obligation);
 
-
     // Process it
     while (!queue.empty() || !worker_interface.all_workers_idle()) {
       if (Global::problem.evaluation_mode) print_elapsed_time();
@@ -671,7 +670,7 @@ bool Strategies::run_default() {
     LOG << "before pushing" << endl;
     layers.print();
 
-    worker_interface.reset_nondeterministic_solvers_for_new_k(k+1);
+    if (Global::problem.nondeterministic) worker_interface.reset_nondeterministic_solvers_for_new_k(k+1);
 
     // completed the k, lets do a convergance check and clause pushing
     for (int layer=1; layer<=k+1; layer++) {

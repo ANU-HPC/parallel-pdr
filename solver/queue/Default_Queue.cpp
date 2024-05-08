@@ -2,16 +2,23 @@
 
 Default_Queue::Default_Queue() { }
 
-void Default_Queue::remove_and_ban_states_as_goal_reaching(const Compressed_State state) {
+void Default_Queue::remove_and_ban_states_as_goal_reaching(const Compressed_State& state) {
   _banned_states.insert(state);
 
-  int removed = 0;
-  for (int layer=0; layer<=_lowest_layer_with_content; layer++) {
-    removed += _layers[layer].remove_state(state);
+  int removed;
+  int layer;
+  for (layer=0; layer<=_lowest_layer_with_content; layer++) {
+    removed = _layers[layer].remove_state(state);
+    if (removed) break;
   }
 
   assert(removed <= 1);
   _size -= removed;
+
+  if (removed) {
+    assert(_state_id_to_layer[state.id()] == layer);
+    _state_id_to_layer.erase(state.id());
+  }
 
   update_lowest_layer_with_content();
 }
@@ -22,17 +29,37 @@ void Default_Queue::push(const Obligation& obligation) {
     return;
   }
 
-  //LOG << "not already banned: " << obligation.to_string() << endl;
+  const Compressed_State& state = obligation.compressed_state();
+  const int state_id = state.id();
 
-  const int layer = obligation.layer();
-  make_layer_exist(layer);
+  if (_state_id_to_layer.find(state_id) == _state_id_to_layer.end()) {
+    // not in the queue, add as usual
+    const int layer = obligation.layer();
+    make_layer_exist(layer);
 
-  if (_layers[layer].push(obligation)) {
+    bool added = _layers[layer].push(obligation);
     _size++;
     _lowest_layer_with_content = min(_lowest_layer_with_content, layer);
-    //LOG << "could add to single layer" << endl;
-  } else LOG << "not added" << endl;
+    _state_id_to_layer[state_id] = layer;
+  } else {
+    // state already exists in the queue. 
+    // keep the higher of the 2, it must know something
+    const int existing_layer = _state_id_to_layer[state_id];
+    const int new_layer = obligation.layer();
 
+    if (new_layer > existing_layer) {
+      // remove the old one
+      int removed = _layers[existing_layer].remove_state(state);
+      assert(removed);
+
+      // add at new layer
+      bool added = _layers[new_layer].push(obligation);
+      assert(added);
+
+      // update layer
+      _state_id_to_layer[state_id] = new_layer;
+    }
+  }
 }
 
 Obligation Default_Queue::pop(int heuristic) {
@@ -44,6 +71,11 @@ Obligation Default_Queue::pop(int heuristic) {
   _size--;
 
   update_lowest_layer_with_content();
+
+  const int state_id = ret_val.compressed_state().id();
+
+  assert(_state_id_to_layer[state_id] == ret_val.layer());
+  _state_id_to_layer.erase(state_id);
 
   assert (empty() || !_layers[_lowest_layer_with_content].empty());
   return ret_val;
@@ -90,6 +122,12 @@ unordered_set<int> Default_Queue::trim(const Contextless_Reason& reason, int k) 
   for (int layer = 1; layer<=reason_layer; layer++) {
     const int layer_increment = layer_to_push_to - layer;
     _size -= _layers[layer].trim(reason, single_layer_of_queue_to_push_to, layer_increment, &moved_state_ids);
+  }
+
+  for (auto it=moved_state_ids.begin(); it!=moved_state_ids.end(); it++) {
+    const int state_id = *it; 
+    if (push) _state_id_to_layer[state_id] = layer_to_push_to;
+    else      _state_id_to_layer.erase(state_id);
   }
 
   update_lowest_layer_with_content();

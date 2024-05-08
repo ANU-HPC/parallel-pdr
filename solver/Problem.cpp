@@ -208,7 +208,11 @@ Problem::Problem(int argc, char **argv) {
   assert(document.HasMember("initial_state"));
   assert(document.HasMember("goal_condition"));
 
-  if (!nondeterministic) {
+
+  int num_aos;
+  if (nondeterministic) {
+    num_aos = document["num_aos"].GetInt();
+  } else {
     assert(document.HasMember("num_aux"));
     assert(document.HasMember("dagster_num_layers_supported"));
     assert(document.HasMember("num_subproblems"));
@@ -232,7 +236,6 @@ Problem::Problem(int argc, char **argv) {
   total_per_timestep = document["total_per_timestep"].GetInt();
   int action_min = document["action_min"].GetInt();
   int action_max = document["action_max"].GetInt();
-  int num_aos = document["num_aos"].GetInt();
   for (int i=action_min; i<=action_max; i++) {
     actions.push_back(i);
     actions_set.insert(i);

@@ -97,6 +97,7 @@ string Utils::to_symbols_string(int x) {
     }
   } else {
     // deterministic
+    return pos + repeat("*", timestep) + Global::problem.symbols[x_in_timestep];
   }
 }
 

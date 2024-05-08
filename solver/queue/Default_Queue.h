@@ -16,7 +16,7 @@ using namespace std;
 class Default_Queue {
   public:
     Default_Queue();
-    void remove_and_ban_states_as_goal_reaching(const Compressed_State state);
+    void remove_and_ban_states_as_goal_reaching(const Compressed_State& state);
     void push(const Obligation& obligation);
     Obligation pop(int heuristic);
     bool empty();
@@ -25,6 +25,7 @@ class Default_Queue {
     int lowest_layer_with_content();
     void print_sizes();
   private:
+    unordered_map<int, int> _state_id_to_layer;
     void update_lowest_layer_with_content();
     vector<Single_Layer_Of_Queue> _layers; // have one for 0 even though it will always be empty, just for math simplicity
     void make_layer_exist(int layer);
