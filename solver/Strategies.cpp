@@ -2,8 +2,11 @@
 #include "Compressed_State.h"
 #include "Contextless_Reason.h"
 #include "Reason_From_Orchestrator.h"
+#include "Success.h"
 #include "nondeterminism/State_ID_Manager.h"
 #include "nondeterminism/Goal_Reachability_Manager.h"
+#include "queue/Wrapper_Queue.h"
+#include "queue/Open_States_Tracking_Queue.h"
 #include <chrono>
 
 long long int Strategies::get_results_iteration = 0;
@@ -471,34 +474,11 @@ bool Strategies::OLD2() {
 }
 */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 bool Strategies::run_default() {
   Global::active_heuristics = set<int>({Heuristics::NONE, Heuristics::RANDOM});
 
   // set up everything we need
-  Default_Queue queue;
+  Wrapper_Queue queue;
   Layers layers;
   Worker_Interface worker_interface;
   Goal_Reachability_Manager goal_reachability_manager; // only for nondeterminism
@@ -528,28 +508,28 @@ bool Strategies::run_default() {
 
   LOG << "initial state: " << initial_state.to_string() << endl;
 
+  worker_interface.reset_nondeterministic_solvers_for_new_k(1);
   for(int k=1;; k++) {
-    LOG << "TODO, work out when to reset" << endl;
-    //worker_interface.reset_nondeterministic_solvers_for_new_k(k);
     LOG << "starting layer k: " << k << endl;
 
     // Put the initial state in the queue
     Obligation initial_obligation = Obligation(initial_state, k, 0, true, vector<int>());
-    queue.push(initial_obligation);
+    queue.push_initial(initial_obligation, k);
 
     // Process it
-    while (!queue.empty() || !worker_interface.all_workers_idle()) {
+    while (!queue.fully_empty() || !worker_interface.all_workers_idle()) {
+      //LOG << "INT start main loop" << endl;
       if (Global::problem.evaluation_mode) print_elapsed_time();
-
       // add some more work
       const set<int> workers = worker_interface.workers_wanting_work_snapshot();
       for (auto it=workers.begin(); it!=workers.end(); it++) {
         const int worker = *it;
-        if (!queue.empty()) {
+        if (queue.available_work()) {
           // special requirement, if the queue does not have something available, don't bother here
-          if (Utils::worker_to_steps(worker)>queue.lowest_layer_with_content()) continue;
 
+          if (Utils::worker_to_steps(worker)>queue.lowest_layer_with_content()) continue;
           const Obligation& obligation = queue.pop(Heuristics::RANDOM);
+          //LOG << "to process: " << obligation.to_string() << endl;
           worker_interface.handle_obligation(obligation, false, worker);
         }
       }
@@ -567,13 +547,9 @@ bool Strategies::run_default() {
         worker_success = *ita;
         const Success& success = get<1>(worker_success);
 
-        //LOG << "got back success: " << success.to_string() << endl;
-
         assert(success.original_obligation().reduce_reason_add_successor_to_queue());
 
         if (!Global::problem.nondeterministic) deterministic_plan_builder.register_success(success);
-
-        queue.push(success.original_obligation());
 
         // for nondeterminism
         set<int> new_goal_reaching_states;
@@ -582,7 +558,6 @@ bool Strategies::run_default() {
         const vector<Obligation>& successor_obligations = success.successor_obligations();
         for (auto itb=successor_obligations.begin(); itb!=successor_obligations.end(); itb++) {
           const Obligation& successor_obligation = *itb;
-          queue.push(successor_obligation);
           assert(successor_obligation.reduce_reason_add_successor_to_queue());
 
           // what to do if an obligation is at layer 0, depends on if deterministic or not
@@ -590,14 +565,15 @@ bool Strategies::run_default() {
             if (Global::problem.nondeterministic) {
               outcome_state_ids.push_back(successor_obligation.compressed_state().id());
 
-              const unordered_set<int> extra = goal_reachability_manager.register_pure_goal_return_new_goal_states(successor_obligation.compressed_state());
+              if (!goal_reachability_manager.goal_reaching_state(successor_obligation.compressed_state().id())) {
+                const unordered_set<int> extra = goal_reachability_manager.register_pure_goal_return_new_goal_states(successor_obligation.compressed_state());
 
-              // add these extras to the newly found goal states
-              new_goal_reaching_states.insert(extra.begin(), extra.end());
+                // add these extras to the newly found goal states
+                new_goal_reaching_states.insert(extra.begin(), extra.end());
 
-              // and the goal state itself
-              new_goal_reaching_states.insert(successor_obligation.compressed_state().id()); 
-
+                // and the goal state itself
+                new_goal_reaching_states.insert(successor_obligation.compressed_state().id()); 
+              }
             } else {
               deterministic_plan_builder.write_plan(success);
               if (!Global::problem.evaluation_mode) worker_interface.finalize();
@@ -606,19 +582,12 @@ bool Strategies::run_default() {
           }
         }
 
-        if (Global::problem.nondeterministic) {
+        if (Global::problem.nondeterministic && success.actions().size() != 0) { // only for "real" successes
           // register the arc
           assert(success.actions().size()==1); // only one action should have been executed
           assert(success.actions()[0].get_actions().size()==1); // only one action should have been executed
 
-          //LOG << "registering an arc" << endl;
           const unordered_set<int> extra = goal_reachability_manager.register_success_return_new_goal_states(success);
-
-          /*state_action_to_outcome_states(
-              success.original_obligation().compressed_state().id(),
-              success.actions()[0].get_actions()[0],
-              outcome_state_ids);
-              */
 
           new_goal_reaching_states.insert(extra.begin(), extra.end());
 
@@ -634,11 +603,13 @@ bool Strategies::run_default() {
             for (auto it=new_goal_reaching_states.begin(); it!=new_goal_reaching_states.end(); it++) {
               const int state_id = *it; 
               const Compressed_State& new_goal_reaching_state = Compressed_State::state_id_to_state(state_id);
-              LOG << "about to trim from the queue the state (as goal reaching): " << new_goal_reaching_state.to_string() << endl;
-              queue.remove_and_ban_states_as_goal_reaching(new_goal_reaching_state);
+              //LOG << "about to trim from the queue the state (as goal reaching): " << new_goal_reaching_state.to_string() << endl;
+              queue.register_goal_reaching_state(new_goal_reaching_state);
             }
           }
         }
+
+        queue.register_success(success);
       }
 
       // handle reasons
@@ -647,18 +618,13 @@ bool Strategies::run_default() {
         const Reason_From_Worker& reason_from_worker = get<1>(worker_reason);
         const Contextless_Reason& reason = reason_from_worker.contextless_reason();
 
-        //LOG << "got back reason: " << reason.to_string() << endl;
-
         const int layers_to_add_to = layers.add_reason(reason);
 
-        if (layers_to_add_to) {
-          unordered_set<int> moved_states = queue.trim(reason, k); // TODO trim only the newly constrained layers, don't need to check the others
-          worker_interface.handle_reason_all_workers(Reason_From_Orchestrator(reason, reason.layer()-layers_to_add_to+1));
-        }
+        queue.register_reason(reason_from_worker, k);
 
-        const Obligation& original_obligation = reason_from_worker.originating_obligation();
-        if (Global::problem.obligation_rescheduling && (original_obligation.layer() < k)) {
-          queue.push(original_obligation.get_with_incremented_layer(1));
+        if (layers_to_add_to) {
+          //queue.trim(reason, k); // TODO trim only the newly constrained layers, don't need to check the others
+          worker_interface.handle_reason_all_workers(Reason_From_Orchestrator(reason, reason.layer()-layers_to_add_to+1));
         }
       }
 
@@ -667,8 +633,8 @@ bool Strategies::run_default() {
       worker_successes->clear();
     }
 
-    LOG << "before pushing" << endl;
-    layers.print();
+    //LOG << "before pushing" << endl;
+    //layers.print();
 
     if (Global::problem.nondeterministic) worker_interface.reset_nondeterministic_solvers_for_new_k(k+1);
 

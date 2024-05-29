@@ -10,6 +10,7 @@ using namespace std;
 #include "Worker_Interface.h"
 #include "Plan_Builder.h"
 #include "queue/Default_Queue.h"
+#include "queue/Open_States_Tracking_Queue.h"
 #include "queue/Heuristics.h"
 #include "Contextless_Reason.h"
 #include "Reason_From_Orchestrator.h"

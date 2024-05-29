@@ -18,6 +18,7 @@ class Obligation {
     Obligation(const Compressed_State& compressed_state, int layer, int subproblem, bool reduce_reason_add_successor_to_queue, const vector<int>& banned_actions);
     Obligation(int* data, int start, int stop);
     string to_string() const;
+    string to_short_string() const;
 
     bool operator==(const Obligation& other) const;
     size_t hash() const;
@@ -32,6 +33,7 @@ class Obligation {
     
     Obligation get_with_incremented_layer(int layer_amount) const;
     Obligation get_with_additional_banned_action(int extra_banned_action) const;
+    Obligation get_with_banned_actions(const vector<int>& banned_actions) const;
 
     void get_as_MPI_message(int* data, int start) const;
     int* get_as_MPI_message() const;

@@ -2,28 +2,40 @@
 
 Default_Queue::Default_Queue() { }
 
-void Default_Queue::remove_and_ban_states_as_goal_reaching(const Compressed_State& state) {
-  _banned_states.insert(state);
+bool Default_Queue::remove(const Compressed_State& state) {
+  const int state_id = state.id();
+  if (_state_id_to_layer.find(state_id) == _state_id_to_layer.end()) return false;
 
-  int removed;
-  int layer;
-  for (layer=0; layer<=_lowest_layer_with_content; layer++) {
-    removed = _layers[layer].remove_state(state);
-    if (removed) break;
-  }
-
-  assert(removed <= 1);
-  _size -= removed;
-
-  if (removed) {
-    assert(_state_id_to_layer[state.id()] == layer);
-    _state_id_to_layer.erase(state.id());
-  }
-
+  // otherwise it should be here
+  const int layer = _state_id_to_layer[state.id()];
+  const int removed = _layers[layer].remove_state(state);
+  assert(removed);
+  _state_id_to_layer.erase(state.id());
+  _size--;
   update_lowest_layer_with_content();
+
+
+  assert(_size == _state_id_to_layer.size());
+
+  return true;
+}
+
+void Default_Queue::remove_and_ban_states_as_goal_reaching(const Compressed_State& state) {
+  remove(state);
+  _banned_states.insert(state);
+}
+
+bool Default_Queue::contains_state_id(const int state_id) {
+  return _state_id_to_layer.find(state_id) != _state_id_to_layer.end();
+}
+
+int Default_Queue::state_id_to_layer(const int state_id) {
+  return _state_id_to_layer[state_id];
 }
 
 void Default_Queue::push(const Obligation& obligation) {
+  //LOG << _name << "pushing " << obligation.to_string() << endl;
+  assert(obligation.layer() > 0); // AAA
   if (_banned_states.find(obligation.compressed_state()) != _banned_states.end()) {
     LOG << "not adding as banned: " << obligation.to_string() << endl;
     return;
@@ -42,6 +54,8 @@ void Default_Queue::push(const Obligation& obligation) {
     _lowest_layer_with_content = min(_lowest_layer_with_content, layer);
     _state_id_to_layer[state_id] = layer;
   } else {
+    LOG << " already in the queue..." << endl;
+    assert(false);
     // state already exists in the queue. 
     // keep the higher of the 2, it must know something
     const int existing_layer = _state_id_to_layer[state_id];
@@ -60,6 +74,7 @@ void Default_Queue::push(const Obligation& obligation) {
       _state_id_to_layer[state_id] = new_layer;
     }
   }
+  assert(_size == _state_id_to_layer.size());
 }
 
 Obligation Default_Queue::pop(int heuristic) {
@@ -78,6 +93,8 @@ Obligation Default_Queue::pop(int heuristic) {
   _state_id_to_layer.erase(state_id);
 
   assert (empty() || !_layers[_lowest_layer_with_content].empty());
+  assert(_size == _state_id_to_layer.size());
+
   return ret_val;
 }
 
@@ -107,13 +124,14 @@ void Default_Queue::trim(const Contextless_Reason& reason, int k, Layer_State_Ac
 // For this, work out which states where moved/deleted, then add all these to a set, return the set
 unordered_set<int> Default_Queue::trim(const Contextless_Reason& reason, int k) {
   // if the reason is below k, then can push to one above the reason, if at k, then just drop them TODO maybe should just keep them for next time
+  //LOG << "INT start trimming for " << _name << endl;
   unordered_set<int> moved_state_ids;
 
   make_layer_exist(k); // presumably will exist by this point
 
   const int reason_layer = reason.layer();
   const int layer_to_push_to = reason_layer+1;
-  const bool push = layer_to_push_to<k;
+  const bool push = layer_to_push_to<=k;
 
   Single_Layer_Of_Queue* single_layer_of_queue_to_push_to;
   if (push) single_layer_of_queue_to_push_to = &_layers[layer_to_push_to];
@@ -132,6 +150,7 @@ unordered_set<int> Default_Queue::trim(const Contextless_Reason& reason, int k) 
 
   update_lowest_layer_with_content();
 
+  //LOG << "INT end trimming for " << _name << endl;
   return moved_state_ids;
 }
 
@@ -139,6 +158,10 @@ void Default_Queue::print_sizes() {
   for (int layer=0; layer<_layers.size(); layer++) {
     LOG << "layer " << layer << " has size " << _layers[layer].size() << endl;
   }
+}
+
+void Default_Queue::set_name(string name) {
+  _name = "[QUEUE:" + name + "] ";
 }
 
 void Default_Queue::make_layer_exist(int layer) {

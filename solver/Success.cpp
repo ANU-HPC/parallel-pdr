@@ -10,6 +10,24 @@ Success::Success(Obligation original_obligation, vector<Compressed_Actions> acti
   _successor_obligations = successor_obligations;
 }
 
+string Success::to_short_string() const {
+  string actions_string = "[";
+  for (auto it=_actions.begin(); it!=_actions.end(); it++) {
+    actions_string += "[" + Utils::to_string(it->get_actions()) + "]";
+  }
+  actions_string += "]";
+
+  string successors_string = "[";
+  for (auto it=_successor_obligations.begin(); it!=_successor_obligations.end(); it++) {
+    successors_string += it->to_short_string();
+  }
+  successors_string += "[";
+
+  return "{SUCCESS ORIGINAL: " + _original_obligation.to_short_string()
+    + " ACTIONS: " + actions_string
+    + " SUCCESSORS: " + successors_string + "}";
+}
+
 string Success::to_string() const {
   string ret_val = "{Success, original: " + _original_obligation.to_string() + " actions: (" + std::to_string(_actions.size()) + ") ";
   
@@ -52,6 +70,27 @@ Success::Success(int* data, int start, int stop) {
   _actions = Compressed_Actions::vector_compressed_actions(data, stop_a, stop_b);
   _successor_obligations = Obligation::vector_obligation(data, stop_b, stop_c);
 }
+
+bool Success::operator==(const Success& other) const {
+  if (!(_original_obligation == other.original_obligation())) return false;
+
+  if (_actions.size() != other.actions().size()) return false;
+
+  if (_successor_obligations.size() != other.successor_obligations().size()) return false;
+
+  const int forward = _successor_obligations.size();
+
+  for (int i=0; i<forward; i++) {
+    if (!(_successor_obligations[i] == other.successor_obligations()[i])) return false;
+  }
+
+  return true;
+}
+
+size_t Success::hash() const {
+  return 0;
+}
+
 
 int* Success::get_as_MPI_message() const {
   int* data = new int[MPI_message_size()];

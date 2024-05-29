@@ -70,34 +70,34 @@ string Utils::to_symbols_string(int x) {
   if (Global::problem.nondeterministic) {
     if (timestep > Global::problem.max_num_outcomes+2) {
       // AUX
-      return pos + "AUX" + std::to_string(x);
+      return std::to_string(x) + " " + pos + "AUX" + std::to_string(x);
     }
 
     if (Utils::slow_in(all_propositions, x_in_timestep)) {
       // prop
-      return pos + repeat("*", timestep) + Global::problem.symbols[x_in_timestep];
+      return std::to_string(x) + " " + pos + repeat("*", timestep) + Global::problem.symbols[x_in_timestep];
     } else {
       // may be an action, AO, or unused
       if (timestep == 0) {
         // action or filler
         if (Global::problem.actions_set.find(x_in_timestep) != Global::problem.actions_set.end()) {
           // is a real action
-          return pos + Global::problem.symbols[x_in_timestep];
+          return std::to_string(x) + " " + pos + Global::problem.symbols[x_in_timestep];
         } else {
           // is an unused action slot
-          return pos + "UA";
+          return std::to_string(x) + " " + pos + "UA";
         }
       } else if (timestep == 1) {
         // AO
-        return pos + Global::problem.outcome_symbols[x_in_timestep];
+        return std::to_string(x) + " " + pos + Global::problem.outcome_symbols[x_in_timestep];
       } else {
         // unused
-        return pos + "UA";
+        return std::to_string(x) + " " + pos + "UA";
       }
     }
   } else {
     // deterministic
-    return pos + repeat("*", timestep) + Global::problem.symbols[x_in_timestep];
+    return std::to_string(x) + " " + pos + repeat("*", timestep) + Global::problem.symbols[x_in_timestep];
   }
 }
 
@@ -168,6 +168,13 @@ string Utils::to_symbols_string(set<int> x) {
   }
   return ret_val + " }";
 }
+
+void Utils::print(unordered_map<int, unordered_set<int>> x) {
+  for (auto it=x.begin(); it!=x.end(); it++) {
+    LOG << it->first << to_string(it->second) << endl;
+  }
+}
+
 
 string Utils::to_string(vector<int> x) {
   // give by copy

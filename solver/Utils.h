@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
+#include <unordered_map>
 
 #include "Global.h"
 #include "Log.h"
@@ -14,6 +15,8 @@ class Utils {
   public:
     // TODO only for testing/debugging
     static int worker_to_steps(int worker);
+
+    static void print(unordered_map<int, unordered_set<int>> x);
 
     static vector<int> inflate_only_true_to_all(const vector<int>& only_true, const vector<int>& all);
     static string to_symbols_string(int x);

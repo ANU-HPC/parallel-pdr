@@ -3,7 +3,7 @@ default:
 
 MPICXX   = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
 CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
-#CXXFLAGS += -rdynamic -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
+#CXXFLAGS += -rdynamic -pg -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
 LDFLAGS  = -lstdc++fs
 
 OBJS = main.o \
@@ -40,7 +40,9 @@ OBJS = main.o \
 	   queue/Queue_Reference.o \
 	   queue/Queue_Entry.o \
 	   queue/Queue_Entry_Container.o \
-	   queue/Default_Queue.o
+	   queue/Default_Queue.o \
+	   queue/Open_States_Tracking_Queue.o \
+	   queue/Wrapper_Queue.o
 					
 HEADERS	= main.h \
 		  Problem.h \
@@ -76,7 +78,9 @@ HEADERS	= main.h \
 		  queue/Queue_Reference.h \
 		  queue/Queue_Entry.h \
 		  queue/Queue_Entry_Container.h \
-		  queue/Default_Queue.h
+		  queue/Default_Queue.h \
+		  queue/Open_States_Tracking_Queue.h \
+		  queue/Wrapper_Queue.h
 
 INCLUDES += -I../lingeling \
             -I./parallel \
@@ -89,10 +93,10 @@ LDFLAGS += -L../lingeling \
 		   -llgl \
 
 solver: $(OBJS) 
-	@$(MPICXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) -L. -llgl $(LDFLAGS) -o parallel-pdr
+	$(MPICXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) -L. -llgl $(LDFLAGS) -o parallel-pdr
 
 %.o: %.cpp %.h $(HEADERS) makefile
-	@$(MPICXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
+	$(MPICXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
 
 clean:
 	-rm parallel-pdr *.o ./parallel/*.o ./queue/*.o ./nondeterminism/*.o

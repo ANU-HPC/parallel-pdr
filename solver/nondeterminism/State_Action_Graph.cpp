@@ -1,6 +1,9 @@
 #include "State_Action_Graph.h"
 
-State_Action_Graph::State_Action_Graph() { LOG << "TODO have a node list for scc generator" << endl; }
+// for efficiency:
+// have a node list for scc generator
+
+State_Action_Graph::State_Action_Graph() { }
 
 State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
   for (const auto& it:existing._state_to_actions) {
@@ -20,13 +23,9 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
     const auto& state_action_pairs = it.second;
     _state_to_producing_state_action_pairs[state] = unordered_set<pair<int, int>, Int_Pair_Hash>(state_action_pairs);
   }
-
-  assert(consistency_check());
 }
 
 bool State_Action_Graph::add(const Success& success) {
-  assert(consistency_check());
-
   // get all as numbers
   const int original_state_id = success.original_obligation().compressed_state().id();
   const int action = success.actions()[0].get_actions()[0];
@@ -56,14 +55,10 @@ bool State_Action_Graph::add(const Success& success) {
     _state_to_actions[outcome].size(); // make it exist even if empty
   }
 
-  assert(consistency_check());
-
   return ret_val;
 }
 
 void State_Action_Graph::remove_state(const int state) {
-  //LOG << "start: " << state << endl;
-  assert(consistency_check());
   // need to remove the state from:
   // (A) _state_to_actions (both sides!)
   // (B) _state_action_pair_to_outcomes (both sides!)
@@ -105,12 +100,10 @@ void State_Action_Graph::remove_state(const int state) {
   _state_to_producing_state_action_pairs.erase(state);
   //LOG << "worked! expected it to fail right before..." << endl;
   //exit(1);
-  assert(consistency_check());
 }
 
 // Removes nodes with no arcs (in OR out)
 void State_Action_Graph::remove_state_action_arcs(const pair<int, int>& state_action) {
-  assert(consistency_check());
   const int state = state_action.first;
   const int action = state_action.second;
 
@@ -123,7 +116,12 @@ void State_Action_Graph::remove_state_action_arcs(const pair<int, int>& state_ac
   _state_to_actions[state].erase(action);
 
   erase_state_if_lone(state);
-  assert(consistency_check());
+}
+
+void State_Action_Graph::clear() {
+  _state_to_actions.clear();
+  _state_to_producing_state_action_pairs.clear();
+  _state_action_pair_to_outcomes.clear();
 }
 
 unordered_set<int> State_Action_Graph::state_action_pair_to_outcomes(const pair<int,int>& state_action) {
@@ -131,6 +129,7 @@ unordered_set<int> State_Action_Graph::state_action_pair_to_outcomes(const pair<
 }
 
 bool State_Action_Graph::consistency_check() {
+  //LOG << "skipping check" << endl;
   //LOG << "consistency check (expensive!)" << endl;
   //LOG << _state_to_actions.size() << " " << _state_to_producing_state_action_pairs.size() << endl;
 

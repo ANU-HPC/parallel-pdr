@@ -14,8 +14,6 @@ Obligation_Processor::Obligation_Processor(int layer_steps) {
   _sub_steps_per_internal_layer_step = MAX_OR_COUNT+1;
   _total_sub_steps = _sub_steps_per_internal_layer_step * (_layer_steps-1) + 2;
 
-  //assert(Global::problem.interleaved_layers);
-
   // create base solver
   _base_solver = new Lingeling();
   if (Global::problem.nondeterministic) _base_solver->load_nondeterministic_planning_problem(Global::problem.tmp_dir); 
@@ -31,37 +29,42 @@ Obligation_Processor::Obligation_Processor(int layer_steps) {
   }
 }
 
-// TODO this is not a concrete thing, it is the current strategy
 void Obligation_Processor::process_obligation(const Obligation& original_obligation, const bool open_children) {
-  cout << "TEST Iteration: " << _iteration << endl;
-  _iteration++;
-
+  // checks, statistics
+  Global::stats.count("process_obligation");
   assert(!open_children); // not set up for that
   assert(Global::problem.nondeterministic || (original_obligation.banned_actions().size() == 0)); // deterministic not set up to handle banned actions?
-
-  //LOG << "process obligation " << original_obligation.to_string() << endl;
-  cout << "TEST " << "process state L:" << original_obligation.layer() << " " << original_obligation.compressed_state().to_string() << endl;
-
-  Global::stats.count("process_obligation");
-
   const int end_reasons_layer = original_obligation.layer()-_layer_steps;
+  if (Global::problem.nondeterministic) assert (_layer_steps == 1);
   if (end_reasons_layer<0) {
     LOG << "ERROR: Worker with " << _layer_steps << " given an obligation with layer " << original_obligation.layer() << "      " << original_obligation.layer() << " " << _layer_steps << endl;
     assert(0);
-    exit(1);
   }
 
-  assert(original_obligation.banned_actions().size() == 0);
+  // actual solving
+  vector<int> assumptions = original_obligation.compressed_state().get_state();
+  const vector<int>& banned_actions = original_obligation.banned_actions();
+  for (auto it=banned_actions.begin(); it!=banned_actions.end(); it++) {
+    assumptions.push_back(-*it); 
+  }
+  LOG << "START SAT" << endl;
+  _last_interaction_was_a_success = _end_reasons_layer_to_solver[end_reasons_layer]->solve(assumptions);
+  LOG << "END SAT" << endl;
 
-  //LOG << "solving with assumptions: " << Utils::to_string(original_obligation.compressed_state().get_state()) << endl;
-
-  _last_interaction_was_a_success =_end_reasons_layer_to_solver[end_reasons_layer]->solve(original_obligation.compressed_state().get_state());
-
-  cout << "TEST SAT?" << _last_interaction_was_a_success << endl;
-
+  // dealing with it
   if (Global::problem.nondeterministic) {
     if (_last_interaction_was_a_success) set_success_from_solver_nondeterministic(original_obligation, end_reasons_layer);
-    else                                 set_reason_from_solver(original_obligation, end_reasons_layer);
+    else {
+      // need to check if there were any banned actions, then send a different result
+      if (banned_actions.size()) {
+        // special case (a bit messy...)
+        _success = Success(original_obligation, vector<Compressed_Actions>(), vector<Obligation>());
+        _last_interaction_was_a_success = true;
+        return;
+      } else {
+        set_reason_from_solver(original_obligation, end_reasons_layer);
+      }
+    }
   } else {
     if (_last_interaction_was_a_success) set_success_from_solver_deterministic(original_obligation, end_reasons_layer);
     else                                 set_reason_from_solver(original_obligation, end_reasons_layer);
@@ -116,13 +119,9 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
 }
 
 // TODO don't need to constrain layer 0, always logically the same
-
 void Obligation_Processor::add_reason_nondeterministic(const Reason_From_Orchestrator& reason) {
   const Contextless_Reason& contextless_reason = reason.contextless_reason();
-  //_largest_constrained_layer = max(_largest_constrained_layer, contextless_reason.layer());
   const vector<int>& timestep_zero_nogood_clause = contextless_reason.timestep_zero_nogood_clause();
-
-  LOG << "Adding reason: " << contextless_reason.to_string() << endl;
 
   ensure_solver_exists_for_end_reason_layer(contextless_reason.layer());
 
@@ -130,19 +129,17 @@ void Obligation_Processor::add_reason_nondeterministic(const Reason_From_Orchest
   for (int layer_to_add_to=contextless_reason.layer(); layer_to_add_to>=0; layer_to_add_to--) {
     const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, 1);
     end_layer_to_chosen_outcome_added_clauses[layer_to_add_to].push_back(clause_to_add); // record it for resetting
-    //if (layer_to_add_to == 0) cout << "TEST       adding actual clause to solver " << layer_to_add_to << " : " << Utils::to_symbols_string(clause_to_add) << endl;
     _end_reasons_layer_to_solver[layer_to_add_to]->add_clause(clause_to_add);
   }
 
   // then if the reason is at k, also add to the other outcomes of all solvers
-  for (int end_reason_layer=0; end_reason_layer<_k; end_reason_layer++) {
+  if (contextless_reason.layer() == _k && _k>0) {
     for (int outcome=0; outcome<Global::problem.max_num_outcomes; outcome++) {
       const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, 2 + outcome);
-      _end_reasons_layer_to_solver[end_reason_layer]->add_clause(clause_to_add);
+      _end_reasons_layer_to_solver[_k-1]->add_clause(clause_to_add);
     }
   }
 
-  /*
   // then add to the current layer
   for (int layer_to_add_to=contextless_reason.layer(); layer_to_add_to>0; layer_to_add_to--) {
     const int end_layer_of_solver_to_add_to = layer_to_add_to-1;
@@ -152,7 +149,6 @@ void Obligation_Processor::add_reason_nondeterministic(const Reason_From_Orchest
       _end_reasons_layer_to_solver[end_layer_of_solver_to_add_to]->add_clause(clause_to_add);
     }
   }
-  */
 
   // then to the separate consistency check ones
   for (int layer_to_add_to=contextless_reason.layer(); layer_to_add_to>0; layer_to_add_to--) {
@@ -257,22 +253,6 @@ Reason_From_Worker Obligation_Processor::last_interactions_reason() {
   return _reason;
 }
 
-/*
-void Obligation_Processor::lowest_satisfying_layer(const Compressed_State& state) {
-  for (int layer=0; layer<_largest_constrained_layer; layer++) {
-    // asks the SAT solver if this state satisfies it
-    // TODO to make it easier for the sat solver, maybe add extra? nah... it should do it with unit prop anyway
-    const bool sat = _end_reasons_layer_to_solver[layer]->solve(Utils::tilde(state.get_state(), 1));
-    if (sat) return layer;
-  }
-  return -1;
-}
-
-set_success_open_children_unsat(const Obligation& original_obligation) {
-  _success = Success(original_obligation, vector<int>(), vector<Obligations>());
-}
-*/
-
 int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligation& original_obligation, int end_reasons_layer) {
   // check if need to bother extracting
   if (!original_obligation.reduce_reason_add_successor_to_queue()) {
@@ -287,8 +267,6 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
 
   vector<Obligation> successor_obligations;
 
-  //LOG << "model gotten back: " <<  Utils::to_symbols_string(model) << endl;
-
   // extract action
   int action= -1;
   for (auto it=all_actions.begin(); it!=all_actions.end(); it++) {
@@ -299,10 +277,7 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
       break;
     }
   }
-
-  LOG << "action: " <<  Utils::to_symbols_string(action) << endl;
   assert (action != -1); // an action must have been executed? // Review if this ever happens
-  LOG << "action has N outcomes: " << Utils::to_symbols_string(action) << " " << Global::problem.action_to_num_outcomes[action] << endl;
 
   // extract AO
   int AO = -1;
@@ -316,8 +291,6 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
       break;
     }
   }
-
-  LOG << "AO: " <<  Utils::to_symbols_string(Utils::tilde(AO,1)) << endl;
   assert (AO != -1); // an action must have been executed? // Review if this ever happens
 
   // work out which number outcome that is
@@ -327,13 +300,10 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
       num_outcome = i;
     }
   }
-
-  //LOG << "outcome number: " << num_outcome << endl;
   assert (num_outcome != -1);
 
   // work out outcomes by applying actions
   const vector<int>& aos = Global::problem.action_to_aos[action];
-
   for (int outcome=0; outcome<aos.size(); outcome++) {
     const int ao = aos[outcome];
     const vector<int>& effects = Global::problem.ao_to_effects[ao];
@@ -344,9 +314,6 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
     else                        known_satisfying_layer = _k;
 
     const int layer = get_lowest_satisfying_layer(successor_state, known_satisfying_layer);
-
-    LOG << "successor state L:" << layer << " " << successor_state.to_string() << endl;
-    cout << "TEST successor state L:" << layer << " " << successor_state.to_string() << endl;
 
     successor_obligations.push_back(Obligation(successor_state, layer, 0, true, vector<int>()));
   }
@@ -403,7 +370,6 @@ int Obligation_Processor::set_success_from_solver_nondeterministic(const Obligat
   vector<Compressed_Actions> actions = vector<Compressed_Actions>({Compressed_Actions(vector<int>(1, action), 0)});
   Obligation original_obligation_with_action_banned = original_obligation.get_with_additional_banned_action(action);
   _success = Success(original_obligation, actions, successor_obligations);
-  LOG << _success.to_string() << endl;
   return 0;
 }
 
@@ -491,6 +457,8 @@ vector<int> set_to_abs_sorted_vector(const set<int>& x) {
 }
 
 void Obligation_Processor::set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer) {
+  assert (original_obligation.banned_actions().size() == 0);
+
   // So this is actually doing a process of strengthening - lit removal
   //LOG << "finding a reason for the failed obligation: " << original_obligation.to_string() << endl;
   if (!original_obligation.reduce_reason_add_successor_to_queue()) {
@@ -513,15 +481,15 @@ void Obligation_Processor::set_reason_from_solver(const Obligation& original_obl
 
     // lets remove this proposition and see if it is still UNSAT
     running_reason.erase(proposition_to_exclude);
+
+    LOG << "START SAT" << endl;
     if (solver->solve(set_to_vector(running_reason))) {
       running_reason.insert(proposition_to_exclude); // The omission makes it SAT again, so add it back
     } else {
       running_reason = vector_to_set(solver->used_assumptions()); // use the used_assumptions as the new running reason
     }
+    LOG << "END SAT" << endl;
   }
-
-  LOG << "found reason: " << Utils::to_symbols_string(set_to_abs_sorted_vector(running_reason)) << endl;
-  cout << "TEST found reason: " << Utils::to_symbols_string(set_to_abs_sorted_vector(running_reason)) << endl;
 
   assert (running_reason.size() != 0);
 
@@ -543,15 +511,21 @@ void Obligation_Processor::ensure_solver_exists_for_end_reason_layer(int end_rea
 }
 
 void Obligation_Processor::reset_nondeterministic_solvers_for_new_k(int k) {
+  LOG << "LOOK INTO THIS FURTHER" << endl; // maybe get rid of the ensure exists, and just have the "get ready for new k"
   _k = k;
 
-  for (int i=1; i<_end_reasons_layer_to_solver.size(); i++) {
+  const int num_standard_solvers = _end_reasons_layer_to_solver.size();
+
+  assert(num_standard_solvers == k);
+
+  for (int i=0; i<num_standard_solvers; i++) {
     delete _end_reasons_layer_to_solver[i];
   }
 
   _end_reasons_layer_to_solver.clear();
 
-  for (int end_layer=0; end_layer<k; end_layer++) {
+  for (int end_layer=0; end_layer<num_standard_solvers; end_layer++) {
+    //ensure_solver_exists_for_end_reason_layer(end_layer);
     Lingeling* new_solver = new Lingeling(_base_solver);
     new_solver->add_clauses(end_layer_to_chosen_outcome_added_clauses[end_layer]);
     _end_reasons_layer_to_solver.push_back(new_solver);
@@ -559,6 +533,26 @@ void Obligation_Processor::reset_nondeterministic_solvers_for_new_k(int k) {
 }
 
 int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer) {
+  //LOG << " SLOW!" << endl;
+
+  ensure_solver_exists_for_end_reason_layer(upper_known_satisfying_layer);
+
+  if (upper_known_satisfying_layer == 0) {
+    assert(state.is_goal());
+    return 0;
+  }
+
+  if (state.is_goal()) return 0;
+
+
+  for (int i=1;;i++) {
+    if (_layer_to_consistency_solver[i]->solve(state.get_state())) {
+      //LOG << "SLOW END" << endl;
+      return i;
+    }
+  }
+
+  /*
   //LOG << "asking is goal? " << state.to_string() << state.is_goal() << endl;
 
   ensure_solver_exists_for_end_reason_layer(upper_known_satisfying_layer);
@@ -585,4 +579,5 @@ int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& st
   }
 
   return upper_bound;
+  */
 }

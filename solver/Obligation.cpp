@@ -10,6 +10,13 @@ Obligation::Obligation(const Compressed_State& compressed_state, int layer, int 
   _banned_actions = banned_actions;
 }
 
+string Obligation::to_short_string() const {
+  return "{OBL LAYER:" + std::to_string(_layer) 
+    + " STATE: " + std::to_string(_compressed_state.id())  
+    + " BANNED: " + Utils::to_string(_banned_actions)
+    + " }";
+}
+
 string Obligation::to_string() const {
   return "{ OBL, L:" + std::to_string(_layer) 
     + " S:" + std::to_string(_subproblem) 
@@ -22,7 +29,7 @@ bool Obligation::operator==(const Obligation& other) const {
   return 
     (other.compressed_state() == _compressed_state) & 
     (other.layer() == _layer) & 
-    (other.subproblem() & _subproblem) & 
+    (other.subproblem() == _subproblem) & 
     (other.reduce_reason_add_successor_to_queue() == _reduce_reason_add_successor_to_queue) &
     (other.banned_actions() == _banned_actions);
 }
@@ -63,6 +70,10 @@ Obligation Obligation::get_with_additional_banned_action(int extra_banned_action
   vector<int> new_banned_actions = _banned_actions;
   new_banned_actions.push_back(extra_banned_action);
   return Obligation(_compressed_state, _layer, _subproblem, _reduce_reason_add_successor_to_queue, new_banned_actions);
+}
+
+Obligation Obligation::get_with_banned_actions(const vector<int>& banned_actions) const {
+  return Obligation(_compressed_state, _layer, _subproblem, _reduce_reason_add_successor_to_queue, banned_actions);
 }
 
 // MPI

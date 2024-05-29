@@ -23,6 +23,8 @@ class Goal_Reachability_Manager {
     unordered_set<int> register_pure_goal_return_new_goal_states(const Compressed_State& state);
     unordered_set<int> register_success_return_new_goal_states(const Success& success); 
 
+    bool goal_reaching_state(const int state);
+
     void print();
     bool no_change_since_last_check();
   private:

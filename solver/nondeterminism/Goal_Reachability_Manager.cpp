@@ -9,7 +9,6 @@ unordered_set<int> Goal_Reachability_Manager::register_pure_goal_return_new_goal
 }
 
 unordered_set<int> Goal_Reachability_Manager::register_success_return_new_goal_states(const Success& success) {
-  //LOG << "here" << endl;
   bool change = _graph.add(success);
   if (change) _no_change_since_last_check = false;
   return find_newly_goal_reaching_states();
@@ -30,7 +29,6 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
   // we have the SCCs, now to work out which are goal SCCs directly, and which do and don't lead to a goal
 
   // TODO stop right here if there are no goals in the sccs
-
 
   // first work out which are goals directly
   unordered_set<int> goal_sccs;
@@ -121,7 +119,12 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
   return non_goal_reaching_states;
 }
 
+bool Goal_Reachability_Manager::goal_reaching_state(const int state) {
+  return _goal_state_to_actions.find(state) != _goal_state_to_actions.end();
+}
+
 unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() {
+  LOG << "START" << endl;
   State_Action_Graph iterative_graph = State_Action_Graph(_graph);
   
   // iteratively refine this graph
@@ -144,6 +147,7 @@ unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() 
     }
   }
 
+
   // At this point the states in the graph are the goal reaching states, find the new ones
   unordered_set<int> newly_goal_reaching_states;
   for (auto state_actions:iterative_graph._state_to_actions) {
@@ -158,6 +162,7 @@ unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() 
 
   //LOG << "found newly reaching goal states: " << Utils::to_string(newly_goal_reaching_states) << endl;
 
+  LOG << "END" << endl;
   return newly_goal_reaching_states;
 }
 
