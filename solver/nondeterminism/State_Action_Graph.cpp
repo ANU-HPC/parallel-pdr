@@ -25,6 +25,97 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
   }
 }
 
+State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const Success* optional_success, int optional_goal_state) {
+  State_Action_Graph new_graph;
+
+  unordered_set<int> backwards_expanded;
+  unordered_set<int> backwards_frontier;
+  unordered_set<int> forward_expanded;
+  unordered_set<int> forward_frontier;
+
+  bool any_state_reaches_goal = false;
+
+  // set up the frontiers
+  if (optional_success != NULL) {
+    new_graph.add(*optional_success);
+    const int original_state = optional_success->original_obligation().compressed_state().id();
+    backwards_frontier.insert(original_state);
+    any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(original_state) != goal_state_to_actions.end());
+
+    for (const Obligation obl : optional_success->successor_obligations()) {
+      const int outcome = obl.compressed_state().id();
+      forward_frontier.insert(outcome);
+      any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(outcome) != goal_state_to_actions.end());
+    }
+  }
+  if (optional_goal_state != -1) {
+    any_state_reaches_goal = true;
+    backwards_frontier.insert(optional_goal_state);
+  }
+
+  // explore forwards
+  while (forward_frontier.size()) {
+    // TODO have a special case, when a goal state don't keep going
+    const int state = *forward_frontier.begin();
+    forward_frontier.erase(state);
+    forward_expanded.insert(state);
+
+    new_graph._state_to_producing_state_action_pairs[state].size(); // make it exist
+    new_graph._state_to_actions[state] = _state_to_actions[state];
+    for (const int action : _state_to_actions[state]) {
+      const pair<int, int> state_action = pair<int, int>(state, action);
+
+      new_graph._state_action_pair_to_outcomes[state_action] = _state_action_pair_to_outcomes[state_action];
+
+      for (const int outcome : _state_action_pair_to_outcomes[state_action]) {
+        new_graph._state_to_producing_state_action_pairs[outcome].insert(state_action);
+        new_graph._state_to_actions[outcome].size(); // make it exist
+
+        // for each of the outcomes, if they have not been expanded forward AND they are not a goal state (in which case we don't need to go any further), set them up to be
+        const bool outcome_already_expanded = forward_expanded.find(outcome) != forward_expanded.end();
+        const bool outcome_goal_reaching = goal_state_to_actions.find(outcome) != goal_state_to_actions.end();
+        if ((!outcome_already_expanded) && (!outcome_goal_reaching)) {
+          forward_frontier.insert(outcome);
+        }
+      }
+    }
+  }
+
+  LOG << "any reaches goal?: " << any_state_reaches_goal << endl;
+  // if it doesn't here, then it never will
+  //if (!any_state_reaches_goal) return State_Action_Graph();
+
+  // explore backwards
+  while (backwards_frontier.size()) {
+    const int outcome = *backwards_frontier.begin();
+    backwards_frontier.erase(outcome);
+    backwards_expanded.insert(outcome);
+
+    // work out the state action pairs which produced this outcome
+    for (const pair<int, int> producing_state_action : _state_to_producing_state_action_pairs[outcome]) {
+      const int parent_state = producing_state_action.first;
+      const int action = producing_state_action.second;
+
+      new_graph._state_to_actions[parent_state].insert(action);
+      new_graph._state_to_producing_state_action_pairs[parent_state].size(); // make it exist
+      new_graph._state_action_pair_to_outcomes[producing_state_action] = _state_action_pair_to_outcomes[producing_state_action];
+
+      for (const int sibling_outcome : _state_action_pair_to_outcomes[producing_state_action]) {
+        new_graph._state_to_producing_state_action_pairs[sibling_outcome].insert(producing_state_action);
+        new_graph._state_to_actions[sibling_outcome].size(); // make it exist
+      }
+
+      // if this parent has not been expanded backwards, set it up to be
+      if (backwards_expanded.find(parent_state) == backwards_expanded.end()) {
+        backwards_frontier.insert(parent_state);
+      }
+    }
+  }
+
+  assert(new_graph.consistency_check());
+  return new_graph;
+}
+
 bool State_Action_Graph::add(const Success& success) {
   // get all as numbers
   const int original_state_id = success.original_obligation().compressed_state().id();

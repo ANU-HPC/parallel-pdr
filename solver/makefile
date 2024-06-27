@@ -2,8 +2,16 @@ default:
 	$(MAKE) -j 16 solver
 
 MPICXX   = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
+
+# full efficiency
 CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
+
+# full debugging
 #CXXFLAGS += -rdynamic -pg -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
+
+# efficient with profiling
+# CXXFLAGS += -rdynamic -pg -ggdb -O3 -DNDEBUG -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
+
 LDFLAGS  = -lstdc++fs
 
 OBJS = main.o \

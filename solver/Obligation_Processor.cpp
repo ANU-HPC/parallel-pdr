@@ -47,9 +47,7 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
   for (auto it=banned_actions.begin(); it!=banned_actions.end(); it++) {
     assumptions.push_back(-*it); 
   }
-  LOG << "START SAT" << endl;
   _last_interaction_was_a_success = _end_reasons_layer_to_solver[end_reasons_layer]->solve(assumptions);
-  LOG << "END SAT" << endl;
 
   // dealing with it
   if (Global::problem.nondeterministic) {
@@ -482,13 +480,11 @@ void Obligation_Processor::set_reason_from_solver(const Obligation& original_obl
     // lets remove this proposition and see if it is still UNSAT
     running_reason.erase(proposition_to_exclude);
 
-    LOG << "START SAT" << endl;
     if (solver->solve(set_to_vector(running_reason))) {
       running_reason.insert(proposition_to_exclude); // The omission makes it SAT again, so add it back
     } else {
       running_reason = vector_to_set(solver->used_assumptions()); // use the used_assumptions as the new running reason
     }
-    LOG << "END SAT" << endl;
   }
 
   assert (running_reason.size() != 0);
@@ -551,6 +547,40 @@ int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& st
       return i;
     }
   }
+}
+
+/*
+int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer) {
+  if (upper_known_satisfying_layer == 0) {
+    assert(state.is_goal());
+    return 0;
+  }
+
+  if (state.is_goal()) return 0;
+
+  int lowest_sat = upper_known_satisfying_layer;
+  int highest_unsat = 0;
+
+  LOG << "checking, unsat at: " << highest_unsat << " and sat at " << lowest_sat << endl;
+  while (lowest_sat != highest_unsat+1) {
+    const int mid = (lowest_sat+highest_unsat)/2;
+    const bool sat_at_mid = _layer_to_consistency_solver[mid]->solve(state.get_state());
+    LOG << "at " << mid << " " << sat_at_mid << endl;
+    if (sat_at_mid) {
+      lowest_sat = mid;
+    } else {
+      highest_unsat = mid;
+    }
+  }
+  return lowest_sat+1;
+}
+*/
+
+
+
+
+
+
 
   /*
   //LOG << "asking is goal? " << state.to_string() << state.is_goal() << endl;
@@ -580,4 +610,3 @@ int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& st
 
   return upper_bound;
   */
-}

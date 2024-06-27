@@ -29,7 +29,9 @@ class Goal_Reachability_Manager {
     bool no_change_since_last_check();
   private:
     unordered_set<int> scc_iteration_non_goal_reaching_states(State_Action_Graph* iterative_graph);
-    unordered_set<int> find_newly_goal_reaching_states(); // The wider context just needs to know what states to trim from the queue TODO make this more refined than a big overall search
+
+    // The wider context just needs to know what states to trim from the queue
+    unordered_set<int> find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state); 
 
     unordered_map<int, unordered_set<int>> _goal_state_to_actions; // actions needed to progress towards the goal
     State_Action_Graph _graph;

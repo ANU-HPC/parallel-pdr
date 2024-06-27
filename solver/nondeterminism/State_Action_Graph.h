@@ -22,6 +22,8 @@ class State_Action_Graph {
     State_Action_Graph(); // plain
     State_Action_Graph(const State_Action_Graph& existing); // copy
 
+    State_Action_Graph reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const Success* optional_success, int optional_goal_state);
+
     // edits
     bool add(const Success& success);
     void remove_state(const int state);

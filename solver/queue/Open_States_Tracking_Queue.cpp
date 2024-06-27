@@ -121,7 +121,7 @@ void Open_States_Tracking_Queue::register_reason(const Reason_From_Worker& reaso
     assert (_seen_goal_reaching_state_to_layer[original_state] == original_state_layer);
   }
 
-  // apply reason, pushing states in standard queue
+  // apply reason, pushing states in standard queue (noting what the states are if need to remove them from the graph late
   const unordered_set<int> standard_pushed_states = _standard_queue.trim(reason.contextless_reason(), _k);
   if (original_state_layer == _k) _banned_states.insert(standard_pushed_states.begin(), standard_pushed_states.end());
   for (int state : standard_pushed_states) {
@@ -137,12 +137,27 @@ void Open_States_Tracking_Queue::register_reason(const Reason_From_Worker& reaso
     check_if_outcome_layer_change_triggers_unblocking_of_proceeding_state_actions(state);
     LOG << "not sure if this would happen..." << endl;
   }
+
+  // if pushed all the way out, remove from the graph
+  if (original_state_layer == _k) {
+    _graph.remove_state(original_state);
+
+    for (int state : standard_pushed_states) {
+      _graph.remove_state(state);
+    }
+
+    for (int state : deadlocked_pushed_states) {
+      _graph.remove_state(state);
+    }
+  }
+
   assert(consistent());
 }
 
 void Open_States_Tracking_Queue::register_goal_reaching_state(const int state) {
   assert(consistent());
   const int status = state_to_status(state);
+  LOG << status_to_string(status) << endl;
   assert (status != SEEN_GOAL_REACHING);
   assert (status != UNSEEN_GOAL_REACHING);
   if (status == UNSEEN_NON_GOAL_REACHING)  _unseen_goal_reaching_states.insert(state); // keep a note of it for if it turns up later
@@ -154,7 +169,7 @@ void Open_States_Tracking_Queue::register_goal_reaching_state(const int state) {
     else if (status == WILD) _wild_state_to_layer.erase(state);
     _seen_goal_reaching_state_to_layer[state] = layer;
   }
-  assert(consistent());
+  assert(consistent()); // TODO edge case where wild -> goal ? LOOK INTO
 }
 
 bool Open_States_Tracking_Queue::available_work() {
@@ -244,7 +259,6 @@ string Open_States_Tracking_Queue::status_to_string(const int status) {
 void Open_States_Tracking_Queue::check_if_outcome_layer_change_triggers_unblocking_of_proceeding_state_actions(const int state) {
   assert(consistent());
   //assert(_outcome_to_state_actions_it_is_blocking.find(state) != _outcome_to_state_actions_it_is_blocking.end());
-
 
   const unordered_set<pair<int, int>, Int_Pair_Hash> state_actions_to_check = _outcome_to_state_actions_it_is_blocking[state];
 

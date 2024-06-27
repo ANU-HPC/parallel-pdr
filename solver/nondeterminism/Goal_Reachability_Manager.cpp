@@ -5,13 +5,14 @@
 unordered_set<int> Goal_Reachability_Manager::register_pure_goal_return_new_goal_states(const Compressed_State& state) {
   //LOG << "here" << endl;
   _goal_state_to_actions[state.id()] = unordered_set<int>(); // empty as already a goal state
-  return find_newly_goal_reaching_states();
+  if (_goal_state_to_actions.size() == 0) return unordered_set<int>();
+  return find_newly_goal_reaching_states(NULL, state.id());
 }
 
 unordered_set<int> Goal_Reachability_Manager::register_success_return_new_goal_states(const Success& success) {
   bool change = _graph.add(success);
   if (change) _no_change_since_last_check = false;
-  return find_newly_goal_reaching_states();
+  return find_newly_goal_reaching_states(&success, -1);
 }
 
 unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_states(State_Action_Graph* iterative_graph) {
@@ -76,18 +77,27 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
   }
 
   // do a search through the SCC graph labelling everything that can reach the goal as a goal state
-  set<int> frontier = set<int>(goal_sccs.begin(), goal_sccs.end());
+  unordered_set<int> seen;
+  unordered_set<int> frontier = unordered_set<int>(goal_sccs.begin(), goal_sccs.end());
+  //LOG << "frontier size: " << frontier.size() << endl;
   //LOG << "start frontier " << Utils::to_string(frontier) << endl;
   //set<int> seen; // TODO don't double up (just for efficiency)
   while(frontier.size()) {
-    const int goal_scc = *frontier.rbegin();
+    const int goal_scc = *frontier.begin();
     frontier.erase(goal_scc);
 
     //LOG << "from scc: " << goal_scc << " back to: " << Utils::to_string(scc_to_sccs_that_go_to_it[goal_scc]) << endl;
 
     //LOG << "SCC " << goal_scc << " is reached by " << Utils::to_string(scc_to_sccs_that_go_to_it[goal_scc]) << endl;
 
-    frontier.insert(scc_to_sccs_that_go_to_it[goal_scc].begin(), scc_to_sccs_that_go_to_it[goal_scc].end());
+    // TODO necessary?
+    for (int scc : scc_to_sccs_that_go_to_it[goal_scc]) {
+      if (seen.find(scc) == seen.end()) {
+        frontier.insert(scc);
+      }
+    }
+
+    //frontier.insert(scc_to_sccs_that_go_to_it[goal_scc].begin(), scc_to_sccs_that_go_to_it[goal_scc].end());
     goal_sccs.insert(scc_to_sccs_that_go_to_it[goal_scc].begin(), scc_to_sccs_that_go_to_it[goal_scc].end());
   }
 
@@ -123,9 +133,11 @@ bool Goal_Reachability_Manager::goal_reaching_state(const int state) {
   return _goal_state_to_actions.find(state) != _goal_state_to_actions.end();
 }
 
-unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() {
-  LOG << "START" << endl;
+unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state) {
+  LOG << "NOT USING THE FANCY REACHABLE SCC STUFF" << endl;
   State_Action_Graph iterative_graph = State_Action_Graph(_graph);
+  //State_Action_Graph iterative_graph = _graph.reachable_subgraph(_goal_state_to_actions, optional_success, optional_goal_state);
+  if (iterative_graph._state_to_actions.size() == 0) return unordered_set<int>();
   
   // iteratively refine this graph
   //LOG << "starting... " << endl;
@@ -147,7 +159,6 @@ unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() 
     }
   }
 
-
   // At this point the states in the graph are the goal reaching states, find the new ones
   unordered_set<int> newly_goal_reaching_states;
   for (auto state_actions:iterative_graph._state_to_actions) {
@@ -162,7 +173,6 @@ unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states() 
 
   //LOG << "found newly reaching goal states: " << Utils::to_string(newly_goal_reaching_states) << endl;
 
-  LOG << "END" << endl;
   return newly_goal_reaching_states;
 }
 
