@@ -39,6 +39,8 @@ class Compressed_State {
     void assign_id(Compressed_State* state);
     int id() const;
 
+    static int max_id();
+
     static Compressed_State state_id_to_state(int state_id);
 
     static void set_initial_state(const Compressed_State& state);

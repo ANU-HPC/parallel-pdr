@@ -484,7 +484,12 @@ bool Strategies::run_default() {
   Worker_Interface worker_interface;
   Goal_Reachability_Manager goal_reachability_manager; // only for nondeterminism
   Plan_Builder deterministic_plan_builder; // only for deterministic
+
+  // is very expensive to pass through
+#ifdef DNDEBUG
+#else
   queue.inform_of_global_reachability_graph(goal_reachability_manager.get_global_graph());
+#endif
 
   // tmp unpackers
   tuple<int, Success> worker_success;

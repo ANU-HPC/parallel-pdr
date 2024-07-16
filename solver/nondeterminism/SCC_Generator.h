@@ -11,6 +11,7 @@ using namespace std;
 #include <cassert>
 
 #include "State_Action_Graph.h"
+#include "Compressed_State.h"
 
 class SCC_Generator {
   public:
@@ -24,8 +25,9 @@ class SCC_Generator {
     unordered_set<int> _unordered_stack;
     vector<int> _stack;
 
-    unordered_map<int, int> _state_to_index;
-    unordered_map<int, int> _state_to_lowlink;
+    int* _state_to_index_value;
+    int* _state_to_index_exists;
+    int* _state_to_lowlink;
 
     vector<unordered_set<int>*> _sccs;
 };

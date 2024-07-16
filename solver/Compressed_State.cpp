@@ -228,3 +228,7 @@ string Compressed_State::to_string() const {
   return "{CS ID:" + std::to_string(_id) + 
     " " + Utils::to_symbols_string(_raw) + "}";
 }
+
+int Compressed_State::max_id() {
+  return _state_to_state_id_map.size()-1;
+}

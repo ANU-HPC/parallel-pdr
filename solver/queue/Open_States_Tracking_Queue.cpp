@@ -87,12 +87,18 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
 
 
 
+#ifdef NDEBUG
+#else 
   // just for debugging
   if (_seen_successes.find(success) != _seen_successes.end()) {
     LOG << "SEEN THE SUCCESS BEFORE: " << success.to_string() << endl;
     assert(false);
   }
   _seen_successes.insert(success);
+#endif
+
+
+
   assert(consistent());
 
   LG(QT) << "finished adding a success" << endl;
