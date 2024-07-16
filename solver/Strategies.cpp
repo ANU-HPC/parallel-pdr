@@ -475,6 +475,7 @@ bool Strategies::OLD2() {
 */
 
 bool Strategies::run_default() {
+
   Global::active_heuristics = set<int>({Heuristics::NONE, Heuristics::RANDOM});
 
   // set up everything we need
@@ -483,6 +484,7 @@ bool Strategies::run_default() {
   Worker_Interface worker_interface;
   Goal_Reachability_Manager goal_reachability_manager; // only for nondeterminism
   Plan_Builder deterministic_plan_builder; // only for deterministic
+  queue.inform_of_global_reachability_graph(goal_reachability_manager.get_global_graph());
 
   // tmp unpackers
   tuple<int, Success> worker_success;
@@ -516,6 +518,8 @@ bool Strategies::run_default() {
     Obligation initial_obligation = Obligation(initial_state, k, 0, true, vector<int>());
     queue.push_initial(initial_obligation, k);
 
+    LG(ST) << "pushing initial obligation to the queue: " << initial_obligation.to_string() << endl;
+
     // Process it
     while (!queue.fully_empty() || !worker_interface.all_workers_idle()) {
       //LOG << "INT start main loop" << endl;
@@ -530,6 +534,7 @@ bool Strategies::run_default() {
           if (Utils::worker_to_steps(worker)>queue.lowest_layer_with_content()) continue;
           const Obligation& obligation = queue.pop(Heuristics::RANDOM);
           //LOG << "to process: " << obligation.to_string() << endl;
+          LG(ST) << "gotten off the queue to process: " << obligation.to_string() << endl;
           worker_interface.handle_obligation(obligation, false, worker);
         }
       }
@@ -546,6 +551,8 @@ bool Strategies::run_default() {
       for (auto ita=worker_successes->begin(); ita!=worker_successes->end(); ita++) {
         worker_success = *ita;
         const Success& success = get<1>(worker_success);
+
+        LG(ST) << "got back success: " << success.to_string() << endl;
 
         assert(success.original_obligation().reduce_reason_add_successor_to_queue());
 
@@ -597,6 +604,9 @@ bool Strategies::run_default() {
             // a plan exists!
             if (!Global::problem.evaluation_mode) worker_interface.finalize();
             LOG << "A NONDETERMINISTIC PLAN EXISTS" << endl;
+
+            goal_reachability_manager.print();
+
             return true;
           } else {
             // remove these from the queue
@@ -617,6 +627,8 @@ bool Strategies::run_default() {
         worker_reason = *it; 
         const Reason_From_Worker& reason_from_worker = get<1>(worker_reason);
         const Contextless_Reason& reason = reason_from_worker.contextless_reason();
+
+        LG(ST) << "got back reason " << reason.to_string() << endl;
 
         const int layers_to_add_to = layers.add_reason(reason);
 

@@ -30,6 +30,7 @@ class Single_Layer_Of_Queue {
     bool empty();
     int trim(const Contextless_Reason& reason, Single_Layer_Of_Queue* other_to_push_to, int layer_increment, unordered_set<int>* moved_state_ids);
     int remove_state(const Compressed_State& state);
+    vector<Compressed_State> get_states();
   private:
     Obligation remove_obligation_at_slot(int slot);
     Queue_Entry_Container _entries;

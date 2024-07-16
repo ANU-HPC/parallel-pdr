@@ -40,6 +40,7 @@ class Lingeling {
     vector<int> get_model();
     vector<int> used_assumptions();
     void set_important(const vector<int>& variables);
+    void set_name(string name);
 
   private:
     void load_with_copies(const char* fname, int iterations);
@@ -48,6 +49,8 @@ class Lingeling {
     vector<int> last_unmentioned_assumptions;
     LGL* solver = NULL;
     void test_non_null(int* x);
+
+    string _name = "unnamed";
 
     // TODO refine these tinisat variables
     unsigned vc;	// var count

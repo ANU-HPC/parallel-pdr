@@ -30,6 +30,8 @@ class Open_States_Tracking_Queue {
     int lowest_layer_with_content();
     Obligation pop(const int heuristic);
 
+    void inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph);
+
     void new_k(const int k);
   private:
     Default_Queue _standard_queue;
@@ -38,7 +40,8 @@ class Open_States_Tracking_Queue {
     unordered_map<int, int> _seen_goal_reaching_state_to_layer;
     unordered_set<int> _unseen_goal_reaching_states;
     unordered_set<int> _banned_states;
-    State_Action_Graph _graph;
+    State_Action_Graph _graph; // only for this iteration, reset each increment of k
+    State_Action_Graph* _global_reachability_graph; // comes in handy for checking consistency
     int _k;
 
     unordered_map<int, unordered_set<pair<int, int>, Int_Pair_Hash>> _outcome_to_state_actions_it_is_blocking;

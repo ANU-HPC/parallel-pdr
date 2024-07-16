@@ -81,7 +81,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
     }
   }
 
-  LOG << "any reaches goal?: " << any_state_reaches_goal << endl;
+  //LOG << "any reaches goal?: " << any_state_reaches_goal << endl;
   // if it doesn't here, then it never will
   //if (!any_state_reaches_goal) return State_Action_Graph();
 

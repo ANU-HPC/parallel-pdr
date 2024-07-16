@@ -27,6 +27,7 @@ class Goal_Reachability_Manager {
 
     void print();
     bool no_change_since_last_check();
+    State_Action_Graph* get_global_graph();
   private:
     unordered_set<int> scc_iteration_non_goal_reaching_states(State_Action_Graph* iterative_graph);
 

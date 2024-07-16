@@ -25,6 +25,10 @@ int Layers::add_reason(const Contextless_Reason& reason) {
   make_layer_exist(new_layer);
   _all_reasons_compare_just_reasons.insert(reason);
   _layer_to_reasons_last_appearing_here[new_layer].insert(reason);
+
+  LG(LT) << "added reason" << endl;
+  if (LT) print();
+
   return new_layer-existing_layer; // how many new layers to add to, for instance if it doesn't exist already and the reason is at layer 0, then 0 - (-1) = 1, so it will add it to one layer (layer 0)
 }
 

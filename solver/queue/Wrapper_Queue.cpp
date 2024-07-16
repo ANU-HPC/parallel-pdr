@@ -83,3 +83,9 @@ int Wrapper_Queue::lowest_layer_with_content() {
     return _deterministic.lowest_layer_with_content();
   }
 }
+
+void Wrapper_Queue::inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph) {
+  if (Global::problem.nondeterministic) {
+    _nondeterministic.inform_of_global_reachability_graph(global_reachability_graph);
+  }
+}

@@ -1,6 +1,10 @@
 #include "Open_States_Tracking_Queue.h"
 #include <cassert>
 
+void Open_States_Tracking_Queue::inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph) {
+  _global_reachability_graph = global_reachability_graph;
+}
+
 void Open_States_Tracking_Queue::push_initial(const Obligation& obligation) {
   _standard_queue.push(obligation);
 }
@@ -15,13 +19,13 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
     // deal with the starting state, first remove the wild (which might have been turned into a goal reaching) state from those lists
     const bool is_wild = _wild_state_to_layer.find(original_state) != _wild_state_to_layer.end();
     if (is_wild) { 
-      const int layer_for_checking = success.original_obligation().layer();
-      assert(_wild_state_to_layer[original_state] == success.original_obligation().layer());
+      const int success_original_layer = success.original_obligation().layer();
+      assert(_wild_state_to_layer[original_state] == success_original_layer);
 
       _wild_state_to_layer.erase(original_state);
       _standard_queue.push(success.original_obligation());
       
-      assert(layer_for_checking == _standard_queue.state_id_to_layer(original_state));
+      assert(success_original_layer == _standard_queue.state_id_to_layer(original_state));
     } else {
       // just a check
       const bool is_seen_goal_reaching = _seen_goal_reaching_state_to_layer.find(original_state) != _seen_goal_reaching_state_to_layer.end();
@@ -46,10 +50,9 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
     assert(success.actions()[0].get_actions().size() == 1);
     const int action = success.actions()[0].get_actions()[0];
     const pair<int, int> original_state_action_pair = pair<int, int>(original_state, action);
+
     _state_to_blocked_actions[original_state].insert(action);
-
     assert(_state_to_blocked_actions[original_state].size());
-
     for (const Obligation& successor_obligation : success.successor_obligations()) {
       const int outcome = successor_obligation.compressed_state().id();
       _outcome_to_state_actions_it_is_blocking[outcome].insert(original_state_action_pair);
@@ -91,6 +94,9 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
   }
   _seen_successes.insert(success);
   assert(consistent());
+
+  LG(QT) << "finished adding a success" << endl;
+  if (QT) print();
 }
 
 void Open_States_Tracking_Queue::register_reason(const Reason_From_Worker& reason) {
@@ -152,23 +158,30 @@ void Open_States_Tracking_Queue::register_reason(const Reason_From_Worker& reaso
   }
 
   assert(consistent());
+
+  LG(QT) << "finished adding a reason" << endl;
+  if (QT) print();
 }
 
 void Open_States_Tracking_Queue::register_goal_reaching_state(const int state) {
   assert(consistent());
   const int status = state_to_status(state);
-  LOG << status_to_string(status) << endl;
+
+  // cannot already be a goal state, this is new information
   assert (status != SEEN_GOAL_REACHING);
   assert (status != UNSEEN_GOAL_REACHING);
+
   if (status == UNSEEN_NON_GOAL_REACHING)  _unseen_goal_reaching_states.insert(state); // keep a note of it for if it turns up later
   else {
     const int layer = seen_state_to_layer(state);
-    if (status == DEADLOCK) _deadlock_queue.remove(Compressed_State::state_id_to_state(state));
+    if      (status == DEADLOCK) _deadlock_queue.remove(Compressed_State::state_id_to_state(state));
     else if (status == STANDARD) _standard_queue.remove(Compressed_State::state_id_to_state(state));
     else if (status == BANNED) _banned_states.erase(state);
     else if (status == WILD) _wild_state_to_layer.erase(state);
     _seen_goal_reaching_state_to_layer[state] = layer;
   }
+  LG(QT) << "finished registering a goal reaching state" << endl;
+  if (QT) print();
   assert(consistent()); // TODO edge case where wild -> goal ? LOOK INTO
 }
 
@@ -257,7 +270,7 @@ string Open_States_Tracking_Queue::status_to_string(const int status) {
 }
 
 void Open_States_Tracking_Queue::check_if_outcome_layer_change_triggers_unblocking_of_proceeding_state_actions(const int state) {
-  assert(consistent());
+  //assert(consistent()); // this is internal, to be done while in an inconsistent state
   //assert(_outcome_to_state_actions_it_is_blocking.find(state) != _outcome_to_state_actions_it_is_blocking.end());
 
   const unordered_set<pair<int, int>, Int_Pair_Hash> state_actions_to_check = _outcome_to_state_actions_it_is_blocking[state];
@@ -266,7 +279,7 @@ void Open_States_Tracking_Queue::check_if_outcome_layer_change_triggers_unblocki
   for (auto state_action : state_actions_to_check) {
     check_if_state_action_should_be_unblocked(state_action);
   }
-  assert(consistent());
+  //assert(consistent());
 }
 
 void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const pair<int, int> state_action) {
@@ -275,13 +288,11 @@ void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const
   const int action = state_action.second;
   const int original_state_layer = seen_state_to_layer(state);
 
-
-
   //LOG << "checking if unblocking: " << action << endl;
   //LOG << "original state layer " << original_state_layer << endl;
   //LOG << "original status " << status_to_string(state_to_status(state)) << endl;
 
-  // work out if still blocking action
+  // work out if we need to still block this action (THE whole check/test)
   bool one_goes_forward = false;
   bool all_not_banned = true;
   for (const int outcome : _graph._state_action_pair_to_outcomes[state_action]) {
@@ -291,23 +302,19 @@ void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const
     one_goes_forward = one_goes_forward || (outcome_layer < original_state_layer);
   }
 
-  //LOG << "all_not_banned " << all_not_banned << endl;
-  //LOG << "one_goes_forward " << one_goes_forward << endl;
-
   const int keep_blocking = all_not_banned && one_goes_forward;
   if (!keep_blocking) {
     // remove from maps
     //LOG << "unblocking state: " << state << " action " << action << endl;
     _state_to_blocked_actions[state].erase(action);
     for (const int outcome : _graph._state_action_pair_to_outcomes[state_action]) {
-
       assert(_outcome_to_state_actions_it_is_blocking[outcome].find(state_action) != _outcome_to_state_actions_it_is_blocking[outcome].end());
-
       _outcome_to_state_actions_it_is_blocking[outcome].erase(state_action);
     }
 
-    // removed this blocking action, if the state itself was actually deadlocked in the first place (not guaranteed) and this released the last banned action, then move it from the deadlock to standard queue
-    LOG << "TODO what is goal reaching? or banned etc?" << endl;
+    // removed THIS blocking action.
+    // it might be that the state is deadlocked (because it was unsat with banned actions)
+    // it might also be that now, there are no more banned actions, so it should be undeadlocked, a test for this:
     if (_state_to_blocked_actions[state].size() == 0 && state_to_status(state) == DEADLOCK) {
       // move between queues
       Compressed_State state_object = Compressed_State::state_id_to_state(state);
@@ -317,16 +324,54 @@ void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const
       _standard_queue.push(obligation);
     }
   }
-  assert(consistent());
+  //assert(consistent());
 }
 
 bool Open_States_Tracking_Queue::consistent() {
-  //print();
+  //LOG << "Note: expensive" << endl;
   if (!_deadlock_queue.empty()) {
+    // there are deadlocked things, if there are no live things then we already have a problem
     const int live_states = _wild_state_to_layer.size() + _standard_queue.size();
-    if (live_states == 0) return false;
-  }
+    if (live_states == 0) {
+      LOG << "first pass fail" << endl;
+      return false;
+    }
 
+    // make sure that every deadlocked thing is blocked by some states, AND that those states exist in the.. TODO where, queue?
+    vector<Obligation> deadlocked_obligations = _deadlock_queue.get_obligations();
+    vector<Obligation> standard_obligations = _standard_queue.get_obligations();
+
+    for (auto it=deadlocked_obligations.begin(); it!=deadlocked_obligations.end(); it++) {
+      const Obligation& deadlocked_obligation = *it;
+      const int state = deadlocked_obligation.compressed_state().id();
+      unordered_set<int> blocked_actions = _state_to_blocked_actions[state];
+      const int original_state_layer = seen_state_to_layer(state);
+
+      // now lets make sure that each of these blocked actions are rightfully blocked.
+      // For each of the blocked actions, they should be able to be executed on the SAT formula (that is why they are blocked in the first place), so lets test that is true
+
+      for (auto it=blocked_actions.begin(); it!=blocked_actions.end(); it++) {
+        const int blocked_action = *it; 
+
+        pair<int, int> state_action = pair<int, int>(state, blocked_action);
+
+        bool one_goes_forward = false;
+        bool all_not_banned = true;
+        for (const int outcome : _graph._state_action_pair_to_outcomes[state_action]) {
+          const int outcome_layer = seen_state_to_layer(outcome);
+          //LOG << "outcome " << outcome << " has layer " << outcome_layer << " and status " << status_to_string(state_to_status(outcome)) << endl;
+          all_not_banned = all_not_banned && (outcome_layer <= _k);
+          one_goes_forward = one_goes_forward || (outcome_layer < original_state_layer);
+        }
+
+        const int should_be_blocked = all_not_banned && one_goes_forward;
+        if (!should_be_blocked) {
+          LOG << "should be blocked byt isn't actually: " << deadlocked_obligation.compressed_state().to_string() << " with action " << blocked_action << endl;
+          return false;
+        }
+      }
+    }
+  }
   return true;
 }
 
@@ -340,7 +385,7 @@ void Open_States_Tracking_Queue::print() {
 
   LOG << "WILD: " << _wild_state_to_layer.size() << endl;
   LOG << "SEEN_GOAL_REACHING: " << _seen_goal_reaching_state_to_layer.size() << endl;
-  LOG << "UNSEEN_GOAL_REACHING: " << _seen_goal_reaching_state_to_layer.size() << endl;
+  LOG << "UNSEEN_GOAL_REACHING: " << _unseen_goal_reaching_states.size() << endl;
   LOG << "BANNED: " << _banned_states.size() << endl;
 }
 

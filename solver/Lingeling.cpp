@@ -224,6 +224,7 @@ void Lingeling::test_non_null(int* x) {
 }
 
 void Lingeling::add_clause(const vector<int>& inClause) {
+  LG(LCT) << _name << " " << Utils::to_string(inClause) << endl;
   for (int i=0; i<inClause.size(); i++) {
     lgladd(solver, inClause[i]);
     lglfreeze(solver, inClause[i]);
@@ -233,6 +234,7 @@ void Lingeling::add_clause(const vector<int>& inClause) {
 
 void Lingeling::add_clauses(const vector<vector<int>>& inClauses) {
   for (int j=0; j<inClauses.size(); j++){
+    LG(LCT) << _name << " " << Utils::to_string(inClauses[j]) << endl;
     for (int i=0; i<inClauses[j].size(); i++) {
       lgladd(solver, inClauses[j][i]);
       lglfreeze(solver, inClauses[j][i]);
@@ -329,4 +331,8 @@ void Lingeling::set_important(const vector<int>& variables) {
   for (auto it = variables.begin(); it != variables.end(); it++) {
     lglsetimportant(solver, *it);
   }
+}
+
+void Lingeling::set_name(string name) {
+  _name = name;
 }

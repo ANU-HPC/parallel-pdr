@@ -28,6 +28,7 @@ class Default_Queue {
     int lowest_layer_with_content();
     void print_sizes();
     void set_name(string name);
+    vector<Obligation> get_obligations();
   private:
     unordered_map<int, int> _state_id_to_layer;
     void update_lowest_layer_with_content();

@@ -155,13 +155,39 @@ unordered_set<int> Default_Queue::trim(const Contextless_Reason& reason, int k) 
 }
 
 void Default_Queue::print_sizes() {
+
+  vector<Obligation> obligations = get_obligations();
+
+
   for (int layer=0; layer<_layers.size(); layer++) {
-    LOG << "layer " << layer << " has size " << _layers[layer].size() << endl;
+    vector<int> ids;
+
+    for (auto it=obligations.begin(); it!=obligations.end(); it++) {
+      const Obligation& obligation =*it;
+      if (obligation.layer() == layer) {
+        ids.push_back(obligation.compressed_state().id());
+      }
+    }
+
+    LOG << "layer " << layer << " has size " << _layers[layer].size() << " : " << Utils::to_string(ids) << endl;
   }
 }
 
 void Default_Queue::set_name(string name) {
   _name = "[QUEUE:" + name + "] ";
+}
+
+vector<Obligation> Default_Queue::get_obligations() {
+  LOG << "expensive, use with care..." << endl;
+  vector<Obligation> obligations;
+  for (int layer=0; layer<_layers.size(); layer++) {
+    const vector<Compressed_State>& states = _layers[layer].get_states();
+
+    for (auto it=states.begin(); it!=states.end(); it++) {
+      obligations.push_back(Obligation(*it, layer, 0, true, vector<int>()));
+    }
+  }
+  return obligations;
 }
 
 void Default_Queue::make_layer_exist(int layer) {

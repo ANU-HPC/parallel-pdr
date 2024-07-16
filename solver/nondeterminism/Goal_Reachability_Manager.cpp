@@ -134,9 +134,13 @@ bool Goal_Reachability_Manager::goal_reaching_state(const int state) {
 }
 
 unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state) {
-  LOG << "NOT USING THE FANCY REACHABLE SCC STUFF" << endl;
-  State_Action_Graph iterative_graph = State_Action_Graph(_graph);
-  //State_Action_Graph iterative_graph = _graph.reachable_subgraph(_goal_state_to_actions, optional_success, optional_goal_state);
+  //LOG << "NOT USING THE FANCY REACHABLE SCC STUFF" << endl;
+
+
+  //State_Action_Graph iterative_graph = State_Action_Graph(_graph);
+  State_Action_Graph iterative_graph = _graph.reachable_subgraph(_goal_state_to_actions, optional_success, optional_goal_state);
+
+
   if (iterative_graph._state_to_actions.size() == 0) return unordered_set<int>();
   
   // iteratively refine this graph
@@ -184,4 +188,8 @@ bool Goal_Reachability_Manager::no_change_since_last_check() {
   bool ret_val = _no_change_since_last_check;
   _no_change_since_last_check = true;
   return ret_val;
+}
+
+State_Action_Graph* Goal_Reachability_Manager::get_global_graph() {
+  return &_graph;
 }

@@ -2,6 +2,16 @@
 
 Single_Layer_Of_Queue::Single_Layer_Of_Queue() { }
 
+vector<Compressed_State> Single_Layer_Of_Queue::get_states() {
+  vector<Compressed_State> states;
+
+  for (auto it=_state_to_slot.begin(); it!=_state_to_slot.end(); it++) {
+    states.push_back(it->first);
+  }
+
+  return states;
+}
+
 int Single_Layer_Of_Queue::remove_state(const Compressed_State& state) {
   if (_state_to_slot.find(state) == _state_to_slot.end()) return 0;
   const int slot = _state_to_slot[state];

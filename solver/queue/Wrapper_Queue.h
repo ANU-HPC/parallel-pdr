@@ -19,6 +19,7 @@ class Wrapper_Queue {
     int size();
     void register_reason(const Reason_From_Worker& reason, int obligation_rescheduling_upper_layer);
     int lowest_layer_with_content();
+    void inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph);
   private:
     Default_Queue _deterministic;
     Open_States_Tracking_Queue _nondeterministic;

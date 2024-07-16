@@ -16,6 +16,7 @@ Obligation_Processor::Obligation_Processor(int layer_steps) {
 
   // create base solver
   _base_solver = new Lingeling();
+  _base_solver->set_name("base solver");
   if (Global::problem.nondeterministic) _base_solver->load_nondeterministic_planning_problem(Global::problem.tmp_dir); 
   else                                  _base_solver->load_deterministic_planning_problem(Global::problem.tmp_dir, _total_sub_steps); 
 
@@ -132,19 +133,12 @@ void Obligation_Processor::add_reason_nondeterministic(const Reason_From_Orchest
 
   // then if the reason is at k, also add to the other outcomes of all solvers
   if (contextless_reason.layer() == _k && _k>0) {
-    for (int outcome=0; outcome<Global::problem.max_num_outcomes; outcome++) {
-      const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, 2 + outcome);
-      _end_reasons_layer_to_solver[_k-1]->add_clause(clause_to_add);
-    }
-  }
-
-  // then add to the current layer
-  for (int layer_to_add_to=contextless_reason.layer(); layer_to_add_to>0; layer_to_add_to--) {
-    const int end_layer_of_solver_to_add_to = layer_to_add_to-1;
-    for (int outcome=0; outcome<Global::problem.max_num_outcomes; outcome++) {
-      const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, 2 + outcome);
-      //if(end_layer_of_solver_to_add_to == 0) cout << "TEST       adding actual clause to solver " << end_layer_of_solver_to_add_to << " : " << Utils::to_symbols_string(clause_to_add) << endl;
-      _end_reasons_layer_to_solver[end_layer_of_solver_to_add_to]->add_clause(clause_to_add);
+    for (int layer_to_add_to=contextless_reason.layer(); layer_to_add_to>0; layer_to_add_to--) {
+      const int end_layer_of_solver_to_add_to = layer_to_add_to-1;
+      for (int outcome=0; outcome<Global::problem.max_num_outcomes; outcome++) {
+        const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, 2 + outcome);
+        _end_reasons_layer_to_solver[end_layer_of_solver_to_add_to]->add_clause(clause_to_add);
+      }
     }
   }
 
@@ -498,6 +492,7 @@ void Obligation_Processor::ensure_solver_exists_for_end_reason_layer(int end_rea
   assert (end_reasons_layer>=0);
   while (end_reasons_layer >= _end_reasons_layer_to_solver.size()) {
     _end_reasons_layer_to_solver.push_back(new Lingeling(_base_solver));
+    _end_reasons_layer_to_solver[_end_reasons_layer_to_solver.size()-1]->set_name("end_reason_layer_" + std::to_string(end_reasons_layer));
 
     if (_layer_to_consistency_solver.size() == 0) _layer_to_consistency_solver.push_back(NULL);
     else                                          _layer_to_consistency_solver.push_back(new Lingeling());
@@ -509,6 +504,7 @@ void Obligation_Processor::ensure_solver_exists_for_end_reason_layer(int end_rea
 void Obligation_Processor::reset_nondeterministic_solvers_for_new_k(int k) {
   LOG << "LOOK INTO THIS FURTHER" << endl; // maybe get rid of the ensure exists, and just have the "get ready for new k"
   _k = k;
+  LOG << "new k " << k << endl;
 
   const int num_standard_solvers = _end_reasons_layer_to_solver.size();
 
@@ -523,6 +519,8 @@ void Obligation_Processor::reset_nondeterministic_solvers_for_new_k(int k) {
   for (int end_layer=0; end_layer<num_standard_solvers; end_layer++) {
     //ensure_solver_exists_for_end_reason_layer(end_layer);
     Lingeling* new_solver = new Lingeling(_base_solver);
+    LG(LCT) << "resetting end_reason_layer_" + std::to_string(end_layer) << endl;
+    new_solver->set_name("end_reason_layer_" + std::to_string(end_layer));
     new_solver->add_clauses(end_layer_to_chosen_outcome_added_clauses[end_layer]);
     _end_reasons_layer_to_solver.push_back(new_solver);
   }
