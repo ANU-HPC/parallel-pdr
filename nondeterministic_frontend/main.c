@@ -587,6 +587,49 @@ void writeActionImpliesAtLeastOneAOClauses() {
 }
 
 void writeOnlyOneActionClauses() {
+    int start = 0;
+    int stop = 0;
+    int queue[4*nOfActions];
+    for (int action=0; action<nOfActions; action++) {
+        queue[stop] = actionToCnfVar(action);
+        stop++;
+    }
+
+    if ((stop-start) <= 1) {
+        return; // no or one action... weird
+    }
+
+    // while more than 2 left
+    while ((stop-start) != 2) {
+        // grab 2 from the start
+        int a = queue[start];
+        int b = queue[start+1];
+
+        // and a new one up the tree
+        int c = getNextAux();
+
+        // not a and b
+        fprintf(cnfFile, "%d %d 0 \n", -a, -b);
+        numClauses++;
+
+        // a->c, b->c
+        fprintf(cnfFile, "%d %d 0 \n", -a, c);
+        fprintf(cnfFile, "%d %d 0 \n", -b, c);
+        numClauses += 2;
+
+        // progress through the queue
+        start += 2;
+        queue[stop] = c;
+        stop++;
+    }
+
+    // for the last 2
+    fprintf(cnfFile,"%d %d 0\n", -queue[start], -queue[start+1]);
+    numClauses++;
+}
+
+/*
+void writeOnlyOneActionClauses() {
     // TODO for now do the basic quadratic encoding
     for (int action1=0; action1<nOfActions-1; action1++) {
         for (int action2=action1+1; action2<nOfActions; action2++) {
@@ -595,6 +638,7 @@ void writeOnlyOneActionClauses() {
         }
     }
 }
+*/
 
 void writeOnlyOneAOPerActionClauses() {
     // TODO for now do the basic quadratic encoding
@@ -666,6 +710,7 @@ void writeInvariantClauses() {
                 int otherSign = (i&1) ? -1 : 1;
                 int otherAtom = feVAR(i);
                 int otherVar = atomTimeSlotToCnfVar(otherAtom, slot);
+                if (otherVar < baseVar) continue;
                 //fprintf(cnfFile, "    c baseAtom:%d phase:%d\n", baseAtom, phase);
                 fprintf(cnfFile, "%d %d 0\n", baseVar, otherSign * otherVar);
                 numClauses++;
@@ -678,6 +723,7 @@ void writeInvariantClauses() {
                 int otherSign = (i&1) ? -1 : 1;
                 int otherAtom = feVAR(i);
                 int otherVar = atomTimeSlotToCnfVar(otherAtom, slot);
+                if (otherVar < baseVar) continue;
                 //fprintf(cnfFile, "    c baseAtom:%d phase:%d\n", baseAtom, phase);
                 fprintf(cnfFile, "%d %d 0\n", -baseVar, otherSign * otherVar);
                 numClauses++;
@@ -917,15 +963,6 @@ void writeActionImpliesEveryOutcomeEffectClauses() {
         }
     }
 }
-
-
-
-
-
-
-
-
-
 
 void writeMapping() {
     for (int action=0; action<nOfActions; action++) {
