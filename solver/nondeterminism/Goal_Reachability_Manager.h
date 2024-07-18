@@ -34,10 +34,18 @@ class Goal_Reachability_Manager {
     // The wider context just needs to know what states to trim from the queue
     unordered_set<int> find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state); 
 
+    void cheap_find_newly_goal_reaching_states_helper(int newly_goal_reaching_state, unordered_set<int>* ret_val);
+    unordered_set<int> cheap_find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state); 
+    unordered_set<int> scc_find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state); 
+
     unordered_map<int, unordered_set<int>> _goal_state_to_actions; // actions needed to progress towards the goal
     State_Action_Graph _graph;
 
     bool _no_change_since_last_check = false;
+
+    const int PROPER_SCC_CHECK_RATE = 1; // breaks when on
+    int _checks_since_proper_scc_check = 1;
+    unordered_set<int> _memo;
 };
 
 #endif

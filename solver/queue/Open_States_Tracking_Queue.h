@@ -33,6 +33,7 @@ class Open_States_Tracking_Queue {
     void inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph);
 
     void new_k(const int k);
+    void print();
   private:
     Default_Queue _standard_queue;
     Default_Queue _deadlock_queue;
@@ -57,7 +58,6 @@ class Open_States_Tracking_Queue {
     unordered_set<Success, Bad_Success_Hash> _seen_successes;
 
     bool consistent();
-    void print();
 };
 
 #endif

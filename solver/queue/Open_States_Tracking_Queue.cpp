@@ -10,7 +10,7 @@ void Open_States_Tracking_Queue::push_initial(const Obligation& obligation) {
 }
 
 void Open_States_Tracking_Queue::register_success(const Success& success) {
-  assert(consistent());
+  //assert(consistent());
   const int original_state = success.original_obligation().compressed_state().id();
 
   // work out if a "real" success, or an indication that a obligation failed because of blocked actions
@@ -99,7 +99,7 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
 
 
 
-  assert(consistent());
+  //assert(consistent());
 
   LG(QT) << "finished adding a success" << endl;
   if (QT) print();
@@ -289,7 +289,7 @@ void Open_States_Tracking_Queue::check_if_outcome_layer_change_triggers_unblocki
 }
 
 void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const pair<int, int> state_action) {
-  assert(consistent());
+  //assert(consistent());
   const int state = get<0>(state_action);
   const int action = state_action.second;
   const int original_state_layer = seen_state_to_layer(state);

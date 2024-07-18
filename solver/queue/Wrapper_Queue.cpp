@@ -89,3 +89,11 @@ void Wrapper_Queue::inform_of_global_reachability_graph(State_Action_Graph* glob
     _nondeterministic.inform_of_global_reachability_graph(global_reachability_graph);
   }
 }
+
+void Wrapper_Queue::print() {
+  if (Global::problem.nondeterministic) {
+    return _nondeterministic.print();
+  } else {
+    //return _deterministic.print();
+  }
+}

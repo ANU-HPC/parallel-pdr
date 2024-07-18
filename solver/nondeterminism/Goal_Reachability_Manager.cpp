@@ -46,6 +46,8 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
     }
   }
 
+  //LOG << "num goal reaching sccs: " << goal_sccs.size() << endl;
+
   // work out the graph between these sccs
   unordered_map<int, int> state_to_scc_num;
   for (int scc_num=0; scc_num<sccs.size(); scc_num++) {
@@ -133,7 +135,93 @@ bool Goal_Reachability_Manager::goal_reaching_state(const int state) {
   return _goal_state_to_actions.find(state) != _goal_state_to_actions.end();
 }
 
+
 unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state) {
+  bool scc_check = (_checks_since_proper_scc_check == PROPER_SCC_CHECK_RATE);
+
+  if (_checks_since_proper_scc_check == PROPER_SCC_CHECK_RATE) _checks_since_proper_scc_check = 0;
+  _checks_since_proper_scc_check++;
+
+  LOG << "scc check: " << scc_check << endl;
+
+  if (scc_check) return scc_find_newly_goal_reaching_states(optional_success, optional_goal_state);
+  else           return cheap_find_newly_goal_reaching_states(optional_success, optional_goal_state);
+}
+
+void Goal_Reachability_Manager::cheap_find_newly_goal_reaching_states_helper(int newly_goal_reaching_state, unordered_set<int>* ret_val) {
+  if (_memo.find(newly_goal_reaching_state) == _memo.end()) {
+    //LOG << "memo useful!" << endl;
+    return;
+  }
+  _memo.insert(newly_goal_reaching_state);
+
+  // this state is now goal reaching, see if it triggers any others to be
+  const unordered_set<pair<int, int>, Int_Pair_Hash>& producing_state_action_pairs = _graph._state_to_producing_state_action_pairs[newly_goal_reaching_state];
+  for (const pair<int, int>& state_action : producing_state_action_pairs) {
+
+    // see if this state can reach the goal, if it can already we are done here
+    const int state = state_action.first;
+    if (_goal_state_to_actions.find(state) != _goal_state_to_actions.end()) continue;
+
+    // now lets see if all the outcomes of this goal_action are goal reaching
+    bool all_outcomes_reach_goal = true; // assume true prove otherwise
+    for (int outcome : _graph._state_action_pair_to_outcomes[state_action]) {
+      if (_goal_state_to_actions.find(outcome) == _goal_state_to_actions.end()) {
+        all_outcomes_reach_goal = false;
+        break;
+      }
+    }
+
+    if (all_outcomes_reach_goal) {
+      const int action = state_action.second;
+      unordered_set<int> actions;
+      actions.insert(action);
+      _goal_state_to_actions[state] = actions;
+      ret_val->insert(state);
+      LOG << "state " << state << newly_goal_reaching_state << " is goal reaching, the state " << state << " has action " << action << ", all its outcomes are goal reaching so it is too" << endl;
+      cheap_find_newly_goal_reaching_states_helper(state, ret_val);
+    }
+  }
+}
+
+
+unordered_set<int> Goal_Reachability_Manager::cheap_find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state) {
+  // cheaper ignores cycles
+
+  unordered_set<int> ret_val;
+
+  // first deal with the optional success
+  if (optional_success != NULL) {
+    // if all the outcomes are goals then this is a goal state too
+    bool goal_reaching = true; // assume goal reaching, prove otherwise
+    for (const Obligation& obl : optional_success->successor_obligations()) {
+      const int outcome = obl.compressed_state().id();
+      if (_goal_state_to_actions.find(outcome) == _goal_state_to_actions.end()) {
+        goal_reaching = false;
+        break; // not a goal, leave this loop
+      }
+    }
+
+    if (goal_reaching) {
+      // all the outcomes are goal reaching! this is a goal state too
+      const int original_state = optional_success->original_obligation().compressed_state().id();
+      const int action = optional_success->actions()[0].get_actions()[0];
+      unordered_set<int> actions;
+      actions.insert(action);
+      _goal_state_to_actions[original_state] = actions;
+      cheap_find_newly_goal_reaching_states_helper(original_state, &ret_val);
+      LOG << "state " << original_state << " has a success, and all outcome from action " << action << "are goal reaching, so the original state is too" << endl;
+    }
+  }
+
+  if (optional_goal_state != -1) {
+    cheap_find_newly_goal_reaching_states_helper(optional_goal_state, &ret_val);
+  }
+
+  return ret_val;
+}
+
+unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state) {
   //LOG << "NOT USING THE FANCY REACHABLE SCC STUFF" << endl;
 
 
