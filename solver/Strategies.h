@@ -16,6 +16,16 @@ using namespace std;
 #include "Reason_From_Orchestrator.h"
 #include "Reason_From_Worker.h"
 
+
+#include "Contextless_Reason.h"
+#include "Reason_From_Orchestrator.h"
+#include "Success.h"
+#include "nondeterminism/State_ID_Manager.h"
+#include "nondeterminism/Goal_Reachability_Manager.h"
+#include "queue/Wrapper_Queue.h"
+#include "queue/Open_States_Tracking_Queue.h"
+
+
 #include <chrono>
 
 // every strategy has:
@@ -27,21 +37,32 @@ using namespace std;
 
 class Strategies {
   public:
-    static bool run_default();
-    //static bool run_nondeterministic();
+    bool run_default();
   private:
-    static void manage_per_inbox_check_periodic_stats(int reasons_size, int successes_size);
+    // some statistics
+    void manage_per_inbox_check_periodic_stats(int reasons_size, int successes_size);
+    long long int get_results_iteration = 0;
+    long long int successes_count = 1;
+    long long int reasons_count = 1;
+    long long int reasons_count_iteration_checkpoint = 0;
+    long long int successes_count_iteration_checkpoint = 0;
+    uint64_t already_displayed_elapsed_time = 0;
+    void print_elapsed_time();
+    int one_worker_results;
+    int more_than_one_worker_results;
 
-    static long long int get_results_iteration;
-    static long long int successes_count;
-    static long long int reasons_count;
-    static long long int reasons_count_iteration_checkpoint;
-    static long long int successes_count_iteration_checkpoint;
+    // set up everything we need
+    Wrapper_Queue queue;
+    Layers layers;
+    Worker_Interface worker_interface;
+    Goal_Reachability_Manager goal_reachability_manager; // only for nondeterminism
+    Plan_Builder deterministic_plan_builder; // only for deterministic
 
-    static int one_worker_results;
-    static int more_than_one_worker_results;
+    const int FULL_SCC_REFRESH_RATE = INT_MAX; // effectively turns it off
+    bool full_scc_goal_refresh();
+    int full_scc_refresh_loop_count = 0;
+    vector<Success> successes_since_last_scc_refresh;
 
-    static uint64_t already_displayed_elapsed_time;
 };
 
 #endif

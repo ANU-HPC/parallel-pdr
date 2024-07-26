@@ -4,14 +4,14 @@ default:
 MPICXX   = mpic++ -Wall -Wno-sign-compare #-Wno-unused-variable
 
 # full efficiency
-CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
+#CXXFLAGS += -DNDEBUG -O3 -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
 
 # full debugging
 #CXXFLAGS += -rdynamic -pg -ggdb -O0 -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
 
 # efficient with profiling
-# CXXFLAGS += -rdynamic -pg -ggdb -O3 -DNDEBUG -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
-
+CXXFLAGS += -rdynamic -pg -ggdb -O3 -DNDEBUG -std=c++17 -DVERSION=1.0.0 -DEMAIL=ava.clifton.ac@gmail.com
+ 
 LDFLAGS  = -lstdc++fs
 
 OBJS = main.o \
@@ -50,6 +50,7 @@ OBJS = main.o \
 	   queue/Queue_Entry_Container.o \
 	   queue/Default_Queue.o \
 	   queue/Open_States_Tracking_Queue.o \
+	   queue/Depth_First_Queue.o \
 	   queue/Wrapper_Queue.o
 					
 HEADERS	= main.h \
@@ -88,17 +89,21 @@ HEADERS	= main.h \
 		  queue/Queue_Entry_Container.h \
 		  queue/Default_Queue.h \
 		  queue/Open_States_Tracking_Queue.h \
+		  queue/Depth_First_Queue.h \
 		  queue/Wrapper_Queue.h
 
 INCLUDES += -I../lingeling \
             -I./parallel \
             -I./queue \
 			-I../rapidjson/include \
-			-I.
+			-I. \
+			#-I/usr/lib/x86_64-linux-gnu \
 
 LDFLAGS += -L../lingeling \
 		   -L./queue \
 		   -llgl \
+		   # -L/usr/lib/x86_64-linux-gnu \
+		   #-lprofiler \
 
 solver: $(OBJS) 
 	$(MPICXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) -L. -llgl $(LDFLAGS) -o parallel-pdr

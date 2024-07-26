@@ -28,6 +28,9 @@ class Goal_Reachability_Manager {
     void print();
     bool no_change_since_last_check();
     State_Action_Graph* get_global_graph();
+
+    unordered_set<int> scc_find_newly_goal_reaching_states(const vector<Success>& successes, int optional_goal_state, bool run_on_whole_graph); 
+
   private:
     unordered_set<int> scc_iteration_non_goal_reaching_states(State_Action_Graph* iterative_graph);
 
@@ -36,14 +39,13 @@ class Goal_Reachability_Manager {
 
     void cheap_find_newly_goal_reaching_states_helper(int newly_goal_reaching_state, unordered_set<int>* ret_val);
     unordered_set<int> cheap_find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state); 
-    unordered_set<int> scc_find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state); 
 
     unordered_map<int, unordered_set<int>> _goal_state_to_actions; // actions needed to progress towards the goal
     State_Action_Graph _graph;
 
     bool _no_change_since_last_check = false;
 
-    const int PROPER_SCC_CHECK_RATE = 1; // breaks when on
+    const int PROPER_SCC_CHECK_RATE = 1; // default to checking every time
     int _checks_since_proper_scc_check = 1;
     unordered_set<int> _memo;
 };

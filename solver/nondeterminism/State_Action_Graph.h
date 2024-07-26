@@ -16,13 +16,35 @@ using namespace std;
 // Any lone (no in OR out arcs) state is removed
 // Internally, dictionaries have all applicapple things - i.e. - if there is a state in the graph with ingoing but no outgoing arcs, it will be in all the dictionaries
 
+/*
+template<typename T2>
+class my_unordered_map{
+public:
+  my_unordered_map(int size = 0){
+    initialised = vector<int>(size, 0);
+    data = vector<T2>(size);
+  }
+
+  bool find(int query){return 0 != initialised[query];}
+  bool end() {return false;}
+
+  T2& operator[](int query) {
+    initialised[query] = 1;
+    return data[query];
+  }
+  
+  vector<int> initialised;
+  vector<T2> data;
+};
+*/
+
 class State_Action_Graph {
   public:
     // constructors
     State_Action_Graph(); // plain
     State_Action_Graph(const State_Action_Graph& existing); // copy
 
-    State_Action_Graph reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const Success* optional_success, int optional_goal_state);
+    State_Action_Graph reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const vector<Success>& successes, int optional_goal_state);
 
     // edits
     bool add(const Success& success);

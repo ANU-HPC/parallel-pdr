@@ -1,6 +1,7 @@
 #include "main.h"
 #include "Global.h"
 #include "Strategies.h"
+#include <csignal>
 
 /*
 void scrap() {
@@ -39,7 +40,15 @@ void scrap() {
 }
 */
 
+
+void signalHandler( int signum ) {
+   cout << "Interrupt signal (" << signum << ") received.\n";
+   exit(signum);
+}
+
 int main(int argc, char **argv) {
+  signal(SIGINT, signalHandler);  
+
   // Parse in command line arguments, and problem specific attributes
   Global::problem = Problem(argc, argv);
 
@@ -64,7 +73,8 @@ int main(int argc, char **argv) {
   bool sat;
 
   // pass control to a specific strategy
-  sat = Strategies::run_default();
+  Strategies strategies;
+  sat = strategies.run_default();
 
   if (sat) LOG << "SAT" << endl;
   else     LOG << "UNSAT" << endl;

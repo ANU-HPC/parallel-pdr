@@ -6,6 +6,7 @@
 #include "Success.h"
 #include "Default_Queue.h"
 #include "Open_States_Tracking_Queue.h"
+#include "Depth_First_Queue.h"
 #include "Reason_From_Worker.h"
 
 class Wrapper_Queue {
@@ -23,7 +24,9 @@ class Wrapper_Queue {
     void print();
   private:
     Default_Queue _deterministic;
+
     Open_States_Tracking_Queue _nondeterministic;
+    //Depth_First_Queue _nondeterministic;
 };
 
 #endif

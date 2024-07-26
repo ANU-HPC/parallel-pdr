@@ -25,7 +25,7 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
   }
 }
 
-State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const Success* optional_success, int optional_goal_state) {
+State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const vector<Success>& successes, int optional_goal_state) {
   State_Action_Graph new_graph;
 
   unordered_set<int> backwards_expanded;
@@ -36,13 +36,13 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
   bool any_state_reaches_goal = false;
 
   // set up the frontiers
-  if (optional_success != NULL) {
-    new_graph.add(*optional_success);
-    const int original_state = optional_success->original_obligation().compressed_state().id();
+  for (const Success& success : successes) {
+    new_graph.add(success);
+    const int original_state = success.original_obligation().compressed_state().id();
     backwards_frontier.insert(original_state);
     any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(original_state) != goal_state_to_actions.end());
 
-    for (const Obligation obl : optional_success->successor_obligations()) {
+    for (const Obligation obl : success.successor_obligations()) {
       const int outcome = obl.compressed_state().id();
       forward_frontier.insert(outcome);
       any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(outcome) != goal_state_to_actions.end());
@@ -83,6 +83,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
 
   //LOG << "any reaches goal?: " << any_state_reaches_goal << endl;
   // if it doesn't here, then it never will
+  // TODO seems to make it slower when exiting early?? which confuses me...
   //if (!any_state_reaches_goal) return State_Action_Graph();
 
   // explore backwards
