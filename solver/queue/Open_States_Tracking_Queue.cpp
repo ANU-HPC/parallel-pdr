@@ -10,7 +10,7 @@ void Open_States_Tracking_Queue::push_initial(const Obligation& obligation) {
 }
 
 void Open_States_Tracking_Queue::register_success(const Success& success) {
-  //assert(consistent());
+  assert(consistent());
   const int original_state = success.original_obligation().compressed_state().id();
 
   // work out if a "real" success, or an indication that a obligation failed because of blocked actions
@@ -62,6 +62,7 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
     _graph.add(success);
 
     // it might already be unblocked, check that
+    // TODO is this needed?
     check_if_state_action_should_be_unblocked(original_state_action_pair);
   } else { // this "success" is saying that an obligation couldn't progress BECAUSE of banned actions
 
@@ -99,7 +100,7 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
 
 
 
-  //assert(consistent());
+  assert(consistent());
 
   LG(QT) << "finished adding a success" << endl;
   if (QT) print();
@@ -186,6 +187,10 @@ void Open_States_Tracking_Queue::register_goal_reaching_state(const int state) {
     else if (status == WILD) _wild_state_to_layer.erase(state);
     _seen_goal_reaching_state_to_layer[state] = layer;
   }
+
+  // TODO might not be necessary
+  check_if_outcome_layer_change_triggers_unblocking_of_proceeding_state_actions(state);
+
   LG(QT) << "finished registering a goal reaching state" << endl;
   if (QT) print();
   assert(consistent()); // TODO edge case where wild -> goal ? LOOK INTO
@@ -294,6 +299,8 @@ void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const
   const int action = state_action.second;
   const int original_state_layer = seen_state_to_layer(state);
 
+  const int stateaction = State_Action_To_Stateaction::get_stateaction(state, action);
+
   //LOG << "checking if unblocking: " << action << endl;
   //LOG << "original state layer " << original_state_layer << endl;
   //LOG << "original status " << status_to_string(state_to_status(state)) << endl;
@@ -301,7 +308,7 @@ void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const
   // work out if we need to still block this action (THE whole check/test)
   bool one_goes_forward = false;
   bool all_not_banned = true;
-  for (const int outcome : _graph._state_action_pair_to_outcomes[state_action]) {
+  for (const int outcome : _graph._stateaction_to_outcomes[stateaction]) {
     const int outcome_layer = seen_state_to_layer(outcome);
     //LOG << "outcome " << outcome << " has layer " << outcome_layer << " and status " << status_to_string(state_to_status(outcome)) << endl;
     all_not_banned = all_not_banned && (outcome_layer <= _k);
@@ -313,7 +320,7 @@ void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const
     // remove from maps
     //LOG << "unblocking state: " << state << " action " << action << endl;
     _state_to_blocked_actions[state].erase(action);
-    for (const int outcome : _graph._state_action_pair_to_outcomes[state_action]) {
+    for (const int outcome : _graph._stateaction_to_outcomes[stateaction]) {
       assert(_outcome_to_state_actions_it_is_blocking[outcome].find(state_action) != _outcome_to_state_actions_it_is_blocking[outcome].end());
       _outcome_to_state_actions_it_is_blocking[outcome].erase(state_action);
     }
@@ -334,6 +341,9 @@ void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const
 }
 
 bool Open_States_Tracking_Queue::consistent() {
+  LOG << "error" << endl;
+  //exit(1);
+  /*
   //LOG << "Note: expensive" << endl;
   if (!_deadlock_queue.empty()) {
     // there are deadlocked things, if there are no live things then we already have a problem
@@ -378,6 +388,7 @@ bool Open_States_Tracking_Queue::consistent() {
       }
     }
   }
+  */
   return true;
 }
 

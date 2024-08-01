@@ -19,6 +19,7 @@ extern "C" {
 #include <string>
 #include "Log.h"
 #include "Utils.h"
+#include "Stopwatch.h"
 
 using namespace std;
 

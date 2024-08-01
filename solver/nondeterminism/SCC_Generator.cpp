@@ -33,7 +33,8 @@ void SCC_Generator::strong_connect(const int state) {
   _unordered_stack.insert(state);
 
   for (const auto action:_base_graph->_state_to_actions[state]) {
-    for (auto outcome:_base_graph->state_action_pair_to_outcomes(pair<int, int>(state, action))) {
+    const int stateaction = State_Action_To_Stateaction::get_stateaction(state, action);
+    for (auto outcome:_base_graph->_stateaction_to_outcomes[stateaction]) {
       if (_state_to_index_exists[outcome] == 0) {
         strong_connect(outcome);
         _state_to_lowlink[state] = min(_state_to_lowlink[state], _state_to_lowlink[outcome]);

@@ -39,10 +39,12 @@ OBJS = main.o \
 	   Plan_Builder.o \
 	   Strategies.o \
 	   Stats.o \
+	   Stopwatch.o \
 	   nondeterminism/State_ID_Manager.o \
 	   nondeterminism/SCC_Generator.o \
 	   nondeterminism/Goal_Reachability_Manager.o \
 	   nondeterminism/State_Action_Graph.o \
+	   nondeterminism/State_Action_To_Stateaction.o \
 	   queue/Heuristics.o \
 	   queue/Single_Layer_Of_Queue.o \
 	   queue/Queue_Reference.o \
@@ -78,10 +80,12 @@ HEADERS	= main.h \
 		  Plan_Builder.h \
 		  Strategies.h \
 		  Stats.h \
+		  Stopwatch.h \
 		  nondeterminism/State_ID_Manager.h \
 		  nondeterminism/SCC_Generator.h \
 		  nondeterminism/Goal_Reachability_Manager.h \
 		  nondeterminism/State_Action_Graph.h \
+		  nondeterminism/State_Action_To_Stateaction.h \
 		  queue/Heuristics.h \
 		  queue/Single_Layer_Of_Queue.h \
 		  queue/Queue_Reference.h \

@@ -14,11 +14,17 @@ using namespace std;
 #include "SCC_Generator.h"
 #include "Compressed_State.h"
 #include "Success.h"
+#include "Stopwatch.h"
+
+
+#define PROPER_SCC_CHECK_RATE 1 // default to checking every time
 
 // keep track of what can reach the goal. Is a sort of wrapper, with algorithms around a State_Action_Graph
 
 class Goal_Reachability_Manager {
   public:
+
+
     //Goal_Reachability_Manager();
     unordered_set<int> register_pure_goal_return_new_goal_states(const Compressed_State& state);
     unordered_set<int> register_success_return_new_goal_states(const Success& success); 
@@ -45,7 +51,6 @@ class Goal_Reachability_Manager {
 
     bool _no_change_since_last_check = false;
 
-    const int PROPER_SCC_CHECK_RATE = 1; // default to checking every time
     int _checks_since_proper_scc_check = 1;
     unordered_set<int> _memo;
 };

@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Strategies.h"
 #include <csignal>
+#include "Stopwatch.h"
 
 /*
 void scrap() {
@@ -43,6 +44,7 @@ void scrap() {
 
 void signalHandler( int signum ) {
    cout << "Interrupt signal (" << signum << ") received.\n";
+   Stopwatch::print_store();
    exit(signum);
 }
 
@@ -83,6 +85,8 @@ int main(int argc, char **argv) {
   Global::stats.print();
 
   if (Global::problem.evaluation_mode) Global::mpi_interface.abort();
+
+  Stopwatch::print_store();
 
   return 0;
 }

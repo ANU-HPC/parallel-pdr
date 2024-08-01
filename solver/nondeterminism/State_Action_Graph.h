@@ -8,9 +8,11 @@ using namespace std;
 #include <unordered_map>
 #include <vector>
 #include <set>
+#include <map>
 
 #include "Utils.h"
 #include "Success.h"
+#include "State_Action_To_Stateaction.h"
 
 // NOTES
 // Any lone (no in OR out arcs) state is removed
@@ -49,19 +51,20 @@ class State_Action_Graph {
     // edits
     bool add(const Success& success);
     void remove_state(const int state);
-    void remove_state_action_arcs(const pair<int, int>& state_action);
+    //void remove_state_action_arcs(const pair<int, int>& state_action);
     void clear();
 
     int approx_num_nodes();
     void print(const unordered_map<int, unordered_set<int>>& _goal_state_to_actions);
 
     // graph traversal
+
     unordered_map<int, unordered_set<int>> _state_to_actions;
-    unordered_map<int, unordered_set<pair<int, int>, Int_Pair_Hash>> _state_to_producing_state_action_pairs;
-    unordered_map<pair<int,int>, unordered_set<int>, Int_Pair_Hash> _state_action_pair_to_outcomes;
+    unordered_map<int, unordered_set<int>> _state_to_producing_stateactions;
+    unordered_map<int, unordered_set<int>> _stateaction_to_outcomes;
 
     // retrieve info
-    unordered_set<int> state_action_pair_to_outcomes(const pair<int,int>& state_action);
+    //unordered_set<int> state_action_pair_to_outcomes(const pair<int,int>& state_action);
   protected:
     // some helpers
     void erase_state_if_lone(int state);

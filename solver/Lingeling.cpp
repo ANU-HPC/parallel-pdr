@@ -244,6 +244,7 @@ void Lingeling::add_clauses(const vector<vector<int>>& inClauses) {
 }
 
 bool Lingeling::solve(const vector<int>& assumptions) {
+  Stopwatch::store["Lingeling solve"].start();
   last_assumptions = assumptions;
   for (int i=0; i<assumptions.size(); i++){
   //for (int i=assumptions.size()-1; i>=0; i--){
@@ -251,6 +252,8 @@ bool Lingeling::solve(const vector<int>& assumptions) {
     lglfreeze(solver, assumptions[i]);
   }
   int rawOutput = lglsat(solver);
+
+  Stopwatch::store["Lingeling solve"].stop();
   if (rawOutput == 10) return true;
   else if (rawOutput == 20) return false;
   else {

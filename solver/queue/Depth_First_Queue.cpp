@@ -151,6 +151,9 @@ void Depth_First_Queue::set_depth(int state, int depth) {
 }
 
 void Depth_First_Queue::trim_to_reachable_helper(unordered_set<int>* reachable_states, int state) {
+  exit(1);
+  return;
+  /*
   //LOG << "exploring state: " << state << endl;
   //LOG << reachable_states->size() << endl;
   if (_trim_to_reachable_memo.find(state) != _trim_to_reachable_memo.end()) {
@@ -183,6 +186,7 @@ void Depth_First_Queue::trim_to_reachable_helper(unordered_set<int>* reachable_s
       }
     }
   }
+  */
 }
 
 void Depth_First_Queue::trim_to_reachable() {
