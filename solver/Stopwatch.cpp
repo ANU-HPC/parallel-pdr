@@ -19,7 +19,7 @@ unordered_map<string, Stopwatch> Stopwatch::store;
 
 void Stopwatch::print_store() {
   if (!ENABLE) {
-    LOG << "stopwatch disabled" << end;
+    LOG << "stopwatch disabled" << endl;
     return;
   }
 
