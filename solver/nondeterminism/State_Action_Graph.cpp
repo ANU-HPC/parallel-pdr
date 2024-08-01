@@ -29,10 +29,10 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
 State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const vector<Success>& successes, int optional_goal_state) {
   State_Action_Graph new_graph;
 
-  unordered_set<int> backwards_expanded;
-  unordered_set<int> backwards_frontier;
-  unordered_set<int> forward_expanded;
-  unordered_set<int> forward_frontier;
+  Int_Bitmap backwards_expanded;
+  Int_Iterable_Bitmap backwards_frontier;
+  Int_Bitmap forward_expanded;
+  Int_Iterable_Bitmap forward_frontier;
 
   bool any_state_reaches_goal = false;
 
@@ -57,7 +57,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
   // explore forwards
   while (forward_frontier.size()) {
     // TODO have a special case, when a goal state don't keep going
-    const int state = *forward_frontier.begin();
+    const int state = forward_frontier.first();
     forward_frontier.erase(state);
     forward_expanded.insert(state);
 
@@ -73,7 +73,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
         new_graph._state_to_actions[outcome].size(); // make it exist
 
         // for each of the outcomes, if they have not been expanded forward AND they are not a goal state (in which case we don't need to go any further), set them up to be
-        const bool outcome_already_expanded = forward_expanded.find(outcome) != forward_expanded.end();
+        const bool outcome_already_expanded = forward_expanded.contains(outcome);
         const bool outcome_goal_reaching = goal_state_to_actions.find(outcome) != goal_state_to_actions.end();
         if ((!outcome_already_expanded) && (!outcome_goal_reaching)) {
           forward_frontier.insert(outcome);
@@ -89,7 +89,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
 
   // explore backwards
   while (backwards_frontier.size()) {
-    const int outcome = *backwards_frontier.begin();
+    const int outcome = backwards_frontier.first();
     backwards_frontier.erase(outcome);
     backwards_expanded.insert(outcome);
 
@@ -108,7 +108,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
       }
 
       // if this parent has not been expanded backwards, set it up to be
-      if (backwards_expanded.find(parent_state) == backwards_expanded.end()) {
+      if (!backwards_expanded.contains(parent_state)) {
         backwards_frontier.insert(parent_state);
       }
     }
@@ -122,7 +122,7 @@ bool State_Action_Graph::add(const Success& success) {
   // get all as numbers
   const int original_state_id = success.original_obligation().compressed_state().id();
   const int action = success.actions()[0].get_actions()[0];
-  unordered_set<int> successor_state_ids;
+  set<int> successor_state_ids;
   for (auto successor_obligation : success.successor_obligations()) {
     successor_state_ids.insert(successor_obligation.compressed_state().id());
   }

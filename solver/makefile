@@ -45,6 +45,8 @@ OBJS = main.o \
 	   nondeterminism/Goal_Reachability_Manager.o \
 	   nondeterminism/State_Action_Graph.o \
 	   nondeterminism/State_Action_To_Stateaction.o \
+	   data_structures/Int_Bitmap.o \
+	   data_structures/Int_Iterable_Bitmap.o \
 	   queue/Heuristics.o \
 	   queue/Single_Layer_Of_Queue.o \
 	   queue/Queue_Reference.o \
@@ -86,6 +88,8 @@ HEADERS	= main.h \
 		  nondeterminism/Goal_Reachability_Manager.h \
 		  nondeterminism/State_Action_Graph.h \
 		  nondeterminism/State_Action_To_Stateaction.h \
+		  data_structures/Int_Bitmap.h \
+		  data_structures/Int_Iterable_Bitmap.h \
 		  queue/Heuristics.h \
 		  queue/Single_Layer_Of_Queue.h \
 		  queue/Queue_Reference.h \
