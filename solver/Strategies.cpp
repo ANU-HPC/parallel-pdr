@@ -59,6 +59,29 @@ bool Strategies::full_scc_goal_refresh() {
   return false;
 }
 
+bool Strategies::keep_processing() {
+
+  
+  //while (!queue.fully_empty() || !worker_interface.all_workers_idle() || (full_scc_refresh_loop_count != 1)) {
+
+  //LOG << "queue.fully_empty() " << queue.fully_empty() << endl;
+  //LOG << "worker_interface.all_workers_idle() " << worker_interface.all_workers_idle() << endl;
+
+  if (!queue.fully_empty()) return true;
+  if (!worker_interface.all_workers_idle()) return true;
+
+  if (PROPER_SCC_CHECK_RATE == 1) return false; // everything is up to code, checking every time, so if there is nothing to do then there is truelly nothing to do
+
+  exit(1);
+  return false;
+
+  // now, keep going in the loop if there is a possibility of a deadlock (is not doing a proper scc check every time)
+  //!queue.fully_empty() || !worker_interface.all_workers_idle() || ((full_scc_refresh_loop_count != 1) && (PROPER_SCC_CHECK_RATE != 1))
+}
+
+
+
+
 bool Strategies::run_default() {
   Global::active_heuristics = set<int>({Heuristics::NONE, Heuristics::RANDOM});
 
@@ -101,7 +124,7 @@ bool Strategies::run_default() {
     LG(ST) << "pushing initial obligation to the queue: " << initial_obligation.to_string() << endl;
 
     // Process it
-    while (!queue.fully_empty() || !worker_interface.all_workers_idle() || (full_scc_refresh_loop_count != 1)) {
+    while (keep_processing()) {
       if (Global::problem.nondeterministic & full_scc_refresh_loop_count == FULL_SCC_REFRESH_RATE) {
         if (full_scc_goal_refresh()) return true;
         full_scc_refresh_loop_count = 0;
@@ -111,6 +134,7 @@ bool Strategies::run_default() {
       if (!queue.available_work()) {
         LOG << "work not available, full_scc_refresh_loop_count " << full_scc_refresh_loop_count << endl;
       }
+
       //LOG << "INT start main loop" << endl;
       if (Global::problem.evaluation_mode) print_elapsed_time();
       // add some more work
