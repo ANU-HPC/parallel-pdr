@@ -51,6 +51,8 @@ class Strategies {
     int one_worker_results;
     int more_than_one_worker_results;
 
+    bool keep_processing();
+
     // set up everything we need
     Wrapper_Queue queue;
     Layers layers;
