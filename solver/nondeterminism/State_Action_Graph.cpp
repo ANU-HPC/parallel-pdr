@@ -10,19 +10,19 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
   for (const auto& it:existing._state_to_actions) {
     const int state = it.first;
     const auto& actions = it.second;
-    _state_to_actions[state] = unordered_set<int>(actions);
+    _state_to_actions[state] = set<int>(actions);
   }
 
   for (const auto& it:existing._stateaction_to_outcomes) {
     const int stateaction = it.first;
-    const unordered_set<int>& outcomes = it.second;
-    _stateaction_to_outcomes[stateaction] = unordered_set<int>(outcomes);
+    const set<int>& outcomes = it.second;
+    _stateaction_to_outcomes[stateaction] = set<int>(outcomes);
   }
 
   for (const auto& it:existing._state_to_producing_stateactions) {
     const int state = it.first;
     const auto& stateactions = it.second;
-    _state_to_producing_stateactions[state] = unordered_set<int>(stateactions);
+    _state_to_producing_stateactions[state] = set<int>(stateactions);
   }
 }
 
@@ -142,7 +142,7 @@ bool State_Action_Graph::add(const Success& success) {
   }
 
   _state_to_actions[original_state_id].insert(action);
-  _stateaction_to_outcomes[stateaction] = unordered_set<int>(successor_state_ids.begin(), successor_state_ids.end());
+  _stateaction_to_outcomes[stateaction] = set<int>(successor_state_ids.begin(), successor_state_ids.end());
   for (int outcome:successor_state_ids) {
     _state_to_producing_stateactions[outcome].insert(stateaction);
     _state_to_actions[outcome].size(); // make it exist even if empty

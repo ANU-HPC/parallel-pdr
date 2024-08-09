@@ -61,9 +61,9 @@ class State_Action_Graph {
 
     // graph traversal
 
-    unordered_map<int, unordered_set<int>> _state_to_actions;
-    unordered_map<int, unordered_set<int>> _state_to_producing_stateactions;
-    unordered_map<int, unordered_set<int>> _stateaction_to_outcomes;
+    map<int, set<int>> _state_to_actions;
+    map<int, set<int>> _state_to_producing_stateactions;
+    map<int, set<int>> _stateaction_to_outcomes;
 
     // retrieve info
     //unordered_set<int> state_action_pair_to_outcomes(const pair<int,int>& state_action);

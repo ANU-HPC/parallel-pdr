@@ -79,7 +79,7 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
 
   for (const auto& x:iterative_graph->_state_to_producing_stateactions) {
     const int state = x.first;
-    const unordered_set<int>& producing_stateactions = x.second;
+    const set<int>& producing_stateactions = x.second;
 
     const int child_scc = state_to_scc_num[state];
 
@@ -307,8 +307,8 @@ unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_state
     const int state = state_actions.first;
     if (_goal_state_to_actions.find(state) == _goal_state_to_actions.end()) {
       // no action can go wrong in this graph, so list all of them
-      unordered_set<int> x = state_actions.second;
-      _goal_state_to_actions[state] = state_actions.second;
+      set<int> x = state_actions.second;
+      _goal_state_to_actions[state] = unordered_set<int>(state_actions.second.begin(), state_actions.second.end());
       newly_goal_reaching_states.insert(state);
     }
   }
