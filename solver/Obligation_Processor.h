@@ -13,7 +13,7 @@
 #include "Lingeling.h"
 #include "Compressed_Actions.h"
 #include "Compressed_State.h"
-#include "nondeterminism/State_ID_Manager.h"
+#include "State_ID_Manager.h"
 
 using namespace std;
 

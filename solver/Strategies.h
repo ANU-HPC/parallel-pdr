@@ -9,9 +9,9 @@ using namespace std;
 #include "Obligation.h"
 #include "Worker_Interface.h"
 #include "Plan_Builder.h"
-#include "queue/Default_Queue.h"
-#include "queue/Open_States_Tracking_Queue.h"
-#include "queue/Heuristics.h"
+#include "Default_Queue.h"
+#include "Open_States_Tracking_Queue.h"
+#include "Heuristics.h"
 #include "Contextless_Reason.h"
 #include "Reason_From_Orchestrator.h"
 #include "Reason_From_Worker.h"
@@ -20,10 +20,10 @@ using namespace std;
 #include "Contextless_Reason.h"
 #include "Reason_From_Orchestrator.h"
 #include "Success.h"
-#include "nondeterminism/State_ID_Manager.h"
-#include "nondeterminism/Goal_Reachability_Manager.h"
-#include "queue/Wrapper_Queue.h"
-#include "queue/Open_States_Tracking_Queue.h"
+#include "State_ID_Manager.h"
+#include "Goal_Reachability_Manager.h"
+#include "Wrapper_Queue.h"
+#include "Open_States_Tracking_Queue.h"
 
 
 #include <chrono>

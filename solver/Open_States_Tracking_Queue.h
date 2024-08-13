@@ -5,8 +5,8 @@
 #include <cassert>
 
 #include "Default_Queue.h"
-#include "../nondeterminism/State_Action_Graph.h"
-#include "../Reason_From_Worker.h"
+#include "State_Action_Graph.h"
+#include "Reason_From_Worker.h"
 #include "Success.h"
 
 using namespace std;

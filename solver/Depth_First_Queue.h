@@ -4,9 +4,9 @@
 #include <iostream>
 #include <cassert>
 
-#include "../Reason_From_Worker.h"
+#include "Reason_From_Worker.h"
 #include "Success.h"
-#include "../nondeterminism/State_Action_Graph.h"
+#include "State_Action_Graph.h"
 
 using namespace std;
 

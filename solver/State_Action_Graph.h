@@ -13,8 +13,8 @@ using namespace std;
 #include "Utils.h"
 #include "Success.h"
 #include "State_Action_To_Stateaction.h"
-#include "../data_structures/Int_Bitmap.h"
-#include "../data_structures/Int_Iterable_Bitmap.h"
+#include "Int_Bitmap.h"
+#include "Int_Iterable_Bitmap.h"
 
 // NOTES
 // Any lone (no in OR out arcs) state is removed
