@@ -40,22 +40,22 @@ OBJS = main.o \
 	   Strategies.o \
 	   Stats.o \
 	   Stopwatch.o \
-	   nondeterminism/State_ID_Manager.o \
-	   nondeterminism/SCC_Generator.o \
-	   nondeterminism/Goal_Reachability_Manager.o \
-	   nondeterminism/State_Action_Graph.o \
-	   nondeterminism/State_Action_To_Stateaction.o \
-	   data_structures/Int_Bitmap.o \
-	   data_structures/Int_Iterable_Bitmap.o \
-	   queue/Heuristics.o \
-	   queue/Single_Layer_Of_Queue.o \
-	   queue/Queue_Reference.o \
-	   queue/Queue_Entry.o \
-	   queue/Queue_Entry_Container.o \
-	   queue/Default_Queue.o \
-	   queue/Open_States_Tracking_Queue.o \
-	   queue/Depth_First_Queue.o \
-	   queue/Wrapper_Queue.o
+	   State_ID_Manager.o \
+	   SCC_Generator.o \
+	   Goal_Reachability_Manager.o \
+	   State_Action_Graph.o \
+	   State_Action_To_Stateaction.o \
+	   Int_Bitmap.o \
+	   Int_Iterable_Bitmap.o \
+	   Heuristics.o \
+	   Single_Layer_Of_Queue.o \
+	   Queue_Reference.o \
+	   Queue_Entry.o \
+	   Queue_Entry_Container.o \
+	   Default_Queue.o \
+	   Open_States_Tracking_Queue.o \
+	   Depth_First_Queue.o \
+	   Wrapper_Queue.o
 					
 HEADERS	= main.h \
 		  Problem.h \
@@ -83,22 +83,22 @@ HEADERS	= main.h \
 		  Strategies.h \
 		  Stats.h \
 		  Stopwatch.h \
-		  nondeterminism/State_ID_Manager.h \
-		  nondeterminism/SCC_Generator.h \
-		  nondeterminism/Goal_Reachability_Manager.h \
-		  nondeterminism/State_Action_Graph.h \
-		  nondeterminism/State_Action_To_Stateaction.h \
-		  data_structures/Int_Bitmap.h \
-		  data_structures/Int_Iterable_Bitmap.h \
-		  queue/Heuristics.h \
-		  queue/Single_Layer_Of_Queue.h \
-		  queue/Queue_Reference.h \
-		  queue/Queue_Entry.h \
-		  queue/Queue_Entry_Container.h \
-		  queue/Default_Queue.h \
-		  queue/Open_States_Tracking_Queue.h \
-		  queue/Depth_First_Queue.h \
-		  queue/Wrapper_Queue.h
+		  State_ID_Manager.h \
+		  SCC_Generator.h \
+		  Goal_Reachability_Manager.h \
+		  State_Action_Graph.h \
+		  State_Action_To_Stateaction.h \
+		  Int_Bitmap.h \
+		  Int_Iterable_Bitmap.h \
+		  Heuristics.h \
+		  Single_Layer_Of_Queue.h \
+		  Queue_Reference.h \
+		  Queue_Entry.h \
+		  Queue_Entry_Container.h \
+		  Default_Queue.h \
+		  Open_States_Tracking_Queue.h \
+		  Depth_First_Queue.h \
+		  Wrapper_Queue.h
 
 INCLUDES += -I../lingeling \
             -I./parallel \
