@@ -62,9 +62,9 @@ class Log {
 //#define LOG cout << Log::COLOUR_START(__FILE__) << Log::TIME_TEXT() << " :: " << Log::RANK_TEXT() << "FILE (" << __FILE__ << ":" << __LINE__ << ") :: FUNCTION (" << __FUNCTION__ << ") :: " << Log::COLOUR_END()
 //#define LOG cout << Log::COLOUR_START(__FILE__) << Log::TIME_TEXT() << " :: " << Log::RANK_TEXT() << __FILE__ << ":" << __LINE__ << " :: " << __FUNCTION__ << " :: " << Log::COLOUR_END()
 
-#define ST 0 // State Trace
-#define QT 0 // Queue Tracking
-#define LT 0 // Layer Tracking
+#define ST 1 // State Trace
+#define QT 1 // Queue Tracking
+#define LT 1 // Layer Tracking
 #define LCT 0 // Clause added to solvers tracking
 
 #define LG(TYPE) if (TYPE) cout << Log::COLOUR_START(__FILE__) << Log::TIME_TEXT() << " :: " << Log::RANK_TEXT() << __FILE__ << ":" << __LINE__ << " :: " << __FUNCTION__ << " :: " << Log::COLOUR_END()

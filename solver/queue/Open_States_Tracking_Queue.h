@@ -31,6 +31,7 @@ class Open_States_Tracking_Queue {
     Obligation pop(const int heuristic);
 
     void inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph);
+    State_Action_Graph* get_layer_graph();
 
     void new_k(const int k);
     void print();

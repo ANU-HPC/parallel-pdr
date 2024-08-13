@@ -275,8 +275,8 @@ else # not isolate_parallel
 
     else
         echo ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
-        #./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
-        gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
+        #gdb --args ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
         #valgrind ./parallel-pdr $REPORT_PLAN $DAGSTER $TMP_DIR $SET $START_TIME 2>&1
     fi
 fi

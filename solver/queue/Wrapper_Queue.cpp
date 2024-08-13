@@ -97,3 +97,11 @@ void Wrapper_Queue::print() {
     //return _deterministic.print();
   }
 }
+
+State_Action_Graph* Wrapper_Queue::get_layer_graph() {
+  if (Global::problem.nondeterministic) {
+    return _nondeterministic.get_layer_graph();
+  } else {
+    //return _deterministic.print();
+  }
+}

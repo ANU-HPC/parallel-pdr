@@ -16,15 +16,12 @@ using namespace std;
 #include "Success.h"
 #include "Stopwatch.h"
 
-
 #define PROPER_SCC_CHECK_RATE 1 // default to checking every time
 
 // keep track of what can reach the goal. Is a sort of wrapper, with algorithms around a State_Action_Graph
 
 class Goal_Reachability_Manager {
   public:
-
-
     //Goal_Reachability_Manager();
     unordered_set<int> register_pure_goal_return_new_goal_states(const Compressed_State& state);
     unordered_set<int> register_success_return_new_goal_states(const Success& success); 
@@ -34,6 +31,7 @@ class Goal_Reachability_Manager {
     void print();
     bool no_change_since_last_check();
     State_Action_Graph* get_global_graph();
+    void inform_of_layer_graph(State_Action_Graph* layer_graph);
 
     unordered_set<int> scc_find_newly_goal_reaching_states(const vector<Success>& successes, int optional_goal_state, bool run_on_whole_graph); 
 
@@ -48,6 +46,7 @@ class Goal_Reachability_Manager {
 
     unordered_map<int, unordered_set<int>> _goal_state_to_actions; // actions needed to progress towards the goal
     State_Action_Graph _graph;
+    State_Action_Graph* _layer_graph;
 
     bool _no_change_since_last_check = false;
 

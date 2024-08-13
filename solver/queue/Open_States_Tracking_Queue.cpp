@@ -340,6 +340,11 @@ void Open_States_Tracking_Queue::check_if_state_action_should_be_unblocked(const
   //assert(consistent());
 }
 
+State_Action_Graph* Open_States_Tracking_Queue::get_layer_graph() {
+  return &_graph;
+}
+
+
 bool Open_States_Tracking_Queue::consistent() {
   LOG << "error" << endl;
   //exit(1);

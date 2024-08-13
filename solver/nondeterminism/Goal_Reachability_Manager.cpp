@@ -272,11 +272,12 @@ unordered_set<int> Goal_Reachability_Manager::cheap_find_newly_goal_reaching_sta
 unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_states(const vector<Success>& successes, int optional_goal_state, bool run_on_whole_graph) {
   //LOG << "NOT USING THE FANCY REACHABLE SCC STUFF" << endl;
 
+  LOG << _layer_graph->approx_num_nodes() << endl;
   State_Action_Graph iterative_graph;
   if (run_on_whole_graph) {
-    iterative_graph = State_Action_Graph(_graph);
+    iterative_graph = State_Action_Graph(*_layer_graph);
   } else {
-    iterative_graph = _graph.reachable_subgraph(_goal_state_to_actions, successes, optional_goal_state);
+    iterative_graph = _layer_graph->reachable_subgraph(_goal_state_to_actions, successes, optional_goal_state);
   }
 
   if (iterative_graph._state_to_actions.size() == 0) return unordered_set<int>();
@@ -331,4 +332,8 @@ bool Goal_Reachability_Manager::no_change_since_last_check() {
 State_Action_Graph* Goal_Reachability_Manager::get_global_graph() {
   LOG << "called again" << endl;
   return &_graph;
+}
+
+void Goal_Reachability_Manager::inform_of_layer_graph(State_Action_Graph* layer_graph) {
+  _layer_graph = layer_graph;
 }
