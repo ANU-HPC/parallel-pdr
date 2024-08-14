@@ -16,7 +16,7 @@ using namespace std;
 #include "Success.h"
 #include "Stopwatch.h"
 
-#define PROPER_SCC_CHECK_RATE 1 // default to checking every time
+#define CHEAP_NON_SCC_CHECK_RATE 1 // default to checking every time
 
 // keep track of what can reach the goal. Is a sort of wrapper, with algorithms around a State_Action_Graph
 
@@ -50,7 +50,7 @@ class Goal_Reachability_Manager {
 
     bool _no_change_since_last_check = false;
 
-    int _checks_since_proper_scc_check = 1;
+    int _cheap_non_scc_checks_since_scc_check = 1;
     unordered_set<int> _memo;
 };
 

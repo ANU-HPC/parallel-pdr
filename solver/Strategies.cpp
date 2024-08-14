@@ -44,7 +44,7 @@ void Strategies::print_elapsed_time() {
   }
 }
 
-bool Strategies::full_scc_goal_refresh() {
+bool Strategies::whole_reachability_graph_scc_refresh() {
   LOG << "START Full scc refresh" << endl;
   unordered_set<int> goal_reaching_states = goal_reachability_manager.scc_find_newly_goal_reaching_states(successes_since_last_scc_refresh, -1, true);
   for (auto it=goal_reaching_states.begin(); it!=goal_reaching_states.end(); it++) {
@@ -70,13 +70,13 @@ bool Strategies::keep_processing() {
   if (!queue.fully_empty()) return true;
   if (!worker_interface.all_workers_idle()) return true;
 
-  if (PROPER_SCC_CHECK_RATE == 1) return false; // everything is up to code, checking every time, so if there is nothing to do then there is truelly nothing to do
+  if (CHEAP_NON_SCC_CHECK_RATE == 1) return false; // everything is up to code, checking every time, so if there is nothing to do then there is truelly nothing to do
 
   exit(1);
   return false;
 
   // now, keep going in the loop if there is a possibility of a deadlock (is not doing a proper scc check every time)
-  //!queue.fully_empty() || !worker_interface.all_workers_idle() || ((full_scc_refresh_loop_count != 1) && (PROPER_SCC_CHECK_RATE != 1))
+  //!queue.fully_empty() || !worker_interface.all_workers_idle() || ((full_scc_refresh_loop_count != 1) && (CHEAP_NON_SCC_CHECK_RATE != 1))
 }
 
 
@@ -126,14 +126,14 @@ bool Strategies::run_default() {
 
     // Process it
     while (keep_processing()) {
-      if (Global::problem.nondeterministic & full_scc_refresh_loop_count == FULL_SCC_REFRESH_RATE) {
-        if (full_scc_goal_refresh()) return true;
-        full_scc_refresh_loop_count = 0;
+      if (Global::problem.nondeterministic & whole_reachability_graph_scc_refresh_loop_count == WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE) {
+        if (whole_reachability_graph_scc_refresh()) return true;
+        whole_reachability_graph_scc_refresh_loop_count = 0;
       }
-      full_scc_refresh_loop_count++;
+      whole_reachability_graph_scc_refresh_loop_count++;
 
       if (!queue.available_work()) {
-        LOG << "work not available, full_scc_refresh_loop_count " << full_scc_refresh_loop_count << endl;
+        LOG << "work not available, whole_reachability_graph_scc_refresh_loop_count " << whole_reachability_graph_scc_refresh_loop_count << endl;
       }
 
       //LOG << "INT start main loop" << endl;
@@ -260,7 +260,7 @@ bool Strategies::run_default() {
       worker_successes->clear();
     }
 
-    LOG << "should be 1: " << full_scc_refresh_loop_count << endl;
+    LOG << "should be 1: " << whole_reachability_graph_scc_refresh_loop_count << endl;
 
     //LOG << "before pushing" << endl;
     //layers.print();

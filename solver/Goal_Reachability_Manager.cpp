@@ -165,10 +165,10 @@ bool Goal_Reachability_Manager::goal_reaching_state(const int state) {
 
 
 unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state) {
-  bool scc_check = (_checks_since_proper_scc_check == PROPER_SCC_CHECK_RATE);
+  bool scc_check = (_cheap_non_scc_checks_since_scc_check == CHEAP_NON_SCC_CHECK_RATE);
 
-  if (_checks_since_proper_scc_check == PROPER_SCC_CHECK_RATE) _checks_since_proper_scc_check = 0;
-  _checks_since_proper_scc_check++;
+  if (scc_check) _cheap_non_scc_checks_since_scc_check = 0;
+  _cheap_non_scc_checks_since_scc_check++;
 
   //LOG << "scc check: " << scc_check << endl;
 
@@ -272,12 +272,14 @@ unordered_set<int> Goal_Reachability_Manager::cheap_find_newly_goal_reaching_sta
 unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_states(const vector<Success>& successes, int optional_goal_state, bool run_on_whole_graph) {
   //LOG << "NOT USING THE FANCY REACHABLE SCC STUFF" << endl;
 
-  LOG << _layer_graph->approx_num_nodes() << endl;
+  LOG << "Layer graph num states: " << _layer_graph->approx_num_nodes() << endl;
+  LOG << "Global graph num states: " << _graph.approx_num_nodes() << endl;
+
   State_Action_Graph iterative_graph;
   if (run_on_whole_graph) {
-    iterative_graph = State_Action_Graph(*_layer_graph);
+    iterative_graph = State_Action_Graph(_graph);
   } else {
-    iterative_graph = _layer_graph->reachable_subgraph(_goal_state_to_actions, successes, optional_goal_state);
+    iterative_graph = _graph.reachable_subgraph(_goal_state_to_actions, successes, optional_goal_state);
   }
 
   if (iterative_graph._state_to_actions.size() == 0) return unordered_set<int>();
