@@ -43,7 +43,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
     backwards_frontier.insert(original_state);
     any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(original_state) != goal_state_to_actions.end());
 
-    for (const Obligation obl : success.successor_obligations()) {
+    for (const Obligation& obl : success.successor_obligations()) {
       const int outcome = obl.compressed_state().id();
       forward_frontier.insert(outcome);
       any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(outcome) != goal_state_to_actions.end());
@@ -345,8 +345,6 @@ int State_Action_Graph::approx_num_nodes() {
 }
 
 void State_Action_Graph::print(const unordered_map<int, unordered_set<int>>& goal_state_to_actions) {
-  LOG << "PRINTING TURNED OFF" << endl;
-  /*
   LOG << "print:" << endl;
   for (auto state_actions:_state_to_actions) {
     auto state = state_actions.first;
@@ -357,12 +355,11 @@ void State_Action_Graph::print(const unordered_map<int, unordered_set<int>>& goa
     cout << goal_string_A << "STATE: " << Compressed_State::state_id_to_state(state).to_string() << endl;
     for (auto action:actions) {
       cout << "       ACTION: " << Utils::to_symbols_string(action) << endl;
-      pair<int, int> state_action_pair = pair<int, int>(state, action);
-      for (auto outcome:_stateaction_to_outcomes[state_action_pair]) {
+      const int stateaction = State_Action_To_Stateaction::get_stateaction(state, action);
+      for (auto outcome:_stateaction_to_outcomes[stateaction]) {
         string goal_string_B = (goal_state_to_actions.find(outcome) == goal_state_to_actions.end()) ? "     " : "GOAL ";
         cout << goal_string_B << "    OUTCOME: " << Compressed_State::state_id_to_state(outcome).to_string() << endl;
       }
     }
   }
-  */
 }

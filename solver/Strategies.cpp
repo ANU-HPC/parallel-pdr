@@ -72,6 +72,11 @@ bool Strategies::keep_processing() {
 
   if (CHEAP_NON_SCC_CHECK_RATE == 1) return false; // everything is up to code, checking every time, so if there is nothing to do then there is truelly nothing to do
 
+  if (whole_reachability_graph_scc_refresh_loop_count==1) return false;
+
+  return true;
+
+  LOG << "ERROR" << endl;
   exit(1);
   return false;
 
@@ -127,7 +132,10 @@ bool Strategies::run_default() {
     // Process it
     while (keep_processing()) {
       if (Global::problem.nondeterministic & whole_reachability_graph_scc_refresh_loop_count == WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE) {
-        if (whole_reachability_graph_scc_refresh()) return true;
+        if (whole_reachability_graph_scc_refresh()) {
+          if (!Global::problem.evaluation_mode) worker_interface.finalize();
+          return true;
+        }
         whole_reachability_graph_scc_refresh_loop_count = 0;
       }
       whole_reachability_graph_scc_refresh_loop_count++;

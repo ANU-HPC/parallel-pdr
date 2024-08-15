@@ -179,7 +179,6 @@ unordered_set<int> Goal_Reachability_Manager::find_newly_goal_reaching_states(co
   else           return cheap_find_newly_goal_reaching_states(optional_success, optional_goal_state);
 }
 
-/*
 void Goal_Reachability_Manager::cheap_find_newly_goal_reaching_states_helper(int newly_goal_reaching_state, unordered_set<int>* ret_val) {
   if (_memo.find(newly_goal_reaching_state) != _memo.end()) {
     return;
@@ -187,16 +186,17 @@ void Goal_Reachability_Manager::cheap_find_newly_goal_reaching_states_helper(int
   _memo.insert(newly_goal_reaching_state);
 
   // this state is now goal reaching, see if it triggers any others to be
-  const unordered_set<int>& producing_stateactions = _graph._state_to_producing_stateactions[newly_goal_reaching_state];
+  const set<int>& producing_stateactions = _graph._state_to_producing_stateactions[newly_goal_reaching_state];
   for (const int stateaction : producing_stateactions) {
     // see if this state can reach the goal, if it can already we are done here
 
-    const int state = state_action.first;
+    const int state = State_Action_To_Stateaction::get_state(stateaction);
+
     if (_goal_state_to_actions.find(state) != _goal_state_to_actions.end()) continue;
 
     // now lets see if all the outcomes of this goal_action are goal reaching
     bool all_outcomes_reach_goal = true; // assume true prove otherwise
-    for (int outcome : _graph._state_action_pair_to_outcomes[state_action]) {
+    for (int outcome : _graph._stateaction_to_outcomes[stateaction]) {
       if (_goal_state_to_actions.find(outcome) == _goal_state_to_actions.end()) {
         all_outcomes_reach_goal = false;
         break;
@@ -204,7 +204,7 @@ void Goal_Reachability_Manager::cheap_find_newly_goal_reaching_states_helper(int
     }
 
     if (all_outcomes_reach_goal) {
-      const int action = state_action.second;
+      const int action = State_Action_To_Stateaction::get_action(stateaction);
       unordered_set<int> actions;
       actions.insert(action);
 
@@ -260,18 +260,13 @@ unordered_set<int> Goal_Reachability_Manager::cheap_find_newly_goal_reaching_sta
   //LOG << "returning: " << Utils::to_string(ret_val) << endl;
   return ret_val;
 }
-*/
-
-unordered_set<int> Goal_Reachability_Manager::cheap_find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state) {
-  LOG << "ERROR" << endl;
-  exit(1);
-  return unordered_set<int>();
-}
-
 
 unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_states(const vector<Success>& successes, int optional_goal_state, bool run_on_whole_graph) {
   //LOG << "NOT USING THE FANCY REACHABLE SCC STUFF" << endl;
+  
+  if ((optional_goal_state == -1) & (successes.size() == 0)) return unordered_set<int>();
 
+  LOG << "num successes being used: " << successes.size() << endl;
   LOG << "Layer graph num states: " << _layer_graph->approx_num_nodes() << endl;
   LOG << "Global graph num states: " << _graph.approx_num_nodes() << endl;
 

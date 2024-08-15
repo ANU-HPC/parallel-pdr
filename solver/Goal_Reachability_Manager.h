@@ -16,7 +16,7 @@ using namespace std;
 #include "Success.h"
 #include "Stopwatch.h"
 
-#define CHEAP_NON_SCC_CHECK_RATE 1 // default to checking every time
+#define CHEAP_NON_SCC_CHECK_RATE INT_MAX // effectively turns it off
 
 // keep track of what can reach the goal. Is a sort of wrapper, with algorithms around a State_Action_Graph
 

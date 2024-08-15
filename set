@@ -6,11 +6,11 @@ use_ooc 0
 isolate_subproblems 0
 decomposed 0
 report_plan 1
-dagster 0
-mpi_nodes 5
+dagster 1
+mpi_nodes 6
 backwards 0
 max_macro_steps 1
 interleaved_layers 0
-transitions_to_num_workers 4
+transitions_to_num_workers 5
 evaluation_mode 0
 nondeterministic 1

@@ -53,8 +53,8 @@ void Lingeling::flush_cache() {
 }
 
 Lingeling Lingeling::clone() {
-  exit(1);
   assert(0); // TODO causes problems.. look into it
+  exit(1);
   //return Lingeling(lglclone(solver));
   return Lingeling();
 }

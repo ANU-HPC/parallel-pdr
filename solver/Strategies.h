@@ -16,7 +16,6 @@ using namespace std;
 #include "Reason_From_Orchestrator.h"
 #include "Reason_From_Worker.h"
 
-
 #include "Contextless_Reason.h"
 #include "Reason_From_Orchestrator.h"
 #include "Success.h"
@@ -24,7 +23,6 @@ using namespace std;
 #include "Goal_Reachability_Manager.h"
 #include "Wrapper_Queue.h"
 #include "Open_States_Tracking_Queue.h"
-
 
 #include <chrono>
 
@@ -60,7 +58,7 @@ class Strategies {
     Goal_Reachability_Manager goal_reachability_manager; // only for nondeterminism
     Plan_Builder deterministic_plan_builder; // only for deterministic
 
-    const int WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE = INT_MAX; // effectively turns it off
+    const int WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE = 1000;
     bool whole_reachability_graph_scc_refresh();
     int whole_reachability_graph_scc_refresh_loop_count = 0;
     vector<Success> successes_since_last_scc_refresh;
