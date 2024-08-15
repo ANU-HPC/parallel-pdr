@@ -286,7 +286,7 @@ bool Strategies::run_default() {
     // completed the k, lets do a convergance check and clause pushing
     for (int layer=1; layer<=k+1; layer++) {
       LOG << "Clause pushing turned off in nondeterminism for now" << endl;
-      /*
+
       auto reasons_to_push = layers.reasons_not_in_next_layer(layer-1);
 
       // get all the "obligations"
@@ -341,12 +341,11 @@ bool Strategies::run_default() {
       // convergence check
 
       LOG << "after pushing" << endl;
-      layers.print();
-      */
+      //layers.print();
 
       // !Global::problem.nondeterministic && 
       if (layers.same_as_previous(layer)) {
-        //layers.print();
+        layers.print();
         LOG << "converged as layer " << layer << " is the same as the previous one" << endl;
         if (!Global::problem.evaluation_mode) worker_interface.finalize();
         return false;

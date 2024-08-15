@@ -58,7 +58,7 @@ class Strategies {
     Goal_Reachability_Manager goal_reachability_manager; // only for nondeterminism
     Plan_Builder deterministic_plan_builder; // only for deterministic
 
-    const int WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE = 1000;
+    const int WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE = 400;
     bool whole_reachability_graph_scc_refresh();
     int whole_reachability_graph_scc_refresh_loop_count = 0;
     vector<Success> successes_since_last_scc_refresh;

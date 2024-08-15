@@ -34,18 +34,17 @@ bool Goal_Reachability_Manager::revalidate_plan_from_scratch() {
 
 unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_states(State_Action_Graph* iterative_graph) {
   Stopwatch::store["scc_iteration_non_goal_reaching_states"].start();
+
   // get the SCCs
   Stopwatch::store["scc generator"].start();
   SCC_Generator scc_generator(iterative_graph);
   vector<unordered_set<int>*> sccs = scc_generator.run();
   Stopwatch::store["scc generator"].stop();
 
-  /*
-  LOG << "The SCCs we are dealing with:" << endl;
+  /* LOG << "The SCCs we are dealing with:" << endl;
   for (int i=0; i<sccs.size(); i++) {
     LOG << i << " " << Utils::to_string(*sccs[i]) << endl;
-  }
-  */
+  } */
 
   // we have the SCCs, now to work out which are goal SCCs directly, and which do and don't lead to a goal
 
@@ -87,14 +86,7 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
 
   Stopwatch::store["work out graph between sccs"].start();
   // work out the edges of the SCC graph
-
-
-  //unordered_map<int, unordered_set<int>> scc_to_sccs_that_go_to_it;
   vector<set<int>> scc_to_sccs_that_go_to_it (sccs.size());
-
-
-
-
   for (const auto& x:iterative_graph->_state_to_producing_stateactions) {
     const int state = x.first;
     const set<int>& producing_stateactions = x.second;
@@ -111,26 +103,13 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
   }
   Stopwatch::store["work out graph between sccs"].stop();
 
-  /*
-  for (int i=0; i<sccs.size(); i++) {
-    LOG << "SCC " << i << " states: " << Utils::to_string(*(sccs[i])) << "Reached by: " << Utils::to_string(scc_to_sccs_that_go_to_it[i]) << endl;
-  }
-  */
-
   Stopwatch::store["search for what is goal reaching"].start();
   // do a search through the SCC graph labelling everything that can reach the goal as a goal state
-  //unordered_set<int> seen;
   set<int> frontier = set<int>(goal_sccs.begin(), goal_sccs.end());
-  //LOG << "frontier size: " << frontier.size() << endl;
-  //LOG << "start frontier " << Utils::to_string(frontier) << endl;
   set<int> seen; // TODO don't double up (just for efficiency)
   while(frontier.size()) {
     const int goal_scc = *frontier.begin();
     frontier.erase(goal_scc);
-
-    //LOG << "from scc: " << goal_scc << " back to: " << Utils::to_string(scc_to_sccs_that_go_to_it[goal_scc]) << endl;
-
-    //LOG << "SCC " << goal_scc << " is reached by " << Utils::to_string(scc_to_sccs_that_go_to_it[goal_scc]) << endl;
 
     // TODO necessary?
     for (int scc : scc_to_sccs_that_go_to_it[goal_scc]) {
@@ -139,7 +118,6 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
       }
     }
 
-    //frontier.insert(scc_to_sccs_that_go_to_it[goal_scc].begin(), scc_to_sccs_that_go_to_it[goal_scc].end());
     goal_sccs.insert(scc_to_sccs_that_go_to_it[goal_scc].begin(), scc_to_sccs_that_go_to_it[goal_scc].end());
   }
 

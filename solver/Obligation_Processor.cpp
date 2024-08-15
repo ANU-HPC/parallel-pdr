@@ -526,6 +526,7 @@ void Obligation_Processor::reset_nondeterministic_solvers_for_new_k(int k) {
   }
 }
 
+/*
 int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer) {
   //LOG << " SLOW!" << endl;
 
@@ -546,8 +547,8 @@ int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& st
     }
   }
 }
+*/
 
-/*
 int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer) {
   if (upper_known_satisfying_layer == 0) {
     assert(state.is_goal());
@@ -559,22 +560,17 @@ int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& st
   int lowest_sat = upper_known_satisfying_layer;
   int highest_unsat = 0;
 
-  LOG << "checking, unsat at: " << highest_unsat << " and sat at " << lowest_sat << endl;
   while (lowest_sat != highest_unsat+1) {
     const int mid = (lowest_sat+highest_unsat)/2;
     const bool sat_at_mid = _layer_to_consistency_solver[mid]->solve(state.get_state());
-    LOG << "at " << mid << " " << sat_at_mid << endl;
     if (sat_at_mid) {
       lowest_sat = mid;
     } else {
       highest_unsat = mid;
     }
   }
-  return lowest_sat+1;
+  return lowest_sat;
 }
-*/
-
-
 
 
 
