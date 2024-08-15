@@ -33,6 +33,7 @@ bool Goal_Reachability_Manager::revalidate_plan_from_scratch() {
 }
 
 unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_states(State_Action_Graph* iterative_graph) {
+  Stopwatch::store["scc_iteration_non_goal_reaching_states"].start();
   // get the SCCs
   Stopwatch::store["scc generator"].start();
   SCC_Generator scc_generator(iterative_graph);
@@ -173,6 +174,7 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
     delete sccs[scc_num];
   }
 
+  Stopwatch::store["scc_iteration_non_goal_reaching_states"].stop();
   return non_goal_reaching_states;
 }
 
@@ -281,6 +283,7 @@ unordered_set<int> Goal_Reachability_Manager::cheap_find_newly_goal_reaching_sta
 }
 
 unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_states(const vector<Success>& successes, const vector<int>& goal_states, bool run_on_whole_graph) {
+  Stopwatch::store["scc_find_newly_goal_reaching_states"].start();
   //LOG << "NOT USING THE FANCY REACHABLE SCC STUFF" << endl;
   
   if ((goal_states.size() == 0) & (successes.size() == 0) & (!run_on_whole_graph)) return unordered_set<int>();
@@ -296,7 +299,10 @@ unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_state
     iterative_graph = _graph.reachable_subgraph(_goal_state_to_actions, successes, goal_states);
   }
 
-  if (iterative_graph._state_to_actions.size() == 0) return unordered_set<int>();
+  if (iterative_graph._state_to_actions.size() == 0) {
+    Stopwatch::store["scc_find_newly_goal_reaching_states"].stop();
+    return unordered_set<int>();
+  }
   
   // iteratively refine this graph
   //LOG << "starting... " << endl;
@@ -332,6 +338,7 @@ unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_state
 
   //LOG << "found newly reaching goal states: " << Utils::to_string(newly_goal_reaching_states) << endl;
 
+  Stopwatch::store["scc_find_newly_goal_reaching_states"].stop();
   return newly_goal_reaching_states;
 }
 

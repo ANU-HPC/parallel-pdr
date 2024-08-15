@@ -8,6 +8,7 @@ void Stopwatch::start() {
 void Stopwatch::stop() {
   if (!ENABLE) return;
   _summation += clock() - _last_stop;
+  _last_stop = 0; // to make it obvious when there is an error
 }
 
 double Stopwatch::seconds() {
