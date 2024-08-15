@@ -11,6 +11,7 @@ class Int_Bitmap {
     void erase(int element);
     bool contains(int element);
     int size();
+    void clear();
   private:
     vector<bool> _bitmap;
     int _size = 0;

@@ -28,3 +28,8 @@ bool Int_Bitmap::contains(int element) {
 int Int_Bitmap::size() {
   return _size;
 }
+
+void Int_Bitmap::clear() {
+  _bitmap.clear();
+  _size = 0;
+}

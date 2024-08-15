@@ -23,11 +23,10 @@ template <typename T> class Int_Iterable_Bitmap_Map {
 
 
 
-    //Int_Iterable_Bitmap _bitmap;
-    //vector<T*> _map;
+    Int_Iterable_Bitmap _bitmap;
+    vector<T*> _map;
 };
 
-/*
 template <typename T> Int_Iterable_Bitmap_Map<T>::~Int_Iterable_Bitmap_Map() {
   make_iterable();
   for (int i=0; i<size(); i++) {
@@ -84,7 +83,6 @@ template <typename T> bool Int_Iterable_Bitmap_Map<T>::contains(int key) {
   return _bitmap.contains(key);
 }
 
-*/
 
 
 
@@ -92,6 +90,7 @@ template <typename T> bool Int_Iterable_Bitmap_Map<T>::contains(int key) {
 
 
 
+/*
 template <typename T> Int_Iterable_Bitmap_Map<T>::~Int_Iterable_Bitmap_Map() {
   cout << "ERROR, BROKEN " << endl;
 }
@@ -138,5 +137,6 @@ template <typename T> int Int_Iterable_Bitmap_Map<T>::size() {
 template <typename T> bool Int_Iterable_Bitmap_Map<T>::contains(int key) {
   return _base.find(key) != _base.end();
 }
+*/
 
 #endif
