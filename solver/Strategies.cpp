@@ -46,8 +46,7 @@ void Strategies::print_elapsed_time() {
 
 bool Strategies::whole_reachability_graph_scc_refresh() {
   LOG << "START Full scc refresh" << endl;
-  unordered_set<int> goal_reaching_states = goal_reachability_manager.scc_find_newly_goal_reaching_states(successes_since_last_scc_refresh, vector<int>(), true);
-  LOG << "TODO not whole?" << endl; // CAUSES SEGFAULT???
+  unordered_set<int> goal_reaching_states = goal_reachability_manager.scc_find_newly_goal_reaching_states(successes_since_last_scc_refresh, vector<int>(), false);
   for (auto it=goal_reaching_states.begin(); it!=goal_reaching_states.end(); it++) {
     queue.register_goal_reaching_state(Compressed_State::state_id_to_state(*it));
     if (*it == 0) {
@@ -183,7 +182,6 @@ bool Strategies::run_default() {
       for (auto ita=worker_successes->begin(); ita!=worker_successes->end(); ita++) {
         worker_success = *ita;
         const Success& success = get<1>(worker_success);
-        successes_since_last_scc_refresh.push_back(success);
 
         LG(ST) << "got back success: " << success.to_string() << endl;
 
@@ -223,6 +221,8 @@ bool Strategies::run_default() {
         }
 
         if (Global::problem.nondeterministic && success.actions().size() != 0) { // only for "real" successes
+          successes_since_last_scc_refresh.push_back(success);
+
           // register the arc
           assert(success.actions().size()==1); // only one action should have been executed
           assert(success.actions()[0].get_actions().size()==1); // only one action should have been executed

@@ -38,6 +38,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
 
   // set up the frontiers
   for (const Success& success : successes) {
+    assert(success.successor_obligations().size());
     new_graph.add(success);
     const int original_state = success.original_obligation().compressed_state().id();
     backwards_frontier.insert(original_state);
