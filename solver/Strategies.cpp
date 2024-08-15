@@ -46,11 +46,14 @@ void Strategies::print_elapsed_time() {
 
 bool Strategies::whole_reachability_graph_scc_refresh() {
   LOG << "START Full scc refresh" << endl;
-  unordered_set<int> goal_reaching_states = goal_reachability_manager.scc_find_newly_goal_reaching_states(successes_since_last_scc_refresh, -1, true);
+  unordered_set<int> goal_reaching_states = goal_reachability_manager.scc_find_newly_goal_reaching_states(successes_since_last_scc_refresh, vector<int>(), true);
+  LOG << "TODO not whole?" << endl; // CAUSES SEGFAULT???
   for (auto it=goal_reaching_states.begin(); it!=goal_reaching_states.end(); it++) {
     queue.register_goal_reaching_state(Compressed_State::state_id_to_state(*it));
     if (*it == 0) {
       LOG << "found a plan in a full SCC refresh" << endl;
+      if (!Global::problem.evaluation_mode) worker_interface.finalize();
+      goal_reachability_manager.print();
       return true;
     }
   }
@@ -72,7 +75,7 @@ bool Strategies::keep_processing() {
 
   if (CHEAP_NON_SCC_CHECK_RATE == 1) return false; // everything is up to code, checking every time, so if there is nothing to do then there is truelly nothing to do
 
-  if (whole_reachability_graph_scc_refresh_loop_count==1) return false;
+  if (whole_reachability_graph_scc_refresh_loop_count==0) return false;
 
   return true;
 
@@ -114,6 +117,7 @@ bool Strategies::run_default() {
   if (initial_state.is_goal()) {
     LOG << "trivially SAT" << endl;
     if (!Global::problem.evaluation_mode) worker_interface.finalize();
+    goal_reachability_manager.print();
     return true;
   }
 
@@ -131,22 +135,10 @@ bool Strategies::run_default() {
 
     // Process it
     while (keep_processing()) {
-      if (Global::problem.nondeterministic & whole_reachability_graph_scc_refresh_loop_count == WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE) {
-        if (whole_reachability_graph_scc_refresh()) {
-          if (!Global::problem.evaluation_mode) worker_interface.finalize();
-          return true;
-        }
-        whole_reachability_graph_scc_refresh_loop_count = 0;
-      }
-      whole_reachability_graph_scc_refresh_loop_count++;
-
-      if (!queue.available_work()) {
-        LOG << "work not available, whole_reachability_graph_scc_refresh_loop_count " << whole_reachability_graph_scc_refresh_loop_count << endl;
-      }
-
       //LOG << "INT start main loop" << endl;
       if (Global::problem.evaluation_mode) print_elapsed_time();
       // add some more work
+      bool taken_off_queue = false;
       const set<int> workers = worker_interface.workers_wanting_work_snapshot();
       for (auto it=workers.begin(); it!=workers.end(); it++) {
         const int worker = *it;
@@ -158,6 +150,7 @@ bool Strategies::run_default() {
           //LOG << "to process: " << obligation.to_string() << endl;
           LG(ST) << "gotten off the queue to process: " << obligation.to_string() << endl;
           worker_interface.handle_obligation(obligation, false, worker);
+          taken_off_queue = true;
         }
       }
 
@@ -165,6 +158,23 @@ bool Strategies::run_default() {
       worker_interface.process_inbox();
       vector<tuple<int, Success>>* worker_successes = worker_interface.get_returned_successes_buffer();
       vector<tuple<int, Reason_From_Worker>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
+
+      // if doing something, then get closer to doing a full SCC refresh, don't update the counter if just busy waiting
+      if (taken_off_queue  | (worker_successes->size()!=0) | (worker_reasons->size()!=0)) whole_reachability_graph_scc_refresh_loop_count++;
+
+      if ((!taken_off_queue) & worker_interface.all_workers_idle()) {
+        // stuck in a deadlock because there is nothing to do, so trigger a full SCC refresh
+        LOG << "trigger full refresh" << endl;
+        whole_reachability_graph_scc_refresh_loop_count = WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE;
+      }
+
+      if (Global::problem.nondeterministic & whole_reachability_graph_scc_refresh_loop_count == WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE) {
+        if (whole_reachability_graph_scc_refresh()) {
+          if (!Global::problem.evaluation_mode) worker_interface.finalize();
+          return true;
+        }
+        whole_reachability_graph_scc_refresh_loop_count = 0;
+      }
 
       // some periodic stats reporting
       manage_per_inbox_check_periodic_stats(worker_successes->size(), worker_reasons->size());
@@ -227,9 +237,7 @@ bool Strategies::run_default() {
             // a plan exists!
             if (!Global::problem.evaluation_mode) worker_interface.finalize();
             LOG << "A NONDETERMINISTIC PLAN EXISTS" << endl;
-
             goal_reachability_manager.print();
-
             return true;
           } else {
             // remove these from the queue

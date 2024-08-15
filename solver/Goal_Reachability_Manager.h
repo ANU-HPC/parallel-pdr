@@ -26,6 +26,7 @@ class Goal_Reachability_Manager {
     unordered_set<int> register_pure_goal_return_new_goal_states(const Compressed_State& state);
     unordered_set<int> register_success_return_new_goal_states(const Success& success); 
 
+    bool revalidate_plan_from_scratch();
     bool goal_reaching_state(const int state);
 
     void print();
@@ -33,7 +34,7 @@ class Goal_Reachability_Manager {
     State_Action_Graph* get_global_graph();
     void inform_of_layer_graph(State_Action_Graph* layer_graph);
 
-    unordered_set<int> scc_find_newly_goal_reaching_states(const vector<Success>& successes, int optional_goal_state, bool run_on_whole_graph); 
+    unordered_set<int> scc_find_newly_goal_reaching_states(const vector<Success>& successes, const vector<int>& goal_states, bool run_on_whole_graph); 
 
   private:
     unordered_set<int> scc_iteration_non_goal_reaching_states(State_Action_Graph* iterative_graph);

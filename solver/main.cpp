@@ -41,11 +41,31 @@ void scrap() {
 }
 */
 
-
 void signalHandler( int signum ) {
    cout << "Interrupt signal (" << signum << ") received.\n";
    Stopwatch::print_store();
    exit(signum);
+}
+
+void main_worker() {
+  const int worker = Global::mpi_interface.world_rank();
+  if (Utils::in(Global::mpi_interface.ENABLED_WORKERS, worker)) {
+    MPI_Worker mpi_worker;
+    mpi_worker.run();
+  } else {
+    LOG << "Not using this worker" << endl;
+    MPI_Worker::wait_for_then_finalize();
+  }
+}
+
+void main_orchestratator() {
+  Strategies strategies;
+  const bool sat = strategies.run_default();
+
+  if (sat) LOG << "SAT" << endl;
+  else     LOG << "UNSAT" << endl;
+
+  usleep(Global::mpi_interface.world_rank()*10000);
 }
 
 int main(int argc, char **argv) {
@@ -60,32 +80,15 @@ int main(int argc, char **argv) {
   if (Global::problem.MPI_active) { 
     Global::mpi_interface.setup();
     if (Global::mpi_interface.is_worker()) {
-      const int worker = Global::mpi_interface.world_rank();
-      if (Utils::in(Global::mpi_interface.ENABLED_WORKERS, worker)) {
-        MPI_Worker mpi_worker;
-        mpi_worker.run();
-      } else {
-        LOG << "Not using this worker" << endl;
-        MPI_Worker::wait_for_then_finalize();
-      }
-      return 0;
+      main_worker();
+    } else {
+      main_orchestratator();
     }
-  }
-
-  bool sat;
-
-  // pass control to a specific strategy
-  Strategies strategies;
-  sat = strategies.run_default();
-
-  if (sat) LOG << "SAT" << endl;
-  else     LOG << "UNSAT" << endl;
-
-  usleep(Global::mpi_interface.world_rank()*10000);
-  Global::stats.print();
+  } else main_orchestratator();
 
   if (Global::problem.evaluation_mode) Global::mpi_interface.abort();
 
+  Global::stats.print();
   Stopwatch::print_store();
 
   return 0;

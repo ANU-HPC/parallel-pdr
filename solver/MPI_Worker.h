@@ -9,6 +9,7 @@
 
 #include "MPI_Interface.h"
 #include "Global.h"
+#include "Stopwatch.h"
 #include "Obligation.h"
 #include "Obligation_Processor.h"
 #include "Reason_From_Orchestrator.h"

@@ -26,7 +26,7 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
   }
 }
 
-State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const vector<Success>& successes, int optional_goal_state) {
+State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const vector<Success>& successes, vector<int> goal_states) {
   State_Action_Graph new_graph;
 
   Int_Bitmap backwards_expanded;
@@ -49,9 +49,12 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
       any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(outcome) != goal_state_to_actions.end());
     }
   }
-  if (optional_goal_state != -1) {
+  if (goal_states.size()) {
     any_state_reaches_goal = true;
-    backwards_frontier.insert(optional_goal_state);
+  }
+
+  for (auto it=goal_states.begin(); it!=goal_states.end(); it++) {
+    backwards_frontier.insert(*it);
   }
 
   // explore forwards

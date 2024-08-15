@@ -178,7 +178,9 @@ void Default_Queue::set_name(string name) {
 }
 
 vector<Obligation> Default_Queue::get_obligations() {
+#if NDEBUG
   LOG << "expensive, use with care..." << endl;
+#endif
   vector<Obligation> obligations;
   for (int layer=0; layer<_layers.size(); layer++) {
     const vector<Compressed_State>& states = _layers[layer].get_states();

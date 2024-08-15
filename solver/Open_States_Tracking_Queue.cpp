@@ -346,9 +346,8 @@ State_Action_Graph* Open_States_Tracking_Queue::get_layer_graph() {
 
 
 bool Open_States_Tracking_Queue::consistent() {
-  LOG << "error" << endl;
+  //LOG << "error" << endl;
   //exit(1);
-  /*
   //LOG << "Note: expensive" << endl;
   if (!_deadlock_queue.empty()) {
     // there are deadlocked things, if there are no live things then we already have a problem
@@ -374,11 +373,11 @@ bool Open_States_Tracking_Queue::consistent() {
       for (auto it=blocked_actions.begin(); it!=blocked_actions.end(); it++) {
         const int blocked_action = *it; 
 
-        pair<int, int> state_action = pair<int, int>(state, blocked_action);
+        const int stateaction = State_Action_To_Stateaction::get_stateaction(state, blocked_action);
 
         bool one_goes_forward = false;
         bool all_not_banned = true;
-        for (const int outcome : _graph._state_action_pair_to_outcomes[state_action]) {
+        for (const int outcome : _graph._stateaction_to_outcomes[stateaction]) {
           const int outcome_layer = seen_state_to_layer(outcome);
           //LOG << "outcome " << outcome << " has layer " << outcome_layer << " and status " << status_to_string(state_to_status(outcome)) << endl;
           all_not_banned = all_not_banned && (outcome_layer <= _k);
@@ -387,13 +386,12 @@ bool Open_States_Tracking_Queue::consistent() {
 
         const int should_be_blocked = all_not_banned && one_goes_forward;
         if (!should_be_blocked) {
-          LOG << "should be blocked byt isn't actually: " << deadlocked_obligation.compressed_state().to_string() << " with action " << blocked_action << endl;
+          LOG << "should be blocked but isn't actually: " << deadlocked_obligation.compressed_state().to_string() << " with action " << blocked_action << endl;
           return false;
         }
       }
     }
   }
-  */
   return true;
 }
 
