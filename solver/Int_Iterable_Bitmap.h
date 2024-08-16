@@ -17,6 +17,7 @@ class Int_Iterable_Bitmap {
     int first();
     int size();
     void clear();
+    void print();
   private:
     Int_Bitmap _bitmap;
     deque<int> _untrimmed_elements; // might have duplicates, or mention elements that aren't really there, but WILL have all the element in it. really there => listed here, listed here => really there

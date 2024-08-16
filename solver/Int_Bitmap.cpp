@@ -21,6 +21,7 @@ void Int_Bitmap::erase(int element) {
 }
 
 bool Int_Bitmap::contains(int element) {
+  assert(element>=0);
   if (element >= _bitmap.size()) return false;
   return _bitmap[element];
 }
@@ -32,4 +33,9 @@ int Int_Bitmap::size() {
 void Int_Bitmap::clear() {
   _bitmap.clear();
   _size = 0;
+}
+
+void Int_Bitmap::print() {
+  LOG << "size: " << _size << endl;
+  LOG << Utils::to_string(_bitmap) << endl;
 }

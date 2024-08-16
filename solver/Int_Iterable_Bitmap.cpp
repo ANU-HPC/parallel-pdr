@@ -58,3 +58,8 @@ int Int_Iterable_Bitmap::iterate_index_get(int index) {
   assert(_bitmap.size() == _untrimmed_elements.size());
   return _untrimmed_elements[index];
 }
+
+void Int_Iterable_Bitmap::print() {
+  _bitmap.print();
+  LOG << Utils::to_string(_untrimmed_elements) << endl;
+}
