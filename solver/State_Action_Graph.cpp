@@ -26,7 +26,7 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
   }
 }
 
-State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const vector<Success>& successes, vector<int> goal_states) {
+State_Action_Graph State_Action_Graph::reachable_subgraph(Int_Iterable_Bitmap_Map<set<int>>* goal_state_to_actions, const vector<Success>& successes, vector<int> goal_states) {
   State_Action_Graph new_graph;
 
   Int_Bitmap backwards_expanded;
@@ -42,12 +42,12 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
     new_graph.add(success);
     const int original_state = success.original_obligation().compressed_state().id();
     backwards_frontier.insert(original_state);
-    any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(original_state) != goal_state_to_actions.end());
+    any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions->contains(original_state));
 
     for (const Obligation& obl : success.successor_obligations()) {
       const int outcome = obl.compressed_state().id();
       forward_frontier.insert(outcome);
-      any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions.find(outcome) != goal_state_to_actions.end());
+      any_state_reaches_goal = any_state_reaches_goal || (goal_state_to_actions->contains(outcome));
     }
   }
   if (goal_states.size()) {
@@ -78,7 +78,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(const unordered_map<in
 
         // for each of the outcomes, if they have not been expanded forward AND they are not a goal state (in which case we don't need to go any further), set them up to be
         const bool outcome_already_expanded = forward_expanded.contains(outcome);
-        const bool outcome_goal_reaching = goal_state_to_actions.find(outcome) != goal_state_to_actions.end();
+        const bool outcome_goal_reaching = goal_state_to_actions->contains(outcome);
         if ((!outcome_already_expanded) && (!outcome_goal_reaching)) {
           forward_frontier.insert(outcome);
         }
@@ -348,20 +348,20 @@ int State_Action_Graph::approx_num_nodes() {
   return _state_to_actions.size();
 }
 
-void State_Action_Graph::print(const unordered_map<int, unordered_set<int>>& goal_state_to_actions) {
+void State_Action_Graph::print(Int_Iterable_Bitmap_Map<set<int>>* goal_state_to_actions) {
   LOG << "print:" << endl;
   for (auto state_actions:_state_to_actions) {
     auto state = state_actions.first;
     auto actions = state_actions.second;
 
-    string goal_string_A = (goal_state_to_actions.find(state) == goal_state_to_actions.end()) ? "     " : "GOAL ";
+    string goal_string_A = (!goal_state_to_actions->contains(state)) ? "     " : "GOAL ";
 
     cout << goal_string_A << "STATE: " << Compressed_State::state_id_to_state(state).to_string() << endl;
     for (auto action:actions) {
       cout << "       ACTION: " << Utils::to_symbols_string(action) << endl;
       const int stateaction = State_Action_To_Stateaction::get_stateaction(state, action);
       for (auto outcome:_stateaction_to_outcomes[stateaction]) {
-        string goal_string_B = (goal_state_to_actions.find(outcome) == goal_state_to_actions.end()) ? "     " : "GOAL ";
+        string goal_string_B = (!goal_state_to_actions->contains(outcome)) ? "     " : "GOAL ";
         cout << goal_string_B << "    OUTCOME: " << Compressed_State::state_id_to_state(outcome).to_string() << endl;
       }
     }

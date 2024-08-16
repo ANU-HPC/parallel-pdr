@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <deque>
 #include <unordered_set>
 #include <unordered_map>
 
@@ -23,6 +24,8 @@ class Utils {
     static string to_symbols_string(vector<int> x);
     static string to_symbols_string(set<int> x);
     static string to_string(vector<int> x);
+    static string to_string(deque<int> x);
+    static string to_string(vector<bool> x);
     static string to_string(set<int> x);
     static string to_string(unordered_set<int> x);
     static string to_string(int* data, int size);

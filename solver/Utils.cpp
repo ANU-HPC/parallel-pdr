@@ -175,7 +175,6 @@ void Utils::print(unordered_map<int, unordered_set<int>> x) {
   }
 }
 
-
 string Utils::to_string(vector<int> x) {
   // give by copy
 
@@ -195,6 +194,32 @@ string Utils::to_string(vector<int> x) {
   return ret_val + " }";
 }
 
+string Utils::to_string(deque<int> x) {
+  // give by copy
+
+  string h = "";
+
+  string ret_val = "{" + h;
+  for (int i=0; i<x.size(); i++) {
+    if (x[i] >= 0) {
+      ret_val += "  \033[38;5;10m";
+      ret_val += std::to_string(x[i]);
+    } else {
+      ret_val += " \033[38;5;9m";
+      ret_val += std::to_string(x[i]);
+    }
+    ret_val += "\033[0m";
+  }
+  return ret_val + " }";
+}
+
+string Utils::to_string(vector<bool> x) {
+  string ret_val = "";
+  for (bool i : x) {
+    ret_val += i ? "1 " : "0 ";
+  }
+  return ret_val;
+}
 
 string Utils::to_string(unordered_set<int> x) {
   // give by copy

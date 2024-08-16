@@ -15,6 +15,7 @@ using namespace std;
 #include "Compressed_State.h"
 #include "Success.h"
 #include "Stopwatch.h"
+#include "Int_Iterable_Bitmap_Map.h"
 
 #define CHEAP_NON_SCC_CHECK_RATE INT_MAX // effectively turns it off
 
@@ -45,7 +46,10 @@ class Goal_Reachability_Manager {
     void cheap_find_newly_goal_reaching_states_helper(int newly_goal_reaching_state, unordered_set<int>* ret_val);
     unordered_set<int> cheap_find_newly_goal_reaching_states(const Success* optional_success, int optional_goal_state); 
 
-    unordered_map<int, unordered_set<int>> _goal_state_to_actions; // actions needed to progress towards the goal
+    Int_Iterable_Bitmap_Map<set<int>> _goal_state_to_actions;
+
+    //unordered_map<int, unordered_set<int>> _goal_state_to_actions; // actions needed to progress towards the goal
+
     State_Action_Graph _graph;
     State_Action_Graph* _layer_graph;
 

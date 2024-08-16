@@ -4,7 +4,7 @@
 
 unordered_set<int> Goal_Reachability_Manager::register_pure_goal_return_new_goal_states(const Compressed_State& state) {
   //LOG << "here" << endl;
-  _goal_state_to_actions[state.id()] = unordered_set<int>(); // empty as already a goal state
+  _goal_state_to_actions.get(state.id()); // empty as already a goal state
   if (_goal_state_to_actions.size() == 0) return unordered_set<int>();
   return find_newly_goal_reaching_states(NULL, state.id());
 }
@@ -17,12 +17,12 @@ unordered_set<int> Goal_Reachability_Manager::register_success_return_new_goal_s
 
 bool Goal_Reachability_Manager::revalidate_plan_from_scratch() {
   LOG << "START" << endl;
-  _goal_state_to_actions = unordered_map<int, unordered_set<int>>();
+  _goal_state_to_actions = Int_Iterable_Bitmap_Map<set<int>>();
 
   for (auto state_actions : _graph._state_to_actions) {
     const int state = state_actions.first;
     if (Compressed_State::state_id_to_state(state).is_goal()) {
-      _goal_state_to_actions[state] = unordered_set<int>();
+      _goal_state_to_actions.get(state);
     }
   }
 
@@ -57,7 +57,7 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
     unordered_set<int>* scc = sccs[scc_num];
     for (int state:*scc){
       //LOG << "asking is it a goal state? " << state << endl;
-      if (_goal_state_to_actions.find(state) != _goal_state_to_actions.end()) {
+      if (_goal_state_to_actions.contains(state)) {
         // a goal SCC
         goal_sccs.insert(scc_num);
         //LOG << "it is!" << endl;
@@ -157,7 +157,7 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
 }
 
 bool Goal_Reachability_Manager::goal_reaching_state(const int state) {
-  return _goal_state_to_actions.find(state) != _goal_state_to_actions.end();
+  return _goal_state_to_actions.contains(state);
 }
 
 
@@ -191,12 +191,12 @@ void Goal_Reachability_Manager::cheap_find_newly_goal_reaching_states_helper(int
 
     const int state = State_Action_To_Stateaction::get_state(stateaction);
 
-    if (_goal_state_to_actions.find(state) != _goal_state_to_actions.end()) continue;
+    if (_goal_state_to_actions.contains(state)) continue;
 
     // now lets see if all the outcomes of this goal_action are goal reaching
     bool all_outcomes_reach_goal = true; // assume true prove otherwise
     for (int outcome : _graph._stateaction_to_outcomes[stateaction]) {
-      if (_goal_state_to_actions.find(outcome) == _goal_state_to_actions.end()) {
+      if (!_goal_state_to_actions.contains(outcome)) {
         all_outcomes_reach_goal = false;
         break;
       }
@@ -204,10 +204,10 @@ void Goal_Reachability_Manager::cheap_find_newly_goal_reaching_states_helper(int
 
     if (all_outcomes_reach_goal) {
       const int action = State_Action_To_Stateaction::get_action(stateaction);
-      unordered_set<int> actions;
-      actions.insert(action);
+      set<int>* actions = new set<int>();
+      actions->insert(action);
 
-      _goal_state_to_actions[state] = actions;
+      _goal_state_to_actions.set(state, actions);
       ret_val->insert(state);
       //LOG << "state " << newly_goal_reaching_state << " is goal reaching, the state " << state << " has action " << action << ", all its outcomes are goal reaching so it is too" << endl;
       cheap_find_newly_goal_reaching_states_helper(state, ret_val);
@@ -226,12 +226,12 @@ unordered_set<int> Goal_Reachability_Manager::cheap_find_newly_goal_reaching_sta
   if (optional_success != NULL) {
     const int original_state = optional_success->original_obligation().compressed_state().id();
     // first check if this is already a goal state, if so we are done here
-    if (_goal_state_to_actions.find(original_state) == _goal_state_to_actions.end()) {
+    if (!_goal_state_to_actions.contains(original_state)) {
       // if all the outcomes are goals then this is a goal state too
       bool goal_reaching = true; // assume goal reaching, prove otherwise
       for (const Obligation& obl : optional_success->successor_obligations()) {
         const int outcome = obl.compressed_state().id();
-        if (_goal_state_to_actions.find(outcome) == _goal_state_to_actions.end()) {
+        if (!_goal_state_to_actions.contains(outcome)) {
           goal_reaching = false;
           break; // not a goal, leave this loop
         }
@@ -240,9 +240,9 @@ unordered_set<int> Goal_Reachability_Manager::cheap_find_newly_goal_reaching_sta
       if (goal_reaching) {
         // all the outcomes are goal reaching! this is a goal state too
         const int action = optional_success->actions()[0].get_actions()[0];
-        unordered_set<int> actions;
-        actions.insert(action);
-        _goal_state_to_actions[original_state] = actions;
+        set<int>* actions = new set<int>();
+        actions->insert(action);
+        _goal_state_to_actions.set(original_state, actions);
 
         ret_val.insert(original_state);
 
@@ -274,7 +274,7 @@ unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_state
   if (run_on_whole_graph) {
     iterative_graph = State_Action_Graph(_graph);
   } else {
-    iterative_graph = _graph.reachable_subgraph(_goal_state_to_actions, successes, goal_states);
+    iterative_graph = _graph.reachable_subgraph(&_goal_state_to_actions, successes, goal_states);
   }
 
   if (iterative_graph._state_to_actions.size() == 0) {
@@ -306,10 +306,10 @@ unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_state
   unordered_set<int> newly_goal_reaching_states;
   for (auto state_actions:iterative_graph._state_to_actions) {
     const int state = state_actions.first;
-    if (_goal_state_to_actions.find(state) == _goal_state_to_actions.end()) {
+    if (!_goal_state_to_actions.contains(state)) {
       // no action can go wrong in this graph, so list all of them
-      set<int> x = state_actions.second;
-      _goal_state_to_actions[state] = unordered_set<int>(state_actions.second.begin(), state_actions.second.end());
+      const set<int>& x = state_actions.second;
+      _goal_state_to_actions.set(state, new set<int>(x.begin(), x.end()));
       newly_goal_reaching_states.insert(state);
     }
   }
@@ -327,7 +327,7 @@ void Goal_Reachability_Manager::print() {
   if (!valid) {
     for (int i=0; i<10; i++) LOG << "ERROR!!!" << endl;
   }
-  //_graph.print(_goal_state_to_actions);
+  //_graph.print(&_goal_state_to_actions);
 }
 
 bool Goal_Reachability_Manager::no_change_since_last_check() {

@@ -15,6 +15,7 @@ using namespace std;
 #include "State_Action_To_Stateaction.h"
 #include "Int_Bitmap.h"
 #include "Int_Iterable_Bitmap.h"
+#include "Int_Iterable_Bitmap_Map.h"
 
 // NOTES
 // Any lone (no in OR out arcs) state is removed
@@ -48,7 +49,7 @@ class State_Action_Graph {
     State_Action_Graph(); // plain
     State_Action_Graph(const State_Action_Graph& existing); // copy
 
-    State_Action_Graph reachable_subgraph(const unordered_map<int, unordered_set<int>>& goal_state_to_actions, const vector<Success>& successes, vector<int> goal_states);
+    State_Action_Graph reachable_subgraph(Int_Iterable_Bitmap_Map<set<int>>* goal_state_to_actions, const vector<Success>& successes, vector<int> goal_states);
 
     // edits
     bool add(const Success& success);
@@ -57,7 +58,7 @@ class State_Action_Graph {
     void clear();
 
     int approx_num_nodes();
-    void print(const unordered_map<int, unordered_set<int>>& _goal_state_to_actions);
+    void print(Int_Iterable_Bitmap_Map<set<int>>* _goal_state_to_actions);
 
     // graph traversal
 
