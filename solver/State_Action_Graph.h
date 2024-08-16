@@ -16,6 +16,7 @@ using namespace std;
 #include "Int_Bitmap.h"
 #include "Int_Iterable_Bitmap.h"
 #include "Int_Iterable_Bitmap_Map.h"
+#include "Stopwatch.h"
 
 // NOTES
 // Any lone (no in OR out arcs) state is removed

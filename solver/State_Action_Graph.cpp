@@ -27,6 +27,7 @@ State_Action_Graph::State_Action_Graph(const State_Action_Graph& existing) {
 }
 
 State_Action_Graph State_Action_Graph::reachable_subgraph(Int_Iterable_Bitmap_Map<set<int>>* goal_state_to_actions, const vector<Success>& successes, vector<int> goal_states) {
+  Stopwatch::store["reachable_subgraph"].start();
   State_Action_Graph new_graph;
 
   Int_Bitmap backwards_expanded;
@@ -119,6 +120,7 @@ State_Action_Graph State_Action_Graph::reachable_subgraph(Int_Iterable_Bitmap_Ma
   }
 
   assert(new_graph.consistency_check());
+  Stopwatch::store["reachable_subgraph"].stop();
   return new_graph;
 }
 

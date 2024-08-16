@@ -3,6 +3,7 @@
 #include "Strategies.h"
 #include <csignal>
 #include "Stopwatch.h"
+#include "Int_Iterable_Bitmap_Map.h"
 
 /*
 void scrap() {
@@ -41,6 +42,71 @@ void scrap() {
 }
 */
 
+void test() {
+  Int_Iterable_Bitmap_Map<set<int>> my_map;
+  unordered_map<int, set<int>*> base_map;
+
+  for (int i=0; i<100; i++) {
+    my_map.set(i, new set<int>());
+    base_map[i] = new set<int>();
+  }
+
+
+  my_map.get(10)->insert(100);
+  base_map[10]->insert(100);
+
+  for (int i=50; i<150; i++) {
+    assert(my_map.contains(i) == (base_map.find(i) != base_map.end()));
+  }
+
+  base_map.erase(40);
+  my_map.erase(40);
+  base_map.erase(60);
+  my_map.erase(60);
+
+  for (int i=50; i<150; i++) {
+    assert(my_map.contains(i) == (base_map.find(i) != base_map.end()));
+  }
+
+
+  for (int i=0; i<10000; i++) {
+    int key = i%100;
+    int add = (i*i)%3;
+    int num_vals = (i*i*i)%10;
+
+    if (add==1) {
+      set<int>* s1 = new set<int>();
+      set<int>* s2 = new set<int>();
+      for (int j=0; j<num_vals; j++) {
+        s1->insert(j);
+        s2->insert(j);
+      }
+
+      base_map[key] = s1;
+      my_map.set(key, s2);
+    } else {
+      base_map.erase(key);
+      my_map.erase(key);
+    }
+  }
+
+
+  for (int i=0; i<150; i++) {
+    assert(base_map.size() == my_map.size());
+    if (base_map[i] == NULL) {
+      base_map[i] = new set<int>();
+    }
+    assert(base_map[i]->size() == my_map.get(i)->size());
+  }
+
+  assert(my_map.size() == base_map.size());
+  assert(my_map.get(10)->size() == base_map[10]->size());
+
+  LOG << "ALL PASSED" << endl;
+  assert(false);
+  exit(0);
+}
+
 void signalHandler( int signum ) {
    cout << "Interrupt signal (" << signum << ") received.\n";
    Stopwatch::print_store();
@@ -71,10 +137,13 @@ void main_orchestratator() {
 int main(int argc, char **argv) {
   signal(SIGINT, signalHandler);  
 
+
   // Parse in command line arguments, and problem specific attributes
   Global::problem = Problem(argc, argv);
 
   Log::inform_colours_active(!Global::problem.evaluation_mode);
+
+  //test();
 
   // Setup MPI
   if (Global::problem.MPI_active) { 

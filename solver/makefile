@@ -90,6 +90,7 @@ HEADERS	= main.h \
 		  State_Action_To_Stateaction.h \
 		  Int_Bitmap.h \
 		  Int_Iterable_Bitmap.h \
+		  Int_Iterable_Bitmap_Map.h \
 		  Heuristics.h \
 		  Single_Layer_Of_Queue.h \
 		  Queue_Reference.h \
