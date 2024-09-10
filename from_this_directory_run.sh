@@ -48,6 +48,9 @@ cat pdr/options.h | grep \^\#define | grep -v OPTIONS_H | cut -d\  -f2-
 echo STOP_EXTRA_SETTINGS
 
 TMP_DIR=`pwd`/tmp/tmp_`python3 get_tmp_name.py`
+#TMP_DIR=`pwd`/tmp/tmp_TEST
+
+
 mkdir $TMP_DIR
 echo TMP_DIR: $TMP_DIR
 
@@ -67,9 +70,20 @@ fi
 DOMAIN_NO_COMMENTS=$TMP_DIR/tmp_commentless_domain.pddl
 cat $DOMAIN | sed -e 's/;.*$//' > $DOMAIN_NO_COMMENTS
 
-VAL_DOMAIN=$TMP_DIR/tmp_cleaned_domain.pddl
-$USED_PYTHON extract/clean_domain_for_val.py $DOMAIN_NO_COMMENTS > $VAL_DOMAIN
-#DOMAIN=$ORIGINAL_DOMAIN
+
+USED_DOMAIN=$TMP_DIR/tmp_cleaned_domain.pddl
+
+if [ $NONDETERMINISTIC -eq "1" ]
+then
+    $USED_PYTHON convert_out_oneof.py $DOMAIN_NO_COMMENTS > $USED_DOMAIN
+else
+    $USED_PYTHON extract/clean_domain_for_val.py $DOMAIN_NO_COMMENTS > $USED_DOMAIN
+fi
+
+
+# to turn off the above oneof convesion
+#cp $DOMAIN_NO_COMMENTS $USED_DOMAIN
+
 
 if [ $USE_FD_PARSER -eq "1" ]
 then 
@@ -93,7 +107,7 @@ fi
 if [ $NONDETERMINISTIC -eq "1" ]
 then
     # use the modified direct madagascar parser
-    ./nondeterministic_frontend/pfronten $DOMAIN $PROBLEM -l $TMP_DIR
+    ./nondeterministic_frontend/pfronten $USED_DOMAIN $PROBLEM -l $TMP_DIR
 
     tail -n 1 $TMP_DIR/tmp_transition_unordered.cnf > $TMP_DIR/tmp_transition.cnf
     echo "" >> $TMP_DIR/tmp_transition.cnf
@@ -216,7 +230,7 @@ then
             echo FOUND A COMBINED PLAN
             python3 ../isolate_subproblems/combine_partial_plans.py $TMP_DIR/partial_plan* > $TMP_DIR/plan
             ALL_SUBPROBLEMS_SAT=1
-            ../VAL/build/linux64/release/bin/Validate $VAL_DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/itermediate_val_out
+            ../VAL/build/linux64/release/bin/Validate $USED_DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/itermediate_val_out
             FOUND_SUCCESFUL_COMBINED_PLAN=`cat $TMP_DIR/itermediate_val_out | grep --color "Plan valid" | wc -l`
         else
             ALL_SUBPROBLEMS_SAT=0
@@ -238,7 +252,7 @@ then
             # or the components are all sat (but there are multiple subproblems, and their combination does not make a valid overall plan)
             #   Find the fault in the plan, find all corresponding subproblems and combine as before
 
-            VAL_ADVICE=`../VAL/build/linux64/release/bin/Validate -v $VAL_DOMAIN $PROBLEM $TMP_DIR/plan | grep Advice -A 999999 | grep " to "`
+            VAL_ADVICE=`../VAL/build/linux64/release/bin/Validate -v $USED_DOMAIN $PROBLEM $TMP_DIR/plan | grep Advice -A 999999 | grep " to "`
 
             $USED_PYTHON ../isolate_subproblems/combine_subproblems.py $TMP_DIR $num_isolate_instances $ALL_SUBPROBLEMS_SAT $VAL_ADVICE >> $TMP_DIR/tmp_merging_advice.txt
             echo MERGING ADVICE:
@@ -293,20 +307,24 @@ then
     fi
 fi
 
-# Check resulting plan
-echo ./VAL/build/linux64/release/bin/Validate $VAL_DOMAIN $PROBLEM $TMP_DIR/plan
-./VAL/build/linux64/release/bin/Validate $VAL_DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/val_out
+if [ $NONDETERMINISTIC -eq "0" ]
+then
+    # Check resulting plan
+    echo ./VAL/build/linux64/release/bin/Validate $USED_DOMAIN $PROBLEM $TMP_DIR/plan
+    ./VAL/build/linux64/release/bin/Validate $USED_DOMAIN $PROBLEM $TMP_DIR/plan > $TMP_DIR/val_out
 
-plan_valid=`cat $TMP_DIR/val_out | grep --color "Plan valid" | wc -l`
+    plan_valid=`cat $TMP_DIR/val_out | grep --color "Plan valid" | wc -l`
 
-if [ $plan_valid -eq "1" ]
-then 
-    #export GREP_COLORS='ms=01;32'
-    cat $TMP_DIR/val_out | grep "Plan valid" | green_text
-else
-    #export GREP_COLORS='ms=01;31'
-    cat $TMP_DIR/val_out | red_text
+    if [ $plan_valid -eq "1" ]
+    then 
+        #export GREP_COLORS='ms=01;32'
+        cat $TMP_DIR/val_out | grep "Plan valid" | green_text
+    else
+        #export GREP_COLORS='ms=01;31'
+        cat $TMP_DIR/val_out | red_text
+    fi
 fi
+
 
 ISOLATE_SUBPROBLEM_SIMULATED_DURATION=$(awk "BEGIN {print ($(date +%s.%N)-$ISOLATE_SUBPROBLEM_SIMULATED_START_STOPWATCH)}")
 ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME=$(awk "BEGIN {print ($ISOLATE_SUBPROBLEM_SIMULATED_TOTAL_TIME+$ISOLATE_SUBPROBLEM_SIMULATED_DURATION)}")
