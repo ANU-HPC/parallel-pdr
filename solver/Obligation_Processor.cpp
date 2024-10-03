@@ -62,6 +62,13 @@ void Obligation_Processor::process_obligation(const Obligation& original_obligat
         return;
       } else {
         set_reason_from_solver(original_obligation, end_reasons_layer);
+
+
+        // check this reason is a valid reason
+        //vector<int> reason_lits = _reason.contextless_reason().reason();
+        //bool valid = !_end_reasons_layer_to_solver[end_reasons_layer]->solve(assumptions);
+        //assert(valid);
+
       }
     }
   } else {

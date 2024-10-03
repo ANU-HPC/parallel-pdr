@@ -106,15 +106,15 @@ unordered_set<int> Goal_Reachability_Manager::scc_iteration_non_goal_reaching_st
   Stopwatch::store["search for what is goal reaching"].start();
   // do a search through the SCC graph labelling everything that can reach the goal as a goal state
   set<int> frontier = set<int>(goal_sccs.begin(), goal_sccs.end());
-  set<int> seen; // TODO don't double up (just for efficiency)
+  set<int> seen;
   while(frontier.size()) {
     const int goal_scc = *frontier.begin();
     frontier.erase(goal_scc);
 
-    // TODO necessary?
     for (int scc : scc_to_sccs_that_go_to_it[goal_scc]) {
       if (seen.find(scc) == seen.end()) {
         frontier.insert(scc);
+        seen.insert(scc);
       }
     }
 

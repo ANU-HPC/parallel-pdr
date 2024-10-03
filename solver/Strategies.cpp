@@ -95,7 +95,6 @@ bool Strategies::run_default() {
   // is very expensive to pass through
   queue.inform_of_global_reachability_graph(goal_reachability_manager.get_global_graph());
   goal_reachability_manager.inform_of_layer_graph(queue.get_layer_graph());
-  LOG << "ONLY ONCE" << endl;
 
   // tmp unpackers
   tuple<int, Success> worker_success;
