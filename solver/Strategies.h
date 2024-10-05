@@ -49,6 +49,11 @@ class Strategies {
     int one_worker_results;
     int more_than_one_worker_results;
 
+    /*
+    void copy_over_layers(int k);
+    bool layers_shifted_since_last_copy(int k);
+    */
+
     bool keep_processing();
 
     // set up everything we need
@@ -57,6 +62,9 @@ class Strategies {
     Worker_Interface worker_interface;
     Goal_Reachability_Manager goal_reachability_manager; // only for nondeterminism
     Plan_Builder deterministic_plan_builder; // only for deterministic
+
+    // for nondeterministic
+    vector<set<vector<int>>> layer_copy;
 
     const int WHOLE_REACHABILITY_GRAPH_SCC_REFRESH_RATE = 400;
     bool whole_reachability_graph_scc_refresh();

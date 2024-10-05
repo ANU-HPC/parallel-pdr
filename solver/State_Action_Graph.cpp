@@ -144,7 +144,7 @@ bool State_Action_Graph::add(const Success& success) {
     ret_val = true;
   } else {
     ret_val = false;
-    LOG << "adding a stateaction already registered" << endl;
+    //LOG << "adding a stateaction already registered" << endl;
   }
 
   _state_to_actions[original_state_id].insert(action);

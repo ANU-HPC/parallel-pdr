@@ -88,8 +88,9 @@ bool Strategies::keep_processing() {
 
 
 
-
 bool Strategies::run_default() {
+  LOG << "NOTE: state action graph getting repeated aditions" << endl;
+  LOG << "using random heuristic" << endl;
   Global::active_heuristics = set<int>({Heuristics::NONE, Heuristics::RANDOM});
 
   // is very expensive to pass through
@@ -338,9 +339,8 @@ bool Strategies::run_default() {
       worker_successes->clear();
 
       // convergence check
-
       LOG << "after pushing" << endl;
-      //layers.print();
+
 
       // !Global::problem.nondeterministic && 
       if (layers.same_as_previous(layer)) {
@@ -352,3 +352,78 @@ bool Strategies::run_default() {
     }
   }
 }
+
+
+
+
+
+
+
+/*
+
+
+    //LOG << "layer copy sizes: " << endl;
+
+    //for (auto it=layer_copy.begin(); it!=layer_copy.end(); it++) {
+      //LOG << it->size() << endl; 
+    //}
+
+    LOG << "shifted?" << endl;
+    if (layers_shifted_since_last_copy(k)) {
+      LOG << "Layers pushed, confident stop" << endl;
+      layers.print();
+      return false;
+    }
+
+    copy_over_layers(k);
+
+
+void Strategies::copy_over_layers(int k) {
+  layer_copy.clear();
+  for (int i=0; i<=k; i++) {
+    layer_copy.push_back(set<vector<int>>());
+    auto reasons = *layers.reasons_not_in_next_layer(i);
+
+    for (auto it=reasons.begin(); it!=reasons.end(); it++) {
+      layer_copy[i].insert(it->reason());
+    }
+    //LOG << "COPY DETAILS: " << layer_copy[layer_copy.size()-1].size() << endl;
+  }
+}
+
+bool helper_equal(const set<vector<int>>& copy, unordered_set<Contextless_Reason, Contextless_Reason_Hash>* base) {
+  //LOG << "asking if two are the same, sizes: " << copy.size() << " " << base->size() << endl;
+  if (copy.size() != base->size()) return false;
+
+  for (auto it=base->begin(); it!=base->end(); it++) {
+    if (copy.find(it->reason()) == copy.end()) {
+      //LOG << "missing reason" << endl;
+      return false; 
+    }
+  }
+
+  return true;
+}
+
+bool Strategies::layers_shifted_since_last_copy(int k) {
+  LOG << "layer_copy size" << layer_copy.size() <<  endl;
+  for (int i=k; i>=0; i--) {
+    if (layers.reasons_not_in_next_layer(i)->size() == 0) {
+      LOG << "returning true, as at layer " << i << " is the same as last?" << endl;
+      return true;
+    }
+
+    LOG << "is the current " << i << " equal to the previous " << i-1 << endl;
+    LOG << "layer_copy " << i-1 << " " << layer_copy[i-1].size() << endl;
+    LOG << "layers.re..." << i << " " << layers.reasons_not_in_next_layer(i)->size() << endl;
+
+    if (!helper_equal(layer_copy[i-1], layers.reasons_not_in_next_layer(i))) {
+      LOG << " Different" << endl;
+      return false;
+    }
+    LOG << " Same " << endl;
+  }
+  LOG << "shouldn't get heree" << endl;
+  return true;
+}
+*/
