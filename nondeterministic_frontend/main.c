@@ -711,8 +711,11 @@ void writeInvariantClauses() {
                 int otherAtom = feVAR(i);
                 int otherVar = atomTimeSlotToCnfVar(otherAtom, slot);
                 if (otherVar < baseVar) continue;
-                //fprintf(cnfFile, "    c baseAtom:%d phase:%d\n", baseAtom, phase);
-                fprintf(cnfFile, "%d %d 0\n", baseVar, otherSign * otherVar);
+                if (baseVar == (otherSign*otherVar)) {
+                    fprintf(cnfFile, "%d 0\n", baseVar);
+                } else {
+                    fprintf(cnfFile, "%d %d 0\n", baseVar, otherSign * otherVar);
+                }
                 numClauses++;
             }
 
@@ -724,8 +727,11 @@ void writeInvariantClauses() {
                 int otherAtom = feVAR(i);
                 int otherVar = atomTimeSlotToCnfVar(otherAtom, slot);
                 if (otherVar < baseVar) continue;
-                //fprintf(cnfFile, "    c baseAtom:%d phase:%d\n", baseAtom, phase);
-                fprintf(cnfFile, "%d %d 0\n", -baseVar, otherSign * otherVar);
+                if (-baseVar == (otherSign*otherVar)) {
+                    fprintf(cnfFile, "%d 0\n", -baseVar);
+                } else {
+                    fprintf(cnfFile, "%d %d 0\n", -baseVar, otherSign * otherVar);
+                }
                 numClauses++;
             }
         }
@@ -1108,6 +1114,12 @@ void writeExtraJson() {
         case conj:
             writeExtraJsonGoalHelper(goal->juncts);
             break;
+        case TRUE:
+            printf("Parser says THE GOAL IS REACHABLE\n");
+            exit(0);
+        case FALSE:
+            printf("Parser says NO PLAN EXISTS \n");
+            exit(0);
         default:
             printf("ERROR: don't know how to handle goal %d\n", goal->t);
             exit(1);

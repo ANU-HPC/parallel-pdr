@@ -107,7 +107,7 @@ fi
 if [ $NONDETERMINISTIC -eq "1" ]
 then
     # use the modified direct madagascar parser
-    ./nondeterministic_frontend/pfronten $USED_DOMAIN $PROBLEM -l $TMP_DIR
+    ./nondeterministic_frontend/pfronten $USED_DOMAIN $PROBLEM -I -l $TMP_DIR
 
     tail -n 1 $TMP_DIR/tmp_transition_unordered.cnf > $TMP_DIR/tmp_transition.cnf
     echo "" >> $TMP_DIR/tmp_transition.cnf
