@@ -495,47 +495,71 @@ void Obligation_Processor::set_reason_from_solver(const Obligation& original_obl
       original_obligation);
 }
 
+
 void Obligation_Processor::ensure_solver_exists_for_end_reason_layer(int end_reasons_layer) {
   assert (end_reasons_layer>=0);
+
   while (end_reasons_layer >= _end_reasons_layer_to_solver.size()) {
     _end_reasons_layer_to_solver.push_back(new Lingeling(_base_solver));
-    _end_reasons_layer_to_solver[_end_reasons_layer_to_solver.size()-1]->set_name("end_reason_layer_" + std::to_string(end_reasons_layer));
+    int new_id = _end_reasons_layer_to_solver.size()-1;
+    _end_reasons_layer_to_solver[new_id]->set_name("end_reason_layer_" + std::to_string(new_id));
+  }
 
-    if (_layer_to_consistency_solver.size() == 0) _layer_to_consistency_solver.push_back(NULL);
-    else                                          _layer_to_consistency_solver.push_back(new Lingeling());
-
+  while (end_reasons_layer >= end_layer_to_chosen_outcome_added_clauses.size()) {
     end_layer_to_chosen_outcome_added_clauses.push_back(vector<vector<int>>());
   }
+
+  while (end_reasons_layer >= _layer_to_consistency_solver.size()) {
+    if (_layer_to_consistency_solver.size() == 0) _layer_to_consistency_solver.push_back(NULL);
+    else { 
+      _layer_to_consistency_solver.push_back(new Lingeling());
+      int new_id = _layer_to_consistency_solver.size()-1;
+      _layer_to_consistency_solver[new_id]->set_name("layer_to_consistency_solver_" + std::to_string(new_id));
+    }
+  }
 }
 
-void Obligation_Processor::reset_nondeterministic_solvers_for_new_k(int k) {
-  LOG << "LOOK INTO THIS FURTHER" << endl; // maybe get rid of the ensure exists, and just have the "get ready for new k"
+void Obligation_Processor::reset_nondeterministic_solvers_for_new_k(int k, bool keep_non_goal_layers) {
+  LOG << k << " " << keep_non_goal_layers << endl;
   _k = k;
-  LOG << "new k " << k << endl;
 
-  const int num_standard_solvers = _end_reasons_layer_to_solver.size();
-
-  assert(num_standard_solvers == k);
-
-  for (int i=0; i<num_standard_solvers; i++) {
+  // remove progress solvers
+  for (int i=0; i<_end_reasons_layer_to_solver.size(); i++) {
     delete _end_reasons_layer_to_solver[i];
   }
-
   _end_reasons_layer_to_solver.clear();
 
-  for (int end_layer=0; end_layer<num_standard_solvers; end_layer++) {
-    //ensure_solver_exists_for_end_reason_layer(end_layer);
-    Lingeling* new_solver = new Lingeling(_base_solver);
-    LG(LCT) << "resetting end_reason_layer_" + std::to_string(end_layer) << endl;
-    new_solver->set_name("end_reason_layer_" + std::to_string(end_layer));
-    new_solver->add_clauses(end_layer_to_chosen_outcome_added_clauses[end_layer]);
-    _end_reasons_layer_to_solver.push_back(new_solver);
+  // if removing non goal layers, reset the standalone solvers too
+  if (!keep_non_goal_layers) {
+    for (int i=0; i<_layer_to_consistency_solver.size(); i++) {
+      delete _layer_to_consistency_solver[i];
+    }
+    _layer_to_consistency_solver.clear();
+  }
+
+  // now for adding
+  ensure_solver_exists_for_end_reason_layer(k);
+
+  // readd the progress clauses to the reset solvers if wanted
+  if (keep_non_goal_layers) {
+    for (int i=0; i<_end_reasons_layer_to_solver.size(); i++) {
+      _end_reasons_layer_to_solver[i]->add_clauses(end_layer_to_chosen_outcome_added_clauses[i]);
+    }
+  }
+    
+  // last of all, if wiping them all clean, add back the goal
+  if (!keep_non_goal_layers) {
+    for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
+      Reason_From_Orchestrator goal_condition_reason = Reason_From_Orchestrator(Contextless_Reason(vector<int>({-*it}), 0, 0), 0);
+      if (Global::problem.nondeterministic) add_reason_nondeterministic(goal_condition_reason);
+      else                                  add_reason_deterministic(goal_condition_reason);
+    }
   }
 }
 
-/*
 int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer) {
   //LOG << " SLOW!" << endl;
+  //LOG << "TESTING FOR STATE: " << state.to_string() << endl;
 
   ensure_solver_exists_for_end_reason_layer(upper_known_satisfying_layer);
 
@@ -546,16 +570,26 @@ int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& st
 
   if (state.is_goal()) return 0;
 
-
+  int lowest_satisfying_layer;
   for (int i=1;;i++) {
     if (_layer_to_consistency_solver[i]->solve(state.get_state())) {
       //LOG << "SLOW END" << endl;
-      return i;
+      lowest_satisfying_layer = i;
+      break;
     }
   }
-}
-*/
 
+  // check all the higher ones also allow it
+  for (int i=lowest_satisfying_layer+1; i<_layer_to_consistency_solver.size(); i++) {
+    bool higher_sat = _layer_to_consistency_solver[i]->solve(state.get_state());
+    assert(higher_sat);
+    if (!higher_sat) LOG << "ERROR, SAT solvers, satisfies: " << lowest_satisfying_layer << " but not " << i << " said it would satisfy " << upper_known_satisfying_layer << endl;
+  }
+
+  return lowest_satisfying_layer;
+}
+
+/*
 int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& state, int upper_known_satisfying_layer) {
   if (upper_known_satisfying_layer == 0) {
     assert(state.is_goal());
@@ -568,6 +602,7 @@ int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& st
   int highest_unsat = 0;
 
   while (lowest_sat != highest_unsat+1) {
+    LOG << lowest_sat << " : " << highest_unsat << endl;
     const int mid = (lowest_sat+highest_unsat)/2;
     const bool sat_at_mid = _layer_to_consistency_solver[mid]->solve(state.get_state());
     if (sat_at_mid) {
@@ -576,8 +611,10 @@ int Obligation_Processor::get_lowest_satisfying_layer(const Compressed_State& st
       highest_unsat = mid;
     }
   }
+  LOG << "returning: " << lowest_sat << endl;
   return lowest_sat;
 }
+*/
 
 
 

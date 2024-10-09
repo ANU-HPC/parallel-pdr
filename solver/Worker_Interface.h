@@ -23,7 +23,7 @@ class Worker_Interface {
     void handle_obligation(const Obligation& obl, bool open_children, int worker);
     void handle_reason(const Reason_From_Orchestrator& reason, int worker);
     void handle_reason_all_workers(const Reason_From_Orchestrator& reason);
-    void reset_nondeterministic_solvers_for_new_k(int k);
+    void reset_nondeterministic_solvers_for_new_k(int k, bool keep_non_goal_layers);
     void process_inbox();
     vector<tuple<int, Reason_From_Worker>>* get_returned_reasons_buffer();
     vector<tuple<int, Success>>* get_returned_successes_buffer();

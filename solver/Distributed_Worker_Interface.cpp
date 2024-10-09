@@ -35,9 +35,9 @@ void Distributed_Worker_Interface::handle_reason(const Reason_From_Orchestrator&
   Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_REASON_FROM_ORCHESTRATOR, data, size);
 }
 
-void Distributed_Worker_Interface::reset_nondeterministic_solvers_for_new_k(int k, int worker) {
-  int size = 1;
-  int data[1] = { k };
+void Distributed_Worker_Interface::reset_nondeterministic_solvers_for_new_k(int k, bool keep_non_goal_layers, int worker) {
+  int size = 2;
+  int data[2] = { k, keep_non_goal_layers ? 1 : 0 };
   Global::mpi_interface.isend_then_delete_message(worker, MPI_Interface::MESSAGE_TAG_RESET_SOLVERS_FOR_NEW_K, data, size);
 }
 

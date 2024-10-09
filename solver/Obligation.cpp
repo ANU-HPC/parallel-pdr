@@ -18,11 +18,18 @@ string Obligation::to_short_string() const {
 }
 
 string Obligation::to_string() const {
-  return "{ OBL, L:" + std::to_string(_layer) 
-    + " S:" + std::to_string(_subproblem) 
-    + " REDUCE:" + std::to_string(_reduce_reason_add_successor_to_queue) 
-    + " BANNED_ACTIONS: " + Utils::to_string(_banned_actions)
-    + " STATE: " + _compressed_state.to_string()  + " }";
+  if (VERBOSE_STATE_STRING) {
+    return "{ OBL, L:" + std::to_string(_layer) 
+      + " S:" + std::to_string(_subproblem) 
+      + " REDUCE:" + std::to_string(_reduce_reason_add_successor_to_queue) 
+      + " BANNED_ACTIONS: " + Utils::to_string(_banned_actions)
+      + " STATE: " + _compressed_state.to_string()  + " }";
+  } else {
+    return "{OBL, L:" + std::to_string(_layer) 
+      + ", ID:" + std::to_string(_compressed_state.id())
+      + " BA:" + Utils::to_string(_banned_actions) + "}";
+
+  }
 }
 
 bool Obligation::operator==(const Obligation& other) const {

@@ -130,7 +130,7 @@ string Utils::to_symbols_string(int x) {
 string Utils::to_symbols_string(vector<int> x) {
   // give by copy
 
-  string h = "[" + hash_string(Utils::hash(x)) + "]";
+  string h = "";// "[" + hash_string(Utils::hash(x)) + "]";
 
   string ret_val = "{" + h;
   for (int i=0; i<x.size(); i++) {
@@ -178,7 +178,7 @@ void Utils::print(unordered_map<int, unordered_set<int>> x) {
 string Utils::to_string(vector<int> x) {
   // give by copy
 
-  string h = "[" + hash_string(Utils::hash(x)) + "]";
+  string h = "";//"[" + hash_string(Utils::hash(x)) + "]";
 
   string ret_val = "{" + h;
   for (int i=0; i<x.size(); i++) {

@@ -61,7 +61,8 @@ void MPI_Worker::run() {
       return;
     } else if (mpi_tag == MPI_Interface::MESSAGE_TAG_RESET_SOLVERS_FOR_NEW_K) {
       int new_k = data[0];
-      _obligation_processor->reset_nondeterministic_solvers_for_new_k(new_k);
+      bool keep_non_goal_layers = data[1]==1;
+      _obligation_processor->reset_nondeterministic_solvers_for_new_k(new_k, keep_non_goal_layers);
     } else {
       LOG << "ERROR: Unknown message tag: " << mpi_tag << endl;
       exit(1);

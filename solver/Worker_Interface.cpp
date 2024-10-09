@@ -44,13 +44,13 @@ void Worker_Interface::process_inbox() {
   if (Global::problem.MPI_active) _distributed_worker_interface->process_inbox();
 }
 
-void Worker_Interface::reset_nondeterministic_solvers_for_new_k(int k) {
+void Worker_Interface::reset_nondeterministic_solvers_for_new_k(int k, bool keep_non_goal_layers) {
   if (Global::problem.MPI_active) {
     for (auto it=Global::mpi_interface.ENABLED_WORKERS.begin(); it!=Global::mpi_interface.ENABLED_WORKERS.end(); it++) {
-      _distributed_worker_interface->reset_nondeterministic_solvers_for_new_k(k, *it);
+      _distributed_worker_interface->reset_nondeterministic_solvers_for_new_k(k, keep_non_goal_layers, *it);
     }
   }
-  else _serial_worker_interface->reset_nondeterministic_solvers_for_new_k(k);
+  else _serial_worker_interface->reset_nondeterministic_solvers_for_new_k(k, keep_non_goal_layers);
 }
 
 vector<tuple<int, Reason_From_Worker>>* Worker_Interface::get_returned_reasons_buffer() {

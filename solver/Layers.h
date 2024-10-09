@@ -14,6 +14,7 @@ class Layers {
     bool same_as_previous(int layer);
     void print_sizes();
     void print();
+    void clear();
   private:
     void make_layer_exist(int layer);
 

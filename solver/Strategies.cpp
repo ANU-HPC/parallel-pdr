@@ -122,7 +122,7 @@ bool Strategies::run_default() {
 
   LOG << "initial state: " << initial_state.to_string() << endl;
 
-  worker_interface.reset_nondeterministic_solvers_for_new_k(1);
+  worker_interface.reset_nondeterministic_solvers_for_new_k(1, true);
   for(int k=1;; k++) {
     LOG << "starting layer k: " << k << endl;
 
@@ -281,12 +281,14 @@ bool Strategies::run_default() {
     //LOG << "before pushing" << endl;
     //layers.print();
 
-    if (Global::problem.nondeterministic) worker_interface.reset_nondeterministic_solvers_for_new_k(k+1);
+    if (Global::problem.nondeterministic) worker_interface.reset_nondeterministic_solvers_for_new_k(k+1, true);
 
     // completed the k, lets do a convergance check and clause pushing
     for (int layer=1; layer<=k+1; layer++) {
       LOG << "Clause pushing turned off in nondeterminism for now" << endl;
 
+#define PUSH 0
+#if PUSH == 1
       auto reasons_to_push = layers.reasons_not_in_next_layer(layer-1);
 
       // get all the "obligations"
@@ -340,11 +342,15 @@ bool Strategies::run_default() {
 
       // convergence check
       LOG << "after pushing" << endl;
+#endif
 
+
+      int x = goal_reachability_manager.get_global_graph()->approx_num_nodes();
+      LOG << "num states seen so far overall: " << x << endl;
 
       // !Global::problem.nondeterministic && 
       if (layers.same_as_previous(layer)) {
-        layers.print();
+        layers.print_sizes();
         LOG << "converged as layer " << layer << " is the same as the previous one" << endl;
         if (!Global::problem.evaluation_mode) worker_interface.finalize();
         return false;

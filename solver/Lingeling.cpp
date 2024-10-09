@@ -45,6 +45,7 @@ Lingeling::Lingeling(const char* fname) {
 
 Lingeling::~Lingeling() {
   // TODO destructors
+  if (LCT) LOG << "destroying solver: " << _name << endl;
   lglrelease(solver);
 }
 

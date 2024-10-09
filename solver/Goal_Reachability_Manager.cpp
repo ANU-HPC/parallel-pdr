@@ -269,6 +269,9 @@ unordered_set<int> Goal_Reachability_Manager::scc_find_newly_goal_reaching_state
   LOG << "num successes being used: " << successes.size() << endl;
   LOG << "Layer graph num states: " << _layer_graph->approx_num_nodes() << endl;
   LOG << "Global graph num states: " << _graph.approx_num_nodes() << endl;
+  LOG << "new goal states: " << Utils::to_string(goal_states) << endl;
+  //LOG << "known_goal_staes: ";
+  //_goal_state_to_actions.print();
 
   State_Action_Graph iterative_graph;
   if (run_on_whole_graph) {

@@ -29,7 +29,7 @@ class Obligation_Processor {
     Success last_interactions_success();
     Reason_From_Worker last_interactions_reason();
 
-    void reset_nondeterministic_solvers_for_new_k(int k);
+    void reset_nondeterministic_solvers_for_new_k(int k, bool keep_non_goal_layers);
   private:
     // calculate results from the solver
     // void set_success_open_children_unsat(const Obligation& original_obligation);

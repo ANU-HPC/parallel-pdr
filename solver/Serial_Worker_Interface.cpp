@@ -28,9 +28,9 @@ void Serial_Worker_Interface::handle_reason(const Reason_From_Orchestrator& reas
   else                                  _obligation_processor->add_reason_deterministic(reason);
 }
 
-void Serial_Worker_Interface::reset_nondeterministic_solvers_for_new_k(int k) {
+void Serial_Worker_Interface::reset_nondeterministic_solvers_for_new_k(int k, bool keep_non_goal_layers) {
   assert(Global::problem.nondeterministic);
-  _obligation_processor->reset_nondeterministic_solvers_for_new_k(k);
+  _obligation_processor->reset_nondeterministic_solvers_for_new_k(k, keep_non_goal_layers);
 }
 
 vector<tuple<int, Reason_From_Worker>>* Serial_Worker_Interface::get_returned_reasons_buffer() {

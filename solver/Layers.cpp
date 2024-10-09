@@ -1,5 +1,10 @@
 #include "Layers.h"
 
+void Layers::clear() {
+    _all_reasons_compare_just_reasons.clear();
+    _layer_to_reasons_last_appearing_here.clear();
+}
+
 // the return value is how many layers at the end to add to, makes it cleaner so 0 means don't bother, 1 is just here reason.layer() means everywhere
 int Layers::add_reason(const Contextless_Reason& reason) {
   const int new_layer = reason.layer();

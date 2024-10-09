@@ -21,7 +21,7 @@ class Serial_Worker_Interface {
     bool all_workers_idle();
     void handle_obligation(const Obligation& obl, bool open_children);
     void handle_reason(const Reason_From_Orchestrator& reason);
-    void reset_nondeterministic_solvers_for_new_k(int k);
+    void reset_nondeterministic_solvers_for_new_k(int k, bool keep_non_goal_layers);
     vector<tuple<int,Reason_From_Worker>>* get_returned_reasons_buffer();
     vector<tuple<int,Success>>* get_returned_successes_buffer();
   private:

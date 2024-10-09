@@ -225,8 +225,12 @@ int Compressed_State::MPI_message_size() const {
 
 string Compressed_State::to_string() const {
   //return "{CS, full:" + std::to_string(_guaranteed_full) + 
-  return "{CS ID:" + std::to_string(_id) + 
+  if (VERBOSE_STATE_STRING) {
+    return "{CS ID:" + std::to_string(_id) + 
     " " + Utils::to_symbols_string(_raw) + "}";
+  } else {
+    return "{ID:" + std::to_string(_id) + "}";
+  }
 }
 
 int Compressed_State::max_id() {

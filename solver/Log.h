@@ -66,6 +66,7 @@ class Log {
 #define QT 0 // Queue Tracking
 #define LT 0 // Layer Tracking
 #define LCT 0 // Clause added to solvers tracking
+#define VERBOSE_STATE_STRING 1
 
 #define LG(TYPE) if (TYPE) cout << Log::COLOUR_START(__FILE__) << Log::TIME_TEXT() << " :: " << Log::RANK_TEXT() << __FILE__ << ":" << __LINE__ << " :: " << __FUNCTION__ << " :: " << Log::COLOUR_END()
 
