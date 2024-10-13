@@ -29,6 +29,7 @@ class Open_States_Tracking_Queue {
     bool fully_empty();
     int lowest_layer_with_content();
     Obligation pop(const int heuristic);
+    void reset_seen_goal_reaching();
 
     void inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph);
     State_Action_Graph* get_layer_graph();

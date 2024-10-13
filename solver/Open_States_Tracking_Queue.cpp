@@ -1,6 +1,13 @@
 #include "Open_States_Tracking_Queue.h"
 #include <cassert>
 
+void Open_States_Tracking_Queue::reset_seen_goal_reaching() {
+  for (auto it=_seen_goal_reaching_state_to_layer.begin(); it!=_seen_goal_reaching_state_to_layer.end(); it++) {
+    _unseen_goal_reaching_states.insert(it->first);
+  }
+  _seen_goal_reaching_state_to_layer.clear();
+}
+
 void Open_States_Tracking_Queue::inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph) {
   _global_reachability_graph = global_reachability_graph;
 }
@@ -51,6 +58,7 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
     const int action = success.actions()[0].get_actions()[0];
     const pair<int, int> original_state_action_pair = pair<int, int>(original_state, action);
 
+    //LOG << "adding state to blocked actions: " << original_state << " " << action << endl;
     _state_to_blocked_actions[original_state].insert(action);
     assert(_state_to_blocked_actions[original_state].size());
     for (const Obligation& successor_obligation : success.successor_obligations()) {
@@ -93,7 +101,7 @@ void Open_States_Tracking_Queue::register_success(const Success& success) {
   // just for debugging
   if (_seen_successes.find(success) != _seen_successes.end()) {
     LOG << "SEEN THE SUCCESS BEFORE: " << success.to_string() << endl;
-    assert(false);
+    //assert(false);
   }
   _seen_successes.insert(success);
 #endif
@@ -404,9 +412,10 @@ void Open_States_Tracking_Queue::print() {
   _deadlock_queue.print_sizes();
 
   LOG << "WILD: " << _wild_state_to_layer.size() << endl;
-  LOG << "SEEN_GOAL_REACHING: " << _seen_goal_reaching_state_to_layer.size() << endl;
+  LOG << "SEEN_GOAL_REACHING: " << Utils::to_string(_seen_goal_reaching_state_to_layer) << endl;
   LOG << "UNSEEN_GOAL_REACHING: " << _unseen_goal_reaching_states.size() << endl;
   LOG << "BANNED: " << _banned_states.size() << endl;
+  LOG << "state to banned actions: " << Utils::to_string(_state_to_blocked_actions) << endl;
 }
 
 

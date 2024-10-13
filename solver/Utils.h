@@ -27,6 +27,8 @@ class Utils {
     static string to_string(deque<int> x);
     static string to_string(vector<bool> x);
     static string to_string(set<int> x);
+    static string to_string(unordered_map<int, unordered_set<int>> x);
+    static string to_string(unordered_map<int, int> x);
     static string to_string(unordered_set<int> x);
     static string to_string(int* data, int size);
     static string to_string(int* data, int start, int stop);

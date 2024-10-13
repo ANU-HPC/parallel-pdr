@@ -23,6 +23,7 @@ class Wrapper_Queue {
     void inform_of_global_reachability_graph(State_Action_Graph* global_reachability_graph);
     void print();
     State_Action_Graph* get_layer_graph();
+    void reset_seen_goal_reaching();
   private:
     Default_Queue _deterministic;
 

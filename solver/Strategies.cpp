@@ -122,12 +122,23 @@ bool Strategies::run_default() {
 
   LOG << "initial state: " << initial_state.to_string() << endl;
 
-  worker_interface.reset_nondeterministic_solvers_for_new_k(1, true);
   for(int k=1;; k++) {
     LOG << "starting layer k: " << k << endl;
 
+    worker_interface.reset_nondeterministic_solvers_for_new_k(k, false);
+
+    // add the goal to the reasons object
+    layers.clear();
+    for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
+      vector<int> bad_state = vector<int>({-*it});
+      Contextless_Reason reason = Contextless_Reason(bad_state, 0, 0);
+      layers.add_reason(reason);
+    }
+
+    queue.reset_seen_goal_reaching();
+
     // Put the initial state in the queue
-    Obligation initial_obligation = Obligation(initial_state, k, 0, true, vector<int>());
+    Obligation initial_obligation = Obligation(initial_state, 1, 0, true, vector<int>());
     queue.push_initial(initial_obligation, k);
 
     LG(ST) << "pushing initial obligation to the queue: " << initial_obligation.to_string() << endl;
@@ -281,9 +292,12 @@ bool Strategies::run_default() {
     //LOG << "before pushing" << endl;
     //layers.print();
 
-    if (Global::problem.nondeterministic) worker_interface.reset_nondeterministic_solvers_for_new_k(k+1, true);
+    //if (Global::problem.nondeterministic) worker_interface.reset_nondeterministic_solvers_for_new_k(k+1, false);
 
     // completed the k, lets do a convergance check and clause pushing
+
+    int converged_at = -1;
+
     for (int layer=1; layer<=k+1; layer++) {
       LOG << "Clause pushing turned off in nondeterminism for now" << endl;
 
@@ -344,7 +358,6 @@ bool Strategies::run_default() {
       LOG << "after pushing" << endl;
 #endif
 
-
       int x = goal_reachability_manager.get_global_graph()->approx_num_nodes();
       LOG << "num states seen so far overall: " << x << endl;
 
@@ -352,9 +365,127 @@ bool Strategies::run_default() {
       if (layers.same_as_previous(layer)) {
         layers.print_sizes();
         LOG << "converged as layer " << layer << " is the same as the previous one" << endl;
-        if (!Global::problem.evaluation_mode) worker_interface.finalize();
+        if (!Global::problem.nondeterministic) {
+          if (!Global::problem.evaluation_mode) worker_interface.finalize();
+          return false;
+        } else {
+          LOG << "so, lets push everything up, then go to the next layer" << endl;
+          if (converged_at == -1) converged_at = layer;
+        }
+      }
+    }
+
+    if (converged_at != -1) {
+      LOG << "entering the special mode" << endl;
+      LOG << "collate/push up layers" << endl;
+      for (int layer=converged_at; layer<k; layer++) {
+        LOG << "deadling with clauses at layer " << layer << " not in the layer after" << endl;
+        unordered_set<Contextless_Reason, Contextless_Reason_Hash>* reasons = layers.reasons_not_in_next_layer(layer);
+
+        vector<Contextless_Reason> to_add;
+
+        for (auto it=reasons->begin(); it!=reasons->end(); it++) {
+          Contextless_Reason base_reason = *it;
+          Contextless_Reason reason = Contextless_Reason(base_reason.reason(), base_reason.layer()+1, 0);
+          to_add.push_back(reason);
+        }
+
+        for (auto it=to_add.begin(); it!=to_add.end(); it++) {
+          Contextless_Reason reason = *it;
+
+          const int layers_to_add_to = layers.add_reason(reason);
+
+          if (layers_to_add_to) {
+            worker_interface.handle_reason_all_workers(Reason_From_Orchestrator(reason, reason.layer()-layers_to_add_to+1));
+          }
+        }
+      }
+      LOG << "pushed up all the clauses (hopefully), what does it look like:" << endl;
+      layers.print_sizes();
+
+      LOG << "now, lets increment k to " << k+1 << " and see if we can push all the clauses" << endl;
+      worker_interface.reset_nondeterministic_solvers_for_new_k(k+1, true);
+
+      unordered_set<Contextless_Reason, Contextless_Reason_Hash>* reasons = layers.reasons_not_in_next_layer(k);
+      vector<Obligation> to_try_confirm_as_unsat_obligations;
+      for (auto it=reasons->begin(); it!=reasons->end(); it++) {
+        const Contextless_Reason& reason = *it;
+        to_try_confirm_as_unsat_obligations.push_back(Obligation(Compressed_State(reason.reason(), 0, false), k+1, 0, false, vector<int>()));
+      }
+
+      LOG << "got them all, now lets see if they are all UNSAT obligations, we will do this in a fixpoint style" << endl;
+
+      bool change = true;
+      while (change && (to_try_confirm_as_unsat_obligations.size())) {
+        change = false;
+        LOG << "sending off: " << to_try_confirm_as_unsat_obligations.size() << endl;
+        while (to_try_confirm_as_unsat_obligations.size()) {
+          worker_interface.process_inbox();
+          const set<int> workers = worker_interface.workers_wanting_work_snapshot();
+          for (auto it=workers.begin(); it!=workers.end(); it++) {
+            const int worker = *it; 
+
+            if (Utils::worker_to_steps(worker) != 1) continue;
+
+            if (to_try_confirm_as_unsat_obligations.size()) {
+              const Obligation& obligation = *to_try_confirm_as_unsat_obligations.rbegin();
+              worker_interface.handle_obligation(obligation, false, worker);
+              to_try_confirm_as_unsat_obligations.pop_back();
+            }
+          }
+        }
+
+        LOG << "Lets get the results" << endl;
+
+        // wait until all the work is completed
+        while (!worker_interface.all_workers_idle()) { 
+          worker_interface.process_inbox();
+        }
+
+        // get the results
+        vector<tuple<int, Success>>* worker_successes = worker_interface.get_returned_successes_buffer();
+        vector<tuple<int, Reason_From_Worker>>* worker_reasons = worker_interface.get_returned_reasons_buffer();
+
+        LOG << "UNSAT count: " <<  worker_reasons->size() << endl;
+        LOG << "SAT count: " <<  worker_successes->size() << endl;
+
+        change = worker_reasons->size();
+
+        // process the results
+        for (auto it=worker_reasons->begin(); it!=worker_reasons->end(); it++) {
+          worker_reason = *it; 
+          const Reason_From_Worker& reason_from_worker = get<1>(worker_reason);
+          const Contextless_Reason& reason = reason_from_worker.contextless_reason();
+
+          if (layers.add_reason(reason)) {
+            const Reason_From_Orchestrator reason_from_orchestrator = Reason_From_Orchestrator(reason, reason.layer());
+            worker_interface.handle_reason_all_workers(reason_from_orchestrator);
+          } else LOG << "WARNING: look into this" << endl;
+        }
+
+        // reschedule up the successful ones and go again
+        for (auto it=worker_successes->begin(); it!=worker_successes->end(); it++) {
+          const Obligation& obl = (get<1>(*it)).original_obligation();
+          to_try_confirm_as_unsat_obligations.push_back(obl);
+        }
+
+
+        // manually clear these buffers
+        worker_reasons->clear();
+        worker_successes->clear();
+      }
+
+      if (to_try_confirm_as_unsat_obligations.size()) {
+        LOG << "some that couldn't be reasons, damn..." << endl;
+      } else {
+        LOG << "all are reasons, this will perpetuate, UNSAT!" << endl;
+        layers.print_sizes();
         return false;
       }
+
+      LOG << "that didn't work, going to continue and try again later" << endl;
+      LOG << "======UNKNOWN==========" << endl;
+      return false;
     }
   }
 }

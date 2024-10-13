@@ -29,16 +29,16 @@ string Success::to_short_string() const {
 }
 
 string Success::to_string() const {
-  string ret_val = "{Success, original: " + _original_obligation.to_string() + " actions: (" + std::to_string(_actions.size()) + ") ";
+  string ret_val = "{Success, original: \n    " + _original_obligation.to_string() + "\n    actions: (" + std::to_string(_actions.size()) + ") ";
   
   for (auto it=_actions.begin(); it!=_actions.end(); it++) {
     ret_val += it->to_string() + ", "; 
   }
 
-  ret_val += "successors: (" + std::to_string(_successor_obligations.size()) + ") ";
+  ret_val += "\n    successors: (" + std::to_string(_successor_obligations.size()) + ")\n    ";
 
   for (auto it=_successor_obligations.begin(); it!=_successor_obligations.end(); it++) {
-    ret_val += it->to_string() + ", "; 
+    ret_val += it->to_string() + "\n    "; 
   }
   ret_val += "}";
   return ret_val;

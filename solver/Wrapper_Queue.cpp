@@ -1,5 +1,14 @@
 #include "Wrapper_Queue.h"
 
+void Wrapper_Queue::reset_seen_goal_reaching() {
+  if (Global::problem.nondeterministic) {
+    _nondeterministic.reset_seen_goal_reaching();
+  } else {
+    LOG << "shouldn't be doing this!" << endl;
+    assert(false);
+  }
+}
+
 void Wrapper_Queue::register_goal_reaching_state(const Compressed_State& state) {
   if (Global::problem.nondeterministic) {
     _nondeterministic.register_goal_reaching_state(state.id());

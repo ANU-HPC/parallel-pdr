@@ -221,6 +221,37 @@ string Utils::to_string(vector<bool> x) {
   return ret_val;
 }
 
+string Utils::to_string(unordered_map<int, unordered_set<int>> x) {
+  string ret_val = "{";
+
+  for (auto it=x.begin(); it!=x.end(); it++) {
+    const int key = it->first;
+    ret_val + " [" + std::to_string(key) + " : " + to_string(it->second) + "], ";
+  }
+
+  ret_val += "}";
+  return ret_val;
+}
+
+string Utils::to_string(unordered_map<int, int> x) {
+  // give by copy
+
+  string ret_val = "{[showing keys] ";
+
+  for (auto it=x.begin(); it!=x.end(); it++) {
+    const int element = it->first;
+    if (element >= 0) {
+      ret_val += "  \033[38;5;10m";
+      ret_val += std::to_string(element);
+    } else {
+      ret_val += " \033[38;5;9m";
+      ret_val += std::to_string(element);
+    }
+    ret_val += "\033[0m";
+  }
+  return ret_val + " }";
+}
+
 string Utils::to_string(unordered_set<int> x) {
   // give by copy
 
