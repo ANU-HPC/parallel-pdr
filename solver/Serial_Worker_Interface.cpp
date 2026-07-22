@@ -1,0 +1,46 @@
+#include "Serial_Worker_Interface.h"
+#include "Obligation_Processor.h"
+
+Serial_Worker_Interface::Serial_Worker_Interface() {
+  _obligation_processor = new Obligation_Processor(1);
+}
+
+int Serial_Worker_Interface::get_lowest_layer_for_initial_state() {
+  return _obligation_processor->get_lowest_layer_for_initial_state();
+}
+
+set<int> Serial_Worker_Interface::workers_wanting_work_snapshot() {
+  return _sole_worker;
+}
+
+bool Serial_Worker_Interface::all_workers_idle() {
+  return true;
+}
+
+void Serial_Worker_Interface::handle_obligation(const Obligation& obl, bool open_children) {
+  _obligation_processor->process_obligation(obl, open_children);
+
+  if (_obligation_processor->last_interaction_was_a_success()) {
+    _returned_successes_buffer->push_back(tuple<int, Success>(_SERIAL_WORKER_ID, _obligation_processor->last_interactions_success()));
+  } else {
+    _returned_reasons_buffer->push_back(tuple<int, Reason_From_Worker>(_SERIAL_WORKER_ID, _obligation_processor->last_interactions_reason()));
+  }
+}
+
+void Serial_Worker_Interface::handle_reason(const Reason_From_Orchestrator& reason) {
+  if (Global::problem.nondeterministic) _obligation_processor->add_reason_nondeterministic(reason);
+  else                                  _obligation_processor->add_reason_deterministic(reason);
+}
+
+void Serial_Worker_Interface::reset_nondeterministic_solvers_for_new_k(int k, bool keep_non_goal_layers) {
+  assert(Global::problem.nondeterministic);
+  _obligation_processor->reset_nondeterministic_solvers_for_new_k(k, keep_non_goal_layers);
+}
+
+vector<tuple<int, Reason_From_Worker>>* Serial_Worker_Interface::get_returned_reasons_buffer() {
+  return _returned_reasons_buffer;
+}
+
+vector<tuple<int, Success>>* Serial_Worker_Interface::get_returned_successes_buffer() {
+  return _returned_successes_buffer;
+}
