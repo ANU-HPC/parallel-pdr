@@ -1,0 +1,267 @@
+#include "Obligation_Processor.h"
+#include "Compressed_Actions.h"
+#include "Contextless_Reason.h"
+#include "Obligation.h"
+#include "Reason_From_Orchestrator.h"
+#include "Utils.h"
+#include <iterator>
+
+Obligation_Processor::Obligation_Processor(int layer_steps) {
+  _layer_steps = layer_steps;
+  _sub_steps_per_internal_layer_step = MAX_OR_COUNT+1;
+  _total_sub_steps = _sub_steps_per_internal_layer_step * (_layer_steps-1) + 2;
+
+  assert(Global::problem.interleaved_layers);
+
+  // create base solver
+  _base_solver = new Lingeling();
+  _base_solver->load_with_planning_problem(Global::problem.tmp_dir, _total_sub_steps, Global::problem.total_per_timestep); 
+  _base_solver->solve(vector<int>());
+
+  // initialize with goal TODO will break with subproblems
+  for (auto it=Global::problem.goal_condition.begin(); it!=Global::problem.goal_condition.end(); it++) {
+    Reason_From_Orchestrator goal_condition_reason = Reason_From_Orchestrator(Contextless_Reason(vector<int>({-*it}), 0, 0), 0);
+    add_reason(goal_condition_reason);
+  }
+}
+
+// TODO this is not a concrete thing, it is the current strategy
+void Obligation_Processor::process_obligation(const Obligation& original_obligation) {
+  //LOG << "process obligation" << endl;
+  Global::stats.count("process_obligation");
+
+  const int end_reasons_layer = original_obligation.layer()-_layer_steps;
+  if (end_reasons_layer<0) {
+    LOG << "ERROR: Worker with " << _layer_steps << " given an obligation with layer " << original_obligation.layer() << "      " << original_obligation.layer() << " " << _layer_steps << endl;
+    exit(1);
+  }
+
+  _last_interaction_was_a_success =_end_reasons_layer_to_solver[end_reasons_layer]->solve(original_obligation.compressed_state().get_state());
+  if (_last_interaction_was_a_success) set_success_from_solver(original_obligation, end_reasons_layer);
+  else                                 set_reason_from_solver(original_obligation, end_reasons_layer);
+
+  Global::stats.count(
+      "layer: " + std::to_string(original_obligation.layer()) + 
+      " sat? " + std::to_string(_last_interaction_was_a_success));
+  return;
+}
+
+void Obligation_Processor::add_reason(const Reason_From_Orchestrator& reason) {
+  const Contextless_Reason& contextless_reason = reason.contextless_reason();
+  const vector<int>& timestep_zero_nogood_clause = contextless_reason.timestep_zero_nogood_clause();
+
+  ensure_solver_exists_for_end_reason_layer(contextless_reason.layer());
+
+  for (int solver=max(0,reason.add_from_layer()-_layer_steps); solver<= contextless_reason.layer(); solver++) {
+    // try do this explicitly, gets finicky...
+    // Work out, for this solver, where to add
+    const int solvers_lowest_supported_layer = solver;
+    const int solvers_highest_supported_layer = solvers_lowest_supported_layer + _layer_steps - 1;
+
+    const int lowest_layer_to_add_to = max(solvers_lowest_supported_layer, reason.add_from_layer());
+    const int highest_layer_to_add_to = min(solvers_highest_supported_layer, contextless_reason.layer());
+
+    // Note the reversed step/layer directions, finicky...
+    const int highest_layer_step_to_add_to = _layer_steps - (lowest_layer_to_add_to-solver);
+    const int lowest_layer_step_to_add_to = _layer_steps - (highest_layer_to_add_to-solver); // TODO?? ^
+
+    const int highest_substep_to_add_to = highest_layer_step_to_add_to == _layer_steps+1 ? (_layer_steps-1)*_sub_steps_per_internal_layer_step+2 : (highest_layer_step_to_add_to-1)*_sub_steps_per_internal_layer_step + 1;
+    const int lowest_substep_to_add_to = 1 + (lowest_layer_step_to_add_to-1)*_sub_steps_per_internal_layer_step;
+
+    /*
+    LOG << "add_reason, solver: " << solver << endl;
+
+    LOG << "solvers_lowest_supported_layer    " <<  solvers_lowest_supported_layer << endl;
+    LOG << "solvers_highest_supported_layer   " <<  solvers_highest_supported_layer << endl;
+                                    
+    LOG << "lowest_layer_to_add_to            " <<  lowest_layer_to_add_to << endl;
+    LOG << "highest_layer_to_add_to           " <<  highest_layer_to_add_to << endl;
+                                    
+    LOG << "highest_layer_step_to_add_to      " <<  highest_layer_step_to_add_to << endl;
+    LOG << "lowest_layer_step_to_add_to       " <<  lowest_layer_step_to_add_to << endl;
+                                    
+    LOG << "highest_substep_to_add_to         " <<  highest_substep_to_add_to << endl;
+    LOG << "lowest_substep_to_add_to          " <<  lowest_substep_to_add_to << endl;
+    LOG << "  == end solver ==" << endl;
+    */
+
+    for (int substep = lowest_substep_to_add_to; substep <= highest_substep_to_add_to; substep++) {
+      const vector<int>& clause_to_add = Utils::tilde(timestep_zero_nogood_clause, substep);
+      _end_reasons_layer_to_solver[solver]->add_clause(clause_to_add);
+    }
+  }
+
+  /*
+  // okay... so for a reason at layer n, lets add it to the first layer step to all the relevant solvers
+  for (int layer_step_into_solver=1; layer_step_into_solver < _layer_steps; layer_step_into_solver++) {
+    // work out which solvers to apply this to
+    const int first_solver = obligation.add_from_layer() - (_layer_steps-1)
+    const int last_solver = first_solver+_layer_steps;
+
+  // have a special for the last timestep
+  for (int end_reason_layer = reason.add_from_layer(); end_reason_layer <= contextless_reason.layer(); end_reason_layer++) {
+    _end_reasons_layer_to_solver[end_reason_layer]->add_clause(Utils::tilde(contextless_reason.timestep_zero_nogood_clause(), _total_sub_steps));
+  }
+
+
+  // okay... so for a reason at layer n, it will be added to the end as above
+  for (int layer_step_into_solver=1; layer_step_into_solver < _layer_steps; layer_step_into_solver++) {
+
+
+  for (int offset_from_end=0; offset_from_end<_layer_steps; offset_from_end++) {
+    const int solver_start = max(0,reason.add_from_layer() - offset_from_end);
+    const int solver_end = max(0,contextless_reason.layer() - offset_from_end);
+
+    ensure_solver_exists_for_end_reason_layer(solver_end);
+
+    for (int sub_step=0; sub_step<_sub_steps_per_layer_step; sub_step++) {
+      const int tilde = _total_sub_steps-1-offset_from_end*_sub_steps_per_layer_step - sub_step;
+      const vector<int>& clause_to_add = Utils::tilde(contextless_reason.timestep_zero_nogood_clause(), tilde);
+
+      for (int solver = solver_start; solver <= solver_end; solver++) {
+        LOG << "adding clause, layer: " << contextless_reason.layer() << " add_from_layer: " << reason.add_from_layer() << " tilde: " << tilde << " solver: " << solver << " offset_from_end: " << offset_from_end << endl;
+        _end_reasons_layer_to_solver[solver]->add_clause(clause_to_add);
+      }
+    }
+  }
+  LOG << "end add reason" << endl;
+  */
+}
+
+bool Obligation_Processor::last_interaction_was_a_success() {
+  return _last_interaction_was_a_success;
+}
+
+Success Obligation_Processor::last_interactions_success() {
+  assert(_last_interaction_was_a_success);
+  return _success;
+}
+
+Reason_From_Worker Obligation_Processor::last_interactions_reason() {
+  assert(!_last_interaction_was_a_success);
+  return _reason;
+}
+
+// TODO extract the intermediate states for interleaved layers
+void Obligation_Processor::set_success_from_solver(const Obligation& original_obligation, int end_reasons_layer) {
+  // this should unify old macros, old interleaved and this new combination
+  // make it so the model is projected to the relevant subproblem propositions
+  // Need to take in the model, and extract everything
+
+  // check if need to bother extracting
+  if (!original_obligation.reduce_reason_add_successor_to_queue()) {
+    _success = Success(original_obligation, vector<Compressed_Actions>(), vector<Obligation>()); // TODO make it not even be able to retrieve it?
+    return;
+  }
+
+  const vector<int>& model = _end_reasons_layer_to_solver[end_reasons_layer]->get_model();
+
+  const int subproblem = original_obligation.subproblem();
+
+  const vector<int>& all_actions = Global::problem.subproblem_to_actions[subproblem];
+  const vector<int>& all_propositions = Global::problem.subproblem_to_propositions[subproblem];
+
+  vector<Compressed_Actions> actions;
+  vector<Obligation> successor_obligations;
+
+  // extract actions from model.
+  for (int layer_step=0; layer_step<_layer_steps; layer_step++) {
+    vector<int> layer_actions;
+    const int sub_steps_for_this_layer = layer_step == _layer_steps-1 ? 1 : _sub_steps_per_internal_layer_step;
+    for (int layer_sub_step=0; layer_sub_step<sub_steps_for_this_layer; layer_sub_step++) {
+      const int sub_step = layer_step*_sub_steps_per_internal_layer_step + layer_sub_step;
+      for (auto it=all_actions.begin(); it!=all_actions.end(); it++) {
+        const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,sub_step)-1], -sub_step);
+        assert(abs(model_var_tilded_to_timestep_zero) == *it);
+        if (model_var_tilded_to_timestep_zero>0) layer_actions.push_back(model_var_tilded_to_timestep_zero);
+      }
+    }
+    actions.push_back(Compressed_Actions(layer_actions, subproblem));
+  }
+
+  // extract successor states
+  for (int layer_step=1; layer_step<=_layer_steps; layer_step++) {
+    int sub_step;
+    if (layer_step==_layer_steps) sub_step = (layer_step-1)*_sub_steps_per_internal_layer_step + 1;
+    else                          sub_step = layer_step*_sub_steps_per_internal_layer_step;
+
+    vector<int> state_vars;
+    for (auto it=all_propositions.begin(); it!=all_propositions.end(); it++) {
+      const int model_var_tilded_to_timestep_zero = Utils::tilde(model[Utils::tilde(*it,sub_step)-1], -sub_step);
+      assert(abs(model_var_tilded_to_timestep_zero) == *it);
+      if (model_var_tilded_to_timestep_zero>0) state_vars.push_back(model_var_tilded_to_timestep_zero);
+    }
+
+    const int successor_obligation_or_count = (original_obligation.layer() == original_obligation.or_originating_layer()) ? original_obligation.or_count() : 0;
+    const int layer = original_obligation.layer()-layer_step;
+    successor_obligations.push_back(Obligation(
+          Compressed_State(state_vars, subproblem, true),
+          layer,
+          subproblem,
+          original_obligation.or_originating_layer(),
+          successor_obligation_or_count,
+          true));
+  }
+
+  _success = Success(original_obligation, actions, successor_obligations);
+
+  if (successor_obligations.rbegin()->compressed_state() == original_obligation.compressed_state()) {
+    if (!Global::problem.evaluation_mode) LOG << "Same, layer_steps: " << _layer_steps << " end_reasons_layer" << end_reasons_layer << " success: " << _success.to_string() << endl;
+  }
+}
+
+// Conversions between - not ideal, I can't see a way to do it nicely
+vector<int> set_to_vector(const set<int>& x) {
+  return vector<int>(x.begin(), x.end());
+}
+
+set<int> vector_to_set(const vector<int>& x) {
+  return set<int>(x.begin(), x.end());
+}
+
+vector<int> set_to_abs_sorted_vector(const set<int>& x) {
+  vector<int> as_vector = set_to_vector(x);
+  sort(as_vector.begin(), as_vector.end(), Utils::abs_comp);
+  return as_vector;
+}
+
+void Obligation_Processor::set_reason_from_solver(const Obligation& original_obligation, int end_reasons_layer) {
+  // So this is actually doing a process of strengthening - lit removal
+  if (!original_obligation.reduce_reason_add_successor_to_queue()) {
+    _reason = Reason_From_Worker( 
+      Contextless_Reason(original_obligation.compressed_state().get_state(), original_obligation.layer(), original_obligation.subproblem()),
+      original_obligation);
+    return;
+  }
+
+  Lingeling* solver = _end_reasons_layer_to_solver[end_reasons_layer];
+
+  set<int> running_reason = vector_to_set(solver->used_assumptions());
+  const int subproblem = original_obligation.subproblem();
+  const vector<int>& propositions_to_exclude = Global::problem.subproblem_to_propositions[subproblem];
+
+  for (auto it=propositions_to_exclude.begin(); it!=propositions_to_exclude.end(); it++) {
+    const int proposition_to_exclude = *it; 
+
+    if (!Utils::in(running_reason, proposition_to_exclude)) continue; // already not in the running reason
+
+    // lets remove this proposition and see if it is still UNSAT
+    running_reason.erase(proposition_to_exclude);
+    if (solver->solve(set_to_vector(running_reason))) {
+      running_reason.insert(proposition_to_exclude); // The omission makes it SAT again, so add it back
+    } else {
+      running_reason = vector_to_set(solver->used_assumptions()); // use the used_assumptions as the new running reason
+    }
+  }
+
+  _reason = Reason_From_Worker(
+      Contextless_Reason(set_to_abs_sorted_vector(running_reason), original_obligation.layer(), original_obligation.subproblem()),
+      original_obligation);
+}
+
+void Obligation_Processor::ensure_solver_exists_for_end_reason_layer(int end_reasons_layer) {
+  assert (end_reasons_layer>=0);
+  while (end_reasons_layer >= _end_reasons_layer_to_solver.size()) {
+    _end_reasons_layer_to_solver.push_back(new Lingeling(_base_solver));
+  }
+}

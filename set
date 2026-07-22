@@ -1,0 +1,15 @@
+obligation_rescheduling 1
+project_last 0
+complete_nonfinal 0
+activation_literals 0
+use_ooc 0
+isolate_subproblems 0
+decomposed 0
+report_plan 1
+dagster 1
+mpi_nodes 5
+backwards 0
+max_macro_steps 1
+interleaved_layers 1
+transitions_to_num_workers 4
+evaluation_mode 0

@@ -1,0 +1,13 @@
+[submodule "VAL"]
+	path = VAL
+	url = https://github.com/ava-clifton/VAL.git
+[submodule "lingeling"]
+	path = lingeling
+	url = https://github.com/arminbiere/lingeling.git
+    ignore = dirty
+[submodule "rapidjson"]
+	path = rapidjson
+	url = https://github.com/Tencent/rapidjson.git
+[submodule "h2-fd-preprocessor"]
+	path = h2-fd-preprocessor
+	url = https://github.com/galvusdamor/h2-fd-preprocessor
