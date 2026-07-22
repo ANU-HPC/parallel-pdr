@@ -1,0 +1,10 @@
+[submodule "VAL"]
+	path = VAL
+	url = https://github.com/KCL-Planning/VAL
+[submodule "lingeling"]
+	path = lingeling
+	url = https://github.com/arminbiere/lingeling.git
+    ignore = dirty
+[submodule "rapidjson"]
+	path = rapidjson
+	url = https://github.com/Tencent/rapidjson.git
