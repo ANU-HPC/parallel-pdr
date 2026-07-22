@@ -1,0 +1,81 @@
+;; Cave Diving STRIPS
+;; Authors: Nathan Robinson,
+;;          Christian Muise, and
+;;          Charles Gretton
+
+(define (problem cave-diving-strips-prob20)
+  (:domain cave-diving-strips)
+  (:objects
+    l0 l1 l2 l3 l4 l5 l6 - location
+    t0 t1 dummy - tank
+    zero one two three four - quantity
+  )
+
+  (:init
+    (available d0)
+    (available d1)
+    (available d2)
+    (available d3)
+    (available d4)
+    (available d5)
+    (available d6)
+    (available d7)
+    (available d8)
+    (available d9)
+    (available d10)
+    (available d11)
+    (capacity d0 four)
+    (capacity d1 four)
+    (capacity d2 four)
+    (capacity d3 four)
+    (capacity d4 four)
+    (capacity d5 four)
+    (capacity d6 four)
+    (capacity d7 four)
+    (capacity d8 four)
+    (capacity d9 four)
+    (capacity d10 four)
+    (capacity d11 four)
+    (in-storage t0)
+    (next-tank t0 t1)
+    (next-tank t1 dummy)
+    (cave-entrance l0)
+    (connected l0 l1)
+    (connected l1 l0)
+    (connected l1 l2)
+    (connected l2 l1)
+    (connected l2 l3)
+    (connected l3 l2)
+    (connected l1 l4)
+    (connected l4 l1)
+    (connected l4 l5)
+    (connected l5 l4)
+    (connected l4 l6)
+    (connected l6 l4)
+    (next-quantity zero one)
+    (next-quantity one two)
+    (next-quantity two three)
+    (next-quantity three four)
+  )
+
+  (:goal
+    (and
+      (have-photo l6)
+      (have-photo l5)
+      (have-photo l3)
+      (decompressing d6)
+      (decompressing d1)
+      (decompressing d10)
+      (decompressing d7)
+      (decompressing d8)
+      (decompressing d2)
+      (decompressing d0)
+      (decompressing d11)
+      (decompressing d4)
+      (decompressing d3)
+      (decompressing d9)
+      (decompressing d5)
+    )
+  )
+
+)
